@@ -26,9 +26,14 @@ modules/*/config*.xml
 # Site content
 # The following folders contain product images, virtual products, CSV's, etc.
 
+app/config/parameters.php
+config/defines.inc.php
 admin-dev/backups/
 admin-dev/export/
 admin-dev/import/
 download/
 /img/*
 upload/
+var/cache/
+var/logs/
+var/sessions/
