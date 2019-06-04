@@ -1,0 +1,26 @@
+.text-left		{ text-align: left; }
+.text-center	{ text-align: center; }
+.text-right		{ text-align: right; }
+
+.text-info		{ color: @mainBlue !important; }
+.text-primary	{ color: @mainDarkBlue !important; }
+.text-success	{ color: @mainGreen !important; }
+.text-warning	{ color: @mainOrange !important; }
+.text-danger	{ color: @mainRed !important; }
+
+.bold 		{ font-weight: bold; }
+.uppercase 	{ text-transform: uppercase; }
+.pull-right { float: right; }
+
+.background(@text-color, @background-color) {
+	background-color: @background-color !important;
+	* {
+		color: @text-color !important;
+	}
+}
+
+.bg-grey 		{ background-color: @mainGrey; }
+.bg-green 		{ .background(@mainText, @mainGreen); }
+.bg-darkgreen 	{ .background(@mainText, @mainDarkGreen); }
+.bg-blue 		{ .background(@mainText, @mainBlue); font-weight: bold; }
+.bg-danger		{ .background(@mainText, @mainRed); }

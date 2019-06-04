@@ -1,0 +1,119 @@
+#header {
+	box-shadow: 0px 5px 15px 1px lightgrey;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 100;
+	.header-nav {
+		margin-bottom: 0px !important;
+		background-color: @mainGrey;
+		border-bottom: 0px;
+		.user-info {
+			margin-left: 0.75rem;
+			margin-right: 0.75rem;
+			.logged {
+				color: @mainBlue;
+			}
+		}
+		.blockcart {
+			margin-left: 0px !important;
+		}
+		.cart-preview.active {
+			background-color: @mainBlue;
+		}
+	}
+	.header-top {
+		padding-top: 8px !important;
+		padding-bottom: 8px !important;
+		background-color: @mainBlue;
+		.menu {
+			margin-bottom: 0px !important;
+		}
+	}
+	a:hover {
+		color: @mainBlue;
+		.fa-power-off {
+			color: @mainRed;
+		}
+	}
+	#nav_contact {
+		padding-left: 15px;
+		line-height: 46px;
+		font-size: 14px;
+		font-style: italic;
+		.phone {
+			color: @mainBlue;
+			font-weight: bold;
+			font-size: 20px;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+	}
+}
+
+#_desktop_user_info {
+	border-left: 1px solid @mainDarkGrey;
+}
+
+#_desktop_cart {
+	border-left: 1px solid @mainDarkGrey;
+	border-right: 1px solid @mainDarkGrey;
+}
+
+#_mobile_cart {
+	margin-right: 15px;
+}
+#menu-icon {
+	height: 48px;
+}
+
+#iziModal-menu-icon {
+	margin-left: 25px;
+    margin-top: 10px;
+    cursor: pointer;
+    &:hover {
+    	color: @mainBlue;
+    }
+}
+
+#brand_box {
+	margin-bottom: @mainMarginBottom;	
+}
+
+#brand {
+	margin-bottom: 0px;
+	font-weight: bold;
+	font-size: 48px;
+	color: @mainBlue;
+	span {
+		color: @mainRed;
+	}
+}
+
+#brand_description {
+	margin-bottom: 0px;
+	font-size: 14px;
+	font-style: oblique;
+}
+
+#reassurance_top div {
+	padding-left: 40px;
+	padding-top: 40px;
+	font-size: 12px;
+	line-height: 14px;
+	.rassurance-icon {
+		position: absolute;
+		color: @mainBlue;
+		top: 42px;
+		left: 0px;
+	}
+	a {
+		color: @darkText;
+		transition: 0.25s linear all;
+		&:hover {
+			color: @mainBlue;
+			font-size: 14px;
+			transition: 0.25s linear all;
+		}
+	}
+}
