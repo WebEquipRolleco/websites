@@ -8,6 +8,9 @@ class Customer extends CustomerCore {
 	/** @var string Chorus **/
 	public $chorus;
 
+	/** @var string Tva **/
+	public $tva;
+
 	/** @var int id_type **/
 	public $id_account_type;
 
@@ -40,6 +43,7 @@ class Customer extends CustomerCore {
 		self::$definition['fields']['id_customer_state'] = array('type' => self::TYPE_INT, 'validate' => 'isInt');
 		self::$definition['fields']['comment'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['chorus'] = array('type' => self::TYPE_STRING);
+		self::$definition['fields']['tva'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['funding'] = array('type' => self::TYPE_BOOL);
 		self::$definition['fields']['date_funding'] = array('type' => self::TYPE_DATE);
 		self::$definition['fields']['email_invoice'] = array('type' => self::TYPE_STRING);

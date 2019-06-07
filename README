@@ -15,7 +15,8 @@ ALTER TABLE `ps_customer` ADD `id_customer_state` INT(11) NULL AFTER `id_account
 ALTER TABLE `ps_customer` ADD `comment` TEXT NULL AFTER `id_customer_state`;
 ALTER TABLE `ps_customer` ADD `reference` VARCHAR(255) NULL AFTER `id_risk`;
 ALTER TABLE `ps_customer` ADD `chorus` VARCHAR(255) NULL AFTER `reference`;
-ALTER TABLE `ps_customer` ADD `funding` TINYINT(1) DEFAULT '1' AFTER `chorus`;
+ALTER TABLE `ps_customer` ADD `tva` VARCHAR(255) NULL AFTER `chorus`;
+ALTER TABLE `ps_customer` ADD `funding` TINYINT(1) DEFAULT '1' AFTER `tva`;
 ALTER TABLE `ps_customer` ADD `date_funding` DATE AFTER `funding`;
 ALTER TABLE `ps_customer` ADD `email_invoice` VARCHAR(255) NULL AFTER `email`;
 ALTER TABLE `ps_customer` ADD `email_tracking` VARCHAR(255) NULL AFTER `email_invoice`;

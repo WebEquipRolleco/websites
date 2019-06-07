@@ -82,13 +82,17 @@
 				</div>
 				<div class="form-horizontal">
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Social Title' d='Admin.Global'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Social Title' d='Admin.Global'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">{if $gender->name}{$gender->name}{else}{l s='Unknown' d='Admin.Orderscustomers.Feature'}{/if}</p>
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Age' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Age' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{if isset($customer->birthday) && $customer->birthday != '0000-00-00'}
@@ -100,7 +104,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Type de compte' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Type de compte' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{$customer->getAccountType()->name}
@@ -108,7 +114,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Référence' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Référence' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{$customer->reference|default:'-'}
@@ -116,7 +124,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Chorus' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Chorus' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{$customer->chorus|default:'-'}
@@ -124,20 +134,36 @@
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Registration Date' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='TVA interne' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
+						<div class="col-lg-9">
+							<p class="form-control-static">
+								{$customer->tva|default:'-'}
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<label class="control-label col-lg-3">
+							<b>{l s='Registration Date' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">{$registration_date}</p>
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Last Visit' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Last Visit' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">{if $customer_stats['last_visit']}{$last_visit}{else}{l s='Never' d='Admin.Global'}{/if}</p>
 						</div>
 					</div>
 					{if $count_better_customers != '-'}
 						<div class="row">
-							<label class="control-label col-lg-3">{l s='Best Customer Rank' d='Admin.Orderscustomers.Feature'}</label>
+							<label class="control-label col-lg-3">
+								<b>{l s='Best Customer Rank' d='Admin.Orderscustomers.Feature'}</b>
+							</label>
 							<div class="col-lg-9">
 								<p class="form-control-static">{$count_better_customers}</p>
 							</div>
@@ -145,14 +171,16 @@
 					{/if}
 					{if $shop_is_feature_active}
 						<div class="row">
-							<label class="control-label col-lg-3">{l s='Shop' d='Admin.Global'}</label>
+							<label class="control-label col-lg-3">
+								<b>{l s='Shop' d='Admin.Global'}</b></label>
 							<div class="col-lg-9">
 								<p class="form-control-static">{$name_shop}</p>
 							</div>
 						</div>
 					{/if}
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Language' d='Admin.Global'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Language' d='Admin.Global'}</b></label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{if isset($customerLanguage)}
@@ -164,7 +192,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Registrations' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Registrations' d='Admin.Orderscustomers.Feature'}</b>
+						</label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{if $customer->newsletter}
@@ -194,13 +224,15 @@
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Latest Update' d='Admin.Orderscustomers.Feature'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Latest Update' d='Admin.Orderscustomers.Feature'}</b></label>
 						<div class="col-lg-9">
 							<p class="form-control-static">{$last_update}</p>
 						</div>
 					</div>
 					<div class="row">
-						<label class="control-label col-lg-3">{l s='Status' d='Admin.Global'}</label>
+						<label class="control-label col-lg-3">
+							<b>{l s='Status' d='Admin.Global'}</b></label>
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{if $customer->active}

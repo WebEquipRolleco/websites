@@ -290,6 +290,12 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                 ),
                 array(
                     'type' => 'text',
+                    'label' => $this->trans('TVA interne', array(), 'Admin.Global'),
+                    'name' => 'tva',
+                    'col' => '4'
+                ),
+                array(
+                    'type' => 'text',
                     'prefix' => '<i class="icon-envelope-o"></i>',
                     'label' => $this->trans('Email address', array(), 'Admin.Global'),
                     'name' => 'email',
