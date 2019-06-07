@@ -47,7 +47,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
         }
 
         $this->_join = 'LEFT JOIN '._DB_PREFIX_.'gender_lang gl ON (a.id_gender = gl.id_gender AND gl.id_lang = '.(int)$this->context->language->id.')';
-        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.AccountType::TABLE_NAME.' ac ON (a.id_account_type = ac.id)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.AccountType::TABLE_NAME.' ac ON (a.id_account_type = ac.id_account_type)';
         $this->_use_found_rows = false;
         $this->fields_list = array(
             'id_customer' => array(

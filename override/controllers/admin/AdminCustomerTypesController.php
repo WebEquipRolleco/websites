@@ -17,6 +17,9 @@ class AdminCustomerTypesController extends AdminController {
             'dir' => 'os'
         );
 
+        $this->addRowAction('edit');
+        $this->addRowAction('delete');
+        
         parent::__construct();
 
         $this->bulk_actions = array(
