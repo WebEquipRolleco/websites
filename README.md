@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `ps_order_option_history` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_account_type` (
-    `id` INT NOT NULL AUTO_INCREMENT, 
+    `id_account_type` INT NOT NULL AUTO_INCREMENT, 
     `name` VARCHAR(255) NOT NULL, 
     `extra_information` TINYINT DEFAULT 0, 
     PRIMARY KEY (`id`)

@@ -44,6 +44,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminNewsletter"))
             $check .= $this->installTab("Newsletter", "AdminNewsletter", "AdminParentCustomer");
 
+        if(!isTabInstalled("AdminAccountTypes"))
+            $check .= $this->installTab("Types", "AdminAccountTypes", "AdminParentCustomer");
+
         if(!isTabInstalled("AdminCustomerStates"))
             $check .= $this->installTab("Status", "AdminCustomerStates", "AdminParentCustomer");
 
@@ -92,6 +95,10 @@ class Webequip_Configuration extends Module {
                 $this->installTab("Newsletter", "AdminNewsletter", "AdminParentCustomer");
             break;
 
+            case 'ACCOUNT_TYPES':
+                $this->installTab('Types', 'AdminCustomerTypes', 'AdminParentCustomer');
+            break;
+
             case 'CUSTOMER_STATES':
                 $this->installTab("Status", "AdminCustomerStates", "AdminParentCustomer");
             break;
@@ -122,6 +129,7 @@ class Webequip_Configuration extends Module {
 
         $tabs[2] = array('name'=>'CLIENTS');
         $tabs[2]['children'][] = array('name'=>"Newsletter", 'id'=>$this->isTabInstalled('AdminNewsletter'), 'action'=>'NEWSLETTER');
+        $tabs[2]['children'][] = array('name'=>"Type de comptes", 'id'=>$this->isTabInstalled('AdminCustomerTypes'), 'action'=>'ACCOUNT_TYPES');
         $tabs[2]['children'][] = array('name'=>"Etats clients", 'id'=>$this->isTabInstalled('AdminCustomerStates'), 'action'=>'CUSTOMER_STATES');
 
         $tabs[3] = array('name'=>'CATALOGUE');

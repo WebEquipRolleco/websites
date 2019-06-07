@@ -3,7 +3,7 @@
 class AccountTypeCore extends ObjectModel {
 
 	const TABLE_NAME = 'account_type';
-	const TABLE_PRIMARY = 'id';
+	const TABLE_PRIMARY = 'id_account_type';
 
 	/** @var mixed string */
     public $name;
@@ -19,7 +19,7 @@ class AccountTypeCore extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
         	'name' => array('type' => self::TYPE_STRING),
-        	'extra_infomation' => array('type' => self::TYPE_BOOL)
+        	'extra_information' => array('type' => self::TYPE_BOOL)
         )
     );
 

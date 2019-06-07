@@ -204,12 +204,6 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                 ),
                 array(
                     'type' => 'text',
-                    'label' => $this->trans('Référence', array(), 'Admin.Global'),
-                    'name' => 'reference',
-                    'col' => '4',
-                ),
-                array(
-                    'type' => 'text',
                     'label' => $this->trans('First name', array(), 'Admin.Global'),
                     'name' => 'firstname',
                     'required' => true,
@@ -278,7 +272,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                 ),
                 array(
                     'type' => 'text',
-                    'label' => $this->trans('Référence', array(), 'Admin.Global'),
+                    'label' => $this->trans('E-deal', array(), 'Admin.Global'),
                     'name' => 'reference',
                     'col' => '4'
                 ),
