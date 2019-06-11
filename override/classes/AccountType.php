@@ -29,7 +29,7 @@ class AccountTypeCore extends ObjectModel {
     	$ids = Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME);
 
     	foreach($ids as $row)
-    		$data[] = new AccountType($row['id']);
+    		$data[] = new AccountType($row[self::TABLE_PRIMARY]);
 
     	return $data;
     }
