@@ -39,13 +39,21 @@ class AdminCustomerTypesController extends AdminController {
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global')
             ),
-            'extra_information' => array(
-                'title' => $this->trans('Informations supplémentaires', array(), 'Admin.Global'),
+            'siret' => array(
+                'title' => $this->trans('SIRET', array(), 'Admin.Global'),
                 'align' => 'center',
                 'active' => 'status',
                 'type' => 'bool',
                 'class' => 'fixed-width-sm',
                 'orderby' => false,
+            ),
+            'chorus' => array(
+                'title' => $this->trans("Référence Chorus", array(), 'Admin.Global'),
+                'align' => 'center',
+                'active' => 'status',
+                'type' => 'bool',
+                'class' => 'fixed-width-sm',
+                'orderBy' => false
             ),
             'tva' => array(
                 'title' => $this->trans("TVA interne", array(), 'Admin.Global'),
@@ -75,8 +83,28 @@ class AdminCustomerTypesController extends AdminController {
                 ),
                 array(
                     'type' => 'switch',
-                    'label' => $this->trans('Informations supplémentaires', array(), 'Admin.Global'),
-                    'name' => 'extra_information',
+                    'label' => $this->trans('Activer le SIRET', array(), 'Admin.Global'),
+                    'name' => 'siret',
+                    'required' => false,
+                    'class' => 't',
+                    'is_bool' => true,
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->trans('Yes', array(), 'Admin.Global')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->trans('No', array(), 'Admin.Global')
+                        )
+                    )
+                ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->trans('Activer la référence Chorus', array(), 'Admin.Global'),
+                    'name' => 'chorus',
                     'required' => false,
                     'class' => 't',
                     'is_bool' => true,

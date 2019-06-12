@@ -8,8 +8,11 @@ class AccountTypeCore extends ObjectModel {
 	/** @var mixed string */
     public $name;
 
-    /** @var bool Extra Information */
-    public $extra_infomation = false;
+    /** @var bool Siret */
+    public $siret = false;
+
+    /** @var bool Chorus **/
+    public $chorus = false;
 
     /** @var bool TVA **/
     public $tva = false;
@@ -22,7 +25,8 @@ class AccountTypeCore extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
         	'name' => array('type' => self::TYPE_STRING),
-        	'extra_information' => array('type' => self::TYPE_BOOL),
+        	'siret' => array('type' => self::TYPE_BOOL),
+            'chorus' => array('type' => self::TYPE_BOOL),
             'tva' => array('type' => self::TYPE_BOOL)
         )
     );
