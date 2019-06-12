@@ -11,6 +11,9 @@ class AccountTypeCore extends ObjectModel {
     /** @var bool Extra Information */
     public $extra_infomation = false;
 
+    /** @var bool TVA **/
+    public $tva = false;
+
     /**
      * @see ObjectModel::$definition
      */
@@ -19,7 +22,8 @@ class AccountTypeCore extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
         	'name' => array('type' => self::TYPE_STRING),
-        	'extra_information' => array('type' => self::TYPE_BOOL)
+        	'extra_information' => array('type' => self::TYPE_BOOL),
+            'tva' => array('type' => self::TYPE_BOOL)
         )
     );
 

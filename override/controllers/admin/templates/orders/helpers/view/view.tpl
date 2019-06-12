@@ -111,7 +111,7 @@
     </div>
   {/if}
 
-  {if !$order->getCustomer()->tva}
+  {if !$order->getCustomer()->checkTVA()}
     <div class="alert alert-danger">
       <b>{l s="Le numéro de TVA interne du client n'a pas été renseignée."}</b>
     </div>

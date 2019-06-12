@@ -98,4 +98,15 @@ class Customer extends CustomerCore {
 		return $this->state;
 	}
 
+	/**
+	* Vérifie la TVA interne 
+	**/
+	public function checkTVA() {
+
+		if($type = $this->getAccountType() and $this->getAccountType()->tva)
+			return (bool)$this->tva;
+
+		return true;
+	}
+	
 }

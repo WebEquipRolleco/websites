@@ -47,6 +47,14 @@ class AdminCustomerTypesController extends AdminController {
                 'class' => 'fixed-width-sm',
                 'orderby' => false,
             ),
+            'tva' => array(
+                'title' => $this->trans("TVA interne", array(), 'Admin.Global'),
+                'align' => 'center',
+                'active' => 'status',
+                'type' => 'bool',
+                'class' => 'fixed-width-sm',
+                'orderBy' => false
+            )
         );
     }
 
@@ -69,6 +77,26 @@ class AdminCustomerTypesController extends AdminController {
                     'type' => 'switch',
                     'label' => $this->trans('Informations supplémentaires', array(), 'Admin.Global'),
                     'name' => 'extra_information',
+                    'required' => false,
+                    'class' => 't',
+                    'is_bool' => true,
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->trans('Yes', array(), 'Admin.Global')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->trans('No', array(), 'Admin.Global')
+                        )
+                    )
+                ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->trans('Activer la TVA interne', array(), 'Admin.Global'),
+                    'name' => 'tva',
                     'required' => false,
                     'class' => 't',
                     'is_bool' => true,
