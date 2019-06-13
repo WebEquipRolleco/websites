@@ -37,19 +37,15 @@
     {/block}
 
     {block name='page_content_container'}
-      <section id="content" class="page-content card card-block">
+      {*<section id="content" class="page-content card card-block">*}
         {block name='page_content_top'}{/block}
-        {block name='page_content'}
-          <!-- Page content -->
-        {/block}
-      </section>
+        {block name='page_content'}{/block}
+      {*</section>*}
     {/block}
 
     {block name='page_footer_container'}
       <footer class="page-footer">
-        {block name='page_footer'}
-          <!-- Footer content -->
-        {/block}
+        {block name='page_footer'}{/block}
       </footer>
     {/block}
 

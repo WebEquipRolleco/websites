@@ -28,15 +28,28 @@
     <input type="hidden" name="{$field.name}" value="{$field.value}">
   {/block}
 
+{elseif $field.type == 'custom-select-row'}
+
+  <div class="col-md-12{if ($field.type === 'radio-buttons')} form-control-valign{/if}">
+    <select class="form-control form-control-select" id="{$field.name}" name="{$field.name}" {if $field.required}required{/if}>
+      {foreach from=$field.availableValues item="label" key="value"}
+        <option value="{$label->id}" data-company="{$label->company}" data-siret="{$label->siret}" data-chorus="{$label->chorus}" data-tva="{$label->tva}" {if $label->default_value}selected{/if}>
+          {$label->name}
+        </option>
+      {/foreach}
+    </select>
+    <hr />
+  </div>
+
 {else}
 
-  <div class="form-group row {if !empty($field.errors)}has-error{/if}">
-    <label class="col-md-3 form-control-label{if $field.required} required{/if}">
+  <div id="{$field.name}_area" class="form-group row {if !empty($field.errors)}has-error{/if}">
+    <label class="col-md-4 form-control-label{if $field.required} required{/if}">
       {if $field.type !== 'checkbox'}
-        {$field.label}
+        {$field.label} {if $field.required}<em class="text-danger">*</em>{/if}
       {/if}
     </label>
-    <div class="col-md-6{if ($field.type === 'radio-buttons')} form-control-valign{/if}">
+    <div class="col-md-8{if ($field.type === 'radio-buttons')} form-control-valign{/if}">
 
       {if $field.type === 'select'}
 
@@ -157,6 +170,7 @@
 
         {block name='form_field_item_other'}
           <input
+            id="{$field.name}"
             class="form-control"
             name="{$field.name}"
             type="{$field.type}"
@@ -180,11 +194,11 @@
 
     </div>
 
-    <div class="col-md-3 form-control-comment">
+    <div class="col-lg-12 text-right text-muted">
       {block name='form_field_comment'}
-        {if (!$field.required && !in_array($field.type, ['radio-buttons', 'checkbox']))}
-         {l s='Optional' d='Shop.Forms.Labels'}
-        {/if}
+        {*if (!$field.required && !in_array($field.type, ['radio-buttons', 'checkbox']))}
+         <i>{l s='Optional' d='Shop.Forms.Labels'}</i>
+        {/if*}
       {/block}
     </div>
   </div>

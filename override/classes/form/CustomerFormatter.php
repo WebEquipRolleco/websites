@@ -1,34 +1,8 @@
 <?php
-/**
- * 2007-2018 PrestaShop
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to http://www.prestashop.com for more information.
- *
- * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2018 PrestaShop SA
- * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
- * International Registered Trademark & Property of PrestaShop SA
- */
 
-use Symfony\Component\Translation\TranslatorInterface;
+class CustomerFormatter extends CustomerFormatterCore {
 
-class CustomerFormatterCore implements FormFormatterInterface
-{
-    private $translator;
+	private $translator;
     private $language;
 
     private $ask_for_birthdate              = true;
@@ -38,10 +12,7 @@ class CustomerFormatterCore implements FormFormatterInterface
     private $password_is_required           = true;
     private $ask_for_new_password           = false;
 
-    public function __construct(
-        TranslatorInterface $translator,
-        Language $language
-    ) {
+    public function __construct($translator, $language) {
         $this->translator = $translator;
         $this->language = $language;
     }
@@ -93,7 +64,7 @@ class CustomerFormatterCore implements FormFormatterInterface
 
         $genderField = (new FormField)
             ->setName('id_gender')
-            ->setType('radio-buttons')
+            ->setType('select')
             ->setLabel(
                 $this->translator->trans(
                     'Social title', [], 'Shop.Forms.Labels'
@@ -126,18 +97,39 @@ class CustomerFormatterCore implements FormFormatterInterface
         ;
 
         if (Configuration::get('PS_B2B_ENABLE')) {
+
+        	$format['id_account_type'] = (new FormField)
+        		->setName('id_account_type')
+        		->setType('custom-select-row')
+        		->setAvailableValues(AccountType::getAccountTypes())
+        		->setRequired(true);
             $format['company'] = (new FormField)
                 ->setName('company')
                 ->setType('text')
+                ->setRequired('true')
                 ->setLabel($this->translator->trans(
                     'Company', [], 'Shop.Forms.Labels'
+                ));
+            $format['chorus'] = (new FormField)
+                ->setName('chorus')
+                ->setType('text')
+                ->setRequired(true)
+                ->setLabel($this->translator->trans(
+                    'Référence Chorus', [], 'Shop.Forms.Labels'
                 ));
             $format['siret'] = (new FormField)
                 ->setName('siret')
                 ->setType('text')
+                ->setRequired(true)
                 ->setLabel($this->translator->trans(
-                    // Please localize this string with the applicable registration number type in your country. For example : "SIRET" in France and "Código fiscal" in Spain.
-                    'Identification number', [], 'Shop.Forms.Labels'
+                    'Siret', [], 'Shop.Forms.Labels'
+                ));
+            $format['tva'] = (new FormField)
+                ->setName('tva')
+                ->setType('text')
+                ->setRequired(true)
+                ->setLabel($this->translator->trans(
+                    'TVA interne', [], 'Shop.Forms.Labels'
                 ));
         }
 
@@ -242,4 +234,5 @@ class CustomerFormatterCore implements FormFormatterInterface
 
         return $format;
     }
+
 }

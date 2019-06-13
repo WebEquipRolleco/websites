@@ -39,6 +39,14 @@ class AdminCustomerTypesController extends AdminController {
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global')
             ),
+            'company' => array(
+                'title' => $this->trans("Société", array(), 'Admin.Global'),
+                'align' => 'center',
+                'active' => 'status',
+                'type' => 'bool',
+                'class' => 'fixed-width-sm',
+                'orderBy' => false
+            ),
             'siret' => array(
                 'title' => $this->trans('SIRET', array(), 'Admin.Global'),
                 'align' => 'center',
@@ -62,6 +70,14 @@ class AdminCustomerTypesController extends AdminController {
                 'type' => 'bool',
                 'class' => 'fixed-width-sm',
                 'orderBy' => false
+            ),
+            'default_value' => array(
+                'title' => $this->trans("Valeur par défaut", array(), 'Admin.Global'),
+                'align' => 'center',
+                'active' => 'status',
+                'type' => 'bool',
+                'class' => 'fixed-width-sm',
+                'orderBy' => false
             )
         );
     }
@@ -80,6 +96,26 @@ class AdminCustomerTypesController extends AdminController {
                     'name' => 'name',
                     'required' => true,
                     'maxlength' => 512
+                ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->trans('Activer le nom de la société', array(), 'Admin.Global'),
+                    'name' => 'company',
+                    'required' => false,
+                    'class' => 't',
+                    'is_bool' => true,
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->trans('Yes', array(), 'Admin.Global')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->trans('No', array(), 'Admin.Global')
+                        )
+                    )
                 ),
                 array(
                     'type' => 'switch',
@@ -125,6 +161,26 @@ class AdminCustomerTypesController extends AdminController {
                     'type' => 'switch',
                     'label' => $this->trans('Activer la TVA interne', array(), 'Admin.Global'),
                     'name' => 'tva',
+                    'required' => false,
+                    'class' => 't',
+                    'is_bool' => true,
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->trans('Yes', array(), 'Admin.Global')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->trans('No', array(), 'Admin.Global')
+                        )
+                    )
+                ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->trans('Valeur par défault', array(), 'Admin.Global'),
+                    'name' => 'default_value',
                     'required' => false,
                     'class' => 't',
                     'is_bool' => true,

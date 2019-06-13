@@ -121,9 +121,11 @@ CREATE TABLE IF NOT EXISTS `ps_order_option_history` (
 CREATE TABLE IF NOT EXISTS `ps_account_type` (
     `id_account_type` INT NOT NULL AUTO_INCREMENT, 
     `name` VARCHAR(255) NOT NULL, 
+    `company` TINYINT DEFAULT 0,
     `siret` TINYINT DEFAULT 0,
     `chorus` TINYINT DEFAULT 0,
     `tva` TINYINT DEFAULT 0, 
+    `default_value` TINYINT DEFAULT 0, 
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 

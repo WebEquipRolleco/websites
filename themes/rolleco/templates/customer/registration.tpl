@@ -32,8 +32,41 @@
     {block name='register_form_container'}
       {$hook_create_account_top nofilter}
       <section class="register-form">
-        <p>{l s='Already have an account?' d='Shop.Theme.Customeraccount'} <a href="{$urls.pages.authentication}">{l s='Log in instead!' d='Shop.Theme.Customeraccount'}</a></p>
+        <div class="well text-muted">
+        	{l s='Already have an account?' d='Shop.Theme.Customeraccount'} 
+        	<a href="{$urls.pages.authentication}"><b>{l s='Log in instead!' d='Shop.Theme.Customeraccount'}</b></a>
+        </div>
         {render file='customer/_partials/customer-form.tpl' ui=$register_form}
       </section>
     {/block}
+{/block}
+
+{block name='custom_js'}
+  <script>
+    $(document).ready(function() {
+      
+      checkTypeRequirements();
+      $('#id_account_type').on('change', function() {
+        checkTypeRequirements();
+      });
+
+    });
+
+    function checkTypeRequirements() {
+
+        var element = $('#id_account_type option:selected');
+
+        ['company', 'siret', 'tva', 'chorus'].forEach(function(name) {
+          if(element.data(name)) {
+            $('#'+name+'_area').show();
+            $('#'+name).prop('required', true);
+          }
+          else {
+            $('#'+name).prop('required', false);
+            $('#'+name+'_area').hide();
+          }
+        });
+        
+      }
+  </script>
 {/block}

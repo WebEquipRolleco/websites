@@ -112,6 +112,7 @@
 
     <script type="text/javascript" src="/themes/_libraries/iziModal/js/iziModal.js"></script>
     <script type="text/javascript" src="/themes/rolleco/assets/js/newsletter.js"></script>
+    {block name="custom_js"}{/block}
 
     {block name='hook_before_body_closing_tag'}
       {hook h='displayBeforeBodyClosingTag'}
