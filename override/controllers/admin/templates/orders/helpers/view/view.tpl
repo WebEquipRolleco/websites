@@ -165,6 +165,10 @@
             {l s='Print order' d='Admin.Orderscustomers.Feature'}
           </a>
           &nbsp;
+            <a href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&submitAction=generatePreparationSlipPDF&id_order={$order->id|intval}" class="btn btn-default _blank">
+              <i class="icon-file"></i> {l s="Bon de préparation"}
+            </a>
+          &nbsp;
           {if Configuration::get('PS_INVOICE') && count($invoices_collection) && $order->invoice_number}
             <a data-selenium-id="view_invoice" class="btn btn-default _blank" href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&amp;submitAction=generateInvoicePDF&amp;id_order={$order->id|intval}">
               <i class="icon-file"></i>

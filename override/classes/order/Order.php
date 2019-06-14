@@ -19,6 +19,9 @@ class Order extends OrderCore {
 
 	/** variables temporaires **/
 	private $payment_deadline = false;
+	private $state;
+	private $address_invoice;
+	private $address_delivery;
 
 	/**
 	* OVERRIDE : ajout de champs
@@ -61,4 +64,36 @@ class Order extends OrderCore {
     	return $this->payment_deadline;
     }
 
+    /**
+    * Retourne l'adresse de facturation
+	**/
+	public function getAddressInvoice() {
+		
+		if(!$this->address_invoice)
+			$this->address_invoice = new Address($this->id_address_invoice);
+
+		return $this->address_invoice;
+	}
+
+	/**
+	* Retourne l'adresse de livraison
+	**/
+	public function getAddressDelivery() {
+
+		if(!$this->address_delivery)
+			$this->address_delivery = new Address($this->id_address_delivery);
+
+		return $this->address_delivery;
+	}
+
+	/**
+	* Retourne l'état actuel de la commande
+	**/
+	public function getState() {
+
+		if(!$this->state)
+			$this->state = new OrderState($this->current_state, 1);
+
+		return $this->state;
+	}
 }
