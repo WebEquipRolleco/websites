@@ -284,31 +284,33 @@
 			</tr>
 		</thead>
 		<tbody>
-			{foreach from=$order->getProducts() item='detail'}
+			{foreach from=$order->getDetails() item='detail'}
 				<tr>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-						{$detail.product_name}
+						{$detail->product_name}
 					</td>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{$detail.product_reference}
+						{$detail->product_reference}
 					</td>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-
+						{Tools::displayPrice($detail->getTotalBuyingPrice())}
 					</td>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{Tools::displayPrice($detail.unit_price_tax_excl)}
+						{Tools::displayPrice($detail->unit_price_tax_excl)}
 					</td>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{$detail.product_quantity}
+						{$detail->product_quantity}
 					</td>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{Tools::displayPrice($detail.total_price_tax_excl)}
+						{Tools::displayPrice($detail->total_price_tax_excl)}
 					</td>
 					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-
+						{if $detail->getSupplier()}
+							{$detail->getSupplier()->name}
+						{/if}
 					</td>
 					<td style="border-bottom:1px solid #4D4D4D; text-align:center">
-
+						{$detail->comment}
 					</td>
 				</tr>
 			{/foreach}
@@ -317,7 +319,7 @@
 					<span style="font-size:8pt; font-weight:bold;">{l s="Frais d'expédition" pdf='true'}</span>
 				</td>
 				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
-
+					{Tools::displayPrice($order->getDeliveryPrice())}
 				</td>
 			</tr>
 			<tr>
@@ -325,7 +327,7 @@
 					<span style="font-size:8pt; font-weight:bold;">{l s="Sous total HT" pdf='true'}</span>
 				</td>
 				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
-
+					{Tools::displayPrice($order->total_paid_tax_excl)}
 				</td>
 			</tr>
 			<tr>
@@ -333,7 +335,7 @@
 					<span style="font-size:8pt; font-weight:bold;">{l s="TVA" pdf='true'}</span>
 				</td>
 				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
-
+					{Tools::displayPrice($order->total_paid_tax_incl - $order->total_paid_tax_excl)}
 				</td>
 			</tr>
 			<tr>
@@ -341,7 +343,7 @@
 					<span style="font-size:8pt; font-weight:bold;">{l s="TOTAL TTC" pdf='true'}</span>
 				</td>
 				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
-
+					{Tools::displayPrice($order->total_paid_tax_incl)}
 				</td>
 			</tr>
 		</tbody>

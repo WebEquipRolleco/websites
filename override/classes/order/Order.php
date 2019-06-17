@@ -53,9 +53,9 @@ class Order extends OrderCore {
     **/
     public function getPaymentDeadline() {
     	
-    	if(!$this->payment_deadline and $this->invoice_date) {
+    	if(!$this->payment_deadline and $this->invoice_date and $this->invoice_date == '0000-00-00') {
 
-    		$this->payment_deadline = DateTime::createFromFormat('Y-m-d H:i:s', $this->invoice_date);
+    		$this->payment_deadline = DateTime::createFromFormat('Y-m-d', $this->invoice_date);
 
     		$delay = Configuration::get('PAYMENT_TIME_LIMIT');
     		if($delay) $this->payment_deadline->modify("+$delay days");
@@ -96,4 +96,29 @@ class Order extends OrderCore {
 
 		return $this->state;
 	}
+
+	/**
+	* Retourne la liste des produits (objets)
+	**/
+	public function getDetails() {
+
+		$data = array();
+		foreach(Db::getInstance()->executeS("SELECT id_order_detail FROM ps_order_detail WHERE id_order = ".$this->id) as $row)
+			$data[] = new OrderDetail($row['id_order_detail']);
+
+		return $data;
+	}
+
+	/**
+	* Retourne les frais de port de la commande
+	**/
+	public function getDeliveryPrice() {
+
+		$total = 0;
+		foreach($this->getDetails() as $details)
+			$total += $this->total_shipping_price_tax_excl;
+
+		return $total;
+	}
+	
 }
