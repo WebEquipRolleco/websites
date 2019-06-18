@@ -11,13 +11,7 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 		$this->order = $oa->getOrder();
 		$this->smarty = $smarty;
 
-		// header informations
-		$this->date = Tools::displayDate($this->order->invoice_date);
-		$this->title = HTMLTemplateDeliverySlip::l('order').' #'.Configuration::get('PS_DELIVERY_PREFIX', Context::getContext()->language->id).sprintf('%06d', $this->order->reference);
-
 		// footer informations
-		$this->shop = new Shop((int)$this->order->id_shop);
-		$this->header_tpl = "header-custom";
 		$this->display_footer = false;
 
 		$this->smarty->assign('header_mail', Configuration::getForOrder('PS_TEAM_PHONE', $this->order));
@@ -39,8 +33,7 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 	 * Returns the template filename when using bulk rendering
 	 * @return string filename
 	 */
-	public function getBulkFilename()
-	{
+	public function getBulkFilename() {
 		return 'bon_de_commande.pdf';
 	}
 
@@ -48,8 +41,7 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 	 * Returns the template filename
 	 * @return string filename
 	 */
-	public function getFilename()
-	{
+	public function getFilename() {
 		return Configuration::get('PS_DELIVERY_PREFIX', Context::getContext()->language->id, null, $this->order->id_shop).sprintf('%06d', $this->order->reference).'.pdf';
 	}
 }

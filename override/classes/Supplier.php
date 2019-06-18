@@ -13,6 +13,9 @@ class Supplier extends SupplierCore {
     /** @var bool BL */
     public $BL;
 
+    // Variables temporaires
+    private $address;
+
     /**
     * @see ObjectModel::$definition
     **/
@@ -32,4 +35,18 @@ class Supplier extends SupplierCore {
     	return explode(self::SEPARATOR, $this->emails);
     }
 
+    /**
+    * Retourne l'adresse du fournisseur
+    **/
+    public function getAddress() {
+
+        if(!$this->address) {
+        
+            $id = Db::getInstance()->getValue('SELECT id_address FROM ps_address WHERE id_supplier = '.$this->id);
+            if($id) $this->address = new SupplierAddress($id);
+        }
+
+        return $this->address;
+    }
+    
 }
