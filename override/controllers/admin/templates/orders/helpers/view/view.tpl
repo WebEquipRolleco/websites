@@ -683,7 +683,7 @@
                       <a href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&submitAction=generatePurchaseOrderPDF&id_oa={$oa->id|intval}" class="btn btn-default _blank" title="{l s='Bon de commande'}">
                         <span class="icon-file"></span>
                       </a>
-                      <a href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&submitAction=generateDeliiverySlipPDF&id_oa={$oa->id|intval}" class="btn btn-default _blank" title="{l s='Bon de livraison'}">
+                      <a href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&submitAction=generateDeliverySlipPDF&id_oa={$oa->id|intval}" class="btn btn-default _blank" title="{l s='Bon de livraison'}">
                         <span class="icon-truck"></span>
                       </a>
                     </div>

@@ -24,7 +24,7 @@
 <table width="100%" cellpadding="10px">
 	<tr>
 		<td width="50%" style="text-align:center;">
-			{if $oa->getOrder()->delivery_information}
+			{if $order->delivery_information}
 				<table width="99%" cellpadding="10px" style="border:1px solid grey; background-color:powderblue;">
 					<tr>
 						<td>
@@ -33,7 +33,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="font-weight:bold">{$oa->getOrder()->delivery_information|replace:'|':'<br />'}</td>
+						<td style="font-weight:bold">{$order->delivery_information|replace:'|':'<br />'}</td>
 					</tr>
 				</table>
 			{/if}
@@ -42,25 +42,26 @@
 			<table width="100%" cellpadding="10px" style="border:6px solid darkorange;">
 				<tr>
 					<td>
-						{if $oa->getOrder()->getDeliveryAddress()->company}
-							{$oa->getOrder()->getDeliveryAddress()->company|upper}<br />
+						{assign var=address value=$order->getAddressDelivery()}
+						{if $address->company}
+							{$address->company|upper}<br />
 						{/if}
-						{if $oa->getOrder()->getDeliveryAddress()->firstname || $oa->getOrder()->getDeliveryAddress()->lastname}
-							{$oa->getOrder()->getDeliveryAddress()->lastname|upper} {$oa->getOrder()->getDeliveryAddress()->firstname|upper}<br />
+						{if $address->firstname || $address->lastname}
+							{$address->lastname|upper} {$address->firstname|upper}<br />
 						{/if}
-						{if $oa->getOrder()->getDeliveryAddress()->address1}
-							{$oa->getOrder()->getDeliveryAddress()->address1|upper}<br />
+						{if $address->address1}
+							{$address->address1|upper}<br />
 						{/if}
-						{if $oa->getOrder()->getDeliveryAddress()->address2}
-							{$oa->getOrder()->getDeliveryAddress()->address2|upper}<br />
+						{if $address->address2}
+							{$address->address2|upper}<br />
 						{/if}
-						{if $oa->getOrder()->getDeliveryAddress()->postcode || $oa->getOrder()->getDeliveryAddress()->city}
-							{$oa->getOrder()->getDeliveryAddress()->postcode|upper} {$oa->getOrder()->getDeliveryAddress()->city|upper}<br />
+						{if $address->postcode || $address->city}
+							{$address->postcode|upper} {$address->city|upper}<br />
 						{/if}
-						{if $order->getDeliveryAddress()->hasPhone()}
-							{$order->getDeliveryAddress()->phone} 
-							{if $order->getDeliveryAddress()->hasBothPhones()} / {/if}
-							{$order->getDeliveryAddress()->phone_mobile}
+						{if $address->hasPhone()}
+							{$address->phone} 
+							{if $address->hasBothPhones()} / {/if}
+							{$address->phone_mobile}
 						{elseif $order->getInvoiceAddress()->hasPhone()}
 							{$order->getInvoiceAddress()->phone} 
 							{if $order->getInvoiceAddress()->hasBothPhones()} / {/if}
@@ -100,11 +101,11 @@
 			</td>
 			<td width="34%" style="text-align:center">
 				<span style="font-weight:bold; font-size:14pt; color:#1e4688">
-					{$oa->getOrder()->reference}
+					{$oa->getOrder()->id|default:'-'}
 				</span>
 			</td>
 			<td width="33%" style="text-align:center">
-				{$oa->getOrder()->internal_reference}
+				{$oa->getOrder()->reference|default:'-'}
 			</td>
 		</tr>
 	</tbody>
@@ -134,22 +135,18 @@
 		</tr>
 	</thead>
 	<tbody>
-		{foreach $oa->getOrder()->getProducts() as $product}
-			{if ($product.override_id_supplier && $product.override_id_supplier == $oa->getSupplier()->id) || (!$product.override_id_supplier && $product.supplier_name == $oa->getSupplier()->name)}
-				{if !$product.product_supplier_reference|strstr:'option_'}
-					<tr>
-						<td width="20%" style="text-align:center">
-							<strong>{$product.product_reference}</strong>
-						</td>
-						<td width="60%" style="text-align:center">
-							{$product.product_name}
-						</td>
-						<td width="20%" style="text-align:center">
-							{$product.product_quantity}
-						</td>
-					</tr>
-				{/if}
-			{/if}
+		{foreach $order->getDetails($oa->id_supplier) as $details}
+			<tr>
+				<td width="20%" style="text-align:center">
+					<strong>{$details->product_reference}</strong>
+				</td>
+				<td width="60%" style="text-align:center">
+					{$details->product_name}
+				</td>
+				<td width="20%" style="text-align:center">
+					{$details->product_quantity}
+				</td>
+			</tr>
 		{/foreach}
 	</tbody>		
 </table>

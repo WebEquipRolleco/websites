@@ -11,13 +11,8 @@ class HTMLTemplateDeliverySlip extends HTMLTemplateDeliverySlipCore {
 		$this->order = $oa->getOrder();
 		$this->smarty = $smarty;
 
-		// header informations
-		$this->date = Tools::displayDate($this->order->invoice_date);
-		$this->title = HTMLTemplateDeliverySlip::l('Delivery').' #'.Configuration::get('PS_DELIVERY_PREFIX', Context::getContext()->language->id).sprintf('%06d', $this->order->reference);
-
 		// footer informations
 		$this->shop = new Shop((int)$this->order->id_shop);
-		$this->header_tpl = "header-custom";
 		$this->display_footer = false;
 
 		$this->smarty->assign('header_mail', Configuration::getForOrder('PS_SHOP_EMAIL', $this->order));
@@ -25,12 +20,25 @@ class HTMLTemplateDeliverySlip extends HTMLTemplateDeliverySlipCore {
 	}
 
 	/**
-	 * Returns the template's HTML content
-	 * @return string HTML content
-	 */
+    * Returns the template's HTML header
+    * @return string HTML header
+    **/
+    public function getHeader() {
+        
+        $this->assignCommonHeaderData();
+        return $this->smarty->fetch($this->getTemplate('header'));
+    }
+
+	/**
+	* Returns the template's HTML content
+	* @return string HTML content
+	**/
 	public function getContent() {
 
 		$this->smarty->assign('oa', $this->oa);
+		$this->smarty->assign('order', $this->oa->getOrder());
+		$this->smarty->assign('header', null);
+
 		return $this->smarty->fetch($this->getTemplate('delivery-slip'));
 	}
 
