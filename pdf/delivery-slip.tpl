@@ -97,15 +97,15 @@
 	<tbody>
 		<tr>
 			<td width="33%" style="text-align:center">
-				{$oa->getOrder()->date_add|date_format:'d/m/Y'}
+				{$order->date_add|date_format:'d/m/Y'}
 			</td>
 			<td width="34%" style="text-align:center">
 				<span style="font-weight:bold; font-size:14pt; color:#1e4688">
-					{$oa->getOrder()->id|default:'-'}
+					{$order->reference|default:'-'}
 				</span>
 			</td>
 			<td width="33%" style="text-align:center">
-				{$oa->getOrder()->reference|default:'-'}
+				{$order->internal_reference|default:'-'}
 			</td>
 		</tr>
 	</tbody>
