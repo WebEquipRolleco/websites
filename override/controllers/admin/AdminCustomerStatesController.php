@@ -39,6 +39,10 @@ class AdminCustomerStatesControllerCore extends AdminController {
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global')
             ),
+            'risk_level' => array(
+                'title' => $this->trans('Niveau de risque', array(), 'Admin.Global'),
+                'align' => 'center'
+            ),
             'show_customer' => array(
                 'title' => $this->trans('Montrer au client', array(), 'Admin.Global'),
                 'align' => 'center',
@@ -70,6 +74,22 @@ class AdminCustomerStatesControllerCore extends AdminController {
                     'label' => $this->trans('Arrière plan', array(), 'Admin.Shipping.Feature'),
                     'name' => 'color',
                     'required' => true
+                ),
+                array(
+                    'type' => 'select',
+                    'label' => $this->trans('Niveau de risque', array(), 'Admin.Global'),
+                    'name' => 'risk_level',
+                    'options' => array(
+                        'id' => 'value',
+                        'name' => 'value',
+                        'query' => array(
+                            array('value'=>0),
+                            array('value'=>1),
+                            array('value'=>2),
+                            array('value'=>3)
+                        )
+                    ),
+                    'hint' => $this->trans("0 pour un risque inexistant, 3 pour un risque élevé")
                 ),
                 array(
                     'type' => 'switch',

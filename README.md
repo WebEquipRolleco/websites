@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS `ps_customer_state` (
     `name` VARCHAR(255) NULL, 
     `color` VARCHAR(255) NULL, 
     `light_text` TINYINT DEFAULT 0, 
-    `show_customer` TINYINT DEFAULT 1, 
+    `show_customer` TINYINT DEFAULT 1,
+    `risk_level` INT(1) DEFAULT 0, 
     PRIMARY KEY (`id_customer_state`)
 ) ENGINE = InnoDB;
 

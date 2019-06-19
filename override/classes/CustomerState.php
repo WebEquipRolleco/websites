@@ -5,17 +5,20 @@
 **/
 class CustomerStateCore extends ObjectModel {
 
-	/** @var string Name */
+	/** @var string Name **/
     public $name;
 
-    /** @var string Color */
+    /** @var string Color **/
     public $color;
 
-    /** @var bool Light text */
+    /** @var bool Light text **/
     public $light_text;
 
-    /** @var bool Show customer */
+    /** @var bool Show customer **/
     public $show_customer;
+
+    /** @var int Risk level **/
+    public $risk_level = 0;
 
     /**
     * @see ObjectModel::$definition
@@ -28,6 +31,7 @@ class CustomerStateCore extends ObjectModel {
         	'color' => array('type' => self::TYPE_STRING, 'required' => true),
         	'light_text' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
         	'show_customer' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'risk_level' => array('type' => self::TYPE_INT)
         )
     );
 
