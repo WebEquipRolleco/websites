@@ -56,6 +56,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminIconography"))
             $check .= $this->installTab('Iconographie', "AdminIconography", "AdminCatalog");
 
+        if(!isTabInstalled("AdminOrderStateRules"))
+            $check .= $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
+        
         return $check;
     }
 
@@ -85,6 +88,10 @@ class Webequip_Configuration extends Module {
 
             case 'DATA':
                 $this->installTab('Imports / exports', 'AdminData', "WEBEQUIP", 'transform');
+            break;
+
+            case 'STATE_RULES':
+                $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
             break;
 
             case 'QUOTATIONS':
@@ -119,6 +126,7 @@ class Webequip_Configuration extends Module {
 
         // Arborescence des menus
         $tabs[0] = array('name'=>'VENDRE');
+        $tabs[0]['children'][] = array('name'=>"Régles de redirection", 'id'=>$this->isTabInstalled("AdminOrderStateRules"), 'action'=>'STATE_RULES');
         $tabs[0]['children'][] = array('name'=>"Devis", 'id'=>$this->isTabInstalled("AdminQuotations"), 'action'=>'QUOTATIONS');
 
         $tabs[1] = array('name'=>"WEB-EQUIP", 'id'=>$this->isTabInstalled('WEBEQUIP'), 'action'=>'WEBEQUIP');

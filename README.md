@@ -91,6 +91,16 @@ CREATE TABLE IF NOT EXISTS `ps_oa` (
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `ps_order_state_rule` (
+    `id_order_state_rule` INT NOT NULL AUTO_INCREMENT, 
+    `name` VARCHAR(255) NOT NULL, 
+    `description` TEXT NULL,
+    `ids` TEXT NULL,
+    `target_id` INT NOT NULL,
+    `active` TINYINT DEFAULT 0, 
+    PRIMARY KEY (`id_order_state_rule`)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `ps_order_option` (
     `id` INT NOT NULL AUTO_INCREMENT, 
     `name` VARCHAR(255) NOT NULL, 
