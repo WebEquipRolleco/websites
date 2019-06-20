@@ -9,16 +9,12 @@ class Webequip_recall extends Module {
 	const CONFIG_RECALL_HIDDEN_MAIL = "RECALL_HIDDEN_MAIL";
 	const CONFIG_RECALL_MAILS_1 = "RECALL_MAILS_1";
 	const CONFIG_RECALL_MAILS_2 = "RECALL_MAILS_2";
-	const CONFIG_UPDATE_STATE_CHECK = "UPDATE_STATE_CHECK";
-	const CONFIG_UPDATE_STATE_TARGET = "UPDATE_STATE_TARGET";
-	const CONFIG_UPDATE_STATE_EXCLUDE = "UPDATE_STATE_EXCLUDE";
 	const CONFIG_CHECK_INVOICE_DAYS = "CHECK_INVOICE_DAYS";
 	const CONFIG_CHECK_INVOICE_STATE = "CHECK_INVOICE_STATE";
 	const CONFIG_CHECK_INVOICE_EMPLOYEE = "CHECK_INVOICE_EMPLOYEE";
 
 	const ACTION_RECALL = "recall";
 	const ACTION_PAYMENT = "payment";
-	const ACTION_ORDER = "order";
 	const ACTION_INVOICE = "invoice";
 
 	const LIST_DELIMITER = ',';
@@ -60,7 +56,7 @@ class Webequip_recall extends Module {
 	public function getContent() {
 
 		// Configuration des variables simples
-		$configs = array(self::CONFIG_RECALL_OBJECT_1, self::CONFIG_RECALL_OBJECT_2, self::CONFIG_RECALL_OBJECT_3, self::CONFIG_RECALL_OBJECT_4, self::CONFIG_RECALL_HIDDEN_MAIL, self::CONFIG_UPDATE_STATE_TARGET, self::CONFIG_CHECK_INVOICE_DAYS, self::CONFIG_CHECK_INVOICE_STATE, self::CONFIG_CHECK_INVOICE_EMPLOYEE);
+		$configs = array(self::CONFIG_RECALL_OBJECT_1, self::CONFIG_RECALL_OBJECT_2, self::CONFIG_RECALL_OBJECT_3, self::CONFIG_RECALL_OBJECT_4, self::CONFIG_RECALL_HIDDEN_MAIL, self::CONFIG_CHECK_INVOICE_DAYS, self::CONFIG_CHECK_INVOICE_STATE, self::CONFIG_CHECK_INVOICE_EMPLOYEE);
 		foreach($configs as $config) {
 
 			if(Tools::isSubmit($config))
@@ -70,7 +66,7 @@ class Webequip_recall extends Module {
 		}
 
 		// Configuration des variables listes
-		$configs = array(self::CONFIG_RECALL_MAILS_1, self::CONFIG_RECALL_MAILS_2, self::CONFIG_UPDATE_STATE_CHECK, self::CONFIG_UPDATE_STATE_EXCLUDE);
+		$configs = array(self::CONFIG_RECALL_MAILS_1, self::CONFIG_RECALL_MAILS_2);
 		foreach($configs as $config) {
 
 			if(Tools::isSubmit($config))
@@ -83,7 +79,6 @@ class Webequip_recall extends Module {
 		$this->context->smarty->assign('cron_informations', $this->getCronActions());
 		$this->context->smarty->assign('states', OrderState::getOrderStates(1));
 		$this->context->smarty->assign('employees', Employee::getEmployees());
-		$this->context->smarty->assign('nb_orders_to_update', count($this->getOrdersToUpdate()));
 		$this->context->smarty->assign('nb_customers_to_update', count($this->getCustomersToUpdate()));
 		$this->context->smarty->assign('nb_orders_recall_1', count($this->getOrders(35)));
 		$this->context->smarty->assign('date_invoice_recall_1', $this->getInvoiceDate(35));
@@ -145,9 +140,6 @@ class Webequip_recall extends Module {
 		if(in_array(self::ACTION_PAYMENT, $actions))
 			$this->checkForPayments();
 
-		if(in_array(self::ACTION_ORDER, $actions))
-			$this->updateOrders();
-
 		if(in_array(self::ACTION_INVOICE, $actions))
 			$this->checkInvoices();
 	}
@@ -156,7 +148,6 @@ class Webequip_recall extends Module {
 
 		$data[self::ACTION_RECALL] = "Envoyer les mails de rappels de demande de paiement aux clients";
 		$data[self::ACTION_PAYMENT] = "Vérifie les paiements des clients à problèmes (et les replace en clients OK)";
-		$data[self::ACTION_ORDER] = "Clôture les commandes passées par tous les états intermédiaires";
 		$data[self::ACTION_INVOICE] = "Envoyer un mail en cas d'informations facture non renseignés";
 
 		return $data;
@@ -382,63 +373,6 @@ class Webequip_recall extends Module {
 			$customer->status_order = Customer::STATUS_OK;
 			$customer->save();
 		}
-	}
-
-	/**
-	* Mettre le statut des commandes à jour
-	**/
-	public function updateOrders() {
-
-		$ids = $this->getOrdersToUpdate();
-		if(!empty($ids)) {
-
-			$id_state = Configuration::get(self::CONFIG_UPDATE_STATE_TARGET);
-			foreach($ids as $id_order) {
-
-				$order = new Order($id_order);
-				try { $order->setCurrentState($id_state); } catch(Exception $e) { }
-			}
-		}
-	}
-
-	/**
-	* Récupérer les IDs commandes à mettre à jour
-	**/
-	public function getOrdersToUpdate() {
-
-		$ids = array();
-
-		$id_state_target = Configuration::get(self::CONFIG_UPDATE_STATE_TARGET);
-		if(!$id_state_target)
-			return $ids;
-
-		$ids_check = Configuration::get(self::CONFIG_UPDATE_STATE_CHECK);
-		if(!$ids_check)
-			return $ids;
-
-		$ids_exclude = Configuration::get(self::CONFIG_UPDATE_STATE_EXCLUDE);
-		if(!$ids_exclude)
-			return $ids;
-
-		$nb_states = count(explode(self::LIST_DELIMITER, $ids_check));
-
-		// Retrouver les commandes qui sont récemment passées aux états à vérifier
-		$sql = "SELECT DISTINCT(h.id_order)
-				FROM ps_order_history h, ps_orders o
-				WHERE o.id_order = h.id_order
-				AND o.current_state NOT IN ($ids_exclude) 
-				AND h.id_order_state IN (".$ids_check.")";
-
-		foreach(Db::getInstance()->executeS($sql) as $row) {
-
-			// Compter le nombre d'états à vérifer passés par la commande
-			$nb_check = Db::getInstance()->getValue("SELECT COUNT(id_order_history) FROM ps_order_history WHERE id_order = ".$row['id_order']." AND id_order_state IN (".$ids_check.")");
-
-			if($nb_states == $nb_check)
-				$ids[] = $row['id_order'];
-		}
-
-		return $ids;
 	}
 
 	/**

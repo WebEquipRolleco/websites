@@ -1,6 +1,6 @@
 <div class="alert alert-info">
-	<b>{l s="Date de passage : "}</b> {Configuration::get('RECALL_CRON_LAST_DATE')|default:'-'}
-	| <b>{l s="Nombre de commandes : "}</b> {Configuration::get('RECALL_CRON_NB_ORDERS')|default:'0'}
+	<b>{l s="Date de passage : "}</b> {Configuration::get('RECALL_CRON_LAST_DATE', null, null, null, '-')}
+	| <b>{l s="Nombre de commandes : "}</b> {Configuration::get('RECALL_CRON_NB_ORDERS', null, null, null, '0')}
 </div>
 
 <div class="panel">
@@ -172,51 +172,6 @@
 				{foreach $employees as $employee}
 					<option value="{$employee.id_employee}" {if $employee.id_employee|in_array:$RECALL_MAILS_2}selected{/if}>
 						{$employee.firstname} {$employee.lastname}
-					</option>
-				{/foreach}
-			</select>
-		</div>
-		<div class="panel-footer text-right">
-			<button type="submit" class="btn btn-success">
-				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
-			</button>
-		</div>
-	</div>
-</form>
-
-<form method="post">
-	<div class="panel">
-		<div class="panel-heading"><b>{l s="Mise à jour automatique des commandes"} ({$nb_orders_to_update} à mettre à jour)</b></div>
-		<div class="alert alert-info">
-			{l s="Liste des états 'étapes' à passer pour une commande avant de passer automatiquement à l'état de destination (les commandes étant dans un état a exclure ne sont pas affectées)" mod="webequip_recall"}
-		</div>
-		<div class="form-group">
-			<label for="UPDATE_STATE_CHECK">{l s="Etats à vérifier" mod="webequip_recall"}</label>
-			<select id="UPDATE_STATE_CHECK" name="UPDATE_STATE_CHECK[]" multiple>
-				{foreach $states as $state}
-					<option value="{$state.id_order_state}" {if $state.id_order_state|in_array:$UPDATE_STATE_CHECK}selected{/if}>
-						{$state.name}
-					</option>
-				{/foreach}
-			</select>
-		</div>
-		<div class="form-group">
-			<label for="UPDATE_STATE_EXCLUDE">{l s="Etats finaux à exclure" mod="webequip_recall"}</label>
-			<select id="UPDATE_STATE_EXCLUDE" name="UPDATE_STATE_EXCLUDE[]" multiple>
-				{foreach $states as $state}
-					<option value="{$state.id_order_state}" {if $state.id_order_state|in_array:$UPDATE_STATE_EXCLUDE}selected{/if}>
-						{$state.name}
-					</option>
-				{/foreach}
-			</select>
-		</div>
-		<div class="form-group">
-			<label for="UPDATE_STATE_TARGET">{l s="Etat de destination" mod="webequip_recall"}</label>
-			<select id="UPDATE_STATE_TARGET" name="UPDATE_STATE_TARGET">
-				<option value="">{l s="Choisir un état" mod="webequip_recall"}</option>
-				{foreach $states as $state}
-					<option value="{$state.id_order_state}" {if $state.id_order_state == $UPDATE_STATE_TARGET}selected{/if}>
-						{$state.name}
 					</option>
 				{/foreach}
 			</select>
