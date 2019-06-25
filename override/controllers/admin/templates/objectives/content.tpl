@@ -48,16 +48,22 @@
 					</div>
 					<div class="row">
 						<div class="col-lg-4 text-center">
-							<div><b>{displayPrice price=0}</b></div>
-							<div class="text-success">+100 %</div>
+							<div><b>{displayPrice price=$turnover}</b></div>
+							<div class="text-{if $rate_turnover}success{else}danger{/if}">
+								{if $rate_turnover}+{/if}{$rate_turnover} %
+							</div>
 						</div>
 						<div class="col-lg-4 text-center">
-							<div><b>0</b></div>
-							<div class="text-success">+100 %</div>
+							<div><b>{$nb_orders}</b></div>
+							<div class="text-{if $rate_nb_orders}success{else}danger{/if}">
+								{if $rate_nb_orders}+{/if}{$rate_nb_orders} %
+							</div>
 						</div>
 						<div class="col-lg-4 text-center">
-							<div><b>{displayPrice price=0}</b></div>
-							<div class="text-success">+100 %</div>
+							<div><b>{displayPrice price=$avg}</b></div>
+							<div class="text-{if $rate_avg}success{else}danger{/if}">
+								{if $rate_avg}+{/if}{$rate_avg} %
+							</div>
 						</div>
 					</div>
 				</div>
@@ -67,15 +73,17 @@
 					<div class="panel-heading text-muted">
 						{l s="Différence objectif jour"}
 					</div>
-					<b>{displayPrice price=$objective->value}</b>
+					<b>{displayPrice price=$balance}</b>
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-lg-4">
-				{include file="./helpers/view/panel_shop.tpl"}
-			</div>
+			{foreach from=$shops item=shop}
+				<div class="col-lg-{(12 / $shops|@count)}">
+					{include file="./helpers/view/panel_shop.tpl"}
+				</div>
+			{/foreach}
 		</div>
 
 	{/if}

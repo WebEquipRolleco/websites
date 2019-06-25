@@ -125,4 +125,65 @@ class Order extends OrderCore {
 		return $total;
 	}
 	
+	/**
+	* Calcul un chiffre d'affaire 
+	**/
+	public static function  sumTurnover($use_taxes = false, $date_begin = false, $date_end = false, $id_shop = null) {
+
+		if($use_taxes) $column = 'total_paid_tax_incl';
+		else $column = 'total_paid_tax_excl';
+
+		$sql = "SELECT SUM($column) FROM ps_orders o, ps_order_state os WHERE o.current_state = os.id_order_state AND os.paid = 1";
+
+		if($date_begin) {
+			
+			if(is_object($date_begin))
+				$date_begin = $date_begin->format('Y-m-d');
+
+			$sql .= " AND o.date_add >= '$date_begin 00:00:00'";
+		}
+
+		if($date_end) {
+
+			if(is_object($date_end))
+				$date_end = $date_end->format('Y-m-d');
+
+			$sql .= " AND o.date_add <= '$date_end 23:59:59'";
+		}
+
+		if($id_shop)
+			$sql .= " AND id_shop = $id_shop";
+
+		return (float)Db::getInstance()->getValue($sql);
+	}
+
+	/**
+	* Compte le nombre de commandes
+	**/
+	public static function count($date_begin = null, $date_end = null, $id_shop = null) {
+
+		$sql = "SELECT COUNT(*) FROM ps_orders o, ps_order_state os WHERE o.current_state = os.id_order_state AND os.paid = 1";
+
+		if($date_begin) {
+			
+			if(is_object($date_begin))
+				$date_begin = $date_begin->format('Y-m-d');
+
+			$sql .= " AND o.date_add >= '$date_begin 00:00:00'";
+		}
+
+		if($date_end) {
+
+			if(is_object($date_end))
+				$date_end = $date_end->format('Y-m-d');
+
+			$sql .= " AND o.date_add <= '$date_end 23:59:59'";
+		}
+
+		if($id_shop)
+			$sql .= " AND id_shop = $id_shop";
+		
+		return (int)Db::getInstance()->getValue($sql);
+	}
+
 }

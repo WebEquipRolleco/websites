@@ -29,4 +29,25 @@ class Tools extends ToolsCore {
 		return $_SESSION[$name] ?? false;
 	}
 
+	/**
+	* Calcule un taux entre 2 valeurs
+	**/
+	public static function getRate($nb_now, $nb_then) {
+
+		if($nb_now == 0 || $nb_then == 0) 
+			return 100;
+
+		if($nb_now > $nb_then)
+			return ($nb_now - $nb_then) / $nb_then * 100;
+		else
+			return -(($nb_then - $nb_now) / $nb_then * 100);
+	}
+
+	/**
+	* Calcule un taux de marge entre 2 valeurs
+	**/
+	public static function getMarginRate($nb, $total, $precision = 1) {
+		return round(($nb  / $total) * 100, $precision);
+	}
+
 }

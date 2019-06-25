@@ -5,6 +5,7 @@ class AdminObjectivesControllerCore extends AdminController {
 	const SEPARATOR = ";";
 
 	private $date_current;
+    private $date_compare;
 	private $date_begin;
 	private $date_end;
 
@@ -37,6 +38,10 @@ class AdminObjectivesControllerCore extends AdminController {
 	    	Tools::save('objective_date_end', $date->format('Y-m-d'));
             $this->date_end = $date->format('Y-m-d');
 	    }
+
+        // Date de comparaison
+        $this->date_compare = DateTime::createFromFormat('Y-m-d', $this->date_current);
+        $this->date_compare->modify('-1 day');
     }
 
     /**
@@ -48,9 +53,49 @@ class AdminObjectivesControllerCore extends AdminController {
     	$this->context->smarty->assign('date_begin', $this->date_begin);
     	$this->context->smarty->assign('date_end', $this->date_end);
 
+        $objective = DailyObjective::findOneByDate($this->date_current);
+        $turnover = Order::sumTurnover(false, $this->date_current, $this->date_current);
+        $nb_orders = Order::count($this->date_current, $this->date_current);
+        $avg = ($turnover and $nb_orders) ? $turnover / $nb_orders : 0;
+        $balance = $turnover - $objective->value;
+
+        $this->context->smarty->assign('turnover', $turnover);
+        $this->context->smarty->assign('nb_orders', $nb_orders);
+        $this->context->smarty->assign('avg', $avg);
+        $this->context->smarty->assign('balance', $balance);
+
+        $last_turnover = Order::sumTurnover(false, $this->date_compare, $this->date_compare);
+        $last_nb_orders = Order::count($this->date_compare, $this->date_compare);
+        $last_avg = ($last_turnover and $last_nb_orders) ? $last_turnover / $last_nb_orders : 0;
+
+        $this->context->smarty->assign('rate_turnover', Tools::getRate($turnover, $last_turnover));
+        $this->context->smarty->assign('rate_nb_orders', Tools::getRate($nb_orders, $last_nb_orders));
+        $this->context->smarty->assign('rate_avg', Tools::getRate($avg, $last_avg));
+
     	$this->context->smarty->assign('display_tab', Tools::getValue('display_tab', 1));
-    	$this->context->smarty->assign('objective', DailyObjective::findOneByDate($this->date_current));
+    	$this->context->smarty->assign('objective', $objective);
     	$this->context->smarty->assign('objectives', DailyObjective::findForPeriod($this->date_begin, $this->date_end));
+
+        $shops = array();
+        foreach(Shop::getShops() as $shop) {
+
+            $row['name'] = $shop['name'];
+            $row['turnover'] = Order::sumTurnover(false, $this->date_current, $this->date_current, $shop['id_shop']);
+            $row['nb_orders'] = Order::count($this->date_current, $this->date_current, $shop['id_shop']);
+            $row['avg'] = ($row['turnover'] and $row['nb_orders']) ? $row['turnover'] / $row['nb_orders'] : 0;
+
+            $last_turnover = Order::sumTurnover(false, $this->date_compare, $this->date_compare, $shop['id_shop']);
+            $last_nb_orders = Order::count($this->date_compare, $this->date_compare, $shop['id_shop']);
+            $last_avg = ($last_turnover and $last_nb_orders) ? $last_turnover / $last_nb_orders : 0;
+
+            $row['rate_turnover'] = Tools::getRate($row['turnover'], $last_turnover);
+            $row['rate_nb_orders'] = Tools::getRate($row['nb_orders'], $last_nb_orders);
+            $row['rate_avg'] = Tools::getRate($row['avg'], $last_avg);
+
+            $shops[] = $row;
+        }
+
+        $this->context->smarty->assign('shops', $shops);
     }
 
     /** 
