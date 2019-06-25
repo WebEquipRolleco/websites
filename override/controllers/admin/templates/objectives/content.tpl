@@ -1,3 +1,5 @@
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
 <div class="panel">
 	<div class="row">
 		<div class="col-lg-6">
@@ -84,6 +86,25 @@
 					{include file="./helpers/view/panel_shop.tpl"}
 				</div>
 			{/foreach}
+		</div>
+
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="panel" style="min-height:475px">
+					<div class="panel-heading text-center">
+						{l s="Répartition du chiffre d'affaire"}
+					</div>
+					<div id="pie_chart"></div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="panel" style="min-height:475px">
+					<div class="panel-heading text-center">
+						{l s="Progression de la journée"}
+					</div>
+					<div id="line_chart"></div>
+				</div>
+			</div>
 		</div>
 
 	{/if}
@@ -188,6 +209,84 @@
 			if(!confirm("Confirmer la suppression ?"))
 				e.preventDefault();
 		});
+
+		var options = {
+			data: [{
+				type: "pie",
+				startAngle: 45,
+				{literal}
+				showInLegend: "true",
+				legendText: "{label}",
+				indexLabel: "{label} ({y}%)",
+				color: "{color}",
+				{/literal}
+				dataPoints: [
+					{foreach from=$shops item=shop}
+						{
+							label: "{$shop.name}",
+							y: {$shop.total_rate},
+							color: "{$shop.color}"
+						},
+					{/foreach}
+				]
+			}]
+		};
+		$("#pie_chart").CanvasJSChart(options);
+
+		var options = {
+			animationEnabled: true,
+			theme: "light2",
+			axisY: {
+				suffix: "€",
+			},
+			axisX:{
+				suffix: "h",
+				valueFormatString: "H"
+			},
+			toolTip:{
+				shared:true
+			},  
+			legend:{
+				cursor:"pointer",
+				verticalAlign: "bottom",
+				horizontalAlign: "left",
+				dockInsidePlotArea: true,
+				
+			},
+			data: [{
+				type: "line",
+				showInLegend: true,
+				name: "Objectif",
+				markerType: false,
+				color: "#F08080",
+				yValueFormatString: "# €",
+				xValueFormatString: "H",
+				dataPoints: [
+					{foreach from=$evolution item=row}
+						{ 
+							x: new Date("{$row.date}"), 
+							y: {$objective->value}
+						},
+					{/foreach}
+				]
+			},
+			{
+				type: "line",
+				showInLegend: true,
+				name: "Chiffre d'affaire",
+				color: '#1e4688',
+				yValueFormatString: "# €",
+				dataPoints: [
+					{foreach from=$evolution item=row}
+						{ 
+							x: new Date("{$row.date}"), 
+							y: {$row.turnover}
+						},
+					{/foreach}
+				]
+			}]
+		};
+		$("#line_chart").CanvasJSChart(options);
 
 	});
 </script>

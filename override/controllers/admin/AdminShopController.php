@@ -34,6 +34,12 @@ class AdminShopController extends AdminShopControllerCore {
                     'required' => true,
                 ),
                 array(
+                    'type' => 'color',
+                    'label' => $this->trans("Couleur associée", array(), 'Admin.Shopparameters.Feature'),
+                    'name' => 'color',
+                    'required' => false
+                ),
+                array(
                     'type' => 'text',
                     'label' => $this->trans('Préfix de la référence commande', array(), 'Admin.Shopparameters.Feature'),
                     'name' => 'reference_prefix',

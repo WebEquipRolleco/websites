@@ -42,6 +42,11 @@ class AdminObjectivesControllerCore extends AdminController {
         // Date de comparaison
         $this->date_compare = DateTime::createFromFormat('Y-m-d', $this->date_current);
         $this->date_compare->modify('-1 day');
+
+        // Format
+        $this->date_current = DateTime::createFromFormat('Y-m-d', $this->date_current);
+        $this->date_begin = DateTime::createFromFormat('Y-m-d', $this->date_begin);
+        $this->date_end = DateTime::createFromFormat('Y-m-d', $this->date_end);
     }
 
     /**
@@ -49,9 +54,9 @@ class AdminObjectivesControllerCore extends AdminController {
     **/
     public function initContent() {
 
-    	$this->context->smarty->assign('date_current', $this->date_current);
-    	$this->context->smarty->assign('date_begin', $this->date_begin);
-    	$this->context->smarty->assign('date_end', $this->date_end);
+    	$this->context->smarty->assign('date_current', $this->date_current->format('Y-m-d'));
+    	$this->context->smarty->assign('date_begin', $this->date_begin->format('Y-m-d'));
+    	$this->context->smarty->assign('date_end', $this->date_end->format('Y-m-d'));
 
         $objective = DailyObjective::findOneByDate($this->date_current);
         $turnover = Order::sumTurnover(false, $this->date_current, $this->date_current);
@@ -80,6 +85,8 @@ class AdminObjectivesControllerCore extends AdminController {
         foreach(Shop::getShops() as $shop) {
 
             $row['name'] = $shop['name'];
+            $row['color'] = $shop['color'];
+
             $row['turnover'] = Order::sumTurnover(false, $this->date_current, $this->date_current, $shop['id_shop']);
             $row['nb_orders'] = Order::count($this->date_current, $this->date_current, $shop['id_shop']);
             $row['avg'] = ($row['turnover'] and $row['nb_orders']) ? $row['turnover'] / $row['nb_orders'] : 0;
@@ -92,10 +99,21 @@ class AdminObjectivesControllerCore extends AdminController {
             $row['rate_nb_orders'] = Tools::getRate($row['nb_orders'], $last_nb_orders);
             $row['rate_avg'] = Tools::getRate($row['avg'], $last_avg);
 
+            $row['total_rate'] = Tools::getRate($row['turnover'], $turnover);
+
             $shops[] = $row;
         }
-
         $this->context->smarty->assign('shops', $shops);
+
+        $evolution = array();
+        $date = clone($this->date_current);
+
+        for($x=0; $x<=23; $x++) {
+            $evolution[] = array('date' => $date->format("Y-m-d $x:00:00"), 'turnover'=>Order::sumTurnover(false, $date->format('Y-m-d 00:00:00'), $date->format("Y-m-d $x:59:59")));
+        }
+
+        $this->context->smarty->assign('evolution', $evolution);
+        
     }
 
     /** 

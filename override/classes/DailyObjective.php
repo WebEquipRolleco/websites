@@ -28,12 +28,18 @@ class DailyObjective extends ObjectModel {
 
     /**
     * Retourne la liste des objectifs pour une période donnée
-    * @param $date_begin string date format Y-m-d
-    * @param $date_end string date format Y-m-d
+    * @param $date_begin mixed
+    * @param $date_end mixed
     **/
     public static function findForPeriod($date_begin, $date_end) {
 
         $data = array();
+
+        if(is_object($date_begin))
+            $date_begin = $date_begin->format('Y-m-d');
+
+        if(is_object($date_end))
+            $date_end = $date_end->format('Y-m-d');
 
         $ids = Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE date >= '$date_begin' AND date <= '$date_end' ORDER BY date ASC");
         if($ids)
@@ -45,9 +51,12 @@ class DailyObjective extends ObjectModel {
 
     /**
     * Retourne un objectif pour une date précise
-    * @param $date string date format Y-m-d
+    * @param $date mixed
     **/
     public static function findOneByDate($date) {
+
+        if(is_object($date))
+            $date = $date->format('Y-m-d');
 
     	$id = Db::getInstance()->getValue("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE date = '$date'");
     	return new DailyObjective($id);

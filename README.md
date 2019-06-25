@@ -34,6 +34,8 @@ ALTER TABLE `ps_orders` ADD `supplier_information` TEXT NULL AFTER `delivery_inf
 ALTER TABLE `ps_orders` ADD `no_recall` TINYINT DEFAULT '0' AFTER `valid`;
 ALTER TABLE `ps_orders` ADD `display_with_taxes` TINYINT DEFAULT '0' AFTER `no_recall`;
 
+ALTER TABLE `ps_shop` ADD `color` VARCHAR(30) NULL AFTER `theme_name`;
+
 CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NULL, 

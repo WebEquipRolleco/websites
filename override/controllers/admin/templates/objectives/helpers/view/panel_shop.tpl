@@ -1,6 +1,6 @@
 <div class="panel">
 	<div class="panel-heading text-center">
-		<b>{$shop.name}</b>
+		<b style="color:{$shop.color}">{$shop.name}</b>
 	</div>
 	<div class="row">
 		<div class="col-lg-4 text-center">
