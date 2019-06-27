@@ -20,6 +20,7 @@ class Order extends OrderCore {
 	/** variables temporaires **/
 	private $payment_deadline = false;
 	private $state;
+	private $shop;
 	private $address_invoice;
 	private $address_delivery;
 
@@ -97,6 +98,17 @@ class Order extends OrderCore {
 		return $this->state;
 	}
 
+	/** 
+	* Retourne la boutique de la commande
+	**/
+	public function getShop() {
+
+		if(!$this->shop)
+			$this->shop = new Shop($this->id_shop);
+
+		return $this->shop;
+	}
+	
 	/**
 	* Retourne la liste des produits (objets)
 	* @var int Id_supplier Ne retourner que les produits associés à ce fournisseur

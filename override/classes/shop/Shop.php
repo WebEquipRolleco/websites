@@ -97,6 +97,7 @@ class Shop extends ShopCore {
 
     /**
     * Retourne le nom du fichier de conditions de ventes
+    * @return string
     **/
     public function getConditionsFileName() {
         return "conditions_ventes_".$this->id.".pdf";
@@ -104,11 +105,17 @@ class Shop extends ShopCore {
 
     /**
     * Vérifie l'existence d'un PDF de conditions de ventes
+    * @return bool
     **/
     public function hasConditionsFile() {
         return is_file($this->getConditionsFilePath(true));
     }
 
+    /**
+    * Retourne le chemin du PDF des conditions de ventes
+    * @param bool $full Chemin absolu ou relatif
+    * @return string
+    **/
     public function getConditionsFilePath($full = false) {
 
         if($full)
