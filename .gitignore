@@ -37,3 +37,4 @@ upload/
 var/cache/
 var/logs/
 var/sessions/
+documents/*

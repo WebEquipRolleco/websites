@@ -2,6 +2,8 @@
 
 class Shop extends ShopCore {
 
+    const CONDITIONS_DIR = "/documents/";
+
 	/** @var string Préfix de la référence commande */
     public $reference_prefix;
 
@@ -93,4 +95,26 @@ class Shop extends ShopCore {
         }
     }
 
+    /**
+    * Retourne le nom du fichier de conditions de ventes
+    **/
+    public function getConditionsFileName() {
+        return "conditions_ventes_".$this->id.".pdf";
+    }
+
+    /**
+    * Vérifie l'existence d'un PDF de conditions de ventes
+    **/
+    public function hasConditionsFile() {
+        return is_file($this->getConditionsFilePath(true));
+    }
+
+    public function getConditionsFilePath($full = false) {
+
+        if($full)
+            return _PS_ROOT_DIR_.self::CONDITIONS_DIR.$this->getConditionsFileName();
+        else
+            return self::CONDITIONS_DIR.$this->getConditionsFileName();
+    }
+    
 }

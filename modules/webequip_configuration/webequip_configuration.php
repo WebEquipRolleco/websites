@@ -59,6 +59,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminOrderStateRules"))
             $check .= $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
         
+        if(!isTabInstalled("AdminDocuments"))
+            $check .= $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'file');
+
         return $check;
     }
 
@@ -116,6 +119,11 @@ class Webequip_Configuration extends Module {
 
             case 'ICONOGRAPHY':
                 $this->installTab('Iconographie', "AdminIconography", "AdminCatalog");
+            break;
+
+            case 'DOCUMENTS':
+                $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'description');
+            break;
         }
 
         // Suppression des menus
@@ -134,6 +142,7 @@ class Webequip_Configuration extends Module {
         $tabs[1]['children'][] = array('name'=>"Objectifs", 'id'=>$this->isTabInstalled("AdminObjectives"), 'action'=>'OBJECTIVES');
         $tabs[1]['children'][] = array('name'=>"Résultats", 'id'=>$this->isTabInstalled("AdminResults"), 'action'=>'RESULTS');
         $tabs[1]['children'][] = array('name'=>"Imports / exports", 'id'=>$this->isTabInstalled("AdminData"), 'action'=>'DATA');
+        $tabs[1]['children'][] = array('name'=>"Documents", 'id'=>$this->isTabInstalled("AdminDocuments"), 'action'=>'DOCUMENTS');
 
         $tabs[2] = array('name'=>'CLIENTS');
         $tabs[2]['children'][] = array('name'=>"Newsletter", 'id'=>$this->isTabInstalled('AdminNewsletter'), 'action'=>'NEWSLETTER');
