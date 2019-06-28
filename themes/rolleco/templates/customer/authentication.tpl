@@ -37,10 +37,22 @@
       {block name='display_after_login_form'}
         {hook h='displayCustomerLoginFormAfter'}
       {/block}
-      <div class="no-account">
-        <a href="{$urls.pages.register}" data-link-action="display-register-form">
-          {l s='No account? Create one here' d='Shop.Theme.Customeraccount'}
-        </a>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="no-account">
+            <a href="{$urls.pages.register}" data-link-action="display-register-form">
+              {l s='No account? Create one here' d='Shop.Theme.Customeraccount'}
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-6 text-right">
+          <div class="forgot-password">
+            <a href="{$urls.pages.password}" rel="nofollow">
+              {l s='Forgot your password?' d='Shop.Theme.Customeraccount'}
+            </a>
+          </div>
+        </div>
       </div>
     {/block}
 {/block}
