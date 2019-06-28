@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `ps_account_type` (
     `chorus` TINYINT DEFAULT 0,
     `tva` TINYINT DEFAULT 0, 
     `default_value` TINYINT DEFAULT 0, 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_account_type`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_webequip_quotations` (
