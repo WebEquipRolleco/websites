@@ -24,12 +24,14 @@
 								<div class="form-group">
 									<label form="reassurance_icon">
 										<b>{l s="Icone" d='Shop.Theme.Labels'}</b>
+										&nbsp; <small class="text-muted">HTML</small>
 									</label>
 									<textarea rows="3" id="reassurance_icon" class="form-control" name="reassurance[icon]">{$reassurance->icon}</textarea>
 								</div>
 								<div class="form-group">
 									<label form="reassurance_text">
-										<b>{l s="Contenu" d='Shop.Theme.Labels'}</b>
+										<b>{l s="Texte" d='Shop.Theme.Labels'}</b>
+										&nbsp; <small class="text-muted">HTML</small>
 									</label>
 									<textarea rows="5" id="reassurance_text" class="form-control" name="reassurance[text]">{$reassurance->text}</textarea>
 								</div>

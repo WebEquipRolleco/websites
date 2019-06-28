@@ -31,7 +31,7 @@
 					   				<input type="text" class="form-control" name="display[name]" value="{$display->name}" placeholder="{l s='Lien' d='Shop.Theme.Labels'}">
 					   			</div>
 					   			<div class="form-group">
-					   				<label>{l s='Titre' d='Shop.Theme.Labels'}</label>
+					   				<label>{l s='Lien' d='Shop.Theme.Labels'}</label>
 					   				<input type="text" class="form-control" name="display[link]" value="{$display->link}" placeholder="{l s='Lien' d='Shop.Theme.Labels'}">
 					   			</div>
 					   			<div class="form-group">
