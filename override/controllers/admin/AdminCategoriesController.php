@@ -118,7 +118,7 @@ class AdminCategoriesController extends AdminCategoriesControllerCore {
                 array(
                     'type' => 'textarea',
                     'label' => $this->trans('Description (bas de page)', array(), 'Admin.Global'),
-                    'name' => 'description_bottom',
+                    'name' => 'bottom_description',
                     'autoload_rte' => true,
                     'lang' => true,
                     'hint' => $this->trans('Invalid characters:', array(), 'Admin.Notifications.Info').' <>;=#{}'
