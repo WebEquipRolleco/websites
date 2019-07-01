@@ -26,6 +26,7 @@ ALTER TABLE `ps_customer` ADD `date_funding` DATE AFTER `funding`;
 ALTER TABLE `ps_customer` ADD `email_invoice` VARCHAR(255) NULL AFTER `email`;
 ALTER TABLE `ps_customer` ADD `email_tracking` VARCHAR(255) NULL AFTER `email_invoice`;
 
+ALTER TABLE `ps_supplier` ADD `reference` VARCHAR(30) NULL AFTER `id_supplier`;
 ALTER TABLE `ps_supplier` ADD `emails` VARCHAR(255) NULL AFTER `name`;
 ALTER TABLE `ps_supplier` ADD `BC` VARCHAR(255) NULL AFTER `active`;
 ALTER TABLE `ps_supplier` ADD `BL` VARCHAR(255) NULL AFTER `BC`;

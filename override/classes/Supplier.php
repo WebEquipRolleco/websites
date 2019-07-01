@@ -4,13 +4,16 @@ class Supplier extends SupplierCore {
 
 	const SEPARATOR = ",";
 
-	/** @var string Emails */
+    /** @var string Reference **/
+    public $reference;
+
+	/** @var string Emails **/
     public $emails;
 
-	/** @var bool BC */
+	/** @var bool BC **/
     public $BC;
 
-    /** @var bool BL */
+    /** @var bool BL **/
     public $BL;
 
     // Variables temporaires
@@ -21,6 +24,7 @@ class Supplier extends SupplierCore {
     **/
     public function __construct($id = null, $id_lang = null, $id_shop = null) {
 
+        self::$definition['fields']['reference'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['emails'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['BC'] = array('type' => self::TYPE_BOOL);
 		self::$definition['fields']['BL'] = array('type' => self::TYPE_BOOL);

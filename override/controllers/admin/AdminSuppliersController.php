@@ -2,6 +2,45 @@
 
 class AdminSuppliersController extends AdminSuppliersControllerCore {
 
+    public function __construct() {
+
+        $this->table = 'supplier';
+        $this->className = 'Supplier';
+
+        AdminController::__construct();
+
+        $this->addRowAction('view');
+        $this->addRowAction('edit');
+        $this->addRowAction('delete');
+        $this->allow_export = true;
+
+        $this->_defaultOrderBy = 'name';
+        $this->_defaultOrderWay = 'ASC';
+
+        $this->bulk_actions = array(
+            'delete' => array(
+                'text' => $this->trans('Delete selected', array(), 'Admin.Actions'),
+                'icon' => 'icon-trash',
+                'confirm' => $this->trans('Delete selected items?', array(), 'Admin.Notifications.Warning')
+            )
+        );
+
+        $this->_select = 'COUNT(DISTINCT ps.`id_product`) AS products';
+        $this->_join = 'LEFT JOIN `'._DB_PREFIX_.'product_supplier` ps ON (a.`id_supplier` = ps.`id_supplier`)';
+        $this->_group = 'GROUP BY a.`id_supplier`';
+
+        $this->fieldImageSettings = array('name' => 'logo', 'dir' => 'su');
+
+        $this->fields_list = array(
+            'id_supplier' => array('title' => $this->trans('ID', array(), 'Admin.Global'), 'align' => 'center', 'class' => 'fixed-width-xs'),
+            'logo' => array('title' => $this->trans('Logo', array(), 'Admin.Global'), 'align' => 'center', 'image' => 'su', 'orderby' => false, 'search' => false),
+            'reference' => array('title' => $this->trans('Référence', array(), 'Admin.Global')),
+            'name' => array('title' => $this->trans('Name', array(), 'Admin.Global')),
+            'products' => array('title' => $this->trans('Number of products', array(), 'Admin.Catalog.Feature'), 'align' => 'right', 'filter_type' => 'int', 'tmpTableFilter' => true),
+            'active' => array('title' => $this->trans('Enabled', array(), 'Admin.Global'), 'align' => 'center', 'active' => 'status', 'type' => 'bool', 'orderby' => false, 'class' => 'fixed-width-xs')
+        );
+    }
+
 	public function renderForm() {
 
         // loads current warehouse
@@ -30,6 +69,12 @@ class AdminSuppliersController extends AdminSuppliersControllerCore {
                 array(
                     'type' => 'hidden',
                     'name' => 'id_address',
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Référence', array(), 'Admin.Global'),
+                    'required' => true,
+                    'col' => 4
                 ),
                 array(
                     'type' => 'text',
