@@ -31,12 +31,12 @@
         <li class="slide">
           <a href="{$slide.url}">
             <img src="{$slide.image_url}" alt="{$slide.legend|escape}" />
-            {if $slide.title || $slide.description }
+            {*if $slide.title || $slide.description }
               <span class="caption">
                 <h2>{$slide.title}</h2>
                 <div>{$slide.description nofilter}</div>
               </span>
-            {/if}
+            {/if*}
           </a>
         </li>
       {/foreach}
