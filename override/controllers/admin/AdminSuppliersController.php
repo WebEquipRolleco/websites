@@ -73,6 +73,7 @@ class AdminSuppliersController extends AdminSuppliersControllerCore {
                 array(
                     'type' => 'text',
                     'label' => $this->trans('Référence', array(), 'Admin.Global'),
+                    'name' => 'reference',
                     'required' => true,
                     'col' => 4
                 ),
