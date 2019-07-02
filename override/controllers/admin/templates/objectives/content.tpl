@@ -210,83 +210,84 @@
 				e.preventDefault();
 		});
 
-		var options = {
-			data: [{
-				type: "pie",
-				startAngle: 45,
-				{literal}
-				showInLegend: "true",
-				legendText: "{label}",
-				indexLabel: "{label} ({y}%)",
-				color: "{color}",
-				{/literal}
-				dataPoints: [
-					{foreach from=$shops item=shop}
-						{
-							label: "{$shop.name}",
-							y: {$shop.total_rate},
-							color: "{$shop.color}"
-						},
-					{/foreach}
-				]
-			}]
-		};
-		$("#pie_chart").CanvasJSChart(options);
+		{if $objective->id}
+			var options = {
+				data: [{
+					type: "pie",
+					startAngle: 45,
+					{literal}
+					showInLegend: "true",
+					legendText: "{label}",
+					indexLabel: "{label} ({y}%)",
+					color: "{color}",
+					{/literal}
+					dataPoints: [
+						{foreach from=$shops item=shop}
+							{
+								label: "{$shop.name}",
+								y: {$shop.total_rate},
+								color: "{$shop.color}"
+							},
+						{/foreach}
+					]
+				}]
+			};
+			$("#pie_chart").CanvasJSChart(options);
 
-		var options = {
-			animationEnabled: true,
-			theme: "light2",
-			axisY: {
-				suffix: "€",
-			},
-			axisX:{
-				suffix: "h",
-				valueFormatString: "H"
-			},
-			toolTip:{
-				shared:true
-			},  
-			legend:{
-				cursor:"pointer",
-				verticalAlign: "bottom",
-				horizontalAlign: "left",
-				dockInsidePlotArea: true,
-				
-			},
-			data: [{
-				type: "line",
-				showInLegend: true,
-				name: "Objectif",
-				markerType: false,
-				color: "#F08080",
-				yValueFormatString: "# €",
-				xValueFormatString: "H",
-				dataPoints: [
-					{foreach from=$evolution item=row}
-						{ 
-							x: new Date("{$row.date}"), 
-							y: {$objective->value}
-						},
-					{/foreach}
-				]
-			},
-			{
-				type: "line",
-				showInLegend: true,
-				name: "Chiffre d'affaire",
-				color: '#1e4688',
-				yValueFormatString: "# €",
-				dataPoints: [
-					{foreach from=$evolution item=row}
-						{ 
-							x: new Date("{$row.date}"), 
-							y: {$row.turnover}
-						},
-					{/foreach}
-				]
-			}]
-		};
-		$("#line_chart").CanvasJSChart(options);
-
+			var options = {
+				animationEnabled: true,
+				theme: "light2",
+				axisY: {
+					suffix: "€",
+				},
+				axisX:{
+					suffix: "h",
+					valueFormatString: "H"
+				},
+				toolTip:{
+					shared:true
+				},  
+				legend:{
+					cursor:"pointer",
+					verticalAlign: "bottom",
+					horizontalAlign: "left",
+					dockInsidePlotArea: true,
+					
+				},
+				data: [{
+					type: "line",
+					showInLegend: true,
+					name: "Objectif",
+					markerType: false,
+					color: "#F08080",
+					yValueFormatString: "# €",
+					xValueFormatString: "H",
+					dataPoints: [
+						{foreach from=$evolution item=row}
+							{ 
+								x: new Date("{$row.date}"), 
+								y: {$objective->value}
+							},
+						{/foreach}
+					]
+				},
+				{
+					type: "line",
+					showInLegend: true,
+					name: "Chiffre d'affaire",
+					color: '#1e4688',
+					yValueFormatString: "# €",
+					dataPoints: [
+						{foreach from=$evolution item=row}
+							{ 
+								x: new Date("{$row.date}"), 
+								y: {$row.turnover}
+							},
+						{/foreach}
+					]
+				}]
+			};
+			$("#line_chart").CanvasJSChart(options);
+		{/if}
 	});
 </script>

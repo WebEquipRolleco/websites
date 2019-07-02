@@ -22,16 +22,102 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-{extends file='page.tpl'}
+{extends file='layouts/layout-full-width.tpl'}
 
-{block name='page_header_container'}{/block}
+{block name='content'}
+  
+  	{if isset($alert)}
+  		<div class="alert alert-{$alert.type}">
+  			<b>{$alert.message}</b>
+  		</div>
+ 	{/if}
 
-{block name='left_column'}
-  <div id="left-column" class="col-xs-12 col-sm-3">
-    {widget name="ps_contactinfo" hook='displayLeftColumn'}
-  </div>
-{/block}
+	<h1 class="page-title top-space">
+  		{l s="Contactez-nous"}
+  	</h1>
 
-{block name='page_content'}
-  {widget name="contactform"}
+  	<table>
+		<tbody>
+			<tr>
+				<td><img src="/img/contact.png"></td>
+				<td class="description-cell">
+					{l s="Pour toute demande ou information, vous pouvez nous contacter en remplissant le formulaire ci-dessous."} <br />
+					{l s="Nous vous répondrons dans les plus brefs délais."} <br />
+					{l s="Vous pouvez également nous joindre par téléphone au 03.20.22.00.11 ou par fax au 03.28.35.09.34."}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<form method="post">
+		<div class="row">
+
+		  	<div class="col-lg-6">
+		  		<h3 class="section-title margin-top-sm">{l s="Votre message"}</h3>
+		  		<div class="form-group">
+					<label for="contact_firstname">
+						{l s="Prénom" d='Shop.Forms.Labels'}
+					</label>
+					<input type="text" id="contact_firstname" class="form-control" name="contact[firstname]">
+				</div>
+				<div class="form-group">
+					<label for="contact_lastname">
+						{l s="Nom" d='Shop.Forms.Labels'} <em class="text-danger">*</em>
+					</label>
+					<input type="text" id="contact_lastname" class="form-control" name="contact[lastname]" required>
+				</div>
+				<div class="form-group">
+					<label for="contact_company">
+						{l s="Société" d='Shop.Forms.Labels'} <em class="text-danger">*</em>
+					</label>
+					<input type="text" id="contact_company" class="form-control" name="contact[company]" required>
+				</div>
+				<div class="form-group">
+					<label for="contact_number">
+						{l s="Numéro de client" d='Shop.Forms.Labels'}
+					</label>
+					<input type="text" id="contact_number" class="form-control" name="contact[number]">
+				</div>
+				<div class="form-group">
+					<label for="contact_phone">
+						{l s="Téléphone" d='Shop.Forms.Labels'}
+					</label>
+					<input type="text" id="contact_phone" class="form-control" name="contact[phone]">
+				</div>
+				<div class="form-group">
+					<label for="contact_email">
+						{l s="E-mail" d='Shop.Forms.Labels'} <em class="text-danger">*</em>
+					</label>
+					<input type="email" id="contact_email" class="form-control" name="contact[email]" required>
+				</div>
+				<div class="form-group">
+					<label for="contact_city">
+						{l s="CP / Ville" d='Shop.Forms.Labels'}
+					</label>
+					<input type="text" id="contact_city" class="form-control" name="contact[city]">
+				</div>
+		  	</div>
+
+		  	<div class="col-xs-12 col-lg-6">
+		  		<h3 class="section-title margin-top-sm">{l s="Votre message"}</h3>
+		  		<div class="form-group">
+					<label for="contact_message">
+						{l s="Demande détaillée" d='Shop.Forms.Labels'}
+						<em class="text-danger bold">*</em>
+					</label>
+					<textarea rows="26" id="contact_message" class="form-control" name="contact[message]" required></textarea>
+				</div>
+		  	</div>
+
+		  	<div class="col-lg-12 text-right">
+		  		<div class="well">
+			  		<button type="submit" class="btn btn-info bold">
+			  			{l s="Envoyer ma demande" d='Shop.Forms.Labels'}
+			  		</button>
+			  	</div>
+		  	</div>
+
+		</div>
+	</form>
+
 {/block}
