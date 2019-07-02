@@ -63,6 +63,15 @@ class AdminStatusesController extends AdminStatusesControllerCore {
                 'orderby' => false,
                 'class' => 'fixed-width-sm'
             ),
+            'proforma' => array(
+                'title' => $this->trans('Proforma', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'active' => 'proforma',
+                'type' => 'bool',
+                'ajax' => true,
+                'orderby' => false,
+                'class' => 'fixed-width-sm'
+            ),
             'template' => array(
                 'title' => $this->trans('Email template', array(), 'Admin.Shopparameters.Feature')
             )
@@ -107,6 +116,17 @@ class AdminStatusesController extends AdminStatusesControllerCore {
                     'values' => array(
                         'query' => array(
                             array('id' => 'on', 'name' => $this->trans('Consider the associated order as validated.', array(), 'Admin.Shopparameters.Feature'), 'val' => '1'),
+                            ),
+                        'id' => 'id',
+                        'name' => 'name'
+                    )
+                ),
+                array(
+                    'type' => 'checkbox',
+                    'name' => 'proforma',
+                    'values' => array(
+                        'query' => array(
+                            array('id' => 'on', 'name' => $this->trans('Considérer la commande associée comme Proforma.', array(), 'Admin.Shopparameters.Feature'), 'val' => '1'),
                             ),
                         'id' => 'id',
                         'name' => 'name'
@@ -228,6 +248,7 @@ class AdminStatusesController extends AdminStatusesControllerCore {
 
         $this->fields_value = array(
             'logable_on' => $this->getFieldValue($obj, 'logable'),
+            'proforma_on' => $this->getFieldValue($obj, 'proforma'),
             'invoice_on' => $this->getFieldValue($obj, 'invoice'),
             'hidden_on' => $this->getFieldValue($obj, 'hidden'),
             'send_email_on' => $this->getFieldValue($obj, 'send_email'),
@@ -298,6 +319,7 @@ class AdminStatusesController extends AdminStatusesControllerCore {
             $this->deleted = false; // Disabling saving historisation
             $_POST['invoice'] = (int)Tools::getValue('invoice_on');
             $_POST['logable'] = (int)Tools::getValue('logable_on');
+            $_POST['proforma'] = (int)Tools::getValue('proforma_on');
             $_POST['send_email'] = (int)Tools::getValue('send_email_on');
             $_POST['hidden'] = (int)Tools::getValue('hidden_on');
             $_POST['shipped'] = (int)Tools::getValue('shipped_on');

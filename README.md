@@ -11,6 +11,7 @@ ALTER TABLE `ps_order_detail` ADD `comment` TEXT NULL AFTER `day`;
 ALTER TABLE `ps_order_detail` ADD `id_supplier` TEXT NULL AFTER `product_attribute_id`;
 
 ALTER TABLE `ps_order_state` ADD `term_of_use` TINYINT DEFAULT '0' AFTER `pdf_delivery`;
+ALTER TABLE `ps_order_state` ADD `proforma` TINYINT DEFAULT '0' AFTER `paid`;
 
 ALTER TABLE `ps_shop` ADD `reference_prefix` VARCHAR(10) NULL AFTER `name`;
 ALTER TABLE `ps_shop` ADD `reference_length` INT NOT NULL DEFAULT '5' AFTER `reference_prefix`;
