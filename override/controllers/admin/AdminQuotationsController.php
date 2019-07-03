@@ -98,7 +98,7 @@ class AdminQuotationsController extends AdminController {
     		$line->save();
     	}
 
-    	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/admin/templates/quotations/helpers/view/product_line.tpl");
+    	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_line.tpl");
     	$this->context->smarty->assign('line', $line);
     	$data['view'] = $tpl->fetch();
 
@@ -120,7 +120,7 @@ class AdminQuotationsController extends AdminController {
     	foreach($combinations as $key => $combination)
     		$combinations[$key]['name'] = implode(" - ", $combination['name']);
 
-    	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/admin/templates/quotations/helpers/view/product_details.tpl");
+    	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_details.tpl");
     	$this->context->smarty->assign('combinations', $combinations);
     	$data['view'] = $tpl->fetch();
 
