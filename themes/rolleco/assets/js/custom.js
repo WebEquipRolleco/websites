@@ -92,6 +92,7 @@ $(document).ready(function() {
 
 		var id_product = $('#product_page_product_id').val();
 		var token = $('input[name=token]').val();
+		var reload = false;
 
 		$('.combination-quantity').each(function() {
 			if($(this).val() > 0) {
@@ -110,11 +111,14 @@ $(document).ready(function() {
 						'token' : token
 					},
 					success : function() {
-						reloadCartPreview();
+						reload = true;
 					}
 				});
 			}
 		});
+
+		if(reload)
+			reloadCartPreview();
 	});
 
 	$(document).on('click', '.display-image', function(e) {
