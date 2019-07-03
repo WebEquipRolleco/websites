@@ -23,7 +23,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  *}
 <div class="product-add-to-cart">
-  {if !$configuration.is_catalog}
+  {if !$configuration.is_catalog and empty($combinations)}
 
     {block name='product_quantity'}
       <div class="product-quantity clearfix">

@@ -111,9 +111,9 @@
                     {include file='catalog/_partials/product-discounts.tpl'}
                   {/block*}
 
-                  {*block name='product_add_to_cart'}
+                  {block name='product_add_to_cart'}
                     {include file='catalog/_partials/product-add-to-cart.tpl'}
-                  {/block*}
+                  {/block}
 
                   {block name='product_icons'}
                     {include file='catalog/_partials/product-icons.tpl'}
