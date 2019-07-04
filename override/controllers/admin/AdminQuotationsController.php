@@ -20,13 +20,22 @@ class AdminQuotationsController extends AdminController {
     		case 'product_details':
     			$this->productDetails();
     		break;
+
+            case 'load_quotations':
+                $this->loadQuotations();
+            break;
     	}
     }
 
     public function initContent() {
-    	
+
     	parent::initContent();
 
+        // Gestion de la liste des devis
+        $this->removeQuotation();
+        $this->copyQuotation();
+
+        // Gestion des produits d'un devis
     	$this->saveProducts();
     	$this->removeProduct();
 
@@ -75,12 +84,64 @@ class AdminQuotationsController extends AdminController {
 
 			$this->setTemplate("details.tpl");
     	}
-		else {
-
-			$this->context->smarty->assign('quotations', Quotation::find());
-		}
     }
 
+    /**
+    * Charge la liste des devis
+    **/
+    private function loadQuotations() {
+
+        $options['reference'] = Tools::getValue('reference');
+        $options['date_add'] = Tools::getValue('date');
+        $options['id_customer'] = Tools::getValue('customer');
+        $options['id_employee'] = Tools::getValue('employee');
+        if($id = Tools::getValue('state')) $options['states'] = array($id);
+
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/quotation_lines.tpl");
+        $this->context->smarty->assign('quotations', Quotation::find($options));
+        die($tpl->fetch());
+    }
+
+    /**
+    * Gère la suppression des devis
+    **/
+    private function removeQuotation() {
+        if($id = Tools::getValue('remove_quotation')) {
+
+            $quotation = new Quotation($id);
+            if($quotation->id) {
+                $quotation->delete();
+                $this->context->smarty->assign('alert', array('type'=>'success', 'message'=>'Le devis a été supprimé.'));
+            }
+        }
+    }
+
+    /**
+    * Copie un devis
+    **/
+    private function copyQuotation() {
+        if($id = Tools::getValue('copy_quotation')) {
+
+            $quotation = new Quotation($id);
+            if($quotation->id) {
+
+                $products = $quotation->getProducts();
+                $quotation->id = null;
+                $quotation->save();
+
+                foreach($products as $product) {
+                    $product->id = null;
+                    $product->id_quotation = $quotation->id;
+                    $product->save();
+                }
+
+                $this->context->smarty->assign('alert', array('type'=>'success', 'message'=>'Une copie du devis a été créée.'));
+            }
+        }
+    }
+    /**
+    * Ajoute un produit à un devis
+    **/
     private function addProduct() {
 
     	$line = new QuotationLine();
@@ -105,6 +166,9 @@ class AdminQuotationsController extends AdminController {
     	die(json_encode($data));
     }
 
+    /**
+    * Récupère les informations d'un produit
+    **/
     private function productDetails() {
 
     	$id_product = Tools::getValue('id_product');
@@ -127,6 +191,9 @@ class AdminQuotationsController extends AdminController {
     	die(json_encode($data));
     }
 
+    /**
+    * Enregistre la liste des produits d'un devis
+    **/
     private function saveProducts() {
 
     	$lines = Tools::getValue('lines');
@@ -145,6 +212,9 @@ class AdminQuotationsController extends AdminController {
     		}
     }
 
+    /**
+    * Supprime un produit d'un devis
+    **/
     private function removeProduct() {
 
     	$id = Tools::getValue('remove_product');

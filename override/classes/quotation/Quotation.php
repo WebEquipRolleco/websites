@@ -209,8 +209,11 @@ class Quotation extends ObjectModel {
         $data = array();
         $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE 1";
 
-        if(isset($options['id_customer']))
+        if(isset($options['id_customer']) and $options['id_customer'])
             $sql .= " AND id_customer = ".$options['id_customer'];
+
+        if(isset($options['id_employee']) and $options['id_employee'])
+            $sql .= " AND id_employee = ".$options['id_employee'];
 
         if(isset($options['active'])) {
             $sql .= " AND active = ".(int)$options['active'];
@@ -218,13 +221,19 @@ class Quotation extends ObjectModel {
             $sql .= " AND (date_end = '0000-00-00' OR date_end >= '".date('Y-m-d')."')";
         }
 
+        if(isset($options['reference']) and $options['reference'])
+            $sql .= " AND reference LIKE '%".$options['reference']."%'";
+
+        if(isset($options['date_add']) and $options['date_add'])
+            $sql .= " AND date_add LIKE '".$options['date_add']."%'";
+
         if(isset($options['expired']))
             $sql .= " AND date_end < '".date('Y-m-d')."'";
 
         if(isset($options['date_recall']))
             $sql .= " AND date_recall = '".$options['date_recall']."'";
 
-        if(isset($options['states']))
+        if(isset($options['states']) and !empty($options['states']))
             $sql .= " AND status IN (".implode(',', $options['states']).")";
 
         $sql .= " ORDER BY date_add DESC ";

@@ -1,3 +1,9 @@
+{if isset($alert)}
+	<div class="alert alert-{$alert.type}">
+		<b>{$alert.message}</b>
+	</div>
+{/if}
+
 <div class="panel">
 	<div class="panel-heading">
 		{l s="Devis en cours" mod='webequip_partners'}
@@ -8,81 +14,120 @@
 		</span>
 	</div>
 	<div class="panel-content">
-		{if $quotations|count}
-			<form method="post">
-				<table id="data_table" class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th><b>{l s='ID' d='Shop.Theme.Labels'}</b></th>
-							<th><b>{l s='Référence' d='Shop.Theme.Labels'}</b></th>
-							<th class="text-center"><b>{l s='Etat' d='Shop.Theme.Labels'}</b></th>
-							<th class="text-center"><b>{l s='Client' d='Shop.Theme.Labels'}</b></th>
-							<th class="text-center"><b>{l s='Créateur' d='Shop.Theme.Labels'}</b></th>
-							<th class="text-center"><b>{l s='Statut' d='Shop.Theme.Labels'}</b></th>
-							<th class="text-center"><b>{l s='date de création' d='Shop.Theme.Labels'}</b></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						{foreach $quotations as $quotation}
-							<tr>
-								<td>{$quotation->id}</td>
-								<td>{$quotation->reference}</td>
-								<td class="text-center">
-									<span class="label label-{$quotation->getStatusClass()}">
-										<b>{$quotation->getStatusLabel()}</b>
-									</span>
-								</td>
-								<td class="text-center">
-									{if $quotation->id_customer}
-										{$quotation->getCustomer()->firstname} {$quotation->getCustomer()->lastname}
-									{else}
-										-
-									{/if}
-								</td>
-								<td class="text-center">{$quotation->getEmployee()->firstname} {$quotation->getEmployee()->lastname}</td>
-								<td class="text-center">
-									{if $quotation->active}
-										<span class="label label-success"><i class="icon-check"></i></span>
-									{else}
-										<span class="label label-danger"><i class="icon-times"></i></span>
-									{/if}
-								</td>
-								<td class="text-center">{$quotation->date_add|date_format:'d/m/Y'}</td>
-								<td class="text-right">
-									<div class="btn-group">
-										<a href="" class="btn btn-xs btn-default">
-											<i class="icon-file"></i>
-										</a>
-										<a href="" class="btn btn-xs btn-default">
-											<i class="icon-shopping-cart"></i>
-										</a>
-									</div>
-									<div class="btn-group">
-										<a href="{$link->getAdminLink('AdminQuotations')}&details&id={$quotation->id}" class="btn btn-xs btn-default">
-											<i class="icon-edit"></i>
-										</a>
-										<button type="submit" class="btn btn-xs btn-default" name="remove_quotation" value="{$quotation->id}">
-											<i class="icon-trash"></i>
-										</button>
-									</div>
-								</td>
-							</tr>
-						{/foreach}
-					</tbody>
-				</table>
-			</form>
-		{else}
-			<div class="alert alert-info">
-				<b>{l s="Aucun devis enregistré pour le moment" mod='webequip_partners'}</b>
-			</div>
-		{/if}
+		<form method="post">
+			<table id="data_table" class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th><b>{l s='Référence' d='Shop.Theme.Labels'}</b></th>
+						<th class="text-center"><b>{l s='Etat' d='Shop.Theme.Labels'}</b></th>
+						<th class="text-center"><b>{l s='Client' d='Shop.Theme.Labels'}</b></th>
+						<th class="text-center"><b>{l s='Créateur' d='Shop.Theme.Labels'}</b></th>
+						<th class="text-center"><b>{l s='date de création' d='Shop.Theme.Labels'}</b></th>
+						<th class="text-center"><b>{l s='Statut' d='Shop.Theme.Labels'}</b></th>
+						<th></th>
+					</tr>
+					<tr style="background-color:#f2f2f2">
+						<th>
+							<input type="text" id="search_reference" class="form-control">
+						</th>
+						<th>
+							<select id="search_state" class="form-control">
+								<option value="">-</option>
+								{foreach from=Quotation::getStates() key=id item=name}
+									<option value="{$id}">{$name}</option>
+								{/foreach}
+							</select>
+						</th>
+						<th>
+							<select id="search_customer" class="form-control">
+								<option value="">-</option>
+								{foreach from=Customer::getCustomers() item=customer}
+									<option value="{$customer.id_customer}">{$customer.firstname} {$customer.lastname}</option>
+								{/foreach}
+							</select>
+						</th>
+						<th>
+							<select id="search_employee" class="form-control">
+								<option value="">-</option>
+								{foreach from=Employee::getEmployees() item=employee}
+									<option value="{$employee.id_employee}">{$employee.firstname} {$employee.lastname}</option>
+								{/foreach}
+							</select>
+						</th>
+						<th>
+							<input type="date" id="search_date" class="form-control">
+						</th>
+						<th></th>
+						<th class="text-right">
+							<button type="button" id="eraze" class="btn btn-default" title="{l s='Effacer' d='Shop.Theme.Actions'}">
+								<i class="icon-refresh"></i>
+							</button>
+							<button type="button" id="search" class="btn btn-primary">
+								<b>{l s='Rechercher' d='Shop.Theme.Actions'}</b>
+							</button>
+						</th>
+					</tr>
+				</thead>
+				<tbody id="table_body">
+					<!-- CONTENU AJAX -->
+				</tbody>
+			</table>
+		</form>
 	</div>
 
 </div>
 
 <script>
 	$(document).ready(function() {
-		$('#data_table').dataTable();
+		loadQuotations();
+
+		// Confirmation copie
+		$('.copy-quotation').on('click', function(e) {
+			if(!confirm("Etes-vous sûr de vouloir copier ce devis ?"))
+				e.preventDefault();
+		});
+
+		// Confirmation suppression
+		$('.remove-quotation').on('click', function(e) {
+			if(!confirm("Etes-vous sûr de vouloir supprimer ce devis ?"))
+				e.preventDefault();
+		});
+
+		// Effacer les filtres et charger les devis
+		$('#eraze').on('click', function() {
+			$('#search_reference').val(null);
+			$('#search_state').val(null);
+			$('#search_customer').val(null);
+			$('#search_employee').val(null);
+			$('#search_date').val(null);
+
+			loadQuotations();
+		});
+
+		// Charger les devis avec les filtres
+		$('#search').on('click', function() {
+			loadQuotations();
+		});
+
+		// Chargement des devis
+		function loadQuotations() {
+			$.ajax({
+				url: "{$link->getAdminLink('AdminQuotations')}",
+				data: {
+					'action' : 'load_quotations',
+					'reference' : $('#search_reference').val(),
+					'state' : $('#search_state').val(),
+					'customer' : $('#search_customer').val(),
+					'employee' : $('#search_employee').val(),
+					'date' : $('#search_date').val(),
+					'ajax' : 1
+				},
+					//dataType: 'json',
+					success: function(response) {
+						$('#table_body').html(response);
+					}
+				});
+		}
+
 	});
 </script>
