@@ -32,6 +32,9 @@ class Customer extends CustomerCore {
 	/** @var string Email tracking **/
 	public $email_tracking;
 
+	/** @var flat Rollcash **/
+	public $rollcash;
+
 	// Variables temporaires
 	private $type = null;
 	private $state = null;
@@ -48,7 +51,8 @@ class Customer extends CustomerCore {
 		self::$definition['fields']['date_funding'] = array('type' => self::TYPE_DATE);
 		self::$definition['fields']['email_invoice'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['email_tracking'] =array('type' => self::TYPE_STRING);
-
+		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
+		
 		parent::__construct($id_category, $id_lang, $id_shop);
 	}
 

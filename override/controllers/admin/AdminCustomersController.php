@@ -84,7 +84,8 @@ class AdminCustomersController extends AdminCustomersControllerCore {
         if (Configuration::get('PS_B2B_ENABLE')) {
             $this->fields_list = array_merge($this->fields_list, array(
                 'company' => array(
-                    'title' => $this->trans('Company', array(), 'Admin.Global')
+                    'title' => $this->trans('Company', array(), 'Admin.Global'),
+                    'filter_key' => 'a!company'
                 ),
             ));
         }
@@ -207,7 +208,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'label' => $this->trans('First name', array(), 'Admin.Global'),
                     'name' => 'firstname',
                     'required' => true,
-                    'col' => '4',
+                    'col' => 4,
                     'hint' => $this->trans('Invalid characters:', array(), 'Admin.Notifications.Info').' 0-9!&lt;&gt;,;?=+()@#"°{}_$%:'
                 ),
                 array(
@@ -215,13 +216,14 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'label' => $this->trans('Last name', array(), 'Admin.Global'),
                     'name' => 'lastname',
                     'required' => true,
-                    'col' => '4',
+                    'col' => 4,
                     'hint' => $this->trans('Invalid characters:', array(), 'Admin.Notifications.Info').' 0-9!&lt;&gt;,;?=+()@#"°{}_$%:'
                 ),
                 array(
                     'type' => 'select',
                     'label' => $this->trans('Type de compte', array(), 'Admin.Orderscustomers.Feature'),
                     'name' => 'id_account_type',
+                    'col' => 4,
                     'options' => array(
                         'query' => $list_types,
                         'id' => 'value',
@@ -232,6 +234,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'type' => 'select',
                     'label' => $this->trans('Statut du client', array(), 'Admin.Orderscustomers.Feature'),
                     'name' => 'id_customer_state',
+                    'col' => 4,
                     'options' => array(
                         'query' => $list_states,
                         'id' => 'value',
@@ -242,8 +245,8 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'type' => 'textarea',
                     'label' => $this->trans('Commentaire statut', array(), 'Admin.Global'),
                     'name' => 'comment',
-                    'col' => '4',
-                    'rows' => '3'
+                    'col' => 4,
+                    'rows' => 3
                 ),
                 array(
                     'type' => 'switch',
@@ -274,26 +277,26 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'type' => 'text',
                     'label' => $this->trans('E-deal', array(), 'Admin.Global'),
                     'name' => 'reference',
-                    'col' => '4'
+                    'col' => 4
                 ),
                 array(
                     'type' => 'text',
                     'label' => $this->trans('Chorus', array(), 'Admin.Global'),
                     'name' => 'chorus',
-                    'col' => '4'
+                    'col' => 4
                 ),
                 array(
                     'type' => 'text',
                     'label' => $this->trans('TVA interne', array(), 'Admin.Global'),
                     'name' => 'tva',
-                    'col' => '4'
+                    'col' => 4
                 ),
                 array(
                     'type' => 'text',
                     'prefix' => '<i class="icon-envelope-o"></i>',
                     'label' => $this->trans('Email address', array(), 'Admin.Global'),
                     'name' => 'email',
-                    'col' => '4',
+                    'col' => 4,
                     'required' => true,
                     'autocomplete' => false
                 ),
@@ -302,7 +305,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'prefix' => '<i class="icon-file-o"></i>',
                     'label' => $this->trans('E-mail facturation', array(), 'Admin.Global'),
                     'name' => 'email_invoice',
-                    'col' => '4',
+                    'col' => 4,
                     'autocomplete' => false
                 ),
                 array(
@@ -310,15 +313,24 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'prefix' => '<i class="icon-truck"></i>',
                     'label' => $this->trans('E-mail livraison', array(), 'Admin.Global'),
                     'name' => 'email_tracking',
-                    'col' => '4',
+                    'col' => 4,
                     'autocomplete' => false
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Rollcash', array(), 'Admin.Global'),
+                    'name' => 'rollcash',
+                    'col' => 4,
+                    'autocomplete' => false,
+                    'hint' => $this->trans("Décimales séparées par un '.'"),
+                    'suffix' => $this->context->currency->sign
                 ),
                 array(
                     'type' => 'password',
                     'label' => $this->trans('Password', array(), 'Admin.Global'),
                     'name' => 'passwd',
                     'required' => ($obj->id ? false : true),
-                    'col' => '4',
+                    'col' => 4,
                     'hint' => ($obj->id ? $this->trans('Leave this field blank if there\'s no change.', array(), 'Admin.Orderscustomers.Help') :
                         $this->trans('Password should be at least %length% characters long.', array('%length%' => Validate::PASSWORD_LENGTH), 'Admin.Orderscustomers.Help'))
                 ),
@@ -398,7 +410,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'name' => 'groupBox',
                     'values' => $groups,
                     'required' => true,
-                    'col' => '6',
+                    'col' => 6,
                     'hint' => $this->trans('Select all the groups that you would like to apply to this customer.', array(), 'Admin.Orderscustomers.Help')
                 ),
                 array(
@@ -410,7 +422,7 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                         'id' => 'id_group',
                         'name' => 'name'
                     ),
-                    'col' => '4',
+                    'col' => 4,
                     'hint' => array(
                         $this->trans('This group will be the user\'s default group.', array(), 'Admin.Orderscustomers.Help'),
                         $this->trans('Only the discount for the selected group will be applied to this customer.', array(), 'Admin.Orderscustomers.Help')
