@@ -72,6 +72,15 @@ class AdminStatusesController extends AdminStatusesControllerCore {
                 'orderby' => false,
                 'class' => 'fixed-width-sm'
             ),
+            'rollcash' => array(
+                'title' => $this->trans('Rollcash', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'active' => 'rollcash',
+                'type' => 'bool',
+                'ajax' => true,
+                'orderby' => false,
+                'class' => 'fixed-width-sm'
+            ),
             'template' => array(
                 'title' => $this->trans('Email template', array(), 'Admin.Shopparameters.Feature')
             )
@@ -210,6 +219,17 @@ class AdminStatusesController extends AdminStatusesControllerCore {
                     )
                 ),
                 array(
+                    'type' => 'checkbox',
+                    'name' => 'rollcash',
+                    'values' => array(
+                        'query' => array(
+                            array('id' => 'on', 'name' => $this->trans('Transférer dans la cagnote Rollcash.', array(), 'Admin.Shopparameters.Feature'), 'val' => '1'),
+                            ),
+                        'id' => 'id',
+                        'name' => 'name'
+                    )
+                ),
+                array(
                     'type' => 'select_template',
                     'label' => $this->trans('Template', array(), 'Admin.Shopparameters.Feature'),
                     'name' => 'template',
@@ -258,6 +278,7 @@ class AdminStatusesController extends AdminStatusesControllerCore {
             'pdf_delivery_on' => $this->getFieldValue($obj, 'pdf_delivery'),
             'pdf_invoice_on' => $this->getFieldValue($obj, 'pdf_invoice'),
             'term_of_use_on' => $this->getFieldValue($obj, 'term_of_use'),
+            'rollcash_on' => $this->getFieldValue($obj, 'rollcash')
         );
 
         if ($this->getFieldValue($obj, 'color') !== false) {
@@ -328,6 +349,7 @@ class AdminStatusesController extends AdminStatusesControllerCore {
             $_POST['pdf_delivery'] = (int)Tools::getValue('pdf_delivery_on');
             $_POST['pdf_invoice'] = (int)Tools::getValue('pdf_invoice_on');
             $_POST['term_of_use'] = (int)Tools::getValue('term_of_use_on');
+            $_POST['rollcash'] = (int)Tools::getValue('rollcash_on');
             if (!$_POST['send_email']) {
                 foreach (Language::getIDs(false) as $id_lang) {
                     $_POST['template_'.$id_lang] = '';

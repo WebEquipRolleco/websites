@@ -12,6 +12,12 @@ class OrderHistory extends OrderHistoryCore {
     public function changeIdOrderState($new_order_state, $id_order, $use_existing_payment = false) {
     	parent::changeIdOrderState($new_order_state, $id_order, $use_existing_payment);
 
+        // Vérification du Rollcash
+        $state = new OrderState($new_order_state);
+        if($state->rollcash) {
+
+        }
+        
     	// Vérification des règles
     	foreach(OrderStateRule::getActiveRules() as $rule) {
 
