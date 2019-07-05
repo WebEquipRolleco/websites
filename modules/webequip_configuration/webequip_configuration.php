@@ -23,6 +23,9 @@ class Webequip_Configuration extends Module {
 
         $check = parent::install();
 
+        $this->registerHook('displayAdminProductsPriceStepBottom');
+        $this->registerHook('displayAdminProductsCombinationBottom');
+
         if(!isTabInstalled("WEBEQUIP"))
             $check .= $this->installTab("Web-équip", "WEBEQUIP", false, 0);
 
@@ -183,6 +186,22 @@ class Webequip_Configuration extends Module {
             $tab->id_parent = (int) Tab::getIdFromClassName($parent);
 
         return $tab->add();
+    }
+
+    /**
+    * Ajoute la gestion du rollcash dans le produit
+    **/
+    public function hookDisplayAdminProductsPriceStepBottom($params) { 
+        $this->context->smarty->assign('product', new Product($params['id_product']));
+        return $this->display(__FILE__, 'product_rollcash.tpl');
+    }
+
+    /**
+    * Ajoute la gestion du rollcash dans les déclinaisons
+    **/
+    public function hookDisplayAdminProductsCombinationBottom($params) {
+        $this->context->smarty->assign('combination', new Combination($params['id_product_attribute']));
+       return $this->display(__FILE__, 'combination_rollcash.tpl');
     }
 
 }
