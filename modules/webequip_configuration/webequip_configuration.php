@@ -156,7 +156,18 @@ class Webequip_Configuration extends Module {
         $tabs[3]['children'][] = array('name'=>"Options de commande", 'id'=>$this->isTabInstalled("AdminOrderOptions"), 'action'=>'ORDER_OPTIONS');
         $tabs[3]['children'][] = array('name'=>"Iconographie", 'id'=>$this->isTabInstalled("AdminIconography"), 'action'=>'ICONOGRAPHY');
 
+        // Configuration footer
+        $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ');
+        foreach($links as $name) {
+
+            if(Tools::getIsset($name))
+                Configuration::updateValue($name, Tools::getValue($name));
+
+            $this->context->smarty->assign($name, Configuration::get($name));
+        }
+
         $this->context->smarty->assign('tabs', $tabs);
+        $this->context->smarty->assign('cms', CMS::getCMSPages(1));
 
         return $this->display(__FILE__, 'config.tpl');
     }

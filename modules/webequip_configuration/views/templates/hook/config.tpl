@@ -37,7 +37,7 @@
 							</td>
 							<td class="text-right">
 								<button type="submit" class="btn btn-xs btn-default" {if $child.id}disabled{else}name="action" value="{$child.action}"{/if}>
-									{l s='Installer'}
+									{l s='Installer' d='Shop.Theme.Actions'}
 								</button>
 								{if $child.id}
 									<button type="submit" class="btn btn-xs btn-danger" name="remove_tab" value="{$child.id}">
@@ -52,3 +52,45 @@
 			</tbody>
 		</table>
 	</div>
+</form>
+
+<form method="post">
+	<div class="panel">
+		<div class="panel-heading">
+			<i class="icon-cogs"></i> Gestion des liens du footer
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="form-group">
+					<label>{l s="Lien de la page des moyens de paiements"}</label>
+					<select class="form-control" name="FOOTER_LINK_PAIEMENT">
+						<option value="0">-</option>
+						{foreach from=$cms item=page}
+							<option value="{$page.id_cms}" {if $page.id_cms == $FOOTER_LINK_PAIEMENT}selected{/if}>
+								{$page.meta_title}
+							</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="form-group">
+					<label>{l s="Lien de la page F.A.Q"}</label>
+					<select class="form-control" name="FOOTER_LINK_FAQ">
+						<option value="0">-</option>
+						{foreach from=$cms item=page}
+							<option value="{$page.id_cms}" {if $page.id_cms == $FOOTER_LINK_FAQ}selected{/if}>
+								{$page.meta_title}
+							</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="submit" class="btn btn-success">
+				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
+			</button>
+		</div>
+	</div>
+</form>
