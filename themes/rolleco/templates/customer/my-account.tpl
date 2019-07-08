@@ -24,77 +24,29 @@
     <div class="links">
 
       {if !$configuration.is_catalog}
-        <a href="{$urls.pages.history}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="link-item">
-            <i class="fa fa-3x fa-shopping-cart"></i>
-            <p>{l s='Historique et détails de mes commandes' d='Shop.Theme.Customeraccount'}</p>
-          </div>
-        </a>
+        {include file='customer/_partials/account-link.tpl' url=$urls.pages.history icon='shopping-cart' text='Historique et détails de mes commandes'}
       {/if}
 
-      <a href="{$urls.pages.identity}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-        <div class="link-item">
-          <i class="fa fa-3x fa-edit"></i>
-          <p>{l s='Mes information personnelles' d='Shop.Theme.Customeraccount'}</p>
-        </div>
-      </a>
+      {include file='customer/_partials/account-link.tpl' url=$urls.pages.identity icon='edit' text='Mes information personnelles'}
 
       {if $customer.addresses|count}
-        <a href="{$urls.pages.addresses}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="link-item">
-            <i class="fa fa-3x fa-address-card"></i>
-            <p>{l s='Mes addresses' d='Shop.Theme.Customeraccount'}</p>
-          </div>
-        </a>
+        {include file='customer/_partials/account-link.tpl' url=$urls.pages.addresses icon='address-card' text='Mes addresses'}
       {else}
-        <a href="{$urls.pages.address}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="link-item">
-            <i class="fa fa-3x fa-address-book"></i>
-            <p>{l s='Ajouter ma première adresse' d='Shop.Theme.Customeraccount'}</p>
-          </div>
-        </a>
+        {include file='customer/_partials/account-link.tpl' url=$urls.pages.addresses icon='address-book' text='Ajouter ma première adresse'}
       {/if}
 
       {if !$configuration.is_catalog}
-        <a href="{$urls.pages.order_slip}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="link-item">
-            <i class="fa fa-3x fa-file-alt"></i>
-            <p>{l s='Mes avoirs' d='Shop.Theme.Customeraccount'}</p>
-          </div>
-        </a>
+        {include file='customer/_partials/account-link.tpl' url=$urls.pages.order_slip icon='file-alt' text='Mes avoirs'}
+        {if $configuration.voucher_enabled}
+          {include file='customer/_partials/account-link.tpl' url=$urls.pages.discount icon='tags' text='Mes bons de réductions'}
+        {/if}
+        {if $configuration.return_enabled}
+          {include file='customer/_partials/account-link.tpl' url=$urls.pages.order_follow icon='undo-alt' text='Merchandise returns'}
+        {/if}
       {/if}
 
-      {if $configuration.voucher_enabled && !$configuration.is_catalog}
-        <a href="{$urls.pages.discount}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="link-item">
-            <i class="fa fa-3x fa-tags"></i>
-            <p>{l s='Mes bons de réductions' d='Shop.Theme.Customeraccount'}</p>
-          </div>
-        </a>
-      {/if}
-
-      {if $configuration.return_enabled && !$configuration.is_catalog}
-        <a href="{$urls.pages.order_follow}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="link-item">
-            <i class="fa fa-3x fa-undo-alt"></i>
-            <p>{l s='Merchandise returns' d='Shop.Theme.Customeraccount'}</p>
-          </div>
-        </a>
-      {/if}
-
-      <a href="{$link->getPageLink('QuotationList')}" class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-        <div class="link-item">
-          <i class="fa fa-3x fa-calculator"></i>
-          <p>{l s='Mes devis' d='Shop.Theme.Customeraccount'}</p>
-        </div>
-      </a>
-
-      <a class="offset-lg-4 col-lg-4 col-md-6 col-sm-12 col-xs-12" href="{$link->getPageLink('AfterSales')}">
-        <div class="link-item">
-          <i class="fa fa-3x fa-comments"></i>
-          <p>{l s='Service après vente'}</p>
-        </div>
-      </a>
+      {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('QuotationList') icon='calculator' text='Mes devis'}
+      {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('AfterSales') icon='comments' text='Service après vente'}
 
       {block name='display_customer_account'}
         {hook h='displayCustomerAccount'}
