@@ -13,19 +13,21 @@
           </span>
         </span>*}
       </div>
-      <ul id="footer_sub_menu_{$_expand_id}" class="collapse">
-        {foreach $linkBlock.links as $link}
-          <li>
-            <a
-                id="{$link.id}-{$linkBlock.id}"
-                class="{$link.class}"
-                href="{$link.url}"
-                title="{$link.description}">
-              {$link.title}
-            </a>
-          </li>
-        {/foreach}
-      </ul>
+      {if !empty($linkBlock.links)}
+        <ul id="footer_sub_menu_{$_expand_id}" class="collapse">
+          {foreach $linkBlock.links as $link}
+            <li>
+              <a
+                  id="{$link.id}-{$linkBlock.id}"
+                  class="{$link.class}"
+                  href="{$link.url}"
+                  title="{$link.description}">
+                {$link.title}
+              </a>
+            </li>
+          {/foreach}
+        </ul>
+      {/if}
     </div>
   {/foreach}
   </div>
