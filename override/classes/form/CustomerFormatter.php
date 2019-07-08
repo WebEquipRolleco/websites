@@ -106,28 +106,24 @@ class CustomerFormatter extends CustomerFormatterCore {
             $format['company'] = (new FormField)
                 ->setName('company')
                 ->setType('text')
-                ->setRequired('true')
                 ->setLabel($this->translator->trans(
                     'Company', [], 'Shop.Forms.Labels'
                 ));
             $format['chorus'] = (new FormField)
                 ->setName('chorus')
                 ->setType('text')
-                ->setRequired(true)
                 ->setLabel($this->translator->trans(
                     'Référence Chorus', [], 'Shop.Forms.Labels'
                 ));
             $format['siret'] = (new FormField)
                 ->setName('siret')
                 ->setType('text')
-                ->setRequired(true)
                 ->setLabel($this->translator->trans(
                     'Siret', [], 'Shop.Forms.Labels'
                 ));
             $format['tva'] = (new FormField)
                 ->setName('tva')
                 ->setType('text')
-                ->setRequired(true)
                 ->setLabel($this->translator->trans(
                     'TVA interne', [], 'Shop.Forms.Labels'
                 ));
@@ -140,9 +136,7 @@ class CustomerFormatter extends CustomerFormatterCore {
                 $this->translator->trans(
                     'Email', [], 'Shop.Forms.Labels'
                 )
-            )
-            ->setRequired(true)
-        ;
+            );
 
         if ($this->ask_for_password) {
             $format['password'] = (new FormField)
