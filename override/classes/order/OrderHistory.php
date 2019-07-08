@@ -16,6 +16,11 @@ class OrderHistory extends OrderHistoryCore {
         $state = new OrderState($new_order_state);
         if($state->rollcash) {
 
+            $order = new Order($id_order);
+            foreach($order->getDetails() as $details)
+                $order->getCustomer()->rollcash += Product::findRollcash($details->product_id, $details->product_attribute_id);
+
+            $order->getCustomer()->save();
         }
         
     	// Vérification des règles
