@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `ps_order_state_rule` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_order_option` (
-    `id` INT NOT NULL AUTO_INCREMENT, 
+    `id_order_option` INT NOT NULL AUTO_INCREMENT, 
     `name` VARCHAR(255) NOT NULL, 
     `description` TEXT NULL,
     `type` INT(1) NOT NULL, 

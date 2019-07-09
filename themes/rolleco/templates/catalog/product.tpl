@@ -130,7 +130,10 @@
 
               <div class="text-center">
                 <a href="{$link->getProductLink($product.id_product)}?dl_pdf=1" class="btn btn-light bold hidden-lg-down" target="_blank">
-                  <i class="fa fa-file-pdf"></i> &nbsp; Fiche produit
+                  <i class="fas fa-file-invoice-dollar"></i> &nbsp; Fiche produit
+                </a>
+                <a href="{$link->getProductLink($product.id_product)}?dl_demo=1" class="btn btn-light bold hidden-lg-down" title="{l s='PDF sans prix'}" target="_blank">
+                  <i class="fa fa-file-pdf"></i>
                 </a>
               </div>
 
