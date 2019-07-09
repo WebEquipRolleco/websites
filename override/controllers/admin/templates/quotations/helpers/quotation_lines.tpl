@@ -24,7 +24,7 @@
 		</td>
 		<td class="text-right">
 			<div class="btn-group">
-				<a href="" class="btn btn-xs btn-default">
+				<a href="{$link->getAdminLink('AdminQuotations')}&dl_pdf&id={$quotation->id}" class="btn btn-xs btn-default" title="{l s='Download' d='Shop.Theme.Actions'}" target="_blank">
 					<i class="icon-file"></i>
 				</a>
 					<a href="" class="btn btn-xs btn-default" title="{l s='Ajouter au panier' d='Shop.Theme.Actions'}">

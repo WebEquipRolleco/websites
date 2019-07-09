@@ -1,0 +1,47 @@
+<?php
+
+class HTMLTemplateQuotationCore extends HTMLTemplate {
+
+	public $quotation;
+
+	public function __construct(Quotation $quotation, $smarty) {
+
+		$this->quotation = $quotation;
+		$this->smarty = $smarty;
+
+		// footer informations
+		$this->display_footer = false;
+
+		$this->smarty->assign('header_mail', Configuration::getForOrder('PS_TEAM_PHONE', $this->order));
+		$this->smarty->assign('header_phone', Configuration::getForOrder('PS_TEAM_EMAIL', $this->order));
+	}
+
+	/**
+	 * Returns the template's HTML content
+	 * @return string HTML content
+	 */
+	public function getContent() {
+
+		$this->smarty->assign('quotation', $this->quotation);
+		$this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('rolleco.style-tab')));
+		
+		return $this->smarty->fetch($this->getTemplate('quotation'));
+	}
+
+	/**
+	 * Returns the template filename when using bulk rendering
+	 * @return string filename
+	 */
+	public function getBulkFilename() {
+		return 'devis.pdf';
+	}
+
+	/**
+	 * Returns the template filename
+	 * @return string filename
+	 */
+	public function getFilename() {
+		return 'devis.pdf';
+	}
+
+}

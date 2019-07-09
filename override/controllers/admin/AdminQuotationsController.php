@@ -32,6 +32,7 @@ class AdminQuotationsController extends AdminController {
     	parent::initContent();
 
         // Gestion de la liste des devis
+        $this->downloadQuotation();
         $this->removeQuotation();
         $this->copyQuotation();
 
@@ -84,6 +85,17 @@ class AdminQuotationsController extends AdminController {
 
 			$this->setTemplate("details.tpl");
     	}
+    }
+
+    /**
+    * Télécharge la version PDF d'un devis
+    **/
+    public function downloadQuotation() {
+
+        if(Tools::getIsset('dl_pdf') and $id = Tools::getValue('id')) {
+            $pdf = new PDF(array('quotation'=>new Quotation($id)), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
+            die($pdf->render());
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ class ProductController extends ProductControllerCore {
     **/
     private function downloadPDF() {
 
-    	$pdf = new PDF(array('product'=>$this->product), 'Product', $this->context->smarty);
+    	$pdf = new PDF(array('product'=>$this->product), PDF::TEMPLATE_PRODUCT, $this->context->smarty);
     	die($pdf->render());
     }
 
@@ -27,7 +27,7 @@ class ProductController extends ProductControllerCore {
     **/
     private function downloadDemo() {
 
-    	$pdf = new PDF(array('product'=>$this->product), 'ProductDemo', $this->context->smarty);
+    	$pdf = new PDF(array('product'=>$this->product), PDF::TEMPLATE_PRODUCT_DEMO, $this->context->smarty);
     	die($pdf->render());
     }
 
