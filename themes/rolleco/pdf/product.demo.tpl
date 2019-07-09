@@ -54,7 +54,7 @@
 			<th><b>{l s="Référence" pdf='true'}</b></th>
 			{foreach from=$groups item=group}
 				<th style="text-align:center"><b>{$group.name}</b></th>
-			{/foreach}Z
+			{/foreach}
 		</tr>
 	</thead>
 	<tbody>
