@@ -18,6 +18,9 @@ class OrderOptionCore extends ObjectModel {
     /** @var string Description **/
     public $description;
 
+    /** @var string Warning **/
+    public $warning;
+
     /** @var tnt Type **/
 	public $type; 
 
@@ -41,7 +44,8 @@ class OrderOptionCore extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
             'name' => array('type'=>self::TYPE_STRING, 'validate'=>'isGenericName', 'required' => true),
-        	'description' => array('type'=>self::TYPE_STRING),
+            'description' => array('type'=>self::TYPE_STRING),
+        	'warning' => array('type'=>self::TYPE_STRING),
         	'type' => array('type'=>self::TYPE_INT, 'validate'=>'isInt', 'required' => true),
         	'value' => array('type'=>self::TYPE_FLOAT, 'validate'=>'isFloat', 'required'=>true),
             'white_list' => array('type'=>self::TYPE_STRING),
@@ -80,7 +84,7 @@ class OrderOptionCore extends ObjectModel {
     public static function getTypes() {
 
         $data[self::TYPE_PERCENT] = "Pourcentage (%)";
-        $data[self::TYPE_FLAT] = "Montant (€)";
+        $data[self::TYPE_FLAT] = "Montant HT (€)";
 
         return $data;
     }
@@ -93,8 +97,12 @@ class OrderOptionCore extends ObjectModel {
         if($this->type == self::TYPE_FLAT)
             return $this->value;
 
+        $products = array();
+        foreach(Context::getContext()->cart->getProducts() as $product)
+            if($this->isValid($product['id_product']))
+                $products[] = $product;
 
-        $total = Context::getContext()->cart->getOrderTotal(true, CART::ONLY_PRODUCTS);
+        $total = Context::getContext()->cart->getOrderTotal(true, CART::ONLY_PRODUCTS, $products);
         if($total and $this->type == self::TYPE_PERCENT)
             return ($total * $this->value) / 100;
 
@@ -129,33 +137,43 @@ class OrderOptionCore extends ObjectModel {
 
     /**
     * Vérifie si l'option doit être disponible dans le panier en fonction des produits
+    * EDIT : L'option n'est pas affichée si tous les produits du panier sont dans la liste noire
     **/
     public function display() {
 
-        if($this->white_list or $this->black_list) {
+        if($this->active and $this->black_list) {
 
             $ids = Db::getInstance()->executeS("SELECT id_product FROM ps_cart_product WHERE id_cart = ".Context::getContext()->cart->id);
             $ids = array_map(function($e) { return $e['id_product']; }, $ids);
 
-            // Vérification liste noire
-            if($this->black_list) {
-                $bl = $this->getBlackList();
-                
-                foreach($ids as $id)
-                    if(in_array($id, $bl))
-                        return false;
-            }
+            $current = 0;
+            $nb = count($ids);
 
-            // Vérification liste blanche
-            if($this->white_list){
-                
-                foreach($this->getWhiteList() as $id)
-                    if(!in_array($id, $ids))
-                        return false;
-            }
+            $bl = $this->getBlackList();
+            foreach($ids as $id)
+                if(in_array($id, $bl))
+                    $current++;
+
+            return ($current < $nb);
         }
 
         return $this->active;
+    }
+
+    /**
+    * Vérifie si un produit est validé par les règles de l'option
+    * @param int $id_product
+    * @return bool
+    **/
+    public function isValid($id_product) {
+
+        if(!empty($this->getWhiteList()))
+            return in_array($id_product, $this->getWhiteList());
+
+        if(!empty($this->getBlackList()))
+            return !in_array($id_product, $this->getBlackList());
+
+        return true;
     }
 
 }

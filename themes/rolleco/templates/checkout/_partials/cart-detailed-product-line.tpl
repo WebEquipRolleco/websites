@@ -2,7 +2,7 @@
 
   {* IMAGE *}
   <td class="text-center">
-    <img src="{$product.cover.bySize.cart_default.url}" alt="{$product.name|escape:'quotes'}" class="cart-image">
+    <img src="{$product.cover.bySize.cart_default.url}" class="cart-image">
   </td>
 
  {* PRODUIT *}
@@ -15,6 +15,11 @@
         <span class="label">{$attribute}:</span>
         <span class="value">{$value}</span>
       </div>
+    {/foreach}
+    {foreach from=OrderOptionCart::findByCart() item=option}
+      {if !$option->isValid($product.id_product)}
+        <span class="text-danger"><i class="fa fa-exclamation-triangle"></i> {$option->warning}</span>
+      {/if}
     {/foreach}
   </td>
 

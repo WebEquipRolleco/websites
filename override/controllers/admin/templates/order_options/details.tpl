@@ -24,6 +24,11 @@
 					<label for="description">{l s="Description"}</label>
 					<textarea rows="4" class="form-control" name="option[description]">{$option->description}</textarea>
 				</div>
+				<div class="form-group">
+					<label for="warning">{l s="Message d'avertissement"}</label>
+					<textarea rows="4" class="form-control" name="option[warning]">{$option->warning}</textarea>
+					<div class="text-right text-muted"><em>{l s="Visible dans le panier pour les produits non concernés"}</em></div>
+				</div>
 			</div>
 			<div class="panel">
 				<div class="panel-heading">
@@ -57,7 +62,7 @@
 					{l s="Coût"}
 				</div>
 				<div class="form-group">
-					<label form="type">{l s="Valeur"} <em class="text-danger">*</em></label>
+					<label form="type">{l s="Type"} <em class="text-danger">*</em></label>
 					<select class="form-control" name="option[type]" required>
 						<option value="">{l s="Choisir un type de calcul"}</option>
 						{foreach from=OrderOption::getTypes() key=id item=type}
@@ -74,88 +79,94 @@
 				<div class="panel-heading">
 					{l s="Produits"}
 				</div>
-				<div class="row">
-					<div class="col-lg-8">
-						<select class="form-control" name="product">
-							<option value="">{l s="Choisir un produit"}</option>
-							{foreach from=$products item=product}
-								<option value="{$product.id_product}">
-									{$product.name}
-								</option>
-							{/foreach}
-						</select>
-					</div>
-					<div class="col-lg-4">
-						<div class="btn-group">
-							<button type="submit" class="btn btn-default" name="add_white_list">
-								{l s="Liste blanche"}
-							</button>
-							<button type="submit" class="btn btn-default" name="add_black_list">
-								{l s="Liste noire"}
-							</button>
+				{if $option->id}
+					<div class="row">
+						<div class="col-lg-8">
+							<select class="form-control" name="product">
+								<option value="">{l s="Choisir un produit"}</option>
+								{foreach from=$products item=product}
+									<option value="{$product.id_product}">
+										{$product.name}
+									</option>
+								{/foreach}
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<div class="btn-group">
+								<button type="submit" class="btn btn-default" name="add_white_list">
+									{l s="Liste blanche"}
+								</button>
+								<button type="submit" class="btn btn-default" name="add_black_list">
+									{l s="Liste noire"}
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<hr />
-				<div class="alert alert-info">
-					{l s="Tous les produits de la liste blanche doivent se trouver dans le panier pour que l'option soit disponible."}
-				</div>
-				<table class="table">
-					<thead>
-						<tr class="bg-primary">
-							<td colspan="3">
-								<b>{l s="Liste Blanche"}</b>
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						{foreach from=$option->getWhiteList(true) item=row}
-							<tr>
-								<td><b>{$row['id_product']}</b></td>
-								<td>{$row['name']}</td>
-								<td class="text-right">
-									<button type="submit" class="btn btn-xs btn-danger" name="remove_white_list" value="{$row['id_product']}">
-										<i class="icon-trash"></i>
-									</button>
+					<hr />
+					<div class="alert alert-info">
+						{l s="Tous les produits de la liste blanche doivent se trouver dans le panier pour que l'option soit disponible."}
+					</div>
+					<table class="table">
+						<thead>
+							<tr class="bg-primary">
+								<td colspan="3">
+									<b>{l s="Liste Blanche"}</b>
 								</td>
 							</tr>
-						{foreachelse}
-							<tr>
-								<td>{l s="Aucun produit enregistré"}</td>
-							</tr>
-						{/foreach}
-					</tbody>
-				</table>
-				<br />
-				<div class="alert alert-info">
-					{l s="L'option sera indisponible si au moins un des produits de la liste noire se trouve dans le panier."}
-				</div>
-				<table class="table">
-					<thead>
-						<tr class="bg-primary">
-							<td colspan="3">
-								<b>{l s="Liste Noire"}</b>
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						{foreach from=$option->getBlackList(true) item=row}
-							<tr>
-								<td><b>{$row['id_product']}</b></td>
-								<td>{$row['name']}</td>
-								<td class="text-right">
-									<button type="submit" class="btn btn-xs btn-danger" name="remove_black_list" value="{$row['id_product']}">
-										<i class="icon-trash"></i>
-									</button>
+						</thead>
+						<tbody>
+							{foreach from=$option->getWhiteList(true) item=row}
+								<tr>
+									<td><b>{$row['id_product']}</b></td>
+									<td>{$row['name']}</td>
+									<td class="text-right">
+										<button type="submit" class="btn btn-xs btn-danger" name="remove_white_list" value="{$row['id_product']}">
+											<i class="icon-trash"></i>
+										</button>
+									</td>
+								</tr>
+							{foreachelse}
+								<tr>
+									<td>{l s="Aucun produit enregistré"}</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+					<br />
+					<div class="alert alert-info">
+						{l s="L'option sera indisponible si au moins un des produits de la liste noire se trouve dans le panier."}
+					</div>
+					<table class="table">
+						<thead>
+							<tr class="bg-primary">
+								<td colspan="3">
+									<b>{l s="Liste Noire"}</b>
 								</td>
 							</tr>
-						{foreachelse}
-							<tr>
-								<td>{l s="Aucun produit enregistré"}</td>
-							</tr>
-						{/foreach}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{foreach from=$option->getBlackList(true) item=row}
+								<tr>
+									<td><b>{$row['id_product']}</b></td>
+									<td>{$row['name']}</td>
+									<td class="text-right">
+										<button type="submit" class="btn btn-xs btn-danger" name="remove_black_list" value="{$row['id_product']}">
+											<i class="icon-trash"></i>
+										</button>
+									</td>
+								</tr>
+							{foreachelse}
+								<tr>
+									<td>{l s="Aucun produit enregistré"}</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				{else}
+					<div class="alert alert-warning">
+						{l s="Enregistrer l'option avant de gérer les listes de produits."}
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>

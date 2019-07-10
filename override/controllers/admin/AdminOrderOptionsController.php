@@ -70,6 +70,7 @@ class AdminOrderOptionsControllerCore extends AdminController {
 
             $option->name = $form['name'];
             $option->description = $form['description'];
+            $option->warning = $form['warning'];
             $option->type = $form['type'];
             $option->value = $form['value'];
             $option->active = $form['active'];
