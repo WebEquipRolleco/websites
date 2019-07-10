@@ -28,6 +28,26 @@ class CartController extends CartControllerCore {
     		}
     	}
 
+        // Convertion Rollcash
+        if(Tools::getIsset('use_rollcash')) {
+            $customer = Context::getContext()->cart->getCustomer();
+
+            $rule = new CartRule();
+            $rule->name[1] = "Rollcash";
+            $rule->id_customer = $customer->id;
+            $rule->partial_use = 0;
+            $rule->code = uniqid();
+            $rule->reduction_tax = false;
+            $rule->reduction_amount = $customer->rollcash;
+            $rule->highlight = true;
+            $rule->date_from = date('Y-m-d');
+            $rule->date_to = (date('Y')+1).date('-m-d');
+            $rule->save();
+
+            $customer->rollcash = 0;
+            $customer->save();
+        }
+
     	parent::initContent();
     }
 

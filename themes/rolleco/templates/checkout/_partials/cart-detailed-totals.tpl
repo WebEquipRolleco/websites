@@ -1,7 +1,7 @@
 {block name='cart_detailed_totals'}
   {if $cart.products}
-    <div class="row cart-detailed-totals">
-      <div class="col-xs-12 col-lg-6 offset-lg-6">
+    <div class="cart-detailed-totals">
+      
 
         <table class="table combinations-table">
           <tbody>
@@ -61,7 +61,6 @@
           </tbody>
         </table>
 
-      </div>
     </div>
   {/if}
 {/block}

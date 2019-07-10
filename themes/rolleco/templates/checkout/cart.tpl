@@ -54,8 +54,16 @@
       </div>
     </div>
 
-        {block name='cart_summary'}
+    <div class="row">
 
+      <div class="col-xs-12 col-lg-6">
+        {block name='cart_rollcash'}
+          {include file='checkout/_partials/cart-rollcash.tpl' cart=Context::getContext()->cart}
+        {/block}
+      </div>
+
+      <div class="col-xs-12 col-lg-6">
+        {block name='cart_summary'}
             {block name='hook_shopping_cart'}
               {hook h='displayShoppingCart'}
             {/block}
@@ -69,6 +77,9 @@
             {/block}
 
         {/block}
+      </div>
+
+    </div>
 
         {*block name='hook_reassurance'}
           {hook h='displayReassurance'}

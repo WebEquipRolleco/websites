@@ -13,6 +13,17 @@ use PrestaShop\PrestaShop\Core\Cart\CartRuleData;
 
 class Cart extends CartCore {
 
+    /** Variables temporaires **/
+    private $customer;
+
+    public function getCustomer() {
+
+        if(!$this->customer)
+            $this->customer = new Customer($this->id_customer);
+
+        return $this->customer;
+    }
+
     private function newCalculator($products, $cartRules, $id_carrier)
     {
         $calculator = new Calculator($this, $id_carrier);
