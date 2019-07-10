@@ -18,7 +18,7 @@
     {/foreach}
     {foreach from=OrderOptionCart::findByCart() item=option}
       {if !$option->isValid($product.id_product)}
-        <span class="text-danger"><i class="fa fa-exclamation-triangle"></i> {$option->warning}</span>
+        <div class="text-danger"><i class="fa fa-exclamation-triangle"></i> {$option->warning}</div>
       {/if}
     {/foreach}
   </td>
