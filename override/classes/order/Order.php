@@ -126,6 +126,26 @@ class Order extends OrderCore {
 	}
 
 	/**
+	* Override : Si j'ai des produtis dans ma foutue commande, tu me retournes mes produits bordel de merde
+    * @return array
+    **/
+    public function getCartProducts() {
+    	
+        $product_id_list = array();
+        $products = $this->getProducts();
+        foreach ($products as &$product) {
+            $product['id_product_attribute'] = $product['product_attribute_id'];
+            $product['cart_quantity'] = $product['product_quantity'];
+            $product_id_list[] = $this->id_address_delivery.'_'
+                .$product['product_id'].'_'
+                .$product['product_attribute_id'].'_'
+                .(isset($product['id_customization']) ? $product['id_customization'] : '0');
+        }
+
+        return $products;
+    }
+
+	/**
 	* Retourne les frais de port de la commande
 	**/
 	public function getDeliveryPrice() {

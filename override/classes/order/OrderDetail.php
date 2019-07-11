@@ -45,36 +45,38 @@ class OrderDetail extends OrderDetailCore {
         $this->id_order = $order->id;
         $this->outOfStock = false;
 
-        foreach ($product_list as $product) {
+        foreach ($product_list as $product)
             $this->create($order, $cart, $product, $id_order_state, $id_order_invoice, $use_taxes, $id_warehouse);
-        }
 
-        foreach(OrderOptionCart::findByCart($cart->id) as $option) {
-
-        	$price_ht = $option->getPrice($cart);
-        	$price_ttc = $price_ht * 1.2;
-
-        	$details = new OrderDetail();
-        	$details->id_order = $order->id;
-        	$details->id_order_invoice = $id_order_invoice;
-        	$details->id_warehouse = $id_warehouse;
-        	$details->id_shop = $order->id_shop;
-        	$details->product_name = $option->name;
-        	$details->product_quantity = 1;
-
-        	$details->product_price = $price_ttc;
-        	$details->unit_price_tax_incl = $price_ttc;
-        	$details->unit_price_tax_excl = $price_ht;
-        	$details->total_price_tax_incl = $price_ttc;
-        	$details->total_price_tax_excl = $price_ht;
-        	$details->original_product_price = $price_ttc;
-
-        	$details->save();
-        }
+        foreach(OrderOptionCart::findByCart($cart->id) as $option)
+        	$this->createOption($order, $cart, $option, $id_order_invoice, $id_warehouse);
 
         unset($this->vat_address);
         unset($products);
         unset($this->customer);
+    }
+
+    private function createOption($order, $cart, $option, $id_order_invoice = 0, $id_warehouse = 0) {
+
+    	$price_ht = $option->getPrice($cart);
+        $price_ttc = $price_ht * 1.2;
+
+        $details = new OrderDetail();
+        $details->id_order = $order->id;
+        $details->id_order_invoice = $id_order_invoice;
+        $details->id_warehouse = $id_warehouse;
+        $details->id_shop = $order->id_shop;
+        $details->product_name = $option->name;
+        $details->product_quantity = 1;
+
+		$details->product_price = $price_ttc;
+        $details->unit_price_tax_incl = $price_ttc;
+        $details->unit_price_tax_excl = $price_ht;
+        $details->total_price_tax_incl = $price_ttc;
+        $details->total_price_tax_excl = $price_ht;
+        $details->original_product_price = $price_ttc;
+
+        $details->save();
     }
 
 	/**
