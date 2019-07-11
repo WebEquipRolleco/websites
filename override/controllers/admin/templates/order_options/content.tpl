@@ -15,6 +15,7 @@
 				<tr>
 					<th><b>{l s="ID"}</b></th>
 					<th><b>{l s="Nom"}</b></th>
+					<th class="text-center"><b>{l s="Référence"}</b></th>
 					<th class="text-center"><b>{l s="Type"}</b></th>
 					<th class="text-center"><b>{l s="Valeur"}</b></th>
 					<th class="text-center"><b>{l s="Liste blanche"}</b></th>
@@ -28,6 +29,7 @@
 					<tr>
 						<td>{$option->id}</td>
 						<td>{$option->name}</td>
+						<td class="text-center">{$option->reference|default:'-'}</td>
 						<td class="text-center">{$option->getTypeLabel()}</td>
 						<td class="text-center">{$option->value}</td>
 						<td class="text-center">

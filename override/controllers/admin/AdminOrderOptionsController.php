@@ -68,6 +68,7 @@ class AdminOrderOptionsControllerCore extends AdminController {
         // Enregistrement du formulaire
         if(Tools::isSubmit('save') and $form = Tools::getValue('option')) {
 
+            $option->reference = $form['reference'];
             $option->name = $form['name'];
             $option->description = $form['description'];
             $option->warning = $form['warning'];

@@ -12,7 +12,10 @@ class OrderOptionCore extends ObjectModel {
     const TYPE_PERCENT = 1;
     const TYPE_FLAT = 2;
 
-    /** @var string Day **/
+    /** @var string Reference **/
+    public $reference;
+
+    /** @var string Name **/
 	public $name;
 
     /** @var string Description **/
@@ -43,6 +46,7 @@ class OrderOptionCore extends ObjectModel {
         'table' => self::TABLE_NAME,
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
+            'reference' => array('type'=>self::TYPE_STRING),
             'name' => array('type'=>self::TYPE_STRING, 'validate'=>'isGenericName', 'required' => true),
             'description' => array('type'=>self::TYPE_STRING),
         	'warning' => array('type'=>self::TYPE_STRING),

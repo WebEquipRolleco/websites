@@ -66,6 +66,7 @@ class OrderDetail extends OrderDetailCore {
         $details->id_order_invoice = $id_order_invoice;
         $details->id_warehouse = $id_warehouse;
         $details->id_shop = $order->id_shop;
+        $details->product_reference = $option->reference;
         $details->product_name = $option->name;
         $details->product_quantity = 1;
 

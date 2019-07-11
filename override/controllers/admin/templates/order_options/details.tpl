@@ -17,6 +17,10 @@
 					{l s="Affichage"}
 				</div>
 				<div class="form-group">
+					<label for="reference">{l s="Référence"}</label>
+					<input type="text" class="form-control" name="option[reference]" value="{$option->reference}">
+				</div>
+				<div class="form-group">
 					<label for="name">{l s="Nom"} <em class="text-danger">*</em></label>
 					<input type="text" class="form-control" name="option[name]" value="{$option->name}" required>
 				</div>

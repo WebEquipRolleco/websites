@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `ps_order_state_rule` (
 
 CREATE TABLE IF NOT EXISTS `ps_order_option` (
     `id_order_option` INT NOT NULL AUTO_INCREMENT, 
+    `reference` VARCHAR(30) NULL, 
     `name` VARCHAR(255) NOT NULL, 
     `description` TEXT NULL,
     `warning` TEXT NULL,
