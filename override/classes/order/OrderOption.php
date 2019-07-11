@@ -90,19 +90,24 @@ class OrderOptionCore extends ObjectModel {
     }
 
     /**
-    * Retourne le prix de l'option
+    * Retourne le prix de l'option 
+    * @param Cart $cart
+    * @return float
     **/
-    public function getPrice() {
+    public function getPrice($cart = null) {
 
         if($this->type == self::TYPE_FLAT)
             return $this->value;
 
+        if(!$cart)
+            $cart = Context::getContext()->cart;
+
         $products = array();
-        foreach(Context::getContext()->cart->getProducts() as $product)
+        foreach($cart->getProducts() as $product)
             if($this->isValid($product['id_product']))
                 $products[] = $product;
 
-        $total = Context::getContext()->cart->getOrderTotal(true, CART::ONLY_PRODUCTS, $products);
+        $total = $cart->getOrderTotal(true, CART::ONLY_PRODUCTS, $products);
         if($total and $this->type == self::TYPE_PERCENT)
             return ($total * $this->value) / 100;
 

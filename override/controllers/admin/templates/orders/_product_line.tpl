@@ -98,6 +98,8 @@
 				</span>
 			{/if}
 		</td>
+	{else}
+	 	<td class="productQuantity text-center">{$product['product_quantity']}</td>
 	{/if}
 	{if $stock_management}<td class="productQuantity product_stock text-center">{$product['current_stock']}</td>{/if}
 	<td class="total_product">
