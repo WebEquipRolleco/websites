@@ -20,6 +20,7 @@
 					<th class="text-center"><b>{l s="Valeur"}</b></th>
 					<th class="text-center"><b>{l s="Liste blanche"}</b></th>
 					<th class="text-center"><b>{l s="Liste noire"}</b></th>
+					<th class="text-center"><b>{l s="Boutiques"}</b></th>
 					<th class="text-center"><b>{l s="Statut"}</b></th>
 					<th></th>
 				</tr>
@@ -46,6 +47,14 @@
 								<span class="badge"><b>{$nb_black_list}</b></span>
 							{else}
 								<span class="badge" style="background-color:lightgrey">{$nb_black_list}</span>
+							{/if}
+						</td>
+						<td class="text-center">
+							{assign var=nb_shops value=$option->getShops()|@count}
+							{if $nb_shops}
+								<span class="badge"><b>{$nb_shops}</b></span>
+							{else}
+								<span class="badge" style="background-color:lightgrey">{$nb_shops}</span>
 							{/if}
 						</td>
 						<td class="text-center">

@@ -191,6 +191,13 @@ class OrderOptionCore extends ObjectModel {
     }
 
     /**
+    * Retourne la liste des boutiques de l'option
+    **/
+    public function getShops() {
+        return Db::getInstance()->executeS("SELECT id_shop FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE active = 1");
+    }
+
+    /**
     * Vérifie si l'option est présente dans une boutique
     * @param int $id_shop
     **/
