@@ -45,6 +45,17 @@
 					<label for="active_off">{l s='Inactive' d='Shop.Theme.Labels'}</label>
 					<a class="slide-button btn"></a>
 				</span>
+				{foreach from=Shop::getShops() item=shop}
+					<div class="text-center"><b>{$shop.name}</b></div>
+					<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
+						<input type="radio" name="shops[{$shop.id_shop}]" id="shop_{$shop.id_shop}_on" value="1" {if $option->hasShop($shop.id_shop)}checked{/if}>
+						<label for="shop_{$shop.id_shop}_on">{l s='Active' d='Shop.Theme.Labels'}</label>
+						<input type="radio" name="shops[{$shop.id_shop}]" id="shop_{$shop.id_shop}_off" value="0" {if !$option->hasShop($shop.id_shop)}checked{/if}>
+						<label for="shop_{$shop.id_shop}_off">{l s='Inactive' d='Shop.Theme.Labels'}</label>
+						<a class="slide-button btn"></a>
+					</span>
+					
+				{/foreach}
 			</div>
 			<div class="panel">
 				<div class="panel-heading">

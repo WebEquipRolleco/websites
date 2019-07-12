@@ -77,6 +77,10 @@ class AdminOrderOptionsControllerCore extends AdminController {
             $option->active = $form['active'];
 
             $option->save();
+
+            $option->erazeShops();
+            foreach(Tools::getValue('shops') as $id_shop => $active)
+                $option->addShop($id_shop, $active);
         }
 
         // Ajout produit dans une des listes

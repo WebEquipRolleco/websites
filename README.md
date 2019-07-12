@@ -126,7 +126,13 @@ CREATE TABLE IF NOT EXISTS `ps_order_option` (
     `white_list` TEXT NULL,
     `black_list` TEXT NULL,
     `active` TINYINT DEFAULT 0, 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_order_option`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `ps_order_option_shop` (
+    `id_order_option` INT NOT NULL, 
+    `id_shop` INT NOT NULL, 
+    `active` TINYINT DEFAULT 0
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_order_option_cart` (

@@ -68,10 +68,15 @@ class OrderOptionCore extends ObjectModel {
     /**
     * Retourne la liste des options de commandes
     **/
-    public static function getOrderOptions($active = true) {
+    public static function getOrderOptions($active = true, $id_shop = null) {
 
-        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME;
-        if($active) $sql .= " WHERE active = 1";
+        $sql = "SELECT o.".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." o";
+        
+        if($id_shop)
+            $sql .= " INNER JOIN "._DB_PREFIX_.self::TABLE_NAME."_shop os ON (os.".self::TABLE_PRIMARY." = o.".self::TABLE_PRIMARY." AND os.id_shop = $id_shop AND os.active = 1)";
+
+        if($active) 
+            $sql .= " WHERE o.active = 1";
 
         $data = array();
         $ids = Db::getInstance()->executeS($sql);
@@ -185,4 +190,27 @@ class OrderOptionCore extends ObjectModel {
         return true;
     }
 
+    /**
+    * Vérifie si l'option est présente dans une boutique
+    * @param int $id_shop
+    **/
+    public function hasShop($id_shop) {
+        return (bool)Db::getInstance()->getValue("SELECT active FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_shop = $id_shop AND ".self::TABLE_PRIMARY." = ".$this->id);
+    }
+
+    /**
+    * Efface les boutiques pour l'option en cours
+    **/
+    public function erazeShops() {
+        Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE ".self::TABLE_PRIMARY." = ".$this->id);
+    }
+
+    /**
+    * Ajoute une boutique pour l'option en cours
+    * @param int $id_shop
+    * @param bool|null $active
+    **/
+    public function addShop($id_shop, $active = 1) {
+        Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.self::TABLE_NAME."_shop VALUES(".$this->id.", $id_shop, ".(int)$active.")");
+    }
 }

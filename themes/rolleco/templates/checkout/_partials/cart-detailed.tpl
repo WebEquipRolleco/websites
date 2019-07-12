@@ -1,5 +1,5 @@
 {assign var=quotation_lines value=QuotationAssociation::getCartLines(Context::getContext()->cart->id)}
-{assign var=option_lines value=OrderOption::getOrderOptions()}
+{assign var=option_lines value=OrderOption::getOrderOptions(true, Context::getContext()->shop->id)}
 
 {block name='cart_detailed_product'}
   <div class="cart-overview js-cart" data-refresh-url="{url entity='cart' params=['ajax' => true, 'action' => 'refresh']}">
