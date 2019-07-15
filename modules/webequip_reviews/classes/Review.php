@@ -8,11 +8,12 @@ class Review extends ObjectModel {
 	public $id = null;
 	public $id_product = null;
 	public $id_shop = null;
+	public $name = null;
 	public $comment = null;
-	public $rating = null;
+	public $rating = 5;
 	public $id_customer = null;
 	public $date_add = null;
-	public $active = true;
+	public $active = false;
 
 	private $customer;
 
@@ -22,6 +23,7 @@ class Review extends ObjectModel {
         'fields' => array(
         	'id_product' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
         	'id_shop' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 1),
+            'name' => array('type' => self::TYPE_STRING),
             'comment' => array('type' => self::TYPE_HTML),
             'rating' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 1),
             'id_customer' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
@@ -31,10 +33,11 @@ class Review extends ObjectModel {
     );
 
     public static function createTable() {
-    	return Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME." (
+    	Db::getInstance()->execute("CREATE TABLE IF NOT EXISTS "._DB_PREFIX_.self::TABLE_NAME." (
     		`id` INT NOT NULL AUTO_INCREMENT, 
     		`id_product` INT(11) NOT NULL, 
     		`id_shop` INT(1) NOT NULL, 
+    		`name` VARCHAR(255) NULL, 
     		`comment` TEXT NULL, 
     		`rating` INT(1) NOT NULL, 
     		`id_customer` INT(11) NOT NULL, 
@@ -97,4 +100,24 @@ class Review extends ObjectModel {
     	return $data;
     }
 
+    /**
+    * Retrouve un avis pour un client et un produit donné ou en crée un
+    **/
+    public static function find($id_customer, $id_product, $id_shop = null) {
+
+    	if(!$id_shop)
+    		$id_shop = Context::getContext()->shop->id;
+
+    	$id = Db::getInstance()->getValue("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND id_product = $id_product");
+    	$review = new self($id);
+
+    	$review->id_customer = $id_customer;
+    	$review->id_product = $id_product;
+    	$review->id_shop = $id_shop;
+
+    	if(!$review->id)
+    		$review->date_add = date('Y-m-d H:i:s');
+
+    	return $review;
+    }
 }

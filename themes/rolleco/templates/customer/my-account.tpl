@@ -47,6 +47,7 @@
 
       {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('QuotationList') icon='calculator' text='Mes devis'}
       {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('AfterSales') icon='comments' text='Service après vente'}
+      {*include file='customer/_partials/account-link.tpl' url=$link->getModuleLink('webequip_reviews', 'account') icon='star' text='Mes avis'*}
 
       {block name='display_customer_account'}
         {hook h='displayCustomerAccount'}

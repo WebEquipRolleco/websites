@@ -23,7 +23,7 @@ class Webequip_reviews extends Module {
 
     public function install() {
     	Review::createTable();
-        return (parent::install() && $this->registerHook('displayProductAfterTitle') && $this->registerHook('displayFooterProduct'));
+        return (parent::install() and $this->registerHook('displayProductAfterTitle') and $this->registerHook('displayFooterProduct') and $this->registerHook('displayCustomerAccount'));
     }
 
     public function hookDisplayProductAfterTitle($params) {
@@ -41,6 +41,16 @@ class Webequip_reviews extends Module {
     	$this->context->smarty->assign('rating', Review::getAvgRating($params['product']['id_product']));
     	$this->context->smarty->assign('reviews', Review::getReviews($params['product']['id_product']));
     	return $this->display(__FILE__, 'reviews.tpl');
+    }
+
+    public function hookDisplayCustomerAccount($params) {
+
+        $link = new Link();
+        $this->context->smarty->assign('url', $link->getModuleLink($this->name, 'account'));
+        $this->context->smarty->assign('icon', 'star');
+        $this->context->smarty->assign('text', "Mes avis");
+
+        return $this->fetch(_PS_THEME_DIR_."templates/customer/_partials/account-link.tpl");
     }
 
 }

@@ -218,4 +218,12 @@ class Order extends OrderCore {
 		return (int)Db::getInstance()->getValue($sql);
 	}
 
+	/**
+	* Retourne la liste des produits commandés par un client
+	* @param int $id_customer
+	* @return array
+	**/
+	public static function findOrderedProducts($id_customer) {
+		return Db::getInstance()->executeS("SELECT DISTINCT(l.id_product), l.name FROM ps_orders o, ps_order_detail d, ps_product_lang l WHERE o.id_order = d.id_order AND d.product_id = l.id_product AND o.id_customer = $id_customer");
+	}
 }
