@@ -157,7 +157,7 @@ class Webequip_Configuration extends Module {
         $tabs[3]['children'][] = array('name'=>"Iconographie", 'id'=>$this->isTabInstalled("AdminIconography"), 'action'=>'ICONOGRAPHY');
 
         // Configuration footer
-        $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ');
+        $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ', 'MENU_FORCED_FONT_SIZE');
         foreach($links as $name) {
 
             if(Tools::getIsset($name))
