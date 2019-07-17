@@ -62,6 +62,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminOrderStateRules"))
             $check .= $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
         
+        if(!isTabInstalled('AdminLatePayments'))
+            $check .= $this->installTab("Facture impayées", "AdminLatePayments", "AdminParentOrders");
+
         if(!isTabInstalled("AdminDocuments"))
             $check .= $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'file');
 
@@ -98,6 +101,10 @@ class Webequip_Configuration extends Module {
 
             case 'STATE_RULES':
                 $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
+            break;
+
+            case 'LATE_PAYMENT':
+                $this->installTab("Facture impayées", "AdminLatePayments", "AdminParentOrders");
             break;
 
             case 'QUOTATIONS':
@@ -139,6 +146,7 @@ class Webequip_Configuration extends Module {
         $tabs[0] = array('name'=>'VENDRE');
         $tabs[0]['children'][] = array('name'=>"Régles de redirection", 'id'=>$this->isTabInstalled("AdminOrderStateRules"), 'action'=>'STATE_RULES');
         $tabs[0]['children'][] = array('name'=>"Devis", 'id'=>$this->isTabInstalled("AdminQuotations"), 'action'=>'QUOTATIONS');
+        $tabs[0]['children'][] = array('name'=>"Facture impayées", 'id'=>$this->isTabInstalled("AdminLatePayments"), 'action'=>'LATE_PAYMENT');
 
         $tabs[1] = array('name'=>"WEB-EQUIP", 'id'=>$this->isTabInstalled('WEBEQUIP'), 'action'=>'WEBEQUIP');
         $tabs[1]['children'][] = array('name'=>'Coordonnées', 'id'=>$this->isTabInstalled('AdminContactInformation'), 'action'=>'CONTACTS');
