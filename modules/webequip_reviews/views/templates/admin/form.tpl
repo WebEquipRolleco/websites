@@ -34,6 +34,9 @@
 			</div>
 		</div>
 		<div class="panel-footer text-right">
+			<a href="{$action}" class="btn btn-default">
+				<i class="process-icon-cancel"></i> <b>{l s="Cancel" d='Shop.Theme.Actions'}</b>
+			</a>
 			<button type="submit" class="btn btn-success">
 				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
 			</button>
