@@ -64,7 +64,7 @@ class Review extends ObjectModel {
 		if(!$id_shop)
 			$id_shop = Context::getContext()->cart->id_shop;
 
-		return Db::getInstance()->getValue("SELECT COUNT(rating) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_product = $id_product AND id_shop = $id_shop");
+		return Db::getInstance()->getValue("SELECT COUNT(rating) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_product = $id_product AND id_shop = $id_shop AND active = 1");
 	}
 
 	public static function getAvgRating($id_product, $id_shop = null) {
@@ -72,7 +72,7 @@ class Review extends ObjectModel {
 		if(!$id_shop)
 			$id_shop = Context::getContext()->cart->id_shop;
 
-		return round(Db::getInstance()->getValue("SELECT AVG(rating) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_product = $id_product AND id_shop = $id_shop"));
+		return round(Db::getInstance()->getValue("SELECT AVG(rating) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_product = $id_product AND id_shop = $id_shop AND active = 1"));
 	}
 
 	public static function getReviews($id_product, $id_shop = null) {
@@ -81,7 +81,7 @@ class Review extends ObjectModel {
 			$id_shop = Context::getContext()->cart->id_shop;
 
 		$data = array();
-		$rows = Db::getInstance()->executeS("SELECT id FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_product = $id_product AND id_shop = $id_shop");
+		$rows = Db::getInstance()->executeS("SELECT id FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_product = $id_product AND id_shop = $id_shop AND active = 1");
 		foreach($rows as $row) {
 			$data[] = new Review($row['id']);
 		}
@@ -89,10 +89,15 @@ class Review extends ObjectModel {
 		return $data;
 	}
 
-    public static function findAll() {
+    public static function findAll($options = array()) {
+
+        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE 1";
+
+        if(isset($options['active']))
+            $sql .= " AND active = ".$options['active'];
 
     	$data = array();
-    	$rows = Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME);
+    	$rows = Db::getInstance()->executeS($sql);
 
     	foreach($rows as $row)
     		$data[] = new Review($row['id']);
@@ -101,7 +106,19 @@ class Review extends ObjectModel {
     }
 
     /**
+    * Retourne tous les avis sous forme de tableau
+    * @return array
+    **/
+    public static function findList() {
+       return Db::getInstance()->executeS("SELECT r.*, CONCAT(c.firstname, ' ', c.lastname) AS customer FROM "._DB_PREFIX_.self::TABLE_NAME." r, ps_customer c WHERE r.id_customer = c.id_customer"); 
+    }
+
+    /**
     * Retrouve un avis pour un client et un produit donné ou en crée un
+    * @param int $id_customer
+    * @param int $id_product
+    * @param int|null $id_shop
+    * @return Review
     **/
     public static function find($id_customer, $id_product, $id_shop = null) {
 
@@ -120,4 +137,5 @@ class Review extends ObjectModel {
 
     	return $review;
     }
+    
 }

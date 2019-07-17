@@ -53,4 +53,88 @@ class Webequip_reviews extends Module {
         return $this->fetch(_PS_THEME_DIR_."templates/customer/_partials/account-link.tpl");
     }
 
+    /**
+    * Configuration du module
+    **/
+    public function getContent() {
+
+        if($form = Tools::getValue('review')) {
+            $review = new Review(Tools::getValue('id_review'));
+
+            $review->name = $form['name'];
+            $review->comment = $form['comment'];
+            $review->rating = $form['rating'];
+            $review->active = $form['active'];
+
+            $review->save();
+        }
+
+        if(Tools::getIsset('updateReview'))
+            return $this->renderForm();
+        else
+            return $this->renderList(); 
+    }
+
+    /**
+    * Affiche la liste des avis
+    **/
+    public function renderList() {
+
+        $fields_list = array(
+            Review::TABLE_PRIMARY => array(
+                'title' => $this->trans('ID', array(), 'Admin.Global'),
+            ),
+            'name' => array(
+                'title' => $this->trans('Produit', array(), 'Admin.Global'),
+            ),
+            'comment' => array(
+                'title' => $this->trans('Commentaire', array(), 'Admin.Global'),
+            ),
+            'comment' => array(
+                'title' => $this->trans('Commentaire', array(), 'Admin.Global'),
+            ),
+            'customer' => array(
+                'title' => $this->trans('Client', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'rating' => array(
+                'title' => $this->trans('Note', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'active' => array(
+                'title' => $this->trans('Actif', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'active' => 'status'
+            ),
+
+        );
+
+        $helper_list = new HelperList();
+        $helper_list->module = $this;
+        $helper_list->title = $this->trans('Avis clients', array(), 'Modules.webequip_reviews.Admin');
+        $helper_list->shopLinkType = '';
+        $helper_list->no_link = true;
+        $helper_list->show_toolbar = true;
+        $helper_list->simple_header = false;
+        $helper_list->identifier = 'id';
+        $helper_list->table = 'Review';
+        $helper_list->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name;
+        $helper_list->token = Tools::getAdminTokenLite('AdminModules');
+        $helper_list->actions = array('edit');
+
+        /* Retrieve list data */
+        $reviews = Review::findList();
+        $helper_list->listTotal = count($reviews);
+
+        return $helper_list->generateList($reviews, $fields_list);
+    }
+
+    public function renderForm() {
+
+        $this->context->smarty->assign('action', $this->context->link->getAdminLink('AdminModules').'&configure='.$this->name);
+        $this->context->smarty->assign('review', new Review(Tools::getValue('id')));
+        return $this->display(__FILE__, 'views/templates/admin/form.tpl');
+    }
+
 }
