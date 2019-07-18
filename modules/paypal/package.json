@@ -1,0 +1,24 @@
+{
+  "name": "paypal",
+  "version": "4.5.0",
+  "description": "PayPal & Braintree official Module",
+  "directories": {
+    "doc": "202/doc"
+  },
+  "scripts": {
+    "doc-build": "stylemark -i 202/doc -o 202/build/doc -c 202/doc/config.yml",
+    "doc-watch": "stylemark -i 202/doc -o 202/build/doc -c 202/doc/config.yml -w -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/202-ecommerce/paypal/"
+  },
+  "keywords": [
+    "PayPal",
+    "Braintree"
+  ],
+  "homepage": "https://github.com/",
+  "devDependencies": {
+    "stylemark": "^3.0.3"
+  }
+}
