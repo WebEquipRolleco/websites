@@ -16,10 +16,14 @@ class OrderHistory extends OrderHistoryCore {
         $state = new OrderState($new_order_state);
         if($state->rollcash) {
 
-            $order = new Order($id_order);
+            if(is_int($id_order))
+                $order = new Order($id_order);
+            else
+                $order = $id_order;
+
             foreach($order->getDetails() as $details) {
 
-                $rate += Product::findRollcash($details->product_id, $details->product_attribute_id);
+                $rate = Product::findRollcash($details->product_id, $details->product_attribute_id);
                 if($rate) {
                     $rollcash = ($details->total_price_tax_excl * $rate) / 100;
                     $order->getCustomer()->rollcash += round($rollcash, 2);

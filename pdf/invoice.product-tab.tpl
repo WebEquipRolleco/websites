@@ -19,12 +19,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{assign var=total_ht value=0}
 		{foreach $order_details as $details}
-			{assign var=total_ht value=($total_ht + $details.$details.unit_price_tax_excl_including_ecotax)}
 			<tr>
 				<td style="text-align:center">
-					<b>{$details.roduct_reference|default:'-'}</b>
+					<b>{$details.product_reference|default:'-'}</b>
 				</td>
 				<td style="text-align:center">
 					{$details.product_name|replace:'||':'<br />'} 
@@ -47,7 +45,7 @@
 				{l s="Total"|upper}
 			</td>
 			<td style="text-align:center">
-				{Tools::displayPrice($total_ht)}
+				{Tools::displayPrice($order->getTotalProductsWithoutTaxes())}
 			</td>
 		</tr>
 	</tfoot>	

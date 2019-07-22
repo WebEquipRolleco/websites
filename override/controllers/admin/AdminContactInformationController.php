@@ -34,6 +34,7 @@ class AdminContactInformationControllerCore extends AdminController {
 		$data[2]['Information légales'] = array(
 			array('label'=>'RIB', 'name'=>'PS_SHOP_RIB'),
 			array('label'=>'IBAN', 'name'=>'PS_SHOP_IBAN'),
+			array('label'=>'CIC', 'name'=>'PS_SHOP_CIC'),
 			array('label'=>'BIC', 'name'=>'PS_SHOP_BIC'),
 			array('label'=>'SIRET', 'name'=>'PS_SHOP_SIRET'),
 			array('label'=>'TVA', 'name'=>'PS_SHOP_TVA'),
