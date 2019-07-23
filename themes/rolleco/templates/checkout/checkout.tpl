@@ -93,6 +93,7 @@
 
     {block name='javascript_bottom'}
       {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
+      <script type="text/javascript" src="/themes/rolleco/assets/js/registration.js"></script>
     {/block}
 
     {block name='hook_before_body_closing_tag'}

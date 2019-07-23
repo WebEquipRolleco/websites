@@ -25,10 +25,10 @@
 
   {else}
 
-    <ul class="nav nav-inline my-2" role="tablist">
+    {*<ul class="nav nav-inline my-2" role="tablist">
       <li class="nav-item">
         <a
-          class="nav-link {if !$show_login_form}active{/if}"
+          class="btn btn-default nav-link {if !$show_login_form}active{/if}"
           data-toggle="tab"
           href="#checkout-guest-form"
           role="tab"
@@ -44,12 +44,8 @@
       </li>
 
       <li class="nav-item">
-        <span href="nav-separator"> | </span>
-      </li>
-
-      <li class="nav-item">
         <a
-          class="nav-link {if $show_login_form}active{/if}"
+          class="btn btn-default nav-link {if $show_login_form}active{/if}"
           data-link-action="show-login-form"
           data-toggle="tab"
           href="#checkout-login-form"
@@ -69,8 +65,30 @@
       <div class="tab-pane {if $show_login_form}active{/if}" id="checkout-login-form" role="tabpanel" {if !$show_login_form}aria-hidden="true"{/if}>
         {render file='checkout/_partials/login-form.tpl' ui=$login_form}
       </div>
-    </div>
+    </div>*}
 
+    <div class="row">
+
+        <div class="col-lg-12 top-space">
+          <div class="well">
+            <b class="text-info">
+              <i class="fa fa-lock"></i>
+              &nbsp; {l s="Déjà client chez Rolléco.fr ? Connectez vous !" d='Shop.Theme.Customeraccount'}
+            </b>
+          </div>
+          {render file='checkout/_partials/login-form.tpl' ui=$login_form}
+        </div>
+
+        <div class="col-lg-12 top-space">
+          <div class="well">
+            <b class="text-info">
+              <i class="fa fa-user"></i>
+              &nbsp; {l s="Première commande ? Créez un compte !" d='Shop.Theme.Customeraccount'}
+            </b>
+          </div>
+        </div>
+        {render file='checkout/_partials/customer-form.tpl' ui=$register_form guest_allowed=$guest_allowed}
+    </div>
 
   {/if}
 {/block}

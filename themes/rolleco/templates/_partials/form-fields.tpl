@@ -38,7 +38,7 @@
         </option>
       {/foreach}
     </select>
-    <hr />
+    <hr style="margin-top:15px; margin-bottom:15px;" />
   </div>
 
 {else}
