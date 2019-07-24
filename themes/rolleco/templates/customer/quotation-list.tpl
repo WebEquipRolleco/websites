@@ -23,26 +23,28 @@
 		<tbody>
 			{foreach from=$quotations item=quotation}
 				<tr>
-					<td><b>{$quotation->reference}</b></td>
-					<td>
+					<td {if $quotation->new}class="bg-warning"{/if}>
+						<b>{$quotation->reference}</b>
+					</td>
+					<td {if $quotation->new}class="bg-warning"{/if}>
 						<span class="label bg-{$quotation->getStatusClass()} btn-block text-center">
 							{$quotation->getStatusLabel()}
 						</span>
 					</td>
-					<td class="text-center">
+					<td class="text-center {if $quotation->new}bg-warning{/if}">
 						{$quotation->getProducts()|count}
 					</td>
-					<td class="text-center">
+					<td class="text-center {if $quotation->new}bg-warning{/if}">
 						{Tools::displayPrice($quotation->getPrice())}
 					</td>
-					<td class="text-center">
+					<td class="text-center {if $quotation->new}bg-warning{/if}">
 						{if $quotation->date_end}
 							{$quotation->date_end|date_format:'d/m/Y'}
 						{else}
 							-
 						{/if}
 					</td>
-					<td class="text-center">
+					<td class="text-center {if $quotation->new}bg-warning{/if}">
 						<div class="btn-group">
 							<a href="{$link->getPageLink('QuotationDetail')}?reference={$quotation->reference}" class="btn btn-xs btn-default" title="{l s='Voir le devis'}">
 								<span class="fa fa-edit"></span>
