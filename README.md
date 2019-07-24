@@ -180,6 +180,8 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotations` (
     `details` TEXT NULL, 
     `id_employee` INTEGER(11) NULL,
     `active` TINYINT(1) NULL,
+    `new` TINYINT(1) NULL,
+    `hightlight` TINYINT(1) NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 

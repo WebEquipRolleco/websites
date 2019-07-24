@@ -138,6 +138,26 @@
 						<label for="details">{l s="Information client" mod='webequip_quotation'}</label>
 						<textarea rows="5" name="quotation[details]" id="details" class="form-control">{$quotation->details}</textarea>
 					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px" title="{l s='Le client verra sont devis en tant que nouveauté jusqu\'à son ouverture.'}">
+								<input type="radio" name="quotation[new]" id="new_on" value="1" {if $quotation->new}checked{/if}>
+								<label for="new_on">{l s='Nouveau' d='Shop.Theme.Labels'}</label>
+								<input type="radio" name="quotation[new]" id="new_off" value="0" {if !$quotation->new}checked{/if}>
+								<label for="new_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+								<a class="slide-button btn"></a>
+							</span>
+						</div>
+						<div class="col-lg-6">
+							<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px" title="{l s='Le devis sera mis en valeur pour attirer l\'attention du client.'}">
+								<input type="radio" name="quotation[highlight]" id="highlight_on" value="1" {if $quotation->highlight}checked{/if}>
+								<label for="highlight_on">{l s='Valoriser' d='Shop.Theme.Labels'}</label>
+								<input type="radio" name="quotation[highlight]" id="highlight_off" value="0" {if !$quotation->highlight}checked{/if}>
+								<label for="highlight_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+								<a class="slide-button btn"></a>
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

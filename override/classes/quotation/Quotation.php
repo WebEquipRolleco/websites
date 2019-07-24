@@ -31,6 +31,8 @@ class Quotation extends ObjectModel {
     public $details;
     public $id_employee;
     public $active = 1;
+    public $new = 1;
+    public $highlight = 0;
 
 	public static $definition = array(
         'table' => self::TABLE_NAME,
@@ -51,7 +53,9 @@ class Quotation extends ObjectModel {
             'comment' => array('type' => self::TYPE_STRING),
             'details' => array('type' => self::TYPE_STRING),
             'id_employee' => array('type' => self::TYPE_INT),
-            'active' => array('type' => self::TYPE_BOOL)
+            'active' => array('type' => self::TYPE_BOOL),
+            'new' => array('type' => self::TYPE_BOOL),
+            'highlight' => array('type' => self::TYPE_BOOL)
         ),
     );
 
@@ -136,12 +140,34 @@ class Quotation extends ObjectModel {
     }
 
     /**
-    * Retourne le label de l'état courant du devis
+    * Retourne la liste des labels des origines possibles des devis
+    **/
+    public static function getOriginClasses() {
+
+        $data[self::ORIGIN_MAIL] = "envelope";
+        $data[self::ORIGIN_PHONE] = "phone";
+        $data[self::ORIGIN_FAX] = "fax";
+        $data[self::ORIGIN_OTHERS] = "question";
+
+        return $data;
+    }
+
+    /**
+    * Retourne le label de l'origine du devis
     **/
     public function getOriginLabel() {
 
         $origins = self::getOrigins();
         return isset($origins[$this->origin]) ? $origins[$this->origin] : null;
+    }
+
+    /**
+    * Retourne la class de l'origine du devis
+    **/
+    public function getOriginClass() {
+
+        $classes = self::getOriginClasses();
+        return isset($classes[$this->origin]) ? $classes[$this->origin] : null;
     }
 
     /**
@@ -242,6 +268,19 @@ class Quotation extends ObjectModel {
             $data[] = new Quotation($row['id']);
 
         return $data;
+    }
+
+    /**
+    * Retourne le nombre de nouveau devis d'un client
+    * @param int|null $id_customer
+    * @return int
+    **/
+    public static function countNew($id_customer = null) {
+
+        if(!$id_customer)
+            return 0;
+
+        return Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND new = 1");
     }
 
 }

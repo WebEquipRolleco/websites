@@ -23,6 +23,7 @@
 						<th class="text-center"><b>{l s='Client' d='Shop.Theme.Labels'}</b></th>
 						<th class="text-center"><b>{l s='Créateur' d='Shop.Theme.Labels'}</b></th>
 						<th class="text-center"><b>{l s='date de création' d='Shop.Theme.Labels'}</b></th>
+						<th class="text-center"><b>{l s='Provenance' d='Shop.Theme.Labels'}</b></th>
 						<th class="text-center"><b>{l s='Statut' d='Shop.Theme.Labels'}</b></th>
 						<th></th>
 					</tr>
@@ -57,6 +58,7 @@
 						<th>
 							<input type="date" id="search_date" class="form-control">
 						</th>
+						<th></th>
 						<th></th>
 						<th class="text-right">
 							<button type="button" id="eraze" class="btn btn-default" title="{l s='Effacer' d='Shop.Theme.Actions'}">

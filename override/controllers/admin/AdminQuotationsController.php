@@ -63,7 +63,9 @@ class AdminQuotationsController extends AdminController {
 			    $quotation->details = $form['details'];
 			    $quotation->id_employee = $form['id_employee'];
 			    $quotation->active = $form['active'];
-
+                $quotation->new = $form['new'];
+                $quotation->highlight = $form['highlight'];
+                
                 if(!$quotation->id)
                     $quotation->date_add = date('Y-m-d H:i:s');
 

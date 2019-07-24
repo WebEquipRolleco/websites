@@ -110,6 +110,7 @@
       {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
     {/block}
 
+    <script src="https://kit.fontawesome.com/fb09bc8742.js"></script>
     <script type="text/javascript" src="/themes/_libraries/iziModal/js/iziModal.js"></script>
     <script type="text/javascript" src="/themes/rolleco/assets/js/newsletter.js"></script>
     {block name="custom_js"}{/block}

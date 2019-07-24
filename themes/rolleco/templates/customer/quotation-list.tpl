@@ -44,7 +44,7 @@
 					</td>
 					<td class="text-center">
 						<div class="btn-group">
-							<a href="?reference={$quotation->reference}" class="btn btn-xs btn-default" title="{l s='Voir le devis'}">
+							<a href="{$link->getPageLink('QuotationDetail')}?reference={$quotation->reference}" class="btn btn-xs btn-default" title="{l s='Voir le devis'}">
 								<span class="fa fa-edit"></span>
 							</a>
 							{if $quotation->isValid()}

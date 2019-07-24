@@ -16,6 +16,17 @@
 		<td class="text-center">{$quotation->getEmployee()->firstname} {$quotation->getEmployee()->lastname}</td>
 		<td class="text-center">{$quotation->date_add|date_format:'d/m/Y'}</td>
 		<td class="text-center">
+			{if $quotation->origin}
+				<i class="icon-{$quotation->getOriginClass()}" title="{$quotation->getOriginLabel()}"></i>
+			{/if}
+		</td>
+		<td class="text-center">
+			{if $quotation->new}
+				<i class="icon-star" style="color:#ffd24a" title="{l s='Nouveau' d='Shop.Theme.Labels'}"></i>
+			{/if}
+			{if $quotation->highlight}
+				<i class="icon-asterisk text-danger" title="{l s='Mis en valeur' d='Shop.Theme.Labels'}"></i>
+			{/if}
 			{if $quotation->active}
 				<span class="label label-success"><i class="icon-check"></i></span>
 			{else}

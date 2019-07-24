@@ -52,6 +52,13 @@
                 <a href="{$link->getPageLink('QuotationRegistration')}">
                   {l s="Demander votre devis"}
                 </a>
+                {assign var=nb_quotations value=Quotation::countNew(Context::getContext()->customer->id)}
+                {if $nb_quotations}
+                  &nbsp;
+                  <a href="{$link->getPageLink('QuotationList')}" title="{l s='Vous avez %s nouveau(x) devis' sprintf=[$nb_quotations]}">
+                    <i class="fa fa-exclamation" style="background-color:#d5121d; color:white; padding:5px"></i>
+                  </a>
+                {/if}
               </div>
             </div>
 

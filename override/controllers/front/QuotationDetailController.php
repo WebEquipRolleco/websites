@@ -5,10 +5,11 @@ class QuotationDetailControllerCore extends FrontController {
 	/**
     * @see FrontController::initContent()
     **/
-    public function Account() {
+    public function initContent() {
         parent::initContent();
 
         $link = new Link();
+        $reference = Tools::getValue('reference');
 
         $data['count'] = 3;
         $data['links'][] = array('url'=>'/', 'title'=>'Accueil');
@@ -16,10 +17,9 @@ class QuotationDetailControllerCore extends FrontController {
         $data['links'][] = array('title'=>$reference);
 
         // Ajouter un devis au panier
-        $reference = Tools::getValue('accept');
-        if($reference) {
+        if($accept_reference = Tools::getValue('accept')) {
 
-            $quotation = Quotation::findByReference($reference);
+            $quotation = Quotation::findByReference($accept_reference);
             if($quotation->id) {
 
                 foreach($quotation->getProducts() as $line)
@@ -27,11 +27,11 @@ class QuotationDetailControllerCore extends FrontController {
             }
 
         }
-        // Refuser un devis
-        $reference = Tools::getValue('refuse');
-        if($reference) {
 
-            $quotation = Quotation::findByReference($reference);
+        // Refuser un devis
+        if($refuse_reference = Tools::getValue('refuse')) {
+
+            $quotation = Quotation::findByReference($refuse_reference);
             if($quotation->id) {
 
                 $quotation->status = Quotation::STATUS_REFUSED;
@@ -39,13 +39,16 @@ class QuotationDetailControllerCore extends FrontController {
             }
         }
 
-        $reference = Tools::getValue('reference');
+        $quotation = Quotation::findByReference($reference);
+        if($quotation->new) {
 
+            $quotation->new = false;
+            $quotation->save();
+        }
         
-
         $this->context->smarty->assign('breadcrumb', $data);
-        $this->context->smarty->assign('quotation', Quotation::findByReference($reference));
-        $this->setTemplate('account/quotation-detail');
+        $this->context->smarty->assign('quotation', $quotation);
+        $this->setTemplate('customer/quotation-detail');
     }
 
     public function cronTask() {
