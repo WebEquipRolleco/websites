@@ -11,9 +11,14 @@ class QuotationListControllerCore extends FrontController {
         $data['count'] = 2;
         $data['links'][] = array('url'=>'/', 'title'=>'Accueil');
 
+        // Téléchargement d'un devis
+        if($reference = Tools::getValue('download')) {
+            $pdf = new PDF(array('quotation'=>Quotation::findByReference($reference)), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
+            die($pdf->render());
+        }
+
         // Ajouter un devis au panier
-        $reference = Tools::getValue('accept');
-        if($reference) {
+        if($reference = Tools::getValue('accept')) {
 
             $quotation = Quotation::findByReference($reference);
             if($quotation->id) {
@@ -23,9 +28,9 @@ class QuotationListControllerCore extends FrontController {
             }
 
         }
+
         // Refuser un devis
-        $reference = Tools::getValue('refuse');
-        if($reference) {
+        if($reference = Tools::getValue('refuse')) {
 
             $quotation = Quotation::findByReference($reference);
             if($quotation->id) {

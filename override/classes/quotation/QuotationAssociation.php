@@ -57,7 +57,7 @@ class QuotationAssociation extends ObjectModel {
         if($id_cart) {
             $rows = Db::getInstance()->executeS("SELECT * FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_cart = ".$id_cart);
             foreach($rows as $row)
-        	   $data[] = new QuotationLine($row[self::TABLE_PRIMARY]);
+        	   $data[] = new QuotationLine($row['id_line']);
         }
         
     	return $data;

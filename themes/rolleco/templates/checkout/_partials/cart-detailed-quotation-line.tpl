@@ -3,7 +3,12 @@
 		<img src="{$line->getImageLink()}" class="cart-image">
 	</td>
 	<td>
-		{$line->name}
+		{if $line->information}
+			<div class="bold">{$line->name}</div>
+			<em class="text-muted">{$line->information}</em>
+		{else}
+			{$line->name}
+		{/if}
 	</td>
 	<td class="cart_reference text-center">
 		{$line->reference}

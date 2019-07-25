@@ -12,8 +12,8 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 		// footer informations
 		$this->display_footer = false;
 
-		$this->smarty->assign('header_mail', Configuration::getForOrder('PS_TEAM_PHONE', $this->order));
-		$this->smarty->assign('header_phone', Configuration::getForOrder('PS_TEAM_EMAIL', $this->order));
+		$this->smarty->assign('header_mail', Configuration::get('PS_TEAM_PHONE'));
+		$this->smarty->assign('header_phone', Configuration::get('PS_TEAM_EMAIL'));
 	}
 
 	/**

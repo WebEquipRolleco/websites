@@ -50,18 +50,18 @@
 								<span class="fa fa-edit"></span>
 							</a>
 							{if $quotation->isValid()}
-								<button type="button" class="btn btn-xs btn-default" title="{l s='Télécharger au format PDF'}">
+								<a href="{$link->getPageLink('QuotationList')}?download={$quotation->reference}" target="_blank" class="btn btn-xs btn-default" title="{l s='Télécharger au format PDF'}">
 									<span class="fa fa-download"></span>
-								</button>
+								</a>
 							{/if}
 						</div>
 						{if $quotation->isValid()}
 							&nbsp;
 							<div class="btn-group">
-								<a href="?accept={$quotation->reference}" class="btn btn-xs btn-success" title="{l s='Ajouter au panier'}">
+								<a href="{$link->getPageLink('QuotationList&accept='|cat:$quotation->reference)}" class="btn btn-xs btn-success" title="{l s='Ajouter au panier'}">
 									<span class="fa fa-cart-plus"></span>
 								</a>
-								<a href="?refuse={$quotation->reference}" class="btn btn-xs btn-danger" title="{l s='Refuser le devis'}">
+								<a href="{$link->getPageLink('QuotationList')}?refuse={$quotation->reference}" class="btn btn-xs btn-danger" title="{l s='Refuser le devis'}">
 									<span class="fa fa-ban"></span>
 								</a>
 							</div>
