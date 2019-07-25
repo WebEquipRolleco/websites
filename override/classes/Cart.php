@@ -171,4 +171,26 @@ class Cart extends CartCore {
         return Tools::ps_round($value, $compute_precision);
     }
 
+    /**
+    * OVERRIDE : prendre en compte les devis
+    **/
+    public static function getNbProducts($id) {
+
+        // Must be strictly compared to NULL, or else an empty cart will bypass the cache and add dozens of queries
+        if (isset(self::$_nbProducts[$id]) && self::$_nbProducts[$id] !== null) {
+            return self::$_nbProducts[$id];
+        }
+
+        self::$_nbProducts[$id] = (int)Db::getInstance()->getValue(
+            'SELECT SUM(`quantity`)
+            FROM `'._DB_PREFIX_.'cart_product`
+            WHERE `id_cart` = '.(int)$id
+        );
+
+        $quotations_lines = QuotationAssociation::getCartLines($id);
+        self::$_nbProducts[$id] += count($quotations_lines);
+        
+        return self::$_nbProducts[$id];
+    }
+
 }
