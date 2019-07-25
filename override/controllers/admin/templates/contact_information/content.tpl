@@ -27,8 +27,13 @@
 						</div>
 						{foreach from=$fields item=field}
 							<div class="form-group top-5">
-								<label>{$field.label}</label>
-								<input type="text" class="form-control large" name="{$field.name}" value="{Configuration::get($field.name)}" autocomplete="off">
+								<label for="{$field.name}">{$field.label}</label>
+								<input type="text" id="{$field.name}" class="form-control large" name="{$field.name}" value="{Configuration::get($field.name)}" autocomplete="off">
+								{if isset($field.help)}
+									<div class="text-muted text-right">
+										<em>{$field.help}</em>
+									</div>
+								{/if}
 							</div>
 						{/foreach}
 					</div>
