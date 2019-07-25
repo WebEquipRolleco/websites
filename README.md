@@ -8,7 +8,8 @@ git remote add preprod root@ns336802.cubeo.fr:/var/www/devrolleco/rolleco.git
 ALTER TABLE `ps_order_detail` ADD `week` INT(2) NULL AFTER `original_wholesale_price`;
 ALTER TABLE `ps_order_detail` ADD `day` DATE NULL AFTER `week`;
 ALTER TABLE `ps_order_detail` ADD `comment` TEXT NULL AFTER `day`;
-ALTER TABLE `ps_order_detail` ADD `id_supplier` TEXT NULL AFTER `product_attribute_id`;
+ALTER TABLE `ps_order_detail` ADD `id_quotation_line` TEXT NULL AFTER `product_attribute_id`;
+ALTER TABLE `ps_order_detail` ADD `id_supplier` TEXT NULL AFTER `id_quotation_line`;
 
 ALTER TABLE `ps_order_state` ADD `term_of_use` TINYINT DEFAULT '0' AFTER `pdf_delivery`;
 ALTER TABLE `ps_order_state` ADD `proforma` TINYINT DEFAULT '0' AFTER `paid`;

@@ -23,6 +23,13 @@ class QuotationListControllerCore extends FrontController {
             $quotation = Quotation::findByReference($reference);
             if($quotation->id) {
 
+                if(!$this->context->cart->id){
+                    $this->context->cart->save();
+
+                    $this->context->cookie->id_cart = $this->context->cart->id;
+                    $this->context->cookie->write();
+                }
+
                 foreach($quotation->getProducts() as $line)
                     QuotationAssociation::addLine($this->context->cart->id, $line->id);
             }

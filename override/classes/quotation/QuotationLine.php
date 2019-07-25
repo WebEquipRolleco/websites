@@ -17,6 +17,9 @@ class QuotationLine extends ObjectModel {
 	public $position;
 	public $id_quotation;
 
+	// Variables temporaires
+	private $quotation;
+
 	public static $definition = array(
         'table' => self::TABLE_NAME,
         'primary' => self::TABLE_PRIMARY,
@@ -32,6 +35,24 @@ class QuotationLine extends ObjectModel {
             'id_quotation' => array('type' => self::TYPE_INT),
         )
     );
+
+	/**
+	* Création statique
+	**/
+	public static function find($id) {
+		return new self($id);
+	}
+
+	/**
+	* Retourne le devis lié
+	**/
+	public function getQuotation() {
+
+		if(!$this->quotation)
+			$this->quotation = new Quotation($this->id_quotation);
+
+		return $this->quotation;
+	}
 
 	/**
 	* Retourne le prix total

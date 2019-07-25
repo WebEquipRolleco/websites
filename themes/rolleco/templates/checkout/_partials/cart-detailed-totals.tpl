@@ -1,5 +1,6 @@
 {block name='cart_detailed_totals'}
-  {if $cart.products}
+  {assign var=nb_products value=Context::getContext()->cart->nbProducts()}
+  {if $nb_products}
     <div class="cart-detailed-totals">
       
 
@@ -10,7 +11,7 @@
                 <tr class="cart-summary-line" id="cart-subtotal-{$subtotal.type}">
                   <td class="label{if 'products' === $subtotal.type} js-subtotal{/if}">
                     {if 'products' == $subtotal.type}
-                      {$cart.summary_string}
+                      {$nb_products} {l s="Article(s)"}
                     {else}
                       {$subtotal.label}
                     {/if}

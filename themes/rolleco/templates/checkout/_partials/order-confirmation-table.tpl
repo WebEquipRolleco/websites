@@ -35,7 +35,12 @@
         <div class="order-line row">
           <div class="col-sm-2 col-xs-3">
             <span class="image">
-              <img src="{$product.cover.medium.url}" />
+              {if isset($product.cover)}
+                <img src="{$product.cover.medium.url}" />
+              {elseif $product.id_quotation_line}
+                {assign var=line value=QuotationLine::find($product.id_quotation_line)}
+                <img src="{$line->getImageLink()}" style="width:153px; height:153px;" />
+              {/if}
             </span>
           </div>
           <div class="col-sm-4 col-xs-9 details">

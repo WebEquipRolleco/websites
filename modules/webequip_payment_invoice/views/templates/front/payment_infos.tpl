@@ -1,4 +1,4 @@
-<section>
+<section class="margin-bottom-15">
   {l s="Réglez votre commande à %s jours fin de mois." sprintf=[$nb] mod="webequip_payment_invoice"} <br />
   {l s="Le vivrement bancaire est à effectuer sur le compte suivant :" mod="webequip_payment_invoice"} <br />
   <b>{l s="CIC : " mod="webequip_payment_invoice"} {$CIC}</b> <br />

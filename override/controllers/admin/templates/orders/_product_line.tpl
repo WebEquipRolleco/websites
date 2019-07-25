@@ -8,7 +8,14 @@
 
 {if ($product['product_quantity'] > $product['customized_product_quantity'])}
 <tr class="product-line-row">
-	<td>{if isset($product.image) && $product.image->id}{$product.image_tag}{/if}</td>
+	<td>
+		{if isset($product.image) && $product.image->id}
+			{$product.image_tag}
+		{elseif $product.id_quotation_line}
+			{assign var=line value=QuotationLine::find($product.id_quotation_line)}
+            <img src="{$line->getImageLink()}" class="imgm img-thumbnail" style="height:55px; width:55px;" />
+		{/if}
+	</td>
 	<td>
 		<strong>{$product.reference}</strong>
 		{if $product.product_supplier_reference}
@@ -16,11 +23,15 @@
 		{/if}
 	</td>
 	<td>
-		<a href="{$link->getAdminLink('AdminProducts', true, ['id_product' => $product['product_id']|intval, 'updateproduct' => '1'])|escape:'html':'UTF-8'}">
+		{if $product.product_id}
+			<a href="{$link->getAdminLink('AdminProducts', true, ['id_product' => $product['product_id']|intval, 'updateproduct' => '1'])|escape:'html':'UTF-8'}">
+		{/if}
 			<span class="productName">{$product['product_name']}</span><br />
 			{if $product.product_reference}{l s='Reference number:' d='Admin.Orderscustomers.Feature'} {$product.product_reference}<br />{/if}
 			{if $product.product_supplier_reference}{l s='Supplier reference:' d='Admin.Orderscustomers.Feature'} {$product.product_supplier_reference}{/if}
-		</a>
+		{if $product.product_id}
+			</a>
+		{/if}
         {if isset($product.pack_items) && $product.pack_items|@count > 0}<br>
             <button name="package" class="btn btn-default" type="button" onclick="TogglePackage('{$product['id_order_detail']}'); return false;" value="{$product['id_order_detail']}">{l s='Package content' d='Admin.Orderscustomers.Feature'}</button>
         {/if}

@@ -1,4 +1,4 @@
-<section>
+<section class="margin-bottom-15">
 	<img src="/img/mandat.jpg"> <br />
 	<br />
 	{l s="Nous acceptions les [1]règlements par mandat administratif[/1] pour tous les établissements relevant de la comptabilité publique (Ministères, Mairies, Conseils Généraux et Régionaux, Universités, CAT, CCAS, établissements scolaires, ...)." tags=["<b>"] mod="webequip_payment_administrative"} 

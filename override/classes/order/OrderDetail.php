@@ -2,6 +2,9 @@
 
 class OrderDetail extends OrderDetailCore {
 
+    /** @var int Id quotation line **/
+    public $id_quotation_line;
+
 	/** @var int Supplier **/
 	public $id_supplier;
 
@@ -19,6 +22,7 @@ class OrderDetail extends OrderDetailCore {
 
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
+        self::$definition['fields']['id_quotation_line'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['id_supplier'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['day'] = array('type' => self::TYPE_DATE);
 		self::$definition['fields']['week'] = array('type' => self::TYPE_STRING);
@@ -29,7 +33,7 @@ class OrderDetail extends OrderDetailCore {
 
 	/**
     * Create a list of order detail for a specified id_order using cart
-    * Override : ajout des options de commandes
+    * Override : ajout des options de commandes et des lignes devis
     *
     * @param object $order
     * @param object $cart
@@ -48,6 +52,9 @@ class OrderDetail extends OrderDetailCore {
         foreach ($product_list as $product)
             $this->create($order, $cart, $product, $id_order_state, $id_order_invoice, $use_taxes, $id_warehouse);
 
+        foreach(QuotationAssociation::getCartLines($cart->id) as $line)
+            $this->createQuotationLine($order, $cart, $line, $id_order_invoice, $id_warehouse);
+
         foreach(OrderOptionCart::findByCart($cart->id) as $option)
         	$this->createOption($order, $cart, $option, $id_order_invoice, $id_warehouse);
 
@@ -56,6 +63,40 @@ class OrderDetail extends OrderDetailCore {
         unset($this->customer);
     }
 
+    /**
+    * Créer une ligne commande à partir d'une ligne devis
+    **/
+    private function createQuotationLine($order, $cart, $line, $id_order_invoice = 0, $id_warehouse = 0) {
+
+        $price_ht = $line->selling_price;
+        $price_ttc = $price_ht * 1.2;
+
+        $details = new OrderDetail();
+        $details->id_order = $order->id;
+        $details->id_order_invoice = $id_order_invoice;
+        $details->id_warehouse = $id_warehouse;
+        $details->id_shop = $order->id_shop;
+        $details->product_reference = $line->reference;
+        $details->product_name = $line->name;
+        $details->product_quantity = $line->quantity;
+        $details->id_quotation_line = $line->id;
+
+        $details->product_price = $price_ttc;
+        $details->unit_price_tax_incl = $price_ttc;
+        $details->unit_price_tax_excl = $price_ht;
+        $details->total_price_tax_incl = $details->unit_price_tax_incl * $details->product_quantity;
+        $details->total_price_tax_excl = $details->unit_price_tax_excl * $details->product_quantity;
+        $details->original_product_price = $price_ttc;
+
+        $details->save();
+
+        $line->getQuotation()->state = Quotation::STATUS_VALIDATED;
+        $line->getQuotation()->save();
+    }
+
+    /**
+    * Créer une ligne commande a partir d'une option de commande
+    **/
     private function createOption($order, $cart, $option, $id_order_invoice = 0, $id_warehouse = 0) {
 
     	$price_ht = $option->getPrice($cart);
