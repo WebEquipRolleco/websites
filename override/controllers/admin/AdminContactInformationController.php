@@ -43,9 +43,13 @@ class AdminContactInformationControllerCore extends AdminController {
 
 		$data[3]['Contact'] = array(
 			array('label'=>'E-mail', 'name'=>'PS_SHOP_EMAIL'),
-			array('label'=>'E-mail SAV', 'name'=>'PS_SHOP_EMAIL_SAV', 'help'=>"Les demandes SAV clients seront envoyées à cette addresse."),
 			array('label'=>'Téléphone', 'name'=>'PS_SHOP_PHONE'),
 			array('label'=>'Fax', 'name'=>'PS_SHOP_FAX')
+		);
+
+		$data[3]['SAV'] = array(
+			array('label'=>'E-mail Source', 'name'=>'PS_SHOP_EMAIL_SAV_FROM', 'help'=>"Les mails partant du site proviendront de cette adresse."),
+			array('label'=>'E-mail Destinataire', 'name'=>'PS_SHOP_EMAIL_SAV_TO', 'help'=>"Les mails envoyés par le client arriveront à cette adresse."),
 		);
 
 		$data[4]['Information équipe'] = array(

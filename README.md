@@ -208,16 +208,26 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotation_associations` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_after_sale` (
-    `id` INT NOT NULL AUTO_INCREMENT, 
-    `number` VARCHAR(255) NULL,
-    `firstname` VARCHAR(255) NULL, 
-    `lastname` VARCHAR(255) NULL, 
-    `company` VARCHAR(255) NULL, 
-    `phone` VARCHAR(255) NULL, 
+    `id_after_sale` INT NOT NULL AUTO_INCREMENT, 
+    `reference` VARCHAR(255) NULL,
     `email` VARCHAR(255) NULL, 
-    `city` VARCHAR(255) NULL, 
-    `content` TEXT NULL, 
     `id_customer` INTEGER(11) NULL, 
-    `date_add` DATE NULL DEFAULT NULL, 
-    PRIMARY KEY (`id`)
+    `id_order` INTEGER(11) NULL, 
+    `ids_detail` VARCHAR(255) NULL,
+    `status` INTEGER(1) NULL, 
+    `condition` VARCHAR(255) NULL,
+    `date_add` DATETIME NULL DEFAULT NULL, 
+    PRIMARY KEY (`id_after_sale`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `ps_after_sale_message` (
+    `id_after_sale_message` INT NOT NULL AUTO_INCREMENT, 
+    `id_after_sale` INTEGER(11) NULL, 
+    `id_customer` INTEGER(11) NULL, 
+    `id_employee` INTEGER(11) NULL, 
+    `message` TEXT NULL,
+    `display` INTEGER(1) NULL, 
+    `new` INTEGER(1) NULL, 
+    `date_add` DATETIME NULL DEFAULT NULL, 
+    PRIMARY KEY (`id_after_sale_message`)
 ) ENGINE = InnoDB;

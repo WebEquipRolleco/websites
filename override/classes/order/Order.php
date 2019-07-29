@@ -226,4 +226,18 @@ class Order extends OrderCore {
 	public static function findOrderedProducts($id_customer) {
 		return Db::getInstance()->executeS("SELECT DISTINCT(l.id_product), l.name FROM ps_orders o, ps_order_detail d, ps_product_lang l WHERE o.id_order = d.id_order AND d.product_id = l.id_product AND o.id_customer = $id_customer");
 	}
+	
+	/**
+	* Retourne un ID command en fonction d'une reference
+	* @param string $reference
+	* @return int|false
+	**/
+	public static function getIdByReference($reference) {
+
+		if(!$reference)
+			return false;
+
+		return Db::getInstance()->getValue("SELECT id_order FROM ps_orders WHERE reference = '$reference'");
+	}
+
 }

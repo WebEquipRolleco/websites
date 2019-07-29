@@ -57,6 +57,9 @@
               <a href="{$order.details.reorder_url}" class="btn btn-success" title="{l s='Reorder' d='Shop.Theme.Actions'}">
                 <i class="fa fa-cart-arrow-down"></i>
               </a>
+              <a href="{$link->getPageLink('AfterSaleRequest&order='|cat:$order.details.reference)}" class="btn btn-danger" title="{l s='Ouvrir un SAV' d='Shop.Theme.Actions'}">
+                <i class="fa fa-exchange"></i>
+              </a>
             </th>
           </tr>
         </thead>

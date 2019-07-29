@@ -6,36 +6,48 @@ class AfterSaleRequestControllerCore extends FrontController {
     * @see FrontController::initContent()
     **/
 	public function initContent() {
+		
 		parent::initContent();
+		$link = new Link();
 
-		$data['count'] = 2;
+		if($form = Tools::getValue('form')) {
+
+			// Création du SAV
+			$request = new AfterSale();
+			$request->id_customer = $this->context->customer->id;
+			$request->email = $form['email'];
+			$request->id_order = $form['id_order'];
+    		$request->ids_detail = implode(AfterSale::DELIMITER, $form['id_detail']);
+    		$request->date_add = date('Y-m-d H:i:s');
+    		$request->generateReference();
+    		$request->save();
+
+    		// Ajout du message initial
+    		$message = new AfterSaleMessage();
+    		$message->id_after_sale = $request->id;
+			$message->id_customer = $this->context->customer->id;
+			$message->message = $form['message'];
+			$message->save();
+
+			// Ajout des pièces jointes
+
+			// Redirection
+			Tools::redirect($link->getPageLink('afterSales'));
+		}
+
+		
+
+		$data['count'] = 3;
         $data['links'][] = array('url'=>'/', 'title'=>'Accueil');
-        $data['links'][] = array('title'=>'Nous contacter');
-
-        $form = Tools::getValue('contact');
-        if($form) {
-
-	        $request = new AfterSale();
-
-	        $request->number = $form['number'];
-	        $request->firstname = $form['firstname'];
-	        $request->lastname = $form['lastname'];
-	        $request->company = $form['company'];
-	        $request->phone = $form['phone'];
-	        $request->email = $form['email'];
-	        $request->city = $form['city'];
-	        $request->content = $form['content'];
-	        $request->date_add = $form['date_add'];
-
-	        if($this->context->customer->id)
-	        	$request->id_customer = $this->context->customer->id;
-	        
-	        $request->save();
-	        $this->context->smarty->assign('validation', true);
-        }
+        $data['links'][] = array('url'=>$link->getPageLink('afterSales'), 'title'=>'Mon SAV');
+        $data['links'][] = array('title'=>'Demande de SAV');
 
 		$this->context->smarty->assign('breadcrumb', $data);
-        $this->setTemplate('customer/after-sale-request');
+		$this->context->smarty->assign('customer', $this->context->customer);
+		$this->context->smarty->assign('orders', $this->context->customer->getOrders());
+		$this->context->smarty->assign('id_order', Order::getIdByReference(Tools::getValue('order')));
+		
+        $this->setTemplate('after_sales/request');
 	}
 
 }

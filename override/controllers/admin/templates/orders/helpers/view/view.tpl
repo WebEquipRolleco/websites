@@ -1093,6 +1093,9 @@
           </form>
         </div>
       </div>
+
+      {include file="../../after_sales.tpl"}
+      
       {hook h="displayAdminOrderRight" id_order=$order->id}
     </div>
   </div>

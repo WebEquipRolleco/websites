@@ -113,4 +113,16 @@ class Customer extends CustomerCore {
 		return true;
 	}
 	
+	/**
+	* Retourne la liste des commandes du client
+	* @return array
+	**/
+	public function getOrders() {
+
+		$data = array();
+		foreach(Db::getInstance()->executeS("SELECT id_order FROM ps_orders WHERE id_customer = ".$this->id." ORDER BY id_order DESC") as $row)
+			$data[] = new Order($row['id_order']);
+
+		return $data;
+	}
 }

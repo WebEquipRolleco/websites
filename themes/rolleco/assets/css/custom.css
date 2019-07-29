@@ -101,6 +101,7 @@
 #wrapper {
   margin-top: 100px;
   background-color: white !important;
+  box-shadow: none !important;
 }
 #wrapper .breadcrumb {
   margin-top: 15px;
@@ -210,6 +211,9 @@ table .description-cell {
 .text-right {
   text-align: right;
 }
+.inner-space {
+  padding: 10px;
+}
 .text-info {
   color: #1e4688 !important;
 }
@@ -266,6 +270,27 @@ table .description-cell {
   background-color: #ffd24a !important;
 }
 .bg-warning * {
+  color: white !important;
+}
+.label-info {
+  background-color: #a0d0eb !important;
+  padding: 5px 10px 5px 10px;
+}
+.label-info * {
+  color: white !important;
+}
+.label-success {
+  background-color: #5ac62f !important;
+  padding: 5px 10px 5px 10px;
+}
+.label-success * {
+  color: white !important;
+}
+.label-default {
+  background-color: #f2f2f2 !important;
+  padding: 5px 10px 5px 10px;
+}
+.label-default * {
   color: white !important;
 }
 /** BLOCKS **/
