@@ -68,6 +68,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled('AdminWaitingOrders'))
             $check .= $this->installTab("Commandes en attente", "AdminWaitingOrders", "AdminParentOrders");
 
+        if(!isTabInstalled('AdminAfterSales'))
+            $check .= $this->installTab("SAV", "AdminAfterSales", "AdminParentOrders");
+
         if(!isTabInstalled("AdminDocuments"))
             $check .= $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'file');
 
@@ -114,6 +117,10 @@ class Webequip_Configuration extends Module {
                 $this->installTab("Commandes en attente", "AdminWaitingOrders", "AdminParentOrders");
             break;
 
+            case 'AFTER_SALES':
+                $this->installTab("SAV", "AdminAfterSales", "AdminParentOrders");
+            break;
+
             case 'QUOTATIONS':
                 $this->installTab("Devis", "AdminQuotations", "SELL", 'list');
             break;
@@ -155,6 +162,7 @@ class Webequip_Configuration extends Module {
         $tabs[0]['children'][] = array('name'=>"Devis", 'id'=>$this->isTabInstalled("AdminQuotations"), 'action'=>'QUOTATIONS');
         $tabs[0]['children'][] = array('name'=>"Facture impayées", 'id'=>$this->isTabInstalled("AdminLatePayments"), 'action'=>'LATE_PAYMENTS');
         $tabs[0]['children'][] = array('name'=>"Commandes en attente", 'id'=>$this->isTabInstalled("AdminWaitingOrders"), 'action'=>'WAITING_ORDERS');
+        $tabs[0]['children'][] = array('name'=>"SAV", 'id'=>$this->isTabInstalled("AdminAfterSales"), 'action'=>'AFTER_SALES');
 
         $tabs[1] = array('name'=>"WEB-EQUIP", 'id'=>$this->isTabInstalled('WEBEQUIP'), 'action'=>'WEBEQUIP');
         $tabs[1]['children'][] = array('name'=>'Coordonnées', 'id'=>$this->isTabInstalled('AdminContactInformation'), 'action'=>'CONTACTS');

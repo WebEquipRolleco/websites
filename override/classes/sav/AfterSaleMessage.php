@@ -37,7 +37,7 @@ class AfterSaleMessage extends ObjectModel {
     public function getCustomer() {
 
     	if(!$this->sender and $this->id_customer)
-    		$this->sender = new customer($this->id_customer);
+    		$this->sender = new Customer($this->id_customer);
 
     	return $this->sender;
     }
@@ -80,4 +80,19 @@ class AfterSaleMessage extends ObjectModel {
     	return $data;
     }
 
+    /**
+    * Vérifie si l'utilisateur en cours a déjà vu le message ou non
+    * @return bool
+    **/
+    public function isNewToMe() {
+        $context = Context::getContext();
+
+        if($this->new and ($context->employee and $context->employee->id and $this->id_customer))
+            return true;
+
+        if($this->new and ($context->customer and $context->customer->id and $this->id_employee))
+            return true;
+
+        return false;
+    }
 }

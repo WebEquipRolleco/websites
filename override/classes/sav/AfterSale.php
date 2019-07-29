@@ -261,7 +261,7 @@ class AfterSale extends ObjectModel {
 
         $path = "/img/sav/".$this->reference."/";
         if($absolute)
-            $path = getcwd().$path;
+            $path = _PS_ROOT_DIR_.$path;
 
         return $path;
     }
