@@ -304,4 +304,11 @@ class AfterSale extends ObjectModel {
         return $data;
     }
 
+    /**
+    * SAV mis à jour
+    **/
+    public function hasBeenUpdated() {
+        $this->date_upd = date('Y-m-d H:i:s');
+    }
+    
 }

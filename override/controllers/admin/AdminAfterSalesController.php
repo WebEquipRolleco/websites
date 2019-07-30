@@ -38,8 +38,8 @@ class AdminAfterSalesControllerCore extends AdminController {
     	$sav = new AfterSale(Tools::getValue('id_after_sale'));
     	if(!$sav->id) {
 
-    		$sav->date_add = date('Y-m-d 00:00:00');
-    		$sav->date_upd = date('Y-m-d 00:00:00');
+    		$sav->date_add = date('Y-m-d H:i:s');
+    		$sav->hasBeenUpdated();
     	}
 
     	// Mise à jour des produits
@@ -49,7 +49,7 @@ class AdminAfterSalesControllerCore extends AdminController {
     	// Changement de statut
     	if($status = Tools::getValue('status') and $sav->status != $status) {
     		$sav->status = Tools::getValue('status');
-    		$sav->date_upd = date('Y-m-d 00:00:00');
+    		$sav->hasBeenUpdated();
     	}
     	
     	// Mise à jour des informations
@@ -60,6 +60,7 @@ class AdminAfterSalesControllerCore extends AdminController {
     	
     	if(Tools::getIsset('update_configuration')) {
     		if(!$sav->reference) $sav->generateReference();
+            $sav->hasBeenUpdated();
     		$sav->save();
     	}
 
@@ -75,6 +76,7 @@ class AdminAfterSalesControllerCore extends AdminController {
     	if($content = Tools::getValue('new_message')) {
     		
     		if(!$sav->reference) $sav->generateReference();
+            $sav->hasBeenUpdated();
     		$sav->save();
 
     		$message = new AfterSaleMessage();

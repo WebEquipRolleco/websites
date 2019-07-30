@@ -19,7 +19,7 @@ class AfterSaleRequestControllerCore extends FrontController {
 			$request->id_order = $form['id_order'];
     		$request->ids_detail = implode(AfterSale::DELIMITER, $form['id_detail']);
     		$request->date_add = date('Y-m-d H:i:s');
-    		$request->date_upd = date('Y-m-d H:i:s');
+    		$request->hasBeenUpdated();
     		$request->generateReference();
     		$request->save();
 
