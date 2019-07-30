@@ -118,6 +118,13 @@ class AdminSuppliersController extends AdminSuppliersControllerCore {
                 ),
                 array(
                     'type' => 'text',
+                    'label' => $this->trans('E-mail spécifique SAV', array(), 'Admin.Global'),
+                    'name' => 'email_sav',
+                    'col' => 4,
+                    'hint' => $this->trans('Email de contact par défaut lors des traitements SAV', array(), 'Admin.Catalog.Help')
+                ),
+                array(
+                    'type' => 'text',
                     'label' => $this->trans('Phone', array(), 'Admin.Global'),
                     'name' => 'phone',
                     'required' => in_array('phone', $required_fields),

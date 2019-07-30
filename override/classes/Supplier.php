@@ -10,6 +10,9 @@ class Supplier extends SupplierCore {
 	/** @var string Emails **/
     public $emails;
 
+    /** @var string Email SAV **/
+    public $email_sav;
+
 	/** @var bool BC **/
     public $BC;
 
@@ -25,7 +28,8 @@ class Supplier extends SupplierCore {
     public function __construct($id = null, $id_lang = null, $id_shop = null) {
 
         self::$definition['fields']['reference'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['emails'] = array('type' => self::TYPE_STRING);
+        self::$definition['fields']['emails'] = array('type' => self::TYPE_STRING);
+		self::$definition['fields']['email_sav'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['BC'] = array('type' => self::TYPE_BOOL);
 		self::$definition['fields']['BL'] = array('type' => self::TYPE_BOOL);
 

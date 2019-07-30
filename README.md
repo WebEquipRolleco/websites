@@ -32,6 +32,7 @@ ALTER TABLE `ps_customer` ADD `rollcash` FLOAT DEFAULT '0' AFTER `email_tracking
 
 ALTER TABLE `ps_supplier` ADD `reference` VARCHAR(30) NULL AFTER `id_supplier`;
 ALTER TABLE `ps_supplier` ADD `emails` VARCHAR(255) NULL AFTER `name`;
+ALTER TABLE `ps_supplier` ADD `email_sav` VARCHAR(255) NULL AFTER `emails`;
 ALTER TABLE `ps_supplier` ADD `BC` VARCHAR(255) NULL AFTER `active`;
 ALTER TABLE `ps_supplier` ADD `BL` VARCHAR(255) NULL AFTER `BC`;
 
