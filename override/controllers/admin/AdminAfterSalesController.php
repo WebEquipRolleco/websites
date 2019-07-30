@@ -34,7 +34,16 @@ class AdminAfterSalesControllerCore extends AdminController {
     }
 
     public function renderForm() {
+
     	$sav = new AfterSale(Tools::getValue('id_after_sale'));
+
+    	// Mise à jour des informations
+    	if(Tools::getValue('id_order')) $sav->id_order = Tools::getValue('id_order');
+    	if(Tools::getValue('id_customer')) $sav->id_customer = Tools::getValue('id_customer');
+    	if(Tools::getValue('date_add')) $sav->date_add = Tools::getValue('date_add');
+    	if(Tools::getValue('status')) $sav->status = Tools::getValue('status');
+    	if(Tools::getIsset('condition')) $sav->condition = Tools::getValue('condition');
+    	if(Tools::getIsset('update_configuration')) $sav->save();
 
     	// Message lu
     	if($id = Tools::getValue('read')) {
@@ -46,6 +55,7 @@ class AdminAfterSalesControllerCore extends AdminController {
     	
     	// Nouveau message
     	if($content = Tools::getValue('new_message')) {
+    		$sav->save();
 
     		$message = new AfterSaleMessage();
     		$message->id_after_sale = $sav->id;

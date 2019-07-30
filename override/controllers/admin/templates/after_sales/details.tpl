@@ -2,6 +2,36 @@
 
 	<div class="col-lg-3">
 
+		<div class="panel">
+			<div class="panel-heading">
+				<i class="icon-cogs"></i> &nbsp; {l s="Gestion"}
+			</div>
+			<form method="post">
+				<div class="form-group">
+					<label>{l s="Date de création"}</label>
+					<input type="date" class="form-control" name="date_add" value="{$sav->date_add|date_format:'Y-m-d'}">
+				</div>
+				<div class="form-group">
+					<label>{l s="Statut"}</label>
+					<select class="form-control" name="status">
+						{foreach from=AfterSale::getStatuses() key=id item=name}
+							<option value="{$id}" {if $sav->status == $id}selected{/if}>{$name}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="form-group">
+					<label>{l s="Statut personnalisé"} &nbsp; <em class="text-muted">{l s='Affiché au client à la place du statut'}</em></label>
+					<input type="text" class="form-control" name="condition" value="{$sav->condition}">
+				</div>
+				<div class="form-group text-center">
+					<button type="submit" class="btn btn-success" name="update_configuration">
+						<b>{l s="Mettre à jour"}</b>
+					</button>
+				</div>
+			</form>
+
+		</div>
+
 		{if $sav->getOrder()}
 			{assign var=order value=$sav->getOrder()}
 			<div class="panel">
@@ -65,27 +95,26 @@
 			<div class="panel-heading">
 				<i class="icon-envelope"></i> &nbsp; {l s="Ajouter un commentaire"}
 			</div>
-				<form method="post">
-					<div class="form-group">
-						<label>{l s="Visibilité pour le client"}</label>
-						<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
-							<input type="radio" name="display" id="display_on" value="1" checked>
-							<label for="display_on">{l s='Affiché' d='Shop.Theme.Labels'}</label>
-							<input type="radio" name="display" id="display_off" value="0">
-							<label for="display_off">{l s='Caché' d='Shop.Theme.Labels'}</label>
-							<a class="slide-button btn"></a>
-						</span>
-					</div>
-					<div class="form-group">
-						<textarea rows="5" name="new_message" required></textarea>
-					</div>
-					<div class="form-group text-right">
-						<button type="submit" class="btn btn-success">
-							<b>{l s="Ajouter"}</b>
-						</button>
-					</div>
-				</form>
-
+			<form method="post">
+				<div class="form-group">
+					<label>{l s="Visibilité pour le client"}</label>
+					<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
+						<input type="radio" name="display" id="display_on" value="1" checked>
+						<label for="display_on">{l s='Affiché' d='Shop.Theme.Labels'}</label>
+						<input type="radio" name="display" id="display_off" value="0">
+						<label for="display_off">{l s='Caché' d='Shop.Theme.Labels'}</label>
+						<a class="slide-button btn"></a>
+					</span>
+				</div>
+				<div class="form-group">
+					<textarea rows="5" name="new_message" required></textarea>
+				</div>
+				<div class="form-group text-right">
+					<button type="submit" class="btn btn-success">
+						<b>{l s="Ajouter"}</b>
+					</button>
+				</div>
+			</form>
 		</div>
 
 	</div>
@@ -114,6 +143,10 @@
 					<a href="{$sav->getDirectory()}{$file_name}" target="_blank">
 						<img src="{$sav->getDirectory()}{$file_name}" style="margin-bottom:15px; padding:5px; border:2px solid lightgrey; max-width:100%" />
 					</a>
+				{foreachelse}
+					<div class="alert alert-info">
+						{l s="Aucune image disponible"}
+					</div>
 				{/foreach}
 			</div>
 		</div>
