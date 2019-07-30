@@ -37,13 +37,21 @@ class AdminAfterSalesControllerCore extends AdminController {
 
     	$sav = new AfterSale(Tools::getValue('id_after_sale'));
 
+    	// Mise à jour des produits
+    	if(Tools::getIsset('new_details'))
+    		$sav->ids_detail = implode(AfterSale::DELIMITER, Tools::getValue('new_details'));
+
     	// Mise à jour des informations
     	if(Tools::getValue('id_order')) $sav->id_order = Tools::getValue('id_order');
     	if(Tools::getValue('id_customer')) $sav->id_customer = Tools::getValue('id_customer');
     	if(Tools::getValue('date_add')) $sav->date_add = Tools::getValue('date_add');
     	if(Tools::getValue('status')) $sav->status = Tools::getValue('status');
     	if(Tools::getIsset('condition')) $sav->condition = Tools::getValue('condition');
-    	if(Tools::getIsset('update_configuration')) $sav->save();
+    	
+    	if(Tools::getIsset('update_configuration')) {
+    		if(!$sav->reference) $sav->generateReference();
+    		$sav->save();
+    	}
 
     	// Message lu
     	if($id = Tools::getValue('read')) {
@@ -55,6 +63,8 @@ class AdminAfterSalesControllerCore extends AdminController {
     	
     	// Nouveau message
     	if($content = Tools::getValue('new_message')) {
+    		
+    		if(!$sav->reference) $sav->generateReference();
     		$sav->save();
 
     		$message = new AfterSaleMessage();

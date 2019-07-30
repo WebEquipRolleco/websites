@@ -70,6 +70,9 @@ class AfterSaleMessage extends ObjectModel {
     **/
     public static function findByIdAfterSale($id_after_sale, $only_display = false) {
 
+        if(!$id_after_sale)
+            return array();
+        
     	$sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_after_sale = $id_after_sale";
     	if($only_display) $sql .= " AND display = 1";
 

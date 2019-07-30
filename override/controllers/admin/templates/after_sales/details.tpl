@@ -51,13 +51,69 @@
 					</span>
 				{/if}
 				<hr />
-				<b>{l s="Produits concernés :"}</b>
-				{foreach from=$sav->getProductDetails() item=details}
-					<div> -
-						{if $details->product_reference}<b>{$details->product_reference}</b> : {/if}
-						<em class="text-muted">{$details->product_name}</em>
-					</div>
-				{/foreach}
+				{assign var=details value=$sav->getProductDetails()}
+				{if !empty($details)}
+					<table class="table">
+						<thead>
+							<tr>
+								<th colspan="3">
+									<b>{l s="Produits concernés :"}</b>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach from=$sav->getProductDetails() item=details}
+								<tr>
+									<td>
+										<b>{$details->product_reference|default:'-'}</b>
+									</td>
+									<td>
+										<em class="text-muted">{$details->product_name}</em>
+									</td>
+									<td class="text-right">
+										<button type="button" class="btn btn-xs btn-default">
+											<i class="icon-envelope"></i>
+										</button>
+									</td>
+								</div>
+							{/foreach}
+						</tbody>
+					</table>
+				{else}
+					<form method="post">
+						<div class="form-group">
+							<table class="table">
+								<thead>
+									<tr>
+										<th colspan="3">
+											<b>{l s="Produits concernés :"}</b>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{foreach from=$sav->getOrder()->getDetails() item=details}
+										{if $details->product_id or $details->id_quotation_line}
+											<tr>
+												<td>
+													<input type="checkbox" name="new_details[]" value="{$details->id}">
+												</td>
+												<td>
+													{if $details->product_reference}<b>{$details->product_reference}</b> : {/if}
+													<em class="text-muted">{$details->product_name}</em>
+												</td>
+											</tr>
+										{/if}
+									{/foreach}
+								</tbody>
+							</table>
+						</div>
+						<div class="form-group text-center">
+							<button type="submit" class="btn btn-success" name="update_configuration">
+								<b>{l s="Mettre à jour"}</b>
+							</button>
+						</div>
+					</form>
+				{/if}
 			</div>
 		{/if}
 
@@ -65,31 +121,34 @@
 
 	<div class="col-lg-6">
 
-		<div class="panel">
-			<div class="panel-heading">
-				<i class="icon-envelope"></i> &nbsp; {l s="Messages"}
-			</div>
-			{foreach from=$sav->getMessages() item=message}
-				<div class="well" {if $message->isNewToMe()}style="background-color:lightyellow"{/if}>
-					<b>{$message->getSender()->firstname} {$message->getSender()->lastname}</b>
-					- <em class="text-muted">{$message->date_add|date_format:'d/m/Y à H:i'}</em>
-					<span class="pull-right">
-						{if $message->isNewToMe()}
-							<a href="{$link->getAdminLink('AdminAfterSales')}&id_after_sale={$sav->id}&read={$message->id}&updateafter_sale" class="label label-warning" title="{l s='Marquer comme lu'}">
-								<i class="icon-check-square"></i>
-							</a>
-						{/if}
-						{if !$message->display}
-							<span class="label label-default" title="{l s='Non visible pour le client'}">
-								<i class="icon-eye-slash"></i>
-							</span>
-						{/if}
-					</span>
-					<hr />
-					{$message->message}
+		{assign var=messages value=$sav->getMessages()}
+		{if !empty($messages)}
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-envelope"></i> &nbsp; {l s="Messages"}
 				</div>
-			{/foreach}
-		</div>
+				{foreach from=$messages item=message}
+					<div class="well" {if $message->isNewToMe()}style="background-color:lightyellow"{/if}>
+						<b>{$message->getSender()->firstname} {$message->getSender()->lastname}</b>
+						- <em class="text-muted">{$message->date_add|date_format:'d/m/Y à H:i'}</em>
+						<span class="pull-right">
+							{if $message->isNewToMe()}
+								<a href="{$link->getAdminLink('AdminAfterSales')}&id_after_sale={$sav->id}&read={$message->id}&updateafter_sale" class="label label-warning" title="{l s='Marquer comme lu'}">
+									<i class="icon-check-square"></i>
+								</a>
+							{/if}
+							{if !$message->display}
+								<span class="label label-default" title="{l s='Non visible pour le client'}">
+									<i class="icon-eye-slash"></i>
+								</span>
+							{/if}
+						</span>
+						<hr />
+						{$message->message}
+					</div>
+				{/foreach}
+			</div>
+		{/if}
 
 		<div class="panel">
 			<div class="panel-heading">
