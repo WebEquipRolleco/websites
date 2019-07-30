@@ -20,6 +20,7 @@ class AfterSale extends ObjectModel {
     public $id_order;
     public $ids_detail;
     public $date_add;
+    public $date_upd;
 
     // Variables temporaires
     private $customer;
@@ -36,7 +37,8 @@ class AfterSale extends ObjectModel {
             'condition' => array('type' => self::TYPE_STRING),
             'id_customer' => array('type' => self::TYPE_INT),
             'id_order' => array('type' => self::TYPE_INT),
-            'date_add' => array('type' => self::TYPE_DATE)
+            'date_add' => array('type' => self::TYPE_DATE),
+            'date_upd' => array('type' => self::TYPE_DATE)
         )
     );
 

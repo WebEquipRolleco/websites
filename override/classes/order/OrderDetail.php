@@ -126,7 +126,7 @@ class OrderDetail extends OrderDetailCore {
 	**/
 	public function getSupplier() {
 
-		if(!$this->supplier)
+		if(!$this->supplier and $this->id_supplier)
 			$this->supplier = new Supplier($this->id_supplier);
 
 		return $this->supplier;

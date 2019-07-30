@@ -217,6 +217,7 @@ CREATE TABLE IF NOT EXISTS `ps_after_sale` (
     `status` INTEGER(1) NULL, 
     `condition` VARCHAR(255) NULL,
     `date_add` DATETIME NULL DEFAULT NULL, 
+    `date_upd` DATETIME NULL DEFAULT NULL, 
     PRIMARY KEY (`id_after_sale`)
 ) ENGINE = InnoDB;
 

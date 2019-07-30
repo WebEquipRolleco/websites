@@ -36,16 +36,26 @@ class AdminAfterSalesControllerCore extends AdminController {
     public function renderForm() {
 
     	$sav = new AfterSale(Tools::getValue('id_after_sale'));
+    	if(!$sav->id) {
+
+    		$sav->date_add = date('Y-m-d 00:00:00');
+    		$sav->date_upd = date('Y-m-d 00:00:00');
+    	}
 
     	// Mise à jour des produits
     	if(Tools::getIsset('new_details'))
     		$sav->ids_detail = implode(AfterSale::DELIMITER, Tools::getValue('new_details'));
 
+    	// Changement de statut
+    	if($status = Tools::getValue('status') and $sav->status != $status) {
+    		$sav->status = Tools::getValue('status');
+    		$sav->date_upd = date('Y-m-d 00:00:00');
+    	}
+    	
     	// Mise à jour des informations
     	if(Tools::getValue('id_order')) $sav->id_order = Tools::getValue('id_order');
     	if(Tools::getValue('id_customer')) $sav->id_customer = Tools::getValue('id_customer');
     	if(Tools::getValue('date_add')) $sav->date_add = Tools::getValue('date_add');
-    	if(Tools::getValue('status')) $sav->status = Tools::getValue('status');
     	if(Tools::getIsset('condition')) $sav->condition = Tools::getValue('condition');
     	
     	if(Tools::getIsset('update_configuration')) {

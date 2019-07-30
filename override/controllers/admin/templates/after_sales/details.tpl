@@ -71,9 +71,11 @@
 										<em class="text-muted">{$details->product_name}</em>
 									</td>
 									<td class="text-right">
-										<button type="button" class="btn btn-xs btn-default">
-											<i class="icon-envelope"></i>
-										</button>
+										{if $details->getSupplier()}
+											<button type="button" class="btn btn-xs btn-default" title="Contacter {$details->getSupplier()->name}">
+												<i class="icon-envelope"></i>
+											</button>
+										{/if}
 									</td>
 								</div>
 							{/foreach}
