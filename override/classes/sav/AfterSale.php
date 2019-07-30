@@ -268,4 +268,40 @@ class AfterSale extends ObjectModel {
         return $path;
     }
 
+    /**
+    * Retrouve les SAV n'ayant pas été traité depuis plusieurs jours
+    * @param int $nb_days
+    * @return array
+    **/
+    public function findLateTreatment($nb_days) {
+
+        $date = new DateTime('today');
+        $date->modify("-$nb_days days");
+        $date = $date->format('d/m/Y 00:00:00');
+
+        $data = array();
+        foreach(Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE status = 1 AND date_add < '$date'") as $row)
+            $data[] = new self($row[self::TABLE_PRIMARY]);
+
+        return $data;
+    }
+
+    /**
+    * Retrouve les SAV n'ayant pas été mis à jour depuis plusieurs jours
+    * @param int $nb_days
+    * @return array
+    **/
+    public function findLateUpdate($nb_days) {
+
+        $date = new DateTime('today');
+        $date->modify("-$nb_days days");
+        $date = $date->format('d/m/Y 00:00:00');
+
+        $data = array();
+        foreach(Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE status = 2 AND date_upd < '$date'") as $row)
+            $data[] = new self($row[self::TABLE_PRIMARY]);
+
+        return $data;
+    }
+
 }

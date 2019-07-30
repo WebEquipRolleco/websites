@@ -12,10 +12,12 @@ class Webequip_recall extends Module {
 	const CONFIG_CHECK_INVOICE_DAYS = "CHECK_INVOICE_DAYS";
 	const CONFIG_CHECK_INVOICE_STATE = "CHECK_INVOICE_STATE";
 	const CONFIG_CHECK_INVOICE_EMPLOYEE = "CHECK_INVOICE_EMPLOYEE";
+	const CONFIG_RECALL_SAV_NB_DAYS = "RECALL_SAV_NB_DAYS";
 
 	const ACTION_RECALL = "recall";
 	const ACTION_PAYMENT = "payment";
 	const ACTION_INVOICE = "invoice";
+	const ACTION_SAV = "sav";
 
 	const LIST_DELIMITER = ',';
 	const ACTIONS_DELIMITER = '|';
@@ -56,7 +58,7 @@ class Webequip_recall extends Module {
 	public function getContent() {
 
 		// Configuration des variables simples
-		$configs = array(self::CONFIG_RECALL_OBJECT_1, self::CONFIG_RECALL_OBJECT_2, self::CONFIG_RECALL_OBJECT_3, self::CONFIG_RECALL_OBJECT_4, self::CONFIG_RECALL_HIDDEN_MAIL, self::CONFIG_CHECK_INVOICE_DAYS, self::CONFIG_CHECK_INVOICE_STATE, self::CONFIG_CHECK_INVOICE_EMPLOYEE);
+		$configs = array(self::CONFIG_RECALL_OBJECT_1, self::CONFIG_RECALL_OBJECT_2, self::CONFIG_RECALL_OBJECT_3, self::CONFIG_RECALL_OBJECT_4, self::CONFIG_RECALL_HIDDEN_MAIL, self::CONFIG_CHECK_INVOICE_DAYS, self::CONFIG_CHECK_INVOICE_STATE, self::CONFIG_CHECK_INVOICE_EMPLOYEE, self::CONFIG_RECALL_SAV_NB_DAYS);
 		foreach($configs as $config) {
 
 			if(Tools::isSubmit($config))
@@ -142,6 +144,9 @@ class Webequip_recall extends Module {
 
 		if(in_array(self::ACTION_INVOICE, $actions))
 			$this->checkInvoices();
+
+		if(in_array(self::ACTION_SAV, $actions))
+			$this->checkSAV();
 	}
 
 	public function getCronActions() {
@@ -408,6 +413,46 @@ class Webequip_recall extends Module {
 			Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
 		}
 
+	}
+
+	/**
+	* Envoi les mails de rappel des SAV non traités
+	**/
+	public function checkSAV() {
+
+		$nb_days = Configuration::get(self::CONFIG_RECALL_SAV_NB_DAYS);
+		if(!$nb_days)
+			return false;
+
+		$employees = Employee::findAfterSaleAccountants();
+		if(empty($employees))
+			return false;
+
+		// SAV en retard de traitement
+		$lines = AfterSale::findLateTreatment($nb_days);
+		if(!empty($lines)) {
+
+			$tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/sav_lines.tpl');
+			$tpl->assign('rows', $lines);
+
+			$data['{$lines}'] = $tpl->fetch();
+
+			foreach($employees as $employee)
+				Mail::send(1, "recall_sav_1", $this->l("SAV non traités"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+		}
+
+		// SAV "abandonnés"
+		$lines = AfterSale::findLateUpdate($nb_days);
+		if(!empty($lines)) {
+
+			$tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/sav_lines.tpl');
+			$tpl->assign('rows', $lines);
+
+			$data['{$lines}'] = $tpl->fetch();
+
+			foreach($employees as $employee)
+				Mail::send(1, "recall_sav_2", $this->l("SAV à relancer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+		}
 	}
 
 	/**

@@ -223,3 +223,21 @@
 		</div>
 	</div>
 </form>
+
+<form method="post">
+	<div class="panel">
+		<div class="panel-heading"><b>{l s="Rappels des SAV" mod="webequip_recall"}</b></div>
+		<div class="alert alert-info">
+			{l s="Paramètrage du nombre de jours d'inactivité maximum des SAV avant rappel par mail"}
+		</div>
+		<div class="form-group">
+			<label for="RECALL_SAV_NB_DAYS">{l s="Nombre de jours avant rappel" mod="webequip_recall"}</label>
+			<input type="text" id="RECALL_SAV_NB_DAYS" name="RECALL_SAV_NB_DAYS" value="{$RECALL_SAV_NB_DAYS}">
+		</div>
+		<div class="panel-footer text-right">
+			<button type="submit" class="btn btn-success">
+				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
+			</button>
+		</div>
+	</div>
+</form>
