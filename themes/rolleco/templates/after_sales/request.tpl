@@ -82,7 +82,7 @@
 			<div class="col-xs-12 col-lg-6">
 				<div class="form-group">
 					<label>{l s="Ajouter des pièces jointes à votre demande"} - <em class="text-muted">{l s="facultatif"}</label>
-					<input type="file" multiple="multiple" name="attachments" class="form-control">
+					<input type="file" multiple="multiple" name="attachments[]" class="form-control">
 				</div>
 			</div>
 		</div>

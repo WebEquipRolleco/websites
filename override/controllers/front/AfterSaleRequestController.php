@@ -21,16 +21,27 @@ class AfterSaleRequestControllerCore extends FrontController {
     		$request->date_add = date('Y-m-d H:i:s');
     		$request->hasBeenUpdated();
     		$request->generateReference();
-    		$request->save();
+    		//$request->save();
 
     		// Ajout du message initial
     		$message = new AfterSaleMessage();
     		$message->id_after_sale = $request->id;
 			$message->id_customer = $this->context->customer->id;
 			$message->message = $form['message'];
-			$message->save();
+			//$message->save();
 
 			// Ajout des pièces jointes
+			if(isset($_FILES['attachments'])) {
+	        	$request->checkDirectory();
+
+	        	for($x=0; $x<count($_FILES['attachments']['name']); $x++) {
+
+		        	$file_name = uniqid().'.'.pathinfo($_FILES['attachments']['name'][$x], PATHINFO_EXTENSION);
+		        	$path = $request->getDirectory(true).$file_name;
+
+		        	move_uploaded_file($_FILES['attachments']['tmp_name'][$x], $path);
+		        }
+        	}
 
 			// Redirection
 			Tools::redirect($link->getPageLink('afterSales'));

@@ -21,6 +21,10 @@ class AdminAfterSalesControllerCore extends AdminController {
             )
         );
 
+        $this->_select = "a.*, o.reference AS order_reference, c.reference AS edeal, c.company, CONCAT(c.firstname, ' ', c.lastname) AS customer, c.email";
+        $this->_join = ' LEFT JOIN '._DB_PREFIX_.'orders o ON (a.id_order = o.id_order)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
+
         $this->fields_list = array(
             'id_after_sale' => array(
                 'title' => $this->trans('ID', array(), 'Admin.Global'),
@@ -28,9 +32,46 @@ class AdminAfterSalesControllerCore extends AdminController {
                 'class' => 'fixed-width-xs',
             ),
             'reference' => array(
-                'title' => $this->trans('Name', array(), 'Admin.Global'),
+                'title' => $this->trans('Référence', array(), 'Admin.Global'),
+            ),
+            'order_reference' => array(
+                'title' => $this->trans('Numéro de commande', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'edeal' => array(
+                'title' => $this->trans('Numéro E-deal', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'company' => array(
+                'title' => $this->trans('Société', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'customer' => array(
+                'title' => $this->trans('Client', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'email' => array(
+                'title' => $this->trans('E-mail', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'status' => array(
+                'title' => $this->trans('Statut', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'renderStatuts',
+            ),
+            'date_add' => array(
+                'title' => $this->trans('Création', array(), 'Admin.Global'),
+                'align' => 'text-center',
             ),
         );
+    }
+
+    public function renderStatuts($value) {
+
+        $sav = new AfterSale();
+        $sav->status = $value;
+
+        return "<span class='label label-".$sav->getStatusClass()."'>".$sav->getStatusLabel()."</span>";
     }
 
     public function renderForm() {
@@ -90,6 +131,11 @@ class AdminAfterSalesControllerCore extends AdminController {
 
     	$this->context->smarty->assign('sav', $sav);
     	$this->setTemplate("details.tpl");
+    }
+
+    public function initToolbar() {
+        parent::initToolbar();
+        unset($this->toolbar_btn['new']);
     }
 
 }
