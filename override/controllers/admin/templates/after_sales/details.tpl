@@ -16,6 +16,11 @@
 					{$sav->getStatusLabel()}
 				</span>
 			</div>
+			<div class="text-center" style="margin-top:5px;">
+				<em class="text-{if $sav->isLate()}danger{else}muted{/if}">
+					{l s="Dernière mise à jour le "} {$sav->date_upd|date_format:'d/m/Y à H:i'}
+				</em>
+			</div>
 		</div>
 
 		<div class="panel">

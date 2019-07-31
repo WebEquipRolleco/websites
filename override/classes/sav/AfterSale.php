@@ -287,6 +287,25 @@ class AfterSale extends ObjectModel {
     }
 
     /**
+    * Vérifie la dernière mise à jour
+    * @return bool
+    **/
+    public function isLate() {
+
+        if(!$this->status == self::STATUS_ONGOING)
+            return false;
+
+        $nb_days = Configuration::get('RECALL_SAV_NB_DAYS');
+        if(!$nb_days)
+            return false;
+
+        $date = new DateTime('today');
+        $date->modify("-$nb_days days");
+
+        $current = DateTime::createFromFormat('Y-m-d', $this->date_upd);
+        return $date < $current;
+    }
+    /**
     * Retrouve les SAV n'ayant pas été mis à jour depuis plusieurs jours
     * @param int $nb_days
     * @return array
@@ -323,5 +342,5 @@ class AfterSale extends ObjectModel {
 
         return $data;
     }
-    
+
 }
