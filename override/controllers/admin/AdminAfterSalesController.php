@@ -62,12 +62,14 @@ class AdminAfterSalesControllerCore extends AdminController {
             'date_add' => array(
                 'title' => $this->trans('Création', array(), 'Admin.Global'),
                 'align' => 'text-center',
-                'callback' => 'formatDate'
+                'callback' => 'formatDate',
+                'type' => 'date',
             ),
             'date_upd' => array(
                 'title' => $this->trans('Dernière mise à jour', array(), 'Admin.Global'),
                 'align' => 'text-center',
-                'callback' => 'formatDate'
+                'callback' => 'formatDate',
+                'type' => 'date',
             ),
         );
     }
