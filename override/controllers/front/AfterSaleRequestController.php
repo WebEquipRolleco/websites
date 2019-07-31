@@ -21,14 +21,14 @@ class AfterSaleRequestControllerCore extends FrontController {
     		$request->date_add = date('Y-m-d H:i:s');
     		$request->hasBeenUpdated();
     		$request->generateReference();
-    		//$request->save();
+    		$request->save();
 
     		// Ajout du message initial
     		$message = new AfterSaleMessage();
     		$message->id_after_sale = $request->id;
 			$message->id_customer = $this->context->customer->id;
 			$message->message = $form['message'];
-			//$message->save();
+			$message->save();
 
 			// Ajout des pièces jointes
 			if(isset($_FILES['attachments'])) {
