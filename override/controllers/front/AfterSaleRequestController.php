@@ -43,6 +43,28 @@ class AfterSaleRequestControllerCore extends FrontController {
 		        }
         	}
 
+        	// Notification client
+        	$from_name = Configuration::get('PS_SHOP_NAME');
+        	$from_mail = Configuration::get('PS_SHOP_EMAIL_SAV_FROM');
+        	$notification_mail = Configuration::get('PS_SHOP_EMAIL_SAV_TO');
+
+        	$mails[] = $request->getCustomer()->email;
+        	if($request->email != $request->getCustomer()->email)
+        		$mails[] = $request->email;
+
+        	$data['{firstname}'] = $request->getCustomer()->firstname;
+        	$data['{lastname}'] = $request->getCustomer()->lastname;
+        	$data['{order_reference}'] = $request->getOrder()->reference;
+        	$data['{reference}'] = $request->reference;
+        	$data['{shop_name}'] = $from_name;
+        	$data['{message}'] = $message->message;
+
+        	foreach($mails as $mail)
+        		Mail::send(1, "sav_confirmation", $this->l("Votre demande de SAV"), $data, $email, null, $from_mail);
+
+        	// Notification équipe
+        	Mail::send(1, "sav_notification", $this->l("Nouvelle demande de SAV", $data, $notification_mail));
+
 			// Redirection
 			Tools::redirect($link->getPageLink('afterSales'));
 		}
