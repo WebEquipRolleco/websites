@@ -62,6 +62,12 @@ class AdminAfterSalesControllerCore extends AdminController {
             'date_add' => array(
                 'title' => $this->trans('Création', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'callback' => 'formatDate'
+            ),
+            'date_upd' => array(
+                'title' => $this->trans('Dernière mise à jour', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatDate'
             ),
         );
     }
@@ -72,6 +78,12 @@ class AdminAfterSalesControllerCore extends AdminController {
         $sav->status = $value;
 
         return "<span class='label label-".$sav->getStatusClass()."'>".$sav->getStatusLabel()."</span>";
+    }
+
+    public function formatDate($value) {
+
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
+        return $date->format('d/m/Y');
     }
 
     public function renderForm() {
@@ -97,7 +109,7 @@ class AdminAfterSalesControllerCore extends AdminController {
                 $sav->condition = null;
                 $sav->save();
             }
-            
+
             // Notification client
             $messages = Tools::getValue('message');
             if($isset($messages[$sav->status]) and $messages[$sav->status]) {
@@ -118,7 +130,8 @@ class AdminAfterSalesControllerCore extends AdminController {
     	if(Tools::getValue('id_order')) $sav->id_order = Tools::getValue('id_order');
     	if(Tools::getValue('id_customer')) $sav->id_customer = Tools::getValue('id_customer');
     	if(Tools::getValue('date_add')) $sav->date_add = Tools::getValue('date_add');
-    	if(Tools::getIsset('condition')) $sav->condition = Tools::getValue('condition');
+        if(Tools::getIsset('condition')) $sav->condition = Tools::getValue('condition');
+    	if(Tools::getIsset('email')) $sav->email = Tools::getValue('email');
     	
     	if(Tools::getIsset('update_configuration')) {
     		if(!$sav->reference) $sav->generateReference();

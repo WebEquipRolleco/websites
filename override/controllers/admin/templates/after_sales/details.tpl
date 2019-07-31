@@ -207,6 +207,23 @@
 			</div>
 		{/if}
 
+		<form method="post">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-envelope"></i> &nbsp; {l s="Notifications"}
+				</div>
+				<div class="form-group">
+					<label>{l s="E-mail supplémentaire"}</label>
+					<input type="text" class="form-control" name="email" value="{$sav->email}">
+				</div>
+				<div class="form-group text-center">
+					<button type="submit" class="btn btn-success" name="update_configuration">
+						<b>{l s="Mettre à jour"}</b>
+					</button>
+				</div>
+			</div>
+		</form>
+
 		<div class="panel">
 			<div class="panel-heading">
 				<i class="icon-picture"></i> &nbsp; {l s="Images"}
