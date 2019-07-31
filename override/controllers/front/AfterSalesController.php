@@ -51,6 +51,21 @@ class AfterSalesControllerCore extends FrontController {
 			$message->message = $content;
     		$message->date_add = date('Y-m-d H:i:s');
     		$message->save();
+
+    		// Variables template
+    		$data['{firstname}'] = $sav->getCustomer()->firstname;
+        	$data['{lastname}'] = $sav->getCustomer()->lastname;
+        	$data['{order_reference}'] = $sav->getOrder()->reference;
+        	$data['{reference}'] = $sav->reference;
+        	$data['{shop_name}'] = Configuration::get('PS_SHOP_NAME');
+        	$data['{message}'] = $message->message;
+
+    		// Notification équipe
+    		Mail::send(1, "sav_message_notification", $this->l("Nouvelle message du SAV : ".$sav->reference, $data, Configuration::get('PS_SHOP_EMAIL_SAV_TO')));
+
+    		// Notification client
+        	foreach($sav->getMails() as $mail)
+        		Mail::send(1, "sav_message_confirmation", $this->l("Votre message du SAV : ".$sav->reference), $data, $email, null, Configuration::get('PS_SHOP_EMAIL_SAV_FROM'));
         }
 
         // Nouvelle image

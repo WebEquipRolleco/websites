@@ -311,4 +311,17 @@ class AfterSale extends ObjectModel {
         $this->date_upd = date('Y-m-d H:i:s');
     }
     
+    /**
+    * Retourne la liste des e-mails à notifier 
+    * @return array
+    **/
+    public function getMails() {
+
+        $data[] = $this->getCustomer()->email;
+        if($this->email and $this->email != $this->getCustomer()->email)
+            $data[] = $this->email;
+
+        return $data;
+    }
+    
 }
