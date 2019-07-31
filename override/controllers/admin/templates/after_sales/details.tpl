@@ -4,20 +4,28 @@
 
 		<div class="panel">
 			<div class="panel-heading">
+				<i class="icon-signal"></i> &nbsp; {l s="Etat"}
+				<span class="panel-heading-action">
+					<a href="" class="list-toolbar-btn" data-toggle="modal" data-target="#modal_status" title="{l s='Changer l\'état'}">
+						<i class="process-icon-edit"></i>
+					</a>
+				</span>
+			</div>
+			<div class="text-center">
+				<span class="label label-{$sav->getStatusClass()}">
+					{$sav->getStatusLabel()}
+				</span>
+			</div>
+		</div>
+
+		<div class="panel">
+			<div class="panel-heading">
 				<i class="icon-cogs"></i> &nbsp; {l s="Gestion"}
 			</div>
 			<form method="post">
 				<div class="form-group">
 					<label>{l s="Date de création"}</label>
 					<input type="date" class="form-control" name="date_add" value="{$sav->date_add|date_format:'Y-m-d'}">
-				</div>
-				<div class="form-group">
-					<label>{l s="Statut"}</label>
-					<select class="form-control" name="status">
-						{foreach from=AfterSale::getStatuses() key=id item=name}
-							<option value="{$id}" {if $sav->status == $id}selected{/if}>{$name}</option>
-						{/foreach}
-					</select>
 				</div>
 				<div class="form-group">
 					<label>{l s="Statut personnalisé"} &nbsp; <em class="text-muted">{l s='Affiché au client à la place du statut'}</em></label>
@@ -29,7 +37,6 @@
 					</button>
 				</div>
 			</form>
-
 		</div>
 
 		{if $sav->getOrder()}
@@ -215,3 +222,87 @@
 	</div>
 
 </div>
+
+<form method="post">
+	<div id="modal_status" class="modal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <span class="bold"><b>{l s="Changement d'état"}</b></span>
+	      </div>
+	      <div class="modal-body">
+	        <div class="row">
+	        	<div class="col-lg-6">
+	        		<div class="form-group">
+	        			<label>{l s="Nouvel état"}</label>
+	        			<select id="select_state" class="form-control" name="new_state" data-current="{$sav->status}" required>
+	        				{foreach from=AfterSale::getStatuses() key=id item=name}
+	        					<option value="{$id}" {if $sav->status == $id}selected{/if}>{$name}</option>
+	        				{/foreach}
+	        			</select>
+	        		</div>
+	        	</div>
+	        	<div class="col-lg-2"></div>
+	        	<div class="col-lg-4">
+	        		<div class="form-group">
+						<label>{l s="Effacer le statut personnalisé"}</label>
+						<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
+							<input type="radio" name="eraze" id="eraze_on" value="1" checked>
+							<label for="eraze_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
+							<input type="radio" name="eraze" id="eraze_off" value="0">
+							<label for="eraze_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+							<a class="slide-button btn"></a>
+						</span>
+					</div>
+	        	</div>
+	        	<div id="message_area" class="col-lg-12">
+	        		<div class="form-group">
+	        			<label>{l s="Message au client"}</label>
+	        			<textarea rows="3" id="message_1" class="form-control state-message" name="message[1]">{l s="Nous sommes navré de ne pas pouvoir traiter votre demande pour le moment.\nN'hésitez pas à nous contacter pour plus d'informations."}</textarea>
+	        			<textarea rows="3" id="message_2" class="form-control state-message" name="message[2]">{l s="Votre demande a été pris en charge par notre équipe.\nVous devriez recevoir de nos nouvelles dans un délai maximum de 48h."}</textarea>
+	        			<textarea rows="3" id="message_3" class="form-control state-message" name="message[3]">{l s="Votre demande a été clôturé notre équipe.\nVous espérons vous avoir apporté entière satisfaction."}</textarea>
+	        			<div class="text-right">
+	        				<em class="text-muted">{l s="Aucune notification au client si le texte est vide"}</em>
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" id="change_state" class="btn btn-success" name="update_configuration">
+	        	<b>{l s="Valider"}</b>
+	        </button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
+
+<script>
+	$(document).ready(function() {
+		updateMessage();
+
+		$('#select_state').on('change', function() {
+			updateMessage();
+		});
+
+	});
+
+	function updateMessage() {
+
+		var status = $('#select_state').val();
+		var current = $('#select_state').data('current');
+
+		if(status == current) {
+			$('#message_area').hide();
+			$('#change_state').prop('disabled', true);
+		}
+		else {
+			$('#message_area').show();
+			$('#change_state').prop('disabled', false);
+		}
+
+		$('.state-message').hide();
+		$('#message_'+status).show();
+	}
+</script>

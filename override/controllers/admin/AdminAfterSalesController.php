@@ -88,9 +88,30 @@ class AdminAfterSalesControllerCore extends AdminController {
     		$sav->ids_detail = implode(AfterSale::DELIMITER, Tools::getValue('new_details'));
 
     	// Changement de statut
-    	if($status = Tools::getValue('status') and $sav->status != $status) {
+    	if($status = Tools::getValue('new_state') and $sav->status != $status) {
     		$sav->status = Tools::getValue('status');
     		$sav->hasBeenUpdated();
+
+            // Effacer le statut personnalisé
+            if(Tools::getValue('eraze')) {
+                $sav->condition = null;
+                $sav->save();
+            }
+            
+            // Notification client
+            $messages = Tools::getValue('message');
+            if($isset($messages[$sav->status]) and $messages[$sav->status]) {
+
+                $data['{firstname}'] = $sav->getCustomer()->firstname;
+                $data['{lastname}'] = $sav->getCustomer()->lastname;
+                $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME');
+                $data['{message}'] = $messages[$sav->status];
+                $data['{order_reference}'] = $sav->getOrder()->reference;
+                $data['{reference}'] = $sav->reference;
+
+                foreach($sav->getMails() as $mail)
+                    Mail::send(1, "sav_change_status", $this->l("Mise à jour de votre SAV : ".$sav->reference), $data, $email, null, Configuration::get('PS_SHOP_EMAIL_SAV_FROM'));
+            }
     	}
     	
     	// Mise à jour des informations
