@@ -224,6 +224,14 @@ class AfterSale extends ObjectModel {
     }
 
     /**
+    * Vérifie si un ticket a été ouvert
+    * @return bool
+    **/
+    public function isOpened() {
+        return $this->status == self::STATUS_ONGOING;
+    }
+
+    /**
     * Vérifie si un ticket peu être modifié
     * @return bool
     **/

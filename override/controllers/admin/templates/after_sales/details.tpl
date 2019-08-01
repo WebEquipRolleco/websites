@@ -1,27 +1,35 @@
+{if !$sav->id}
+	<div class="alert alert-info">
+		<b>{l s="Vous devez enregistrer le SAV une première fois afin de pouvoir gérer son statut"}</b>
+	</div>
+{/if}
+
 <div class="row">
 
 	<div class="col-lg-3">
 
-		<div class="panel">
-			<div class="panel-heading">
-				<i class="icon-signal"></i> &nbsp; {l s="Etat"}
-				<span class="panel-heading-action">
-					<a href="" class="list-toolbar-btn" data-toggle="modal" data-target="#modal_status" title="{l s='Changer l\'état'}">
-						<i class="process-icon-edit"></i>
-					</a>
-				</span>
+		{if $sav->id}
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-signal"></i> &nbsp; {l s="Etat"}
+					<span class="panel-heading-action">
+						<a href="" class="list-toolbar-btn" data-toggle="modal" data-target="#modal_status" title="{l s='Changer l\'état'}">
+							<i class="process-icon-edit"></i>
+						</a>
+					</span>
+				</div>
+				<div class="text-center">
+					<span class="label label-{$sav->getStatusClass()}">
+						{$sav->getStatusLabel()}
+					</span>
+				</div>
+				<div class="text-center" style="margin-top:5px;">
+					<em class="text-{if $sav->isLate()}danger{else}muted{/if}">
+						{l s="Dernière mise à jour le "} {$sav->date_upd|date_format:'d/m/Y à H:i'}
+					</em>
+				</div>
 			</div>
-			<div class="text-center">
-				<span class="label label-{$sav->getStatusClass()}">
-					{$sav->getStatusLabel()}
-				</span>
-			</div>
-			<div class="text-center" style="margin-top:5px;">
-				<em class="text-{if $sav->isLate()}danger{else}muted{/if}">
-					{l s="Dernière mise à jour le "} {$sav->date_upd|date_format:'d/m/Y à H:i'}
-				</em>
-			</div>
-		</div>
+		{/if}
 
 		<form method="post">
 			<div class="panel" name="update_configuration">
@@ -46,56 +54,63 @@
 
 		{if $sav->getOrder()}
 			{assign var=order value=$sav->getOrder()}
-			<div class="panel">
-				<div class="panel-heading">
-					<i class="icon-shopping-cart"></i> &nbsp; {l s="Commande"}
-				</div>
-				<b>{$order->reference}</b>
-				- <em class="text-muted">{$order->date_add|date_format:'d/m/Y'}</em>
-				<br />
-				{if $order->getState()->paid}
-					<span class="label label-success">
-						<i class="icon-check-square"></i> {l s="Commande payée"}
-					</span>
-				{else}
-					<span class="label label-danger">
-						<i class="icon-times"></i> {l s="Commande non payée"}
-					</span>
-				{/if}
-				<hr />
-				{assign var=details value=$sav->getProductDetails()}
-				{if !empty($details)}
-					<table class="table">
-						<thead>
-							<tr>
-								<th colspan="3">
-									<b>{l s="Produits concernés :"}</b>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{foreach from=$sav->getProductDetails() item=details}
+			<form method="post" name="update_configuration">
+				<div class="panel">
+					<div class="panel-heading">
+						<i class="icon-shopping-cart"></i> &nbsp; {l s="Commande"}
+						{if !$sav->ids_detail}
+							<span class="panel-heading-action">
+								<a href="" class="list-toolbar-btn submit-form" title="{l s='Save' d='Shop.Theme.Actions'}">
+									<i class="process-icon-save"></i>
+								</a>
+							</span>
+						{/if}
+					</div>
+					<b>{$order->reference}</b>
+					- <em class="text-muted">{$order->date_add|date_format:'d/m/Y'}</em>
+					<br />
+					{if $order->getState()->paid}
+						<span class="label label-success">
+							<i class="icon-check-square"></i> {l s="Commande payée"}
+						</span>
+					{else}
+						<span class="label label-danger">
+							<i class="icon-times"></i> {l s="Commande non payée"}
+						</span>
+					{/if}
+					<hr />
+					{assign var=details value=$sav->getProductDetails()}
+					{if !empty($details)}
+						<table class="table">
+							<thead>
 								<tr>
-									<td>
-										<b>{$details->product_reference|default:'-'}</b>
-									</td>
-									<td>
-										<em class="text-muted">{$details->product_name}</em>
-									</td>
-									<td class="text-right">
-										{if $details->getSupplier()}
-											{assign var=supplier value=$details->getSupplier()}
-											<button type="button" class="btn btn-xs btn-default contact" data-toggle="modal" data-target="#modal_supplier" data-id="{$supplier->id}" data-email="{$supplier->email_sav}" title="Contacter {$supplier->name}">
-												<i class="icon-envelope"></i>
-											</button>
-										{/if}
-									</td>
-								</div>
-							{/foreach}
-						</tbody>
-					</table>
-				{else}
-					<form method="post">
+									<th colspan="3">
+										<b>{l s="Produits concernés :"}</b>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foreach from=$sav->getProductDetails() item=details}
+									<tr>
+										<td>
+											<b>{$details->product_reference|default:'-'}</b>
+										</td>
+										<td>
+											<em class="text-muted">{$details->product_name}</em>
+										</td>
+										<td class="text-right">
+											{if $details->getSupplier()}
+												{assign var=supplier value=$details->getSupplier()}
+												<button type="button" class="btn btn-xs btn-default contact" data-toggle="modal" data-target="#modal_supplier" data-id="{$supplier->id}" data-email="{$supplier->email_sav}" title="Contacter {$supplier->name}">
+													<i class="icon-envelope"></i>
+												</button>
+											{/if}
+										</td>
+									</div>
+								{/foreach}
+							</tbody>
+						</table>
+					{else}
 						<div class="form-group">
 							<table class="table">
 								<thead>
@@ -122,14 +137,9 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="form-group text-center">
-							<button type="submit" class="btn btn-success" name="update_configuration">
-								<b>{l s="Mettre à jour"}</b>
-							</button>
-						</div>
-					</form>
-				{/if}
-			</div>
+					{/if}
+				</div>
+			</form>
 		{/if}
 
 	</div>
@@ -166,31 +176,40 @@
 			</div>
 		{/if}
 
-		<form method="post">
-			<div class="panel">
-				<div class="panel-heading">
-					<i class="icon-envelope"></i> &nbsp; {l s="Ajouter un commentaire"}
-					<span class="panel-heading-action">
-						<a href="" class="list-toolbar-btn submit-form" title="{l s='Save' d='Shop.Theme.Actions'}">
-							<i class="process-icon-save"></i>
-						</a>
-					</span>
+		{if $sav->isOpened()}
+			<form method="post">
+				<div class="panel">
+					<div class="panel-heading">
+						<i class="icon-envelope"></i> &nbsp; {l s="Ajouter un commentaire"}
+						<span class="panel-heading-action">
+							<a href="" class="list-toolbar-btn submit-form" title="{l s='Save' d='Shop.Theme.Actions'}">
+								<i class="process-icon-save"></i>
+							</a>
+						</span>
+					</div>
+					<div class="form-group">
+						<label>{l s="Visibilité pour le client"}</label>
+						<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
+							<input type="radio" name="display" id="display_on" value="1" checked>
+							<label for="display_on">{l s='Affiché' d='Shop.Theme.Labels'}</label>
+							<input type="radio" name="display" id="display_off" value="0">
+							<label for="display_off">{l s='Caché' d='Shop.Theme.Labels'}</label>
+							<a class="slide-button btn"></a>
+						</span>
+					</div>
+					<div class="form-group">
+						<textarea rows="5" name="new_message" required></textarea>
+						<div class="text-right text-muted">
+							<em>{l s="Notification par mail au client en fonction de la visibilité du message"}</em>
+						</div>
+					</div>
 				</div>
-				<div class="form-group">
-					<label>{l s="Visibilité pour le client"}</label>
-					<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
-						<input type="radio" name="display" id="display_on" value="1" checked>
-						<label for="display_on">{l s='Affiché' d='Shop.Theme.Labels'}</label>
-						<input type="radio" name="display" id="display_off" value="0">
-						<label for="display_off">{l s='Caché' d='Shop.Theme.Labels'}</label>
-						<a class="slide-button btn"></a>
-					</span>
-				</div>
-				<div class="form-group">
-					<textarea rows="5" name="new_message" required></textarea>
-				</div>
+			</form>
+		{else}
+			<div class="alert alert-info">
+				{l s="Le SAV doit être en cours de traitement pour ajouter des messages."}
 			</div>
-		</form>
+		{/if}
 
 	</div>
 

@@ -2,6 +2,7 @@
 
 class AdminAfterSalesControllerCore extends AdminController {
 
+    private $email_from;
     private $email_supplier_from;
 
 	public function __construct() {
@@ -15,6 +16,7 @@ class AdminAfterSalesControllerCore extends AdminController {
 
         parent::__construct();
 
+        $this->email_from = Configuration::get('PS_SHOP_EMAIL_SAV_FROM');
         $this->email_supplier_from = Configuration::get('PS_SHOP_EMAIL_SAV_SUPPLIER_FROM');
 
         $this->bulk_actions = array(
@@ -62,6 +64,7 @@ class AdminAfterSalesControllerCore extends AdminController {
                 'title' => $this->trans('Statut', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'renderStatuts',
+                'search' => false
             ),
             'date_add' => array(
                 'title' => $this->trans('Création', array(), 'Admin.Global'),
@@ -144,23 +147,22 @@ class AdminAfterSalesControllerCore extends AdminController {
         }
 
     	// Mise à jour des produits
-    	if(Tools::getIsset('new_details'))
+    	if(Tools::getIsset('new_details')) {
     		$sav->ids_detail = implode(AfterSale::DELIMITER, Tools::getValue('new_details'));
+            $sav->save();
+        }
 
     	// Changement de statut
     	if($status = Tools::getValue('new_state') and $sav->status != $status) {
-    		$sav->status = Tools::getValue('status');
-    		$sav->hasBeenUpdated();
-
+    		$sav->status = $status;
+    		
             // Effacer le statut personnalisé
-            if(Tools::getValue('eraze')) {
+            if(Tools::getValue('eraze'))
                 $sav->condition = null;
-                $sav->save();
-            }
 
             // Notification client
             $messages = Tools::getValue('message');
-            if($isset($messages[$sav->status]) and $messages[$sav->status]) {
+            if(isset($messages[$sav->status]) and $messages[$sav->status]) {
 
                 $data['{firstname}'] = $sav->getCustomer()->firstname;
                 $data['{lastname}'] = $sav->getCustomer()->lastname;
@@ -169,23 +171,32 @@ class AdminAfterSalesControllerCore extends AdminController {
                 $data['{order_reference}'] = $sav->getOrder()->reference;
                 $data['{reference}'] = $sav->reference;
 
-                foreach($sav->getMails() as $mail)
-                    Mail::send(1, "sav_change_status", $this->l("Mise à jour de votre SAV : ".$sav->reference), $data, $email, null, Configuration::get('PS_SHOP_EMAIL_SAV_FROM'));
+                foreach($sav->getMails() as $email)
+                    Mail::send(1, "sav_change_status", $this->l("Mise à jour de votre SAV : ".$sav->reference), $data, $email, null, $this->email_from);
             }
+
+            $sav->hasBeenUpdated();
+            $sav->save();
     	}
     	
     	// Mise à jour des informations
     	if(Tools::getValue('id_order')) $sav->id_order = Tools::getValue('id_order');
     	if(Tools::getValue('id_customer')) $sav->id_customer = Tools::getValue('id_customer');
-    	if(Tools::getValue('date_add')) $sav->date_add = Tools::getValue('date_add');
-        if(Tools::getIsset('condition')) $sav->condition = Tools::getValue('condition');
-    	if(Tools::getIsset('email')) $sav->email = Tools::getValue('email');
     	
-    	if(Tools::getIsset('update_configuration')) {
-    		if(!$sav->reference) $sav->generateReference();
-            $sav->hasBeenUpdated();
-    		$sav->save();
-    	}
+        if(Tools::getIsset('date_add')) {
+            $sav->date_add = Tools::getValue('date_add');
+            $sav->save();
+        }
+
+        if(Tools::getIsset('condition')) {
+            $sav->condition = Tools::getValue('condition');
+            $sav->save();
+        }
+
+    	if(Tools::getIsset('email')) {
+            $sav->email = Tools::getValue('email');
+            $sav->save();
+        }
 
     	// Message lu
     	if($id = Tools::getValue('read')) {
@@ -209,13 +220,31 @@ class AdminAfterSalesControllerCore extends AdminController {
 			$message->display = Tools::getValue('display');
 		    $message->date_add = date('Y-m-d H:i:s');
 		    $message->save();
+
+            if($message->display) {
+
+                $data['{firstname}'] = $sav->getCustomer()->firstname;
+                $data['{lastname}'] = $sav->getCustomer()->lastname;
+                $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME');
+                $data['{message}'] = $message->message;
+                $data['{order_reference}'] = $sav->getOrder()->reference;
+                $data['{reference}'] = $sav->reference;
+
+                foreach($sav->getMails() as $email)
+                    Mail::send(1, "sav_message_to_customer", $this->l("Nouveau message pour votre SAV : ".$sav->reference), $data, $email, null, $this->email_from); 
+            }
     	}
 
         // Redirection page update
-        if($sav->id and Tools::getIsset('addAfter_sale')) {
+        if($sav->id and Tools::getIsset('addafter_sale')) {
             
+            if(!$sav->reference) {
+                $sav->generateReference();
+                $sav->save();
+            }
+
             $link = new Link();
-            Tools::redirect($link->getAdminLink('AdminAfterSales')."&updateafter_sale&id_after_sale=".$this->id);
+            Tools::redirect($link->getAdminLink('AdminAfterSales')."&updateafter_sale&id_after_sale=".$sav->id);
         }
 
     	$this->context->smarty->assign('sav', $sav);
