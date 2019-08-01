@@ -16,9 +16,11 @@ class QuotationLine extends ObjectModel {
 
 	public $position;
 	public $id_quotation;
+	public $id_supplier;
 
 	// Variables temporaires
 	private $quotation;
+	private $supplier;
 
 	public static $definition = array(
         'table' => self::TABLE_NAME,
@@ -32,6 +34,7 @@ class QuotationLine extends ObjectModel {
             'selling_price' => array('type' => self::TYPE_FLOAT),
             'quantity' => array('type' => self::TYPE_INT),
             'position' => array('type' => self::TYPE_INT),
+            'id_supplier' => array('type' => self::TYPE_INT),
             'id_quotation' => array('type' => self::TYPE_INT),
         )
     );
@@ -52,6 +55,17 @@ class QuotationLine extends ObjectModel {
 			$this->quotation = new Quotation($this->id_quotation);
 
 		return $this->quotation;
+	}
+
+	/**
+	* Retourne le fournisseur du produit
+	**/
+	public function getSupplier() {
+
+		if(!$this->supplier and $thsi->id_supplier)
+			$this->supplier = new Supplier($this->id_supplier);
+
+		return $this->supplier;
 	}
 
 	/**

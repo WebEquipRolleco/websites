@@ -136,7 +136,8 @@ class OrderDetail extends OrderDetailCore {
         $details->product_name = $line->name;
         $details->product_quantity = $line->quantity;
         $details->id_quotation_line = $line->id;
-
+        $details->id_supplier = $line->id_supplier;
+        
         $details->product_price = $price_ttc;
         $details->unit_price_tax_incl = $price_ttc;
         $details->unit_price_tax_excl = $price_ht;

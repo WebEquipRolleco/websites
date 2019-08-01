@@ -200,6 +200,7 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotation_lines` (
     `quantity` INTEGER(11) NULL,
     `position` INTEGER(11) NULL,
     `id_quotation` INTEGER(11) NULL,
+    `id_supplier` INTEGER(11) NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 

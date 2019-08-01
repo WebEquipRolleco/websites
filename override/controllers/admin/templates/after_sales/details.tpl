@@ -23,11 +23,16 @@
 			</div>
 		</div>
 
-		<div class="panel">
-			<div class="panel-heading">
-				<i class="icon-cogs"></i> &nbsp; {l s="Gestion"}
-			</div>
-			<form method="post">
+		<form method="post">
+			<div class="panel" name="update_configuration">
+				<div class="panel-heading">
+					<i class="icon-cogs"></i> &nbsp; {l s="Gestion"}
+					<span class="panel-heading-action">
+						<a href="" class="list-toolbar-btn submit-form" title="{l s='Save' d='Shop.Theme.Actions'}">
+							<i class="process-icon-save"></i>
+						</a>
+					</span>
+				</div>
 				<div class="form-group">
 					<label>{l s="Date de création"}</label>
 					<input type="date" class="form-control" name="date_add" value="{$sav->date_add|date_format:'Y-m-d'}">
@@ -36,13 +41,8 @@
 					<label>{l s="Statut personnalisé"} &nbsp; <em class="text-muted">{l s='Affiché au client à la place du statut'}</em></label>
 					<input type="text" class="form-control" name="condition" value="{$sav->condition}">
 				</div>
-				<div class="form-group text-center">
-					<button type="submit" class="btn btn-success" name="update_configuration">
-						<b>{l s="Mettre à jour"}</b>
-					</button>
-				</div>
-			</form>
-		</div>
+			</div>
+		</form>
 
 		{if $sav->getOrder()}
 			{assign var=order value=$sav->getOrder()}
@@ -166,11 +166,16 @@
 			</div>
 		{/if}
 
-		<div class="panel">
-			<div class="panel-heading">
-				<i class="icon-envelope"></i> &nbsp; {l s="Ajouter un commentaire"}
-			</div>
-			<form method="post">
+		<form method="post">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-envelope"></i> &nbsp; {l s="Ajouter un commentaire"}
+					<span class="panel-heading-action">
+						<a href="" class="list-toolbar-btn submit-form" title="{l s='Save' d='Shop.Theme.Actions'}">
+							<i class="process-icon-save"></i>
+						</a>
+					</span>
+				</div>
 				<div class="form-group">
 					<label>{l s="Visibilité pour le client"}</label>
 					<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
@@ -184,13 +189,8 @@
 				<div class="form-group">
 					<textarea rows="5" name="new_message" required></textarea>
 				</div>
-				<div class="form-group text-right">
-					<button type="submit" class="btn btn-success">
-						<b>{l s="Ajouter"}</b>
-					</button>
-				</div>
-			</form>
-		</div>
+			</div>
+		</form>
 
 	</div>
 
@@ -209,19 +209,19 @@
 			</div>
 		{/if}
 
-		<form method="post">
+		<form method="post" name="update_configuration">
 			<div class="panel">
 				<div class="panel-heading">
 					<i class="icon-envelope"></i> &nbsp; {l s="Notifications"}
+					<span class="panel-heading-action">
+						<a href="" class="list-toolbar-btn submit-form" title="{l s='Save' d='Shop.Theme.Actions'}">
+							<i class="process-icon-save"></i>
+						</a>
+					</span>
 				</div>
 				<div class="form-group">
 					<label>{l s="E-mail supplémentaire"}</label>
 					<input type="text" class="form-control" name="email" value="{$sav->email}">
-				</div>
-				<div class="form-group text-center">
-					<button type="submit" class="btn btn-success" name="update_configuration">
-						<b>{l s="Mettre à jour"}</b>
-					</button>
 				</div>
 			</div>
 		</form>
@@ -353,6 +353,12 @@
 <script>
 	$(document).ready(function() {
 		updateMessage();
+
+		$('.submit-form').on('click', function(e) {
+			
+			e.preventDefault();
+			$(this).closest('form').submit();
+		});
 
 		$('#select_state').on('change', function() {
 			updateMessage();

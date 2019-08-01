@@ -9,6 +9,14 @@
 	</td>
 	<td>
 		<input type="text" class="form-control" name="lines[{$line->id}][reference]" value="{$line->reference}">
+		<select class="form-control" name="lines[{$line->id}][id_supplier]" style="margin-top:5px">
+			<option value="0">-</option>
+			{foreach from=$suppliers item=supplier}
+				<option value="{$supplier.id_supplier}" {if $line->id_supplier == $supplier.id_supplier}selected{/if}>
+					{$supplier.name}
+				</option>
+			{/foreach}
+		</select>
 	</td>
 	<td>
 		<input type="text" class="form-control" name="lines[{$line->id}][name]" value="{$line->name}" placeholder="{l s='Nom du produit'}">

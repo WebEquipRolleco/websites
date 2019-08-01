@@ -84,6 +84,7 @@ class AdminQuotationsController extends AdminController {
     		$this->context->smarty->assign('employees', Employee::getEmployees());
     		$this->context->smarty->assign('customers', Customer::getCustomers());
     		$this->context->smarty->assign('products', Product::getSimpleProducts(1));
+            $this->context->smarty->assign('suppliers', Supplier::getSuppliers());
 
 			$this->setTemplate("details.tpl");
     	}
@@ -167,6 +168,7 @@ class AdminQuotationsController extends AdminController {
     	if($product->id) {
     		$product->id_product_attribute = Tools::getValue('id_combination');
 
+            $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
     		$line->name = $product->name;
     		$line->selling_price = $product->getPrice(false);
@@ -220,6 +222,7 @@ class AdminQuotationsController extends AdminController {
     			$line->information = $form['information'];
     			$line->buying_price = $form['buying_price'];
     			$line->selling_price = $form['selling_price'];
+                $line->id_supplier = $form['id_supplier'];
     			$line->quantity = $form['quantity'];
     			$line->comment = $form['comment'];
     			$line->save();
