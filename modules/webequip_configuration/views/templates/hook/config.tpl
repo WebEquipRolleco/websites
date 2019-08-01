@@ -3,11 +3,27 @@
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Configuration des onglets
 		</div>
+		{if $old_sav_id}
+			<form method="post">
+				<div class="alert alert-warning">
+					<div class="row">
+						<div class="col-lg-10">
+							{l s="L'ancien module SAV est toujours installé." mod="webequip_configuration"}
+						</div>
+						<div class="col-lg-2 text-right">
+							<button type="submit" class="btn btn-xs btn-danger" name="uninstall_sav">
+								<i class="icon-trash"></i> &nbsp; <b>{l s="Désinstaller" d='Shop.Theme.Actions'}</b>
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		{/if}
 		<table class="table">
 			<thead>
 				<tr class="bg-primary">
-					<th colspan="2"><b>{l s='Menu'}</b></th>
-					<th class="text-center"><b>{l s='Statut'}</b></th>
+					<th colspan="2"><b>{l s='Menu' mod="webequip_configuration"}</b></th>
+					<th class="text-center"><b>{l s='Statut' mod="webequip_configuration"}</b></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -18,7 +34,7 @@
 						<td colspan="3" class="text-right" style="background-color:lightgrey !important">
 							{if isset($tab.action) and !$tab.id}
 								<button type="submit" class="btn btn-xs btn-default" {if $tab.id}disabled{else}name="action" value="{$tab.action}"{/if}>
-									{l s='Installer'}
+									{l s='Installer' mod="webequip_configuration"}
 								</button>
 							{/if}
 						</td>
@@ -40,7 +56,7 @@
 									{l s='Installer' d='Shop.Theme.Actions'}
 								</button>
 								{if $child.id}
-									<button type="submit" class="btn btn-xs btn-danger" name="remove_tab" value="{$child.id}">
+									<button type="submit" class="btn btn-xs btn-danger" name="remove_tab" value="{$child.id}" title="{l s="Désinstaller" d='Shop.Theme.Actions'}">
 										<i class="icon-trash"></i>
 									</button>
 								{/if}
@@ -62,7 +78,7 @@
 		<div class="row">
 			<div class="col-lg-4">
 				<div class="form-group">
-					<label>{l s="Lien de la page des moyens de paiements"}</label>
+					<label>{l s="Lien de la page des moyens de paiements" mod="webequip_configuration"}</label>
 					<select class="form-control" name="FOOTER_LINK_PAIEMENT">
 						<option value="0">-</option>
 						{foreach from=$cms item=page}
@@ -75,7 +91,7 @@
 			</div>
 			<div class="col-lg-4">
 				<div class="form-group">
-					<label>{l s="Lien de la page F.A.Q"}</label>
+					<label>{l s="Lien de la page F.A.Q" mod="webequip_configuration"}</label>
 					<select class="form-control" name="FOOTER_LINK_FAQ">
 						<option value="0">-</option>
 						{foreach from=$cms item=page}
@@ -102,7 +118,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-4">
-				<label>{l s="Taille de la police en PX"}</label>
+				<label>{l s="Taille de la police en PX" mod="webequip_configuration"}</label>
 				<input type="text" class="form-control" name="MENU_FORCED_FONT_SIZE" value="{$MENU_FORCED_FONT_SIZE}">
 			</div>
 		</div>

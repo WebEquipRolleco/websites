@@ -5,6 +5,8 @@ if (!defined('_PS_VERSION_'))
 
 class Webequip_Configuration extends Module {
 
+    const OLD_SAV_TAB = 'AdminParentCustomerThreads';
+
 	public function __construct() {
         $this->name = 'webequip_configuration';
         $this->tab = 'front_office_features';
@@ -190,8 +192,13 @@ class Webequip_Configuration extends Module {
             $this->context->smarty->assign($name, Configuration::get($name));
         }
 
+        // Désinstallation du module SAV
+        if(Tools::isSubmit('uninstall_sav'))
+            Db::getInstance()->execute("DELETE FROM ps_tab WHERE class_name = '".self::OLD_SAV_TAB."'");
+
         $this->context->smarty->assign('tabs', $tabs);
         $this->context->smarty->assign('cms', CMS::getCMSPages(1));
+        $this->context->smarty->assign('old_sav_id', $this->isTabInstalled(self::OLD_SAV_TAB));
 
         return $this->display(__FILE__, 'config.tpl');
     }
