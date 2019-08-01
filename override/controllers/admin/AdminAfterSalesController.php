@@ -2,6 +2,8 @@
 
 class AdminAfterSalesControllerCore extends AdminController {
 
+    private $email_supplier_from;
+
 	public function __construct() {
         
         $this->bootstrap = true;
@@ -12,6 +14,8 @@ class AdminAfterSalesControllerCore extends AdminController {
         $this->addRowAction('delete');
 
         parent::__construct();
+
+        $this->email_supplier_from = Configuration::get('PS_SHOP_EMAIL_SAV_SUPPLIER_FROM');
 
         $this->bulk_actions = array(
             'delete' => array(
@@ -97,6 +101,48 @@ class AdminAfterSalesControllerCore extends AdminController {
     		$sav->hasBeenUpdated();
     	}
 
+        // Envoi message au fournisseur
+        if(Tools::isSubmit('send_contact_supplier')) {
+            
+            $to = Tools::getValue('email_supplier');
+            $id_supplier = Tools::getValue('id_supplier');
+            $content = Tools::getValue('message');
+            $attachments = array();
+
+            // Enregistrement du message
+            $message = new AfterSaleMessage();
+            $message->id_after_sale = $sav->id;
+            $message->id_employee = $this->context->employee->id;
+            $message->id_supplier = $id_supplier;
+            $message->message = $content;
+            $message->display = false;
+            $message->new = false;
+            $message->date_add = date('Y-m-d H:i:s');
+            $message->save();
+
+            // Envoi du mail
+            $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME');
+            $data['{message}'] = $message;
+
+            if(Tools::getIsset('attachments'))
+            foreach(Tools::getValue('attachments') as $file_name) {
+                if($path = $sav->getDirectory(true).$file_name and is_file($path)) {
+
+                    $attachment['content'] = file_get_contents($path);
+                    $attachment['name'] = $file_name;
+                    $attachment['mime'] = mime_content_type($path);
+
+                    $attachments[] = $attachment;
+                }
+            }
+            
+            Mail::send(1, "sav_contact_supplier", $this->l("Demande concernant un SAV"), $data, $to, null, $this->email_supplier_from, null, $attachments);
+
+            // Mise à jour du SAV
+            $sav->hasBeenUpdated();
+            $sav->save();
+        }
+
     	// Mise à jour des produits
     	if(Tools::getIsset('new_details'))
     		$sav->ids_detail = implode(AfterSale::DELIMITER, Tools::getValue('new_details'));
@@ -173,6 +219,7 @@ class AdminAfterSalesControllerCore extends AdminController {
         }
 
     	$this->context->smarty->assign('sav', $sav);
+        $this->context->smarty->assign('email_supplier_from', $this->email_supplier_from);
     	$this->setTemplate("details.tpl");
     }
 

@@ -229,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `ps_after_sale_message` (
     `id_after_sale` INTEGER(11) NULL, 
     `id_customer` INTEGER(11) NULL, 
     `id_employee` INTEGER(11) NULL, 
+    `id_supplier` INTEGER(11) NULL, 
     `message` TEXT NULL,
     `display` INTEGER(1) NULL, 
     `new` INTEGER(1) NULL, 

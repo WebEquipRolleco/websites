@@ -8,6 +8,7 @@ class AfterSaleMessage extends ObjectModel {
 	public $id_after_sale;
 	public $id_customer;
 	public $id_employee;
+    public $id_supplier;
 	public $message;
 	public $display = true;
 	public $new = true;
@@ -15,6 +16,7 @@ class AfterSaleMessage extends ObjectModel {
 
 	// Variables temporaires
 	private $sender;
+    private $supplier;
 
 	public static $definition = array(
         'table' => self::TABLE_NAME,
@@ -23,6 +25,7 @@ class AfterSaleMessage extends ObjectModel {
             'id_after_sale' => array('type' => self::TYPE_INT),
             'id_customer' => array('type' => self::TYPE_INT),
             'id_employee' => array('type' => self::TYPE_INT),
+            'id_supplier' => array('type' => self::TYPE_INT),
             'message' => array('type' => self::TYPE_STRING),
             'display' => array('type' => self::TYPE_BOOL),
             'new' => array('type' => self::TYPE_BOOL),
@@ -52,6 +55,18 @@ class AfterSaleMessage extends ObjectModel {
     		$this->sender = new Employee($this->id_employee);
 
     	return $this->sender;
+    }
+
+    /**
+    * Retourne le fournisseur a qui le message a été envoyé
+    * @return null|Supplier
+    **/
+    public function getSupplier() {
+
+        if(!$this->supplier and $this->id_supplier)
+            $this->supplier = new Supplier($this->id_supplier);
+
+        return $this->supplier;
     }
 
     /**

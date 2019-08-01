@@ -84,7 +84,8 @@
 									</td>
 									<td class="text-right">
 										{if $details->getSupplier()}
-											<button type="button" class="btn btn-xs btn-default" title="Contacter {$details->getSupplier()->name}">
+											{assign var=supplier value=$details->getSupplier()}
+											<button type="button" class="btn btn-xs btn-default contact" data-toggle="modal" data-target="#modal_supplier" data-id="{$supplier->id}" data-email="{$supplier->email_sav}" title="Contacter {$supplier->name}">
 												<i class="icon-envelope"></i>
 											</button>
 										{/if}
@@ -144,6 +145,7 @@
 				{foreach from=$messages item=message}
 					<div class="well" {if $message->isNewToMe()}style="background-color:lightyellow"{/if}>
 						<b>{$message->getSender()->firstname} {$message->getSender()->lastname}</b>
+						{if $message->getSupplier()} <em class="text-muted">{l s="à l'intention de"}</em> <b class="text-info">{$message->getSupplier()->name}</b>{/if}
 						- <em class="text-muted">{$message->date_add|date_format:'d/m/Y à H:i'}</em>
 						<span class="pull-right">
 							{if $message->isNewToMe()}
@@ -291,7 +293,55 @@
 	        </div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" id="change_state" class="btn btn-success" name="update_configuration">
+	        <button type="submit" id="change_state" class="btn btn-success" name="update_configuration">
+	        	<b>{l s="Valider"}</b>
+	        </button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
+
+<form method="post">
+	<input type="hidden" id="id_supplier" name="id_supplier">
+	<div id="modal_supplier" class="modal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <span class="bold"><b>{l s="Contact Fournisseur"}</b></span>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="row">
+	      		<div class="col-lg-6">
+	      			<div class="form-group">
+	      				<label>{l s="E-mail destinataire"}</label>
+	      				<input type="text" id="email_supplier" name="email_supplier" required>
+	      			</div>
+	      		</div>
+	      		<div class="col-lg-6">
+	      			<div class="form-group">
+	      				<label>{l s="E-mail expéditeur"}</label>
+	      				<input type="text" value="{$email_supplier_from}" disabled>
+	      			</div>
+	      		</div>
+	      		<div class="col-lg-12">
+	      			<div class="form-group">
+	      				<label>{l s="Message"}</label>
+	      				<textarea rows="5" class="form-control" name="message" required>{l s="Message fournisseur par défaut à modifier dans les traductions."}</textarea>
+	      			</div>
+	      		</div>
+		      	{foreach from=$sav->getPictures() item=file_name}
+		      		<div class="col-lg-3">
+		      			<div class="col-lg-2">
+		      				<input type="checkbox" name="attachments[]" value="{$file_name}">
+		      			</div>
+		      			<img src="{$sav->getDirectory()}{$file_name}" class="col-lg-10">
+		      		</div>
+		      	{/foreach}
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-success" name="send_contact_supplier">
 	        	<b>{l s="Valider"}</b>
 	        </button>
 	      </div>
@@ -308,6 +358,10 @@
 			updateMessage();
 		});
 
+		$('.contact').on('click', function() {
+			$('#id_supplier').val($(this).data('id'));
+			$('#email_supplier').val($(this).data('email'));
+		});
 	});
 
 	function updateMessage() {
