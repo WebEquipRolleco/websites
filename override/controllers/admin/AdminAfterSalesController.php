@@ -165,6 +165,13 @@ class AdminAfterSalesControllerCore extends AdminController {
 		    $message->save();
     	}
 
+        // Redirection page update
+        if($sav->id and Tools::getIsset('addAfter_sale')) {
+            
+            $link = new Link();
+            Tools::redirect($link->getAdminLink('AdminAfterSales')."&updateafter_sale&id_after_sale=".$this->id);
+        }
+
     	$this->context->smarty->assign('sav', $sav);
     	$this->setTemplate("details.tpl");
     }

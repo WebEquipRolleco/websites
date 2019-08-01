@@ -56,5 +56,14 @@ class Supplier extends SupplierCore {
 
         return $this->address;
     }
-    
+
+    /**
+    * Retourne le sous traitant assigné à un produit
+    * @param int $id_product
+    * @param int $id_product_attribute
+    **/
+    public static function fetchReferenceForProduct($id_product, $id_product_attribute = null) {
+
+    }
+
 }
