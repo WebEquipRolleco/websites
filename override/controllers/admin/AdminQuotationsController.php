@@ -226,6 +226,10 @@ class AdminQuotationsController extends AdminController {
     			$line->quantity = $form['quantity'];
     			$line->comment = $form['comment'];
     			$line->save();
+
+                if(isset($_FILES['lines']['name'][$form['id']])) {
+                    move_uploaded_file($_FILES['lines']['tmp_name'][$form['id']], $line->getDirectory(true).$line->getFileName());
+                }
     		}
     }
 

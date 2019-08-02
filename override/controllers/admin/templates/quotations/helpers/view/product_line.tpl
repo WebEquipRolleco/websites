@@ -1,9 +1,9 @@
 <tr>
 	<input type="hidden" name="lines[{$line->id}][id]" value="{$line->id}">
-	<input type="file" name="lines[{$line->id}][new_file]" style="height:0px; width:0px; overflow:hidden;">
+	<input type="file" id="new_file_{$line->id}" name="lines[{$line->id}]" style="height:0px; width:0px; overflow:hidden;">
 	<td class="text-center">
 		<img src="{$line->getImageLink()}" style="height:75px; width:75px; border: 1px solid lightgrey; margin-bottom: 2px">
-		<button type="button" class="btn btn-xs btn-block btn-default">
+		<button type="button" class="btn btn-xs btn-block btn-default change-picture" data-id="#new_file_{$line->id}">
 			Changer
 		</button>
 	</td>

@@ -100,12 +100,35 @@ class QuotationLine extends ObjectModel {
 	}
 
 	/**
+	* Retourne le chemin du dossier image
+	**/
+	public function getDirectory($absolute = false) {
+
+		$path = '/img/quotations/'.$this->getQuotation()->id."/";
+
+		if(!is_dir(_PS_ROOT_DIR_.$path))
+        	mkdir(_PS_ROOT_DIR_.$path, 0777, true);
+
+		if($absolute)
+            $path = _PS_ROOT_DIR_.$path;
+
+        return $path;
+	}
+
+	/**
+	* Retourne le nom de l'image personnalisée asociée
+	**/
+	public function getFileName() {
+		return $this->id.'.png';
+	}
+
+	/**
 	* Retourne le lien de l'image
 	**/
 	public function getImageLink() {
 
-		if(is_file(_PS_ROOT_DIR_."/img/quotations".$this->id_quotation."_".$this->id.".png"))
-			return "/img/quotations/".$this->id_quotation."_".$this->id.".png";
+		if(is_file($this->getDirectory(true).$this->getFileName()))
+			return $this->getDirectory().$this->getFileName();
 		else
 			return "/img/quotations/default.jpg";
 	}

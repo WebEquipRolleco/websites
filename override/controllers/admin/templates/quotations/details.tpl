@@ -312,6 +312,10 @@
 			width: 'auto'
 		});
 
+		$('.change-picture').on('click', function() {
+			$($(this).data('id')).click();
+		});
+
 		$('.change-reference').on('click', function() {
 			$('#reference').val(Date.now());
 		});
