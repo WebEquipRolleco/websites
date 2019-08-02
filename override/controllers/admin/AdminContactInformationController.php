@@ -63,6 +63,10 @@ class AdminContactInformationControllerCore extends AdminController {
 			array('label'=>"URL", 'name'=>'WEBEQUIP_TRUST_URL')
 		);
 
+		$data[4]['Apparence'] = array(
+			array('label'=>"Clé bundle Font-Awesome", 'name'=>'KEY_FONT_AWESOME')
+		);
+
 		return $data;
 	}
 
