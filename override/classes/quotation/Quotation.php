@@ -310,4 +310,16 @@ class Quotation extends ObjectModel {
         return Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND new = 1");
     }
 
+    /**
+    * Calcul la valeur de ma marge du devis
+    **/
+    public function getMargin() {
+
+        $margin = 0;
+        foreach($this->getProducts() as $line)
+            $margin += $line->getMargin();
+
+        return $margin;
+    }
+    
 }

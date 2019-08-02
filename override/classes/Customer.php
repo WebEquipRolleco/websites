@@ -56,6 +56,9 @@ class Customer extends CustomerCore {
 		parent::__construct($id_category, $id_lang, $id_shop);
 	}
 
+	// SHORTCUTS
+	public function getType() { return $this->getAccountType(); }
+	
 	/**
 	* Retourne les e-mails associées à la facturation
 	**/

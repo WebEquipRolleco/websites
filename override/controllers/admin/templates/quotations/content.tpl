@@ -61,12 +61,17 @@
 						<th></th>
 						<th></th>
 						<th class="text-right">
-							<button type="button" id="eraze" class="btn btn-default" title="{l s='Effacer' d='Shop.Theme.Actions'}">
-								<i class="icon-refresh"></i>
+							<button type="submit" class="btn btn-default" name="export" title="{l s='Export' d='Shop.Theme.Actions'}">
+								<i class="icon-download"></i>
 							</button>
-							<button type="button" id="search" class="btn btn-primary">
-								<b>{l s='Rechercher' d='Shop.Theme.Actions'}</b>
-							</button>
+							<div class="btn-group">
+								<button type="button" id="eraze" class="btn btn-warning" title="{l s='Effacer' d='Shop.Theme.Actions'}">
+									<i class="icon-refresh"></i>
+								</button>
+								<button type="button" id="search" class="btn btn-primary">
+									<b>{l s='Rechercher' d='Shop.Theme.Actions'}</b>
+								</button>
+						</div>
 						</th>
 					</tr>
 				</thead>

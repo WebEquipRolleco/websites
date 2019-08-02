@@ -2,6 +2,9 @@
 
 class AdminQuotationsController extends AdminController {
 
+    const DELIMITER = ";";
+    const END_OF_LINE = "\n";
+
     public function __construct() {
 
         $this->bootstrap = true;
@@ -30,6 +33,9 @@ class AdminQuotationsController extends AdminController {
     public function initContent() {
 
     	parent::initContent();
+
+        // Export des devis
+        $this->export();
 
         // Gestion de la liste des devis
         $this->downloadQuotation();
@@ -93,6 +99,54 @@ class AdminQuotationsController extends AdminController {
     }
 
     /**
+    * Récupère les options de filtre
+    **/ 
+    private function getOptions() {
+
+        $options['reference'] = Tools::getValue('reference');
+        $options['date_add'] = Tools::getValue('date');
+        $options['id_customer'] = Tools::getValue('customer');
+        $options['id_employee'] = Tools::getValue('employee');
+        if($id = Tools::getValue('state')) $options['states'] = array($id);
+
+        return $options;
+    }
+
+    /**
+    * Export des devis
+    **/
+    public function export() {
+        if(Tools::isSubmit('export')) {
+
+            $header = array("Numéro de devis", "Boutique", "Créateur", "Date de création", "Statut", "Référence commande", "Date commande", "Montant HT", "Montant marge", "taux de marge", "Type client", "Méthode de contact", "Source");
+
+            $csv = implode(self::DELIMITER, $header).self::END_OF_LINE;
+
+            foreach(Quotation::find($this->getOptions()) as $quotation) {
+
+                $row['reference'] = $quotation->reference;
+                $row['shop'] = null;
+                $row['employee'] = $quotation->getEmployee() ? $quotation->getEmployee()->firstname." ".$quotation->getEmployee()->lastname : null; 
+                $row['date_add'] = $quotation->date_add;
+                $row['status'] = $quotation->getStatusLabel();
+                $row['order_reference'] = null; 
+                $row['order_date'] = null;
+                $row['price'] = $quotation->getPrice();
+                $row['margin'] = $quotation->getMargin();
+                $row['margin_rate'] = Tools::getMarginRate($row['margin'], $row['price']);
+                $row['customer_type'] = ($quotation->getCustomer() and $quotation->getCustomer()->getType()) ? $quotation->getCustomer()->getType()->name : null;
+                $row['customer_method'] = $quotation->getOriginLabel();
+                $row['source'] = $quotation->getSourceLabel();
+
+                $csv .= implode(self::DELIMITER, $row).self::END_OF_LINE;
+            }
+
+            header('Content-Disposition: attachment; filename="export.csv";');
+            die($csv);
+        }
+    }
+    
+    /**
     * Télécharge la version PDF d'un devis
     **/
     public function downloadQuotation() {
@@ -108,14 +162,8 @@ class AdminQuotationsController extends AdminController {
     **/
     private function loadQuotations() {
 
-        $options['reference'] = Tools::getValue('reference');
-        $options['date_add'] = Tools::getValue('date');
-        $options['id_customer'] = Tools::getValue('customer');
-        $options['id_employee'] = Tools::getValue('employee');
-        if($id = Tools::getValue('state')) $options['states'] = array($id);
-
         $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/quotation_lines.tpl");
-        $this->context->smarty->assign('quotations', Quotation::find($options));
+        $this->context->smarty->assign('quotations', Quotation::find($this->getOptions()));
         die($tpl->fetch());
     }
 
