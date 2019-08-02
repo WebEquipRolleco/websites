@@ -15,7 +15,7 @@
 			<span class="pull-right">
 				<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Shop.Theme.Labels'}</a>
 				&nbsp;
-				<button type="submit" class="btn btn-xs btn-primary">
+				<button type="submit" class="btn btn-xs btn-success">
 					<b>{l s='Enregistrer' d='Shop.Theme.Labels'}</b>
 				</button>
 			</span>
@@ -186,6 +186,17 @@
 							{foreach $origins as $id => $origin}
 								<option value="{$id}" {if $quotation->origin == $id}selected{/if}>
 									{$origin}
+								</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="source">{l s="Source" mod='webequip_quotation'}</label>
+						<select name="quotation[source]" class="form-control">
+							<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
+							{foreach from=$sources key=id item=name}
+								<option value="{$id}" {if $quotation->source == $id}selected{/if}>
+									{$name}
 								</option>
 							{/foreach}
 						</select>

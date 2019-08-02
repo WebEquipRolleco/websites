@@ -172,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotations` (
     `status` INTEGER(1) NOT NULL, 
     `id_customer` INTEGER(11) NULL, 
     `origin` INT(1) NULL, 
+    `source` INT(1) NULL, 
     `email` VARCHAR(255) NULL, 
     `hidden_emails` VARCHAR(255) NULL,
     `date_add` DATETIME NULL,

@@ -51,7 +51,8 @@ class AdminQuotationsController extends AdminController {
     			$quotation->reference = $form['reference'];
     			$quotation->status = $form['status'];
     			$quotation->id_customer = $form['id_customer'];
-    			$quotation->origin = $form['origin'];
+                $quotation->origin = $form['origin'];
+    			$quotation->source = $form['source'];
     			$quotation->email = $form['email'];
     			$quotation->hidden_emails = $form['hidden_emails'];
     			$quotation->date_begin = $form['date_begin'];
@@ -80,7 +81,8 @@ class AdminQuotationsController extends AdminController {
 
     		$this->context->smarty->assign('quotation', $quotation);
     		$this->context->smarty->assign('states', Quotation::getStates());
-    		$this->context->smarty->assign('origins', Quotation::getOrigins());
+            $this->context->smarty->assign('origins', Quotation::getOrigins());
+    		$this->context->smarty->assign('sources', Quotation::getSources());
     		$this->context->smarty->assign('employees', Employee::getEmployees());
     		$this->context->smarty->assign('customers', Customer::getCustomers());
     		$this->context->smarty->assign('products', Product::getSimpleProducts(1));

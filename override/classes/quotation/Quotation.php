@@ -19,6 +19,7 @@ class Quotation extends ObjectModel {
     public $status = self::STATUS_WAITING;
     public $id_customer;
     public $origin;
+    public $source;
     public $email;
     public $hidden_emails;
     public $date_begin;
@@ -42,6 +43,7 @@ class Quotation extends ObjectModel {
             'status' => array('type' => self::TYPE_INT),
             'id_customer' => array('type' => self::TYPE_INT),
             'origin' => array('type' => self::TYPE_INT),
+            'source' => array('type' => self::TYPE_INT),
             'email' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
             'hidden_emails' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
             'date_add' => array('type' => self::TYPE_DATE),
@@ -95,6 +97,29 @@ class Quotation extends ObjectModel {
         return $data;
     }
 
+    /**
+    * Retourne la l iste des labels des sources du devis
+    **/
+    public static function getSources() {
+
+        $data[1] = "Boutique";
+        $data[2] = "HelloPro";
+        $data[3] = "Expo Permanente";
+        $data[4] = "Public Expo";
+
+        return $data;
+    }
+
+    /**
+    * Retourne le label de la source du devis
+    **/
+    public function getSourceLabel() {
+        if(isset(self::getSources()[$this->source]))
+            return self::getSources()[$this->source];
+        else
+            return null;
+    }
+
     public function getPrice($use_tax = false) {
 
         $price = 0;
@@ -119,10 +144,12 @@ class Quotation extends ObjectModel {
     * Retourne la class Bootstrap liée à l'état courant du devis
     **/
     public function getStatusClass() {
+        
         if($this->status == self::STATUS_WAITING) return "primary";
         if($this->status == self::STATUS_VALIDATED) return "success";
         if($this->status == self::STATUS_REFUSED) return "danger";
         if($this->status == self::STATUS_OVER) return "default";
+        
         return null;
     }
 
