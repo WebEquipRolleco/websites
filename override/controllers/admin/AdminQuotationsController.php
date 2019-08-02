@@ -72,7 +72,8 @@ class AdminQuotationsController extends AdminController {
 			    $quotation->active = $form['active'];
                 $quotation->new = $form['new'];
                 $quotation->highlight = $form['highlight'];
-                
+                $quotation->id_shop = $form['id_shop'];
+
                 if(!$quotation->id)
                     $quotation->date_add = date('Y-m-d H:i:s');
 
@@ -93,6 +94,7 @@ class AdminQuotationsController extends AdminController {
     		$this->context->smarty->assign('customers', Customer::getCustomers());
     		$this->context->smarty->assign('products', Product::getSimpleProducts(1));
             $this->context->smarty->assign('suppliers', Supplier::getSuppliers());
+            $this->context->smarty->assign('shops', Shop::getShops());
 
 			$this->setTemplate("details.tpl");
     	}
@@ -125,7 +127,7 @@ class AdminQuotationsController extends AdminController {
             foreach(Quotation::find($this->getOptions()) as $quotation) {
 
                 $row['reference'] = $quotation->reference;
-                $row['shop'] = null;
+                $row['shop'] = $quotation->getShop() ? $quotation->getShop()->name : null;
                 $row['employee'] = $quotation->getEmployee() ? $quotation->getEmployee()->firstname." ".$quotation->getEmployee()->lastname : null; 
                 $row['date_add'] = $quotation->date_add;
                 $row['status'] = $quotation->getStatusLabel();
@@ -145,7 +147,7 @@ class AdminQuotationsController extends AdminController {
             die($csv);
         }
     }
-    
+
     /**
     * Télécharge la version PDF d'un devis
     **/

@@ -34,6 +34,12 @@ class Quotation extends ObjectModel {
     public $active = 1;
     public $new = 1;
     public $highlight = 0;
+    public $id_shop;
+
+    // Variables temporaires
+    private $customer;
+    private $employee;
+    private $shop;
 
 	public static $definition = array(
         'table' => self::TABLE_NAME,
@@ -57,9 +63,43 @@ class Quotation extends ObjectModel {
             'id_employee' => array('type' => self::TYPE_INT),
             'active' => array('type' => self::TYPE_BOOL),
             'new' => array('type' => self::TYPE_BOOL),
-            'highlight' => array('type' => self::TYPE_BOOL)
+            'highlight' => array('type' => self::TYPE_BOOL),
+            'id_shop' => array('type' => self::TYPE_INT)
         ),
     );
+
+    /**
+    * Retourne la boutique associée
+    **/
+    public function getShop() {
+
+        if(!$this->shop and $this->id_shop)
+            $this->shop = new Shop($this->id_shop);
+
+        return $this->shop;
+    }
+
+    /**
+    * Retourne l'object client
+    **/
+    public function getCustomer() {
+
+        if(!$this->customer and $this->id_customer)
+            $this->customer = new Customer($this->id_customer);
+
+        return $this->customer;
+    }
+
+    /**
+    * Retourne l'object employé
+    **/
+    public function getEmployee() {
+
+        if(!$this->employee and $this->id_employee)
+            $this->employee = new Employee($this->id_employee);
+
+        return $this->employee;
+    }
 
     /**
     * Récupère un devis depuis une référence
@@ -198,20 +238,6 @@ class Quotation extends ObjectModel {
     }
 
     /**
-    * Retourne l'object client
-    **/
-    public function getCustomer() {
-        return $this->id_customer ? new Customer($this->id_customer) : null;
-    }
-
-    /**
-    * Retourne l'object employé
-    **/
-    public function getEmployee() {
-        return $this->id_employee ? new Employee($this->id_employee) : null;
-    }
-
-    /**
     * Verifie si le devis est toujours valable
     **/
     public function isValid() {
@@ -321,5 +347,5 @@ class Quotation extends ObjectModel {
 
         return $margin;
     }
-    
+
 }

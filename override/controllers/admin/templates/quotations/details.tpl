@@ -32,6 +32,14 @@
 				</div>
 				<div class="panel-content">
 					<div class="form-group">
+						<label for="id_shop">{l s="Boutique" mod='webequip_quotation'}</label>
+						<select name="quotation[id_shop]" class="form-control">
+							{foreach $shops as $shop}
+								<option value="{$shop.id_shop}" {if $quotation->id_shop == $shop.id_shop}selected{/if}>{$shop.name}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="status">{l s="Etat" mod='webequip_quotation'}</label>
 						<select name="quotation[status]" class="form-control">
 							{foreach $states as $id => $name}
