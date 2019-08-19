@@ -128,4 +128,26 @@ class Customer extends CustomerCore {
 
 		return $data;
 	}
+
+	/**
+	* Retourne le dernier panier du client
+	* @param int $id_customer
+	* @return Cart
+	**/
+	public static function getLastCart($id_customer) {
+
+		$carts = Cart::getCustomerCarts($id_customer, false);
+        if (!empty($carts)) {
+            
+            $cart = array_shift($carts);
+        	return new Cart($cart['id_cart']);
+        }
+
+        $cart = new Cart();
+        $cart->id_customer = $id_customer;
+        $cart->save();
+
+        return $cart;
+	}
+
 }

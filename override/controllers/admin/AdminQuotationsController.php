@@ -5,12 +5,16 @@ class AdminQuotationsController extends AdminController {
     const DELIMITER = ";";
     const END_OF_LINE = "\n";
 
+    private $id_quotation;
+
     public function __construct() {
 
         $this->bootstrap = true;
         $this->show_toolbar = false;
 
         parent::__construct();
+
+        $this->id_quotation = Tools::getValue('id');
     }
 
     public function displayAjax() {
@@ -37,6 +41,9 @@ class AdminQuotationsController extends AdminController {
         // Export des devis
         $this->export();
 
+        // Ajouter au panier
+        $this->addToCart();
+
         // Gestion de la liste des devis
         $this->downloadQuotation();
         $this->removeQuotation();
@@ -48,7 +55,7 @@ class AdminQuotationsController extends AdminController {
 
     	if(Tools::getIsset('details')) {
 
-    		$quotation = new Quotation(Tools::getValue('id'));
+    		$quotation = new Quotation($this->id_quotation);
 
     		if(Tools::getIsset('quotation')) {
 
@@ -87,6 +94,7 @@ class AdminQuotationsController extends AdminController {
     		$this->context->controller->addjQueryPlugin('select2');
 
     		$this->context->smarty->assign('quotation', $quotation);
+            $this->context->smarty->assign('employee', $this->context->employee);
     		$this->context->smarty->assign('states', Quotation::getStates());
             $this->context->smarty->assign('origins', Quotation::getOrigins());
     		$this->context->smarty->assign('sources', Quotation::getSources());
@@ -149,11 +157,29 @@ class AdminQuotationsController extends AdminController {
     }
 
     /**
+    * Ajoute les produits du devis à un client
+    **/
+    private function addToCart() {
+        if(Tools::isSubmit('add_to_customer') and $id_customer = Tools::getValue('id_customer')) {
+
+            $cart = Customer::getLastCart($id_customer);
+            $quotation = new Quotation($this->id_quotation);
+
+            foreach($quotation->getProducts() as $line) {
+                if(!QuotationAssociation::hasLine($cart->id, $line->id))
+                    QuotationAssociation::addLine($cart->id, $line->id);
+            }
+
+            $this->context->smarty->assign('validation', "Les produits ont été ajoutés au panier client");
+        }
+    }
+
+    /**
     * Télécharge la version PDF d'un devis
     **/
     public function downloadQuotation() {
 
-        if(Tools::getIsset('dl_pdf') and $id = Tools::getValue('id')) {
+        if(Tools::getIsset('dl_pdf') and $this->id_quotation) {
             $pdf = new PDF(array('quotation'=>new Quotation($id)), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
             die($pdf->render());
         }
