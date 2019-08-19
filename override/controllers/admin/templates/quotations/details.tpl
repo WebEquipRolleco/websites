@@ -322,14 +322,14 @@
 					</div>
 				</div>
 				<div class="col-lg-8">
-					<button type="submit" class="btn btn-info" name="add_to_customer">
+					<button type="submit" id="add_to_customer" class="btn btn-info" name="add_to_customer">
 						<i class="icon icon-shopping-cart"></i> &nbsp; <b>{l s="Ajouter au panier du client" mod="webequip_quotation"}</b>
 					</button>
 				</div>
 			</div>
 		</div>
 	</form>
-	
+
 {/if}
 
 <script>
@@ -337,6 +337,11 @@
 		
 		$('.select2').select2({
 			width: 'auto'
+		});
+
+		$('#add_to_customer').on('click', function(e) {
+			if(!confirm("Etes-vous sur de vouloir ajouter les produits au panier de ce client ?"))
+				e.preventDefault();
 		});
 
 		$('.change-picture').on('click', function() {
