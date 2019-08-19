@@ -38,9 +38,9 @@
 				<a href="{$link->getAdminLink('AdminQuotations')}&dl_pdf&id={$quotation->id}" class="btn btn-xs btn-default" title="{l s='Download' d='Shop.Theme.Actions'}" target="_blank">
 					<i class="icon-file"></i>
 				</a>
-					<a href="" class="btn btn-xs btn-default" title="{l s='Ajouter au panier' d='Shop.Theme.Actions'}">
-						<i class="icon-shopping-cart"></i>
-					</a>
+				{*<a href="" class="btn btn-xs btn-default" title="{l s='Ajouter au panier' d='Shop.Theme.Actions'}">
+					<i class="icon-shopping-cart"></i>
+				</a>*}
 			</div>
 			<div class="btn-group">
 				<a href="{$link->getAdminLink('AdminQuotations')}&details&id={$quotation->id}" class="btn btn-xs btn-default" title="{l s='Modifier' d='Shop.Theme.Actions'}">
