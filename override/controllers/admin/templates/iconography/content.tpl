@@ -1,98 +1,74 @@
-<form method="post">
-	<div class="panel">
-		<div class="panel-heading">
-			{l s="Gestion des icônes produits"}
-			<span class="panel-heading-action">
-				<a href="{$link->getAdminLink('AdminIconography')}&details" id="new_option" class="list-toolbar-btn" title="{l s='New' d='Shop.Theme.Actions'}">
-					<i class="process-icon-new"></i>
-				</a>
+{$list}
+
+<form method="post" enctype="multipart/form-data">
+	<div id="modal_import" class="modal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <b style="text-transform:uppercase;">
+	        	<i class="icon-upload"></i> &nbsp; {l s="Import" d='Admin.Actions'}
+	        </b>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="alert alert-info">
+	      		<b>Le fichier fourni doit :</b>
+	      		<br /><br />
+	      		- Etre compréssé au format <b>ZIP</b> <br /> 
+	      		- Comprendre un fichier de type <b>CSV</b> <br />
+	      		- Les colones du fichier doivent être séparés par un <b>point-virgule</b> <br />
+	      		- Les images doivent également être contenues dans l'archive
+	      	</div>
+	      	<div class="form-group">
+	      		<label>{l s="Fichier ZIP"}</label>
+	        	<input type="file" class="form-control" name="file">
+	        </div>
+	        <div class="form-group">
+	        	<label>{l s="Sauter la 1ère ligne"}</label>
+	        	<span class="switch prestashop-switch fixed-width-lg">
+				<input type="radio" name="skip" id="skip_on" value="1" checked>
+				<label for="skip_on">{l s='Yes' d='Shop.Theme.Labels'}</label>
+				<input type="radio" name="skip" id="skip_off" value="0">
+				<label for="skip_off">{l s='No' d='Shop.Theme.Labels'}</label>
+				<a class="slide-button btn"></a>
 			</span>
-		</div>
-		<table class="table">
-			<thead>
-				<tr class="bg-primary">
-					<th><b>{l s="ID"}</b></th>
-					<th><b>{l s="Nom"}</b></th>
-					<th class="text-center"><b>{l s="ALT"}</b></th>
-					<th class="text-center"><b>{l s="URL"}</b></th>
-					<th class="text-center"><b>{l s="Liste blanche"}</b></th>
-					<th class="text-center"><b>{l s="Liste noire"}</b></th>
-					<th class="text-center"><b>{l s="Position"}</b></th>
-					<th class="text-center"><b>{l s="Statut"}</b></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				{foreach from=$icons item=icon}
-					<tr>
-						<td>{$icon->id}</td>
-						<td>{$icon->name}</td>
-						<td class="text-center">{$icon->title}</td>
-						<td class="text-center">{$icon->url}</td>
-						<td class="text-center">
-							{assign var=nb_white_list value=$icon->getWhiteList()|@count}
-							{if $nb_white_list}
-								<span class="badge"><b>{$nb_white_list}</b></span>
-							{else}
-								<span class="badge" style="background-color:lightgrey">{$nb_white_list}</span>
-							{/if}
-						</td>
-						<td class="text-center">
-							{assign var=nb_black_list value=$icon->getBlackList()|@count}
-							{if $nb_black_list}
-								<span class="badge"><b>{$nb_black_list}</b></span>
-							{else}
-								<span class="badge" style="background-color:lightgrey">{$nb_black_list}</span>
-							{/if}
-						</td>
-						<td class="text-center">
-							<span class="label label-default">
-								<b>{$icon->position}</b>
-							</span>
-						</td>
-						<td class="text-center">
-							{if $icon->active}
-								<span class="label label-success">
-									<i class="icon-check"></i>
-								</span>
-							{else}
-								<span class="label label-danger">
-									<i class="icon-times"></i>
-								</span>
-							{/if}
-						</td>
-						<td class="text-right">
-							<div class="btn-group">
-								<a href="{$link->getAdminLink('AdminIconography')}&details&id={$icon->id}" class="btn btn-xs btn-default">
-									<i class="icon-edit"></i>
-								</a>
-								<button type="submit" class="btn btn-xs btn-default" name="toggle" value="{$icon->id}">
-									<i class="icon-refresh"></i>
-								</button>
-							</div>
-							<button type="submit" class="btn btn-xs btn-danger delete" name="delete" value="{$icon->id}">
-								<i class="icon-trash"></i>
-							</button>
-						</td>
-					</tr>
-				{foreachelse}
-					<tr>
-						<td colspan="8">
-							{l s="Aucune icône enregistrée."}
-						</td>
-					</tr>
-				{/foreach}
-			</tbody>
-		</table>
+	        </div>
+	        <div class="alert alert-info">
+	        	<b>Les colonnes du fichier doivent suivre le schéma suivant :</b>
+	        	<br /><br />
+                - 0 = ID <small class="text-muted">Facultatif, pour la modification uniquement</small><br />
+                - 1 = Nom <br />
+                - 2 = Titre <br />
+                - 3 = URL <br />
+                - 4 = Nom de l'image <br />
+                - 5 = Hauteur image <br />
+                - 6 = Largeur image <br />
+                - 7 = IDs liste blanche (x,y,z...) <br />
+                - 8 = IDs liste noire (x,y,z...) <br />
+                - 9 = Position <br />
+                - 10 = statut <br />
+                - 11 = Boutiques (x,y,z...)
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-success" name="import">
+	        	<b><i class="icon-check-square"></i> &nbsp; {l s="Import" d='Admin.Actions'}</b>
+	        </button>
+	        <button type="button" class="btn btn-danger" data-dismiss="modal">
+	        	<b><i class="icon-times"></i> &nbsp; {l s="Close" d='Admin.Actions'}</b>
+	        </button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </form>
 
 <script>
-	$(document).ready(function() {
+	$(document).on('ready', function() {
 
-		$('.delete').on('click', function(e) {
-			if(!confirm('Etes-vous sur de vouloir supprimer cet icône ?'))
-				e.preventDefault();
+		$('#desc-product_icon-import').on('click', function(e) {
+			e.preventDefault();
+
+			$('#modal_import').modal('show');
 		});
 
 	});

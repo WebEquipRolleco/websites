@@ -4,17 +4,55 @@ class AdminIconographyControllerCore extends AdminController {
 
 	public function __construct() {
         
+        $this->table = ProductIcon::TABLE_NAME;
+        $this->className = 'ProductIcon';
+
         $this->bootstrap = true;
+        $this->required_database = true;
+        $this->allow_export = true;
+
         parent::__construct();
+
+        $this->addRowAction('edit');
+        $this->addRowAction('delete');
+
+        $this->toolbar_btn['import'] = array(
+            'href' => '#import',
+            'desc' => $this->l('Import')
+        );
+
+        $this->fields_list = array(
+            'id_product_icon' => array(
+                'title' => $this->trans('ID', array(), 'Admin.Global'),
+            ),
+            'name' => array(
+                'title' => $this->trans('Name', array(), 'Admin.Global'),
+                'align' => 'center',
+            ),
+            'position' => array(
+                'title' => $this->trans('Position', array(), 'Admin.Global'),
+                'align' => 'center',
+                'type' => 'int'
+            ),
+            'active' => array(
+                'title' => $this->trans('Actif', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'active' => 'status'
+            ),
+        );
     }
 
     public function initContent() {
     	parent::initContent();
 
-    	if(Tools::getIsset('details'))
-    		$this->displayForm();
+        if(Tools::isSubmit('submitResetproduct_icon'))
+            $this->processResetFilters();
 
-    	$this->displayList();
+    	if(Tools::getIsset('updateproduct_icon'))
+    		$this->displayForm();
+        else
+    	   $this->displayList();
     }
 
     /**
@@ -39,7 +77,66 @@ class AdminIconographyControllerCore extends AdminController {
     		$icon->save();
     	}
 
-    	$this->context->smarty->assign('icons', ProductIcon::getList(false));
+        // Import
+        if(Tools::isSubmit('import')) {
+            if(isset($_FILES['file'])) {
+
+                $zip = new ZipArchive;
+                if($zip->open($_FILES['file']['tmp_name'])) {
+
+                    $dir = _PS_ROOT_DIR_.'/upload/'.uniqid()."/";
+                    mkdir($dir);
+
+                    $zip->extractTo($dir);
+                    foreach(glob($dir.'*.csv') as $path_csv) {
+
+                        $handle = fopen($path_csv, 'r');
+
+                        if(Tools::getValue('skip'))
+                            fgetcsv($handle, 0, ";");
+
+                        while($row = fgetcsv($handle, 0, ";")) {
+
+                            $icon = new ProductIcon($row[0]);
+                            $icon->name = $row[1];
+                            $icon->title = $row[2];
+                            $icon->url = $row[3];
+                            $icon->height = $row[5];
+                            $icon->width = $row[6];
+                            $icon->white_list = $row[7];
+                            $icon->black_list = $row[8];
+                            $icon->position = $row[9];
+                            $icon->active = (bool)$row[10];
+                            $icon->save();
+
+                            // Gestion image
+                            if($row[4] and is_file($dir.$row[4])) {
+
+                                $icon->extension = pathinfo($dir.$row[4], PATHINFO_EXTENSION);
+                                $icon->save();
+
+                                rename($dir.$row[4], _PS_ROOT_DIR_._PS_IMG_."icons/".$icon->id.".".$icon->extension);
+                            }
+
+                            // Gestion boutiques
+                            if($row[11])
+                                $icon->eraseShops();
+
+                            foreach(explode(',', $row[11]) as $id_shop)
+                                if(!$icon->hasShop($id_shop, false))
+                                    $icon->addShop($id_shop);
+                        }
+
+                        fclose($handle);
+                    }
+                    Tools::erazeDirectory($dir);
+                }  
+            }
+            
+        }
+    
+        $this->getList(1);
+        $this->context->smarty->assign('list', $this->renderList());
     }
 
     /**
@@ -47,7 +144,7 @@ class AdminIconographyControllerCore extends AdminController {
     **/
     private function displayForm() {
 
-    	$icon = new ProductIcon(Tools::getValue('id'));
+    	$icon = new ProductIcon(Tools::getValue('id_product_icon'));
 
     	// Validation du formulaire
     	if($form = Tools::getValue('form')) {

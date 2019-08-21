@@ -50,4 +50,15 @@ class Tools extends ToolsCore {
 		return round(($nb  / $total) * 100, $precision);
 	}
 
+	/**
+	* Efface un dossier de façon récursive
+	**/
+	public static function erazeDirectory($path) {
+
+		foreach(glob($path.'/*.*') as $file)
+			unlink($file);
+
+		return rmdir($path);
+	}
+
 }

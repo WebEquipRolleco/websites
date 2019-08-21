@@ -53,7 +53,7 @@ ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price
 ALTER TABLE `ps_employee` ADD `sav` TINYINT DEFAULT '0' AFTER `active`;
 
 CREATE TABLE IF NOT EXISTS `ps_product_icon` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_product_icon` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NULL, 
     `title` TEXT NULL, 
     `url` VARCHAR(255) NULL, 

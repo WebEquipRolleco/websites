@@ -3,7 +3,7 @@
 class ProductIcon extends ObjectModel {
 
 	const TABLE_NAME = 'product_icon';
-	const TABLE_PRIMARY = 'id';
+	const TABLE_PRIMARY = 'id_product_icon';
 
 	const DELIMITER = ",";
 
@@ -38,7 +38,7 @@ class ProductIcon extends ObjectModel {
 	public $active = true;
 
 	// Variables temporaires
-	private $shops;
+	private $shops = array();
 
 	/**
 	* @see ObjectModel::$definition
@@ -129,14 +129,14 @@ class ProductIcon extends ObjectModel {
         if(!$this->extension)
             return false;
 
-        return is_file(__DIR__.'/../../img/icons/'.$this->id.'.'.$this->extension);
+        return is_file(_PS_ROOT_DIR_._PS_IMG_.'icons/'.$this->id.'.'.$this->extension);
     }
 
     /**
     * Retourne le chemin relatif vers l'image
     **/
     public function getImgPath() {
-    	return '/img/icons/'.$this->id.'.'.$this->extension."?rnd=".uniqid();
+    	return _PS_IMG_.'icons/'.$this->id.'.'.$this->extension."?rnd=".uniqid();
     }
 
     /**
@@ -144,7 +144,7 @@ class ProductIcon extends ObjectModel {
     **/
     public function getShops() {
 
-    	if(!$this->shops) {
+    	if(!$this->shops and $this->id) {
     		$rows = Db::getInstance()->executeS("SELECT id_shop FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_product_icon = ".$this->id);
     		$this->shops = array_map(function($e) { return $e['id_shop']; }, $rows);
     	}
