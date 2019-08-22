@@ -61,6 +61,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminIconography"))
             $check .= $this->installTab('Iconographie', "AdminIconography", "AdminCatalog");
 
+        if(!isTabInstalled("AdminSpecificPrices"))
+            $check .= $this->installTab('Prix', "AdminSpecificPrices", "AdminCatalog");
+
         if(!isTabInstalled("AdminOrderStateRules"))
             $check .= $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
         
@@ -147,6 +150,10 @@ class Webequip_Configuration extends Module {
                 $this->installTab('Iconographie', "AdminIconography", "AdminCatalog");
             break;
 
+            case 'SPECIFIC_PRICES':
+                $this->installTab('Prix', "AdminSpecificPrices", "AdminCatalog");
+            break;
+
             case 'DOCUMENTS':
                 $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'description');
             break;
@@ -181,6 +188,7 @@ class Webequip_Configuration extends Module {
         $tabs[3] = array('name'=>'CATALOGUE');
         $tabs[3]['children'][] = array('name'=>"Options de commande", 'id'=>$this->isTabInstalled("AdminOrderOptions"), 'action'=>'ORDER_OPTIONS');
         $tabs[3]['children'][] = array('name'=>"Iconographie", 'id'=>$this->isTabInstalled("AdminIconography"), 'action'=>'ICONOGRAPHY');
+        $tabs[3]['children'][] = array('name'=>"Prix", 'id'=>$this->isTabInstalled("AdminSpecificPrices"), 'action'=>'SPECIFIC_PRICES');
 
         // Configuration footer
         $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ', 'MENU_FORCED_FONT_SIZE');
