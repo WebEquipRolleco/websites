@@ -7,7 +7,8 @@ class AdminSpecificPricesController extends AdminController {
         $this->bootstrap = true;
         $this->table = 'specific_price';
         $this->className = 'SpecificPrice';
-
+        $this->allow_export = true;
+        
         $this->addRowAction('delete');
 
         parent::__construct();
