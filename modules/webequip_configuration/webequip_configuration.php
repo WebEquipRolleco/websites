@@ -40,9 +40,6 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminResults"))
             $check .= $this->installTab("Résultats", "AdminResults", 'WEBEQUIP', 'grid_on');
 
-        if(!isTabInstalled("AdminData"))
-            $check .= $this->installTab('Imports / exports', 'AdminData', "WEBEQUIP", 'transform');
-
         if(!isTabInstalled("AdminQuotations"))
             $check .= $this->installTab("Devis", "AdminQuotations", "SELL", 'list');
 
@@ -104,10 +101,6 @@ class Webequip_Configuration extends Module {
 
             case 'RESULTS':
                 $this->installTab("Résultats", "AdminResults", 'WEBEQUIP', 'grid_on');
-            break;
-
-            case 'DATA':
-                $this->installTab('Imports / exports', 'AdminData', "WEBEQUIP", 'transform');
             break;
 
             case 'STATE_RULES':
@@ -177,7 +170,6 @@ class Webequip_Configuration extends Module {
         $tabs[1]['children'][] = array('name'=>'Coordonnées', 'id'=>$this->isTabInstalled('AdminContactInformation'), 'action'=>'CONTACTS');
         $tabs[1]['children'][] = array('name'=>"Objectifs", 'id'=>$this->isTabInstalled("AdminObjectives"), 'action'=>'OBJECTIVES');
         $tabs[1]['children'][] = array('name'=>"Résultats", 'id'=>$this->isTabInstalled("AdminResults"), 'action'=>'RESULTS');
-        $tabs[1]['children'][] = array('name'=>"Imports / exports", 'id'=>$this->isTabInstalled("AdminData"), 'action'=>'DATA');
         $tabs[1]['children'][] = array('name'=>"Documents", 'id'=>$this->isTabInstalled("AdminDocuments"), 'action'=>'DOCUMENTS');
 
         $tabs[2] = array('name'=>'CLIENTS');
