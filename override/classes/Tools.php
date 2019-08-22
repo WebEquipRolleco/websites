@@ -47,7 +47,11 @@ class Tools extends ToolsCore {
 	* Calcule un taux de marge entre 2 valeurs
 	**/
 	public static function getMarginRate($nb, $total, $precision = 1) {
-		return round(($nb  / $total) * 100, $precision);
+
+		if($nb and $total)
+			return round(($nb  / $total) * 100, $precision);
+
+		return 0;
 	}
 
 	/**

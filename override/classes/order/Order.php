@@ -2,6 +2,10 @@
 
 class Order extends OrderCore {
 
+	const ALL_PRODUCTS = 1;
+	const ONLY_QUOTATIONS = 2;
+	const ONLY_PRODUCTS = 3;
+
 	/** @var string Internal Reference */
 	public $internal_reference;
 
@@ -158,7 +162,12 @@ class Order extends OrderCore {
 	}
 	
 	/**
-	* Calcul un chiffre d'affaire 
+	* Calcul un chiffre d'affaire sur une période de temps
+	* @param bool $use_taxes
+	* @param mixed $date_begin
+	* @param mixed $date_end
+	* @param int $id_shop
+	* @return float
 	**/
 	public static function  sumTurnover($use_taxes = false, $date_begin = false, $date_end = false, $id_shop = null) {
 
@@ -190,7 +199,11 @@ class Order extends OrderCore {
 	}
 
 	/**
-	* Compte le nombre de commandes
+	* Compte le nombre de commandes sur une période de temps
+	* @param mixed $date_begin
+	* @param mixed $date_end
+	* @param int $id_shop
+	* @return int 
 	**/
 	public static function count($date_begin = null, $date_end = null, $id_shop = null) {
 
@@ -238,6 +251,99 @@ class Order extends OrderCore {
 			return false;
 
 		return Db::getInstance()->getValue("SELECT id_order FROM ps_orders WHERE reference = '$reference'");
+	}
+
+	/**
+	* Retourne une liste fitrée d'ID commande
+	* UTILISATION : page de résultats
+	* @param array $options
+	* @return array
+	**/ 
+	public static function findIds($options) {
+
+		$sql = "SELECT DISTINCT(o.id_order) FROM "._DB_PREFIX_."orders o";
+
+		if(isset($options['payment_methods']))
+			$sql .= " INNER JOIN ps_order_payment p ON o.reference = p.order_reference AND p.payment_method IN (".implode(',', $options['payment_methods']).")";
+
+		if(isset($options['customer_types']))
+			$sql .= " INNER JOIN ps_customer c ON o.id_customer = c.id_customer AND c.id_account_type IN(".implode(',', $options['customer_types']).")";
+
+		$sql .= " WHERE 1";
+
+		if(isset($options['quotations']))
+			$sql .= " AND EXISTS (SELECT d.id_order_detail FROM ps_order_detail d WHERE id_order = o.id_order AND d.id_quotation_line IS NOT NULL)";
+
+		if(isset($options['date_begin'])) {
+			if(!is_string($options['date_begin'])) $options['date_begin'] = $options['date_begin']->format('Y-m-d 00:00:00');
+			$sql .= " AND o.date_add >= '".$options['date_begin']."'";
+		}
+
+		if(isset($options['date_end'])) {
+			if(!is_string($options['date_end'])) $options['date_end'] = $options['date_end']->format('Y-m-d 23:59:59');
+			$sql .= " AND o.date_add <= '".$options['date_end']."'";
+		}
+
+		if(isset($options['shops']))
+			$sql .= " AND o.id_shop IN (".implode(',', $options['shops']).")";
+
+		$exclude_states = Configuration::get('EXPORT_EXCLUDED_STATES');
+		if($exclude_states)
+			$sql .= " AND o.current_state NOT IN ($exclude_states)";
+
+		return array_map(function($e) { return $e['id_order']; }, Db::getInstance()->executeS($sql));
+	}
+
+	/**
+	* Calcule le montant total en fonction d'une liste d'ID commande
+	* UTILISATION : page de résultats
+	* @param array $ids
+	* @param bool $use_taxes
+	* @param bool $quotation
+	* @return float
+	**/
+	public static function sumProducts($ids, $use_taxes = false, $quotation = self::ALL_PRODUCTS) {
+
+		if(!is_array($ids) || empty($ids))
+			return 0;
+		
+		if($use_taxes) $tax = "incl";
+		else $tax = "excl";
+
+		$sql = "SELECT SUM(total_price_tax_$tax) FROM ps_order_detail WHERE id_order IN (".implode(',', $ids).")";
+		if($quotation == self::ONLY_QUOTATIONS) $sql .= " AND id_quotation_line IS NOT NULL";
+		if($quotation == self::ONLY_PRODUCTS) $sql .= " AND id_quotation_line IS NULL";
+
+		return Db::getInstance()->getValue($sql);
+	}
+
+	/**
+	* Calcule le coût d'achat total en fonction d'une liste d'ID commande
+	* UTILISATION : page de résultats
+	* @param array $ids
+	* @param bool $use_taxes
+	* @param bool $quotation
+	* @return float
+	**/
+	public static function sumBuyingPrice($ids, $use_taxes = false, $quotation = self::ALL_PRODUCTS) {
+
+		$value = 0;
+
+		if(!empty($ids)) {
+
+			$sql = "SELECT * FROM ps_order_detail WHERE id_order IN (".implode(',', $ids).")";
+				if($quotation == self::ONLY_QUOTATIONS) $sql .= " AND id_quotation_line IS NOT NULL";
+				if($quotation == self::ONLY_PRODUCTS) $sql .= " AND id_quotation_line IS NULL";
+
+		
+			foreach(Db::getInstance()->executeS($sql) as $row)
+				$value = $row['purchase_supplier_price'] * $row['product_quantity'];
+		}
+		
+		if($use_taxes)
+			return $value * 1.2;
+		else
+			return $value;
 	}
 
 }
