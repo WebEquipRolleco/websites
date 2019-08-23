@@ -43,7 +43,7 @@ class ImageRetriever
         $this->link = $link;
     }
 
-    public function getProductImages(array $product, Language $language)
+    public function getProductImages(array $product, Language $language, $cover = false)
     {
         $productAttributeId = $product['id_product_attribute'];
         $productInstance = new Product(
@@ -52,7 +52,10 @@ class ImageRetriever
             $language->id
         );
 
-        $images = $productInstance->getImages($language->id);
+        if($cover)
+            $images = $productInstance->getCoverImage($language->id);
+        else
+            $images = $productInstance->getImages($language->id);
 
         if (empty($images)) {
             return [];

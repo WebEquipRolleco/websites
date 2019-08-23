@@ -107,14 +107,23 @@ class ProductPresenter
             }
         }
 
-        if (!isset($presentedProduct['cover'])) {
+        /*if (!isset($presentedProduct['cover'])) {
             if (count($presentedProduct['images']) > 0) {
                 $presentedProduct['cover'] = array_values($presentedProduct['images'])[0];
             } else {
                 $presentedProduct['cover'] = null;
             }
-        }
+        }*/
 
+        if (!isset($presentedProduct['cover'])) {
+            
+            $cover = $this->imageRetriever->getProductImages($product, $language, true);
+            if(!empty($cover))
+                $presentedProduct['cover'] = array_values($cover)[0];
+            else
+                $presentedProduct['cover'] = null;
+        }
+        
         return $presentedProduct;
     }
 
