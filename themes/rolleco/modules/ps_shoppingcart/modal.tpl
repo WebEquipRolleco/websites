@@ -10,7 +10,7 @@
 
   <div class="row">
     <div class="col-lg-12 text-right">
-      <button type="button" class="btn btn-default bold" data-dismiss="modal">
+      <button type="button" class="btn btn-default bold" data-izimodal-close>
         {l s='Continue shopping' d='Shop.Theme.Actions'}
       </button>
       <a href="{$cart_url}" class="btn btn-success bold">
