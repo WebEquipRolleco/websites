@@ -799,6 +799,18 @@
               </span>
             </div>
           </div>
+          <div class="form-group">
+            <label class="control-label col-lg-3">{l s="Afficher les prix"}</label>
+            <div class="col-lg-9">
+              <span class="switch prestashop-switch fixed-width-lg">
+                <input type="radio" name="display_with_taxes" id="display_with_taxes_on" value="1" {if $order->display_with_taxes}checked{/if}>
+                <label for="display_with_taxes_on">TTC</label>
+                <input type="radio" name="display_with_taxes" id="display_with_taxes_off" value="0" {if !$order->display_with_taxes}checked{/if}>
+                <label for="display_with_taxes_off">HT</label>
+                <a class="slide-button btn"></a>
+              </span>
+            </div>
+          </div>
           <div class="form-group text-right">
             <button type="submit" class="btn btn-primary" name="save_invoice">
               {l s='Enregistrer'|upper d='Admin.Actions'}
@@ -1603,32 +1615,6 @@
       </div>
       {/if}
     </div>
-  </div>
-
-  <div class="panel">
-    <div class="row">
-      <div class="col-lg-6">
-        {if $order->display_with_taxes}
-          <span class="label label-danger">
-            <b>{l s="Prix affichés TTC"}</b>
-          </span>
-        {else}
-          <span class="label label-success">
-            <b>{l s="Prix affichés HT"}</b>
-          </span>
-        {/if}
-      </div>
-      <div class="col-lg-6 text-right">
-        <form method="post">
-          <button type="submit" class="btn btn-default" name="switch_taxe_display">
-            {if $order->display_with_taxes}
-              {l s="Afficher les prix en HT"}
-            {else}
-              {l s="Afficher les prix en TTC"}
-            {/if}
-          </button>
-        </form>
-      </div>
   </div>
 
   {* Modal envoi mails classiques *}

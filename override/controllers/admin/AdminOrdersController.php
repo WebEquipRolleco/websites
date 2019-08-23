@@ -166,13 +166,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $order->save();
         }
 
-        // Modification affichage des taxes
-        if(Tools::isSubmit('switch_taxe_display')) {
-            $order = new Order((int)Tools::getValue('id_order'));
-            $order->display_with_taxes = !$order->display_with_taxes;
-            $order->save();
-        }
-
         // Supprimer un OA
         if($id = Tools::getValue('remove_oa')) {
             $oa = new OA($id);
@@ -215,6 +208,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $order->invoice_date = Tools::getValue('invoice_date');
             $order->invoice_number = Tools::getValue('invoice_number');
             $order->no_recall = Tools::getValue('no_recall');
+            $order->display_with_taxes = Tools::getValue('display_with_taxes');
             $order->save();
         }
         // Enregistrement des infomations complémentaires
