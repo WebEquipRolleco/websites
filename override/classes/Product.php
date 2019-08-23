@@ -38,7 +38,7 @@ class Product extends ProductCore {
         if(!in_array($context->controller->controller_type, array('front', 'modulefront')))
             $front = false;
 
-        $sql = 'SELECT p.`id_product`, pl.`name`
+        $sql = 'SELECT p.`id_product`, p.`reference`, pl.`name`
 				FROM `'._DB_PREFIX_.'product` p
 				'.Shop::addSqlAssociation('product', 'p').'
 				LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product` '.Shop::addSqlRestrictionOnLang('pl').')

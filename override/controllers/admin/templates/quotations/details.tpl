@@ -280,12 +280,13 @@
 			      	</div>
 			      	<div class="modal-body">
 			      		<div class="row">
-			      			<div class="col-lg-6">
+			      			<div class="col-lg-12">
 			      				<div class="form-group">
 			      					<select id="id_product" class="form-control select2" name="id_product">
 			      						<option value="">{l s="Produit libre"}</option>
 			      						{foreach $products as $product}
-			      							<option value="{$product.id_product}">{$product.name}</option>
+			      							<option value="{$product.id_product}">
+			      								{if $product.reference}{$product.reference} - {/if}{$product.name}</option>
 			      						{/foreach}
 			      					</select>
 			      				</div>
