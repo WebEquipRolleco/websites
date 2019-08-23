@@ -47,7 +47,7 @@
   {assign var="order_return" value=$order->getReturn()}
 
   <style type="text/css">
-    .panel-highlighted { background-color: lightgoldenrodyellow; }
+    .panel-highlighted { background-color: lightgoldenrodyellow !important; }
   </style>
 
   {*<div class="panel kpi-container">
