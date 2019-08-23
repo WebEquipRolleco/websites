@@ -46,6 +46,10 @@
   {assign var="order_shipping" value=$order->getShipping()}
   {assign var="order_return" value=$order->getReturn()}
 
+  <style type="text/css">
+    .panel-highlighted { background-color: lightgoldenrodyellow; }
+  </style>
+
   {*<div class="panel kpi-container">
     <div class="row">
       <div class="col-xs-6 col-sm-3 box-stats color3" >
