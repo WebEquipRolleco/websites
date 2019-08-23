@@ -46,7 +46,7 @@
   {assign var="order_shipping" value=$order->getShipping()}
   {assign var="order_return" value=$order->getReturn()}
 
-  <div class="panel kpi-container">
+  {*<div class="panel kpi-container">
     <div class="row">
       <div class="col-xs-6 col-sm-3 box-stats color3" >
         <div class="kpi-content">
@@ -79,26 +79,58 @@
         </a>
       </div>
     </div>
-  </div>
+  </div>*}
 
-  {assign var='state' value=$order->getCustomer()->getState()}
-  {if $state}
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="panel">
+  <div class="row">
+
+    <div class="col-lg-3">
+      <div class="panel" style="min-height:100px">
+        <div class="panel-heading">
+          <i class="icon-cogs"></i>
+          {l s='Référence interne' d='Admin.Global'}
+        </div>
+        <form method="post">
+          <div class="row">
+            <div class="col-lg-9">
+              <input type="text" class="form-control" name="new_internal_reference" value="{$order->internal_reference}" placeholder="{l s='Non renseignée' d='Admin.Global'}">
+            </div>
+            <div class="col-lg-3">
+              <button type="submit" class="btn btn-info">
+                <strong>{l s='Enregistrer' d='Admin.Actions'}</strong>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="panel" style="min-height:100px">
+        <div class="panel-heading">
+          <i class="icon-cogs"></i>
+          {l s='Etat client' d='Admin.Global'}
+        </div>
+        {assign var='state' value=$order->getCustomer()->getState()}
+        {if $state}
           <span class="label" style="background-color:{$state->color};{if $state->light_text}color:white;{/if}"><b>{$state->name}</b></span>
           {if $order->getCustomer()->comment}
             - {$order->getCustomer()->comment}
           {/if}
-        </div>
+        {else}
+          <span class="label label-success">
+            <i class="icon-check-square"></i> {l s="OK"}
+          </span>
+        {/if}
       </div>
     </div>
-  {/if}
 
-  {if !$order->getCustomer()->funding}
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="panel">
+    <div class="col-lg-3">
+      <div class="panel" style="min-height:100px">
+        <div class="panel-heading">
+          <i class="icon-cogs"></i>
+          {l s='Solvabilité client' d='Admin.Global'}
+        </div>
+        {if !$order->getCustomer()->funding}
           <span class="label label-danger text-center">
             <i class="icon-warning"></i>
           </span>
@@ -106,39 +138,35 @@
           {if $order->getCustomer()->date_funding != '0000-00-00'}
             - {$order->getCustomer()->date_funding|date_format:'d/m/Y'}
           {/if}
-        </div>
+        {else}
+          <span class="label label-success">
+            <i class="icon-check-square"></i> {l s="OK"}
+          </span>
+        {/if}
       </div>
     </div>
-  {/if}
 
-  {if !$order->getCustomer()->checkTVA()}
-    <div class="alert alert-danger">
-      <b>{l s="Le numéro de TVA interne du client n'a pas été renseignée."}</b>
-    </div>
-  {/if}
-  
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel">
+    <div class="col-lg-3">
+      <div class="panel" style="min-height:100px">
         <div class="panel-heading">
           <i class="icon-cogs"></i>
-          {l s='Référence interne' d='Admin.Global'}
+          {l s='TVA client' d='Admin.Global'}
         </div>
-        <form method="post">
-          <div class="row">
-            <div class="col-lg-4">
-              <input type="text" class="form-control" name="new_internal_reference" value="{$order->internal_reference}" placeholder="{l s='Non renseignée' d='Admin.Global'}">
-            </div>
-            <div class="col-lg-2">
-              <button type="submit" class="btn btn-info">
-                <strong>{l s='Enregistrer' d='Admin.Actions'}</strong>
-              </button>
-            </div>
-          </div>
-        </form>
+        {if !$order->getCustomer()->checkTVA()}
+          <span class="label label-danger">
+            <i class="icon-warning"></i>
+            <b>&nbsp; {l s="Le numéro de TVA interne du client n'a pas été renseignée."}</b>
+          </span>
+        {else}
+          <span class="label label-success">
+            <i class="icon-check-square"></i> {l s="OK"}
+          </span>
+        {/if}
+      </div>
     </div>
-  </div>
 
+  </div>
+  
   <div class="row">
     <div class="col-lg-7">
       <div class="panel">
