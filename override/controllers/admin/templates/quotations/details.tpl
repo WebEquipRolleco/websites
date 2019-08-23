@@ -266,47 +266,50 @@
 		</div>
 	</form>
 
+
 	<form id="new_product_form" action="{$link->getAdminLink('AdminQuotations')}">
 		<input type="hidden" name="action" value="add_product">
 		<input type="hidden" name="ajax" value="1">
 		<input type="hidden" name="id_quotation" value="{$quotation->id}">
 
-		<div class="modal fade" id="new_product_modal" tabindex="-1" role="dialog" aria-hidden="true">
-		  	<div class="modal-dialog" role="document">
-		      	<div class="modal-header bg-secondary">
-		        	<b>{l s="Nouveau produit" mod="webequip_quotation"}</b>
-		      	</div>
-		      	<div class="modal-body">
-		      		<div class="row">
-		      			<div class="col-lg-6">
-		      				<div class="form-group">
-		      					<select id="id_product" class="form-control select2" name="id_product">
-		      						<option value="">{l s="Produit libre"}</option>
-		      						{foreach $products as $product}
-		      							<option value="{$product.id_product}">{$product.name}</option>
-		      						{/foreach}
-		      					</select>
-		      				</div>
-		      				<div id="ajax_details_product"></div>
-		      			</div>
-		      		</div>
-		      	</div>
-		      	<div class="modal-footer">
-		        	<button id="close_modal" type="button" class="btn btn-xs btn-link" data-dismiss="modal">
-		        		{l s='Annuler' d='Shop.Theme.Labels'}
-		        	</button>
-		        	<button type="submit" class="btn btn-xs btn-success">
-		        		<b>{l s='Ajouter' d='Shop.Theme.Labels'}</b>
-		        	</button>
-		      	</div>
-		  	</div>
+		<div class="modal fade" id="new_product_modal">
+			<div class="modal-dialog" role="document">
+			  	<div class="modal-content">
+			      	<div class="modal-header">
+			        	<b>{l s="Nouveau produit"}</b>
+			      	</div>
+			      	<div class="modal-body">
+			      		<div class="row">
+			      			<div class="col-lg-6">
+			      				<div class="form-group">
+			      					<select id="id_product" class="form-control select2" name="id_product">
+			      						<option value="">{l s="Produit libre"}</option>
+			      						{foreach $products as $product}
+			      							<option value="{$product.id_product}">{$product.name}</option>
+			      						{/foreach}
+			      					</select>
+			      				</div>
+			      				<div id="ajax_details_product"></div>
+			      			</div>
+			      		</div>
+			      	</div>
+			      	<div class="modal-footer">
+			        	<button id="close_modal" type="button" class="btn btn-link" data-dismiss="modal">
+			        		{l s='Annuler' d='Shop.Theme.Labels'}
+			        	</button>
+			        	<button type="submit" class="btn btn-success">
+			        		<b>{l s='Ajouter' d='Shop.Theme.Labels'}</b>
+			        	</button>
+			      	</div>
+			  	</div>
+			</div>
 		</div>
 	</form>
 
 	<form method="post">
 		<div class="panel">
 			<div class="panel-heading">
-				{l s="Panier" mod="webequip_quotation"}
+				{l s="Panier"}
 			</div>
 			<div class="row">
 				<div class="col-lg-4">
@@ -323,7 +326,7 @@
 				</div>
 				<div class="col-lg-8">
 					<button type="submit" id="add_to_customer" class="btn btn-info" name="add_to_customer">
-						<i class="icon icon-shopping-cart"></i> &nbsp; <b>{l s="Ajouter au panier du client" mod="webequip_quotation"}</b>
+						<i class="icon icon-shopping-cart"></i> &nbsp; <b>{l s="Ajouter au panier du client"}</b>
 					</button>
 				</div>
 			</div>

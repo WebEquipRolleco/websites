@@ -6,7 +6,7 @@
 
 <div class="panel">
 	<div class="panel-heading">
-		{l s="Devis en cours" mod='webequip_partners'}
+		{l s="Devis en cours"}
 		<span class="panel-heading-action">
 			<a href="{$link->getAdminLink('AdminQuotations')}&details" id="new_quotation" class="list-toolbar-btn" title="{l s='New' d='Shop.Theme.Actions'}">
 				<i class="process-icon-new"></i>
