@@ -24,6 +24,16 @@ class Cart extends CartCore {
         return $this->customer;
     }
 
+    public function allowOption($id_option) {
+
+        foreach(Quotation::getFromCart($this->id) as $quotation){
+            if(!in_array($id_option, $quotation->getOptions()))
+                return false;
+        }
+
+        return true;
+    }
+
     private function newCalculator($products, $cartRules, $id_carrier)
     {
         $calculator = new Calculator($this, $id_carrier);

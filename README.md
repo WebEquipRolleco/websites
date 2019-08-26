@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotations` (
     `active` TINYINT(1) NULL,
     `new` TINYINT(1) NULL,
     `hightlight` TINYINT(1) NULL,
+    `option_ids` VARCHAR(255) NULL, 
     `id_shop` INT(1) NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

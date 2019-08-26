@@ -5,6 +5,8 @@ class Quotation extends ObjectModel {
 	const TABLE_NAME = 'webequip_quotations';
 	const TABLE_PRIMARY = 'id';
 
+    const DELIMITER = ";";
+
     const STATUS_WAITING = 1;
     const STATUS_VALIDATED = 2;
     const STATUS_REFUSED = 3;
@@ -34,9 +36,11 @@ class Quotation extends ObjectModel {
     public $active = 1;
     public $new = 1;
     public $highlight = 0;
+    public $option_ids;
     public $id_shop;
 
     // Variables temporaires
+    private $options = array();
     private $customer;
     private $employee;
     private $shop;
@@ -64,9 +68,22 @@ class Quotation extends ObjectModel {
             'active' => array('type' => self::TYPE_BOOL),
             'new' => array('type' => self::TYPE_BOOL),
             'highlight' => array('type' => self::TYPE_BOOL),
+            'option_ids' => array('type' => self::TYPE_STRING),
             'id_shop' => array('type' => self::TYPE_INT)
         ),
     );
+
+    /**
+    * Retourne la liste des IDs options autorisés pour le devis
+    * @return array
+    **/
+    public function getOptions() {
+
+        if(empty($this->options) and $this->option_ids)
+            $this->options = explode(self::DELIMITER, $this->option_ids);
+
+        return $this->options;
+    }
 
     /**
     * Retourne la boutique associée
@@ -346,6 +363,27 @@ class Quotation extends ObjectModel {
             $margin += $line->getMargin();
 
         return $margin;
+    }
+
+    /**
+    * Retourne les devis présents dans un panier
+    * @param int $id_cart
+    * @param bool $full
+    * @return array
+    **/
+    public static function getFromCart($id_cart, $full = true) {
+
+        $sql = "SELECT DISTINCT(q.".self::TABLE_PRIMARY.") 
+            FROM "._DB_PREFIX_.self::TABLE_NAME." q, "._DB_PREFIX_.QuotationLine::TABLE_NAME." l, "._DB_PREFIX_.QuotationAssociation::TABLE_NAME." a 
+            WHERE q.".self::TABLE_PRIMARY." = l.id_quotation 
+            AND l.".QuotationLine::TABLE_PRIMARY." = a.id_line
+            AND a.id_cart = ".$id_cart;
+
+        $data = array();
+        foreach(Db::getInstance()->executeS($sql) as $row)
+            $data[] = $full ? new self($row[self::TABLE_PRIMARY]) : $row[self::TABLE_PRIMARY];
+
+        return $data;
     }
 
 }

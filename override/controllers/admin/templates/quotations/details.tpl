@@ -25,18 +25,19 @@
 		<div class="col-lg-3">
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Gestion" mod='webequip_quotation'}
+					{l s="Gestion"}
 				</div>
 				<div class="form-group">
-					<label for="id_shop">{l s="Boutique" mod='webequip_quotation'}</label>
-					<select name="quotation[id_shop]" class="form-control">
+					<label for="id_shop">{l s="Boutique"}</label>
+					<input type="text" class="form-control" value="{$quotation->getShop()->name}" disabled>
+					{*<select name="quotation[id_shop]" class="form-control" disabled>
 						{foreach $shops as $shop}
 							<option value="{$shop.id_shop}" {if $quotation->id_shop == $shop.id_shop}selected{/if}>{$shop.name}</option>
 						{/foreach}
-					</select>
+					</select>*}
 				</div>
 				<div class="form-group">
-					<label for="status">{l s="Etat" mod='webequip_quotation'}</label>
+					<label for="status">{l s="Etat"}</label>
 					<select name="quotation[status]" class="form-control">
 						{foreach $states as $id => $name}
 							<option value="{$id}" {if $quotation->status == $id}selected{/if}>{$name}</option>
@@ -44,7 +45,7 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="id_employee">{l s="Créateur" mod='webequip_quotation'}</label>
+					<label for="id_employee">{l s="Créateur"}</label>
 					<select name="quotation[id_employee]" class="form-control select2">
 						{foreach $employees as $employee}
 							<option value="{$employee.id_employee}" {if $quotation->id_employee == $employee.id_employee}selected{/if}>
@@ -56,7 +57,7 @@
 			</div>
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Validité" mod='webequip_quotation'}
+					{l s="Validité"}
 				</div>
 				<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
 					<input type="radio" name="quotation[active]" id="active_on" value="1" {if $quotation->active}checked{/if}>
@@ -66,11 +67,11 @@
 					<a class="slide-button btn"></a>
 				</span>
 				<div class="form-group">
-					<label for="date_begin">{l s="Date de début" mod='webequip_quotation'} <em class="text-danger">*</em></label>
+					<label for="date_begin">{l s="Date de début"} <em class="text-danger">*</em></label>
 					<input type="date" name="quotation[date_begin]" id="date_begin" class="form-control" {if $quotation->date_begin}value="{$quotation->date_begin|date_format:'Y-m-d'}"{/if} required>
 				</div>
 				<div class="form-group">
-					<label for="date_end">{l s="Date de fin" mod='webequip_quotation'} <em class="text-danger">*</em></label>
+					<label for="date_end">{l s="Date de fin"} <em class="text-danger">*</em></label>
 					<div class="pull-right">
 						<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_end" data-nb="30">
 							<b>J+30</b>
@@ -81,7 +82,7 @@
 				<hr />
 				<div class="form-group">
 					<div>
-						<label for="date_recall">{l s="Date de rappel" mod='webequip_quotation'}</label>
+						<label for="date_recall">{l s="Date de rappel"}</label>
 						<div class="pull-right">
 							<div class="btn-group">
 								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="3">
@@ -116,10 +117,10 @@
 		<div class="col-lg-6">
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Affichage" mod='webequip_quotation'}
+					{l s="Affichage"}
 				</div>
 				<div class="form-group">
-					<label for="reference">{l s="Référence" mod='webequip_quotation'} <em class="text-danger">*</em></label>
+					<label for="reference">{l s="Référence"} <em class="text-danger">*</em></label>
 					<div class="pull-right">
 						<button type="button" class="btn btn-xs btn-primary change-reference">
 							<i class="icon-refresh"></i>
@@ -128,27 +129,37 @@
 					<input type="text" name="quotation[reference]" id="reference" class="form-control" value="{$quotation->reference}" required>
 				</div>
 				<div class="form-group">
-					<label for="comment">{l s="Commentaire" mod='webequip_quotation'}</label>
+					<label for="comment">{l s="Commentaire"}</label>
 					<textarea rows="5" name="quotation[comment]" id="comment" class="form-control">{$quotation->comment}</textarea>
 				</div>
 				<div class="form-group">
-					<label for="details">{l s="Information client" mod='webequip_quotation'}</label>
+					<label for="details">{l s="Information client"}</label>
 					<textarea rows="5" name="quotation[details]" id="details" class="form-control">{$quotation->details}</textarea>
 				</div>
 				<div class="row">
 					<div class="col-lg-6">
-						<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px" title="{l s='Le client verra sont devis en tant que nouveauté jusqu\'à son ouverture.'}">
+						<div class="text-center">
+							<span class="label label-default" title="{l s='Le client verra sont devis en tant que nouveauté jusqu\'à son ouverture.'}" style="cursor:help">
+								<b>{l s="Nouveau"}</b>
+							</span>
+						</div>
+						<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
 							<input type="radio" name="quotation[new]" id="new_on" value="1" {if $quotation->new}checked{/if}>
-							<label for="new_on">{l s='Nouveau' d='Shop.Theme.Labels'}</label>
+							<label for="new_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
 							<input type="radio" name="quotation[new]" id="new_off" value="0" {if !$quotation->new}checked{/if}>
 							<label for="new_off">{l s='Non' d='Shop.Theme.Labels'}</label>
 							<a class="slide-button btn"></a>
 						</span>
 					</div>
 					<div class="col-lg-6">
-						<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px" title="{l s='Le devis sera mis en valeur pour attirer l\'attention du client.'}">
+						<div class="text-center">
+							<span class="label label-default" title="{l s='Le devis sera mis en valeur pour attirer l\'attention du client.'}" style="cursor:help">
+								<b>{l s="Valoriser"}</b>
+							</span>
+						</div>
+						<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
 							<input type="radio" name="quotation[highlight]" id="highlight_on" value="1" {if $quotation->highlight}checked{/if}>
-							<label for="highlight_on">{l s='Valoriser' d='Shop.Theme.Labels'}</label>
+							<label for="highlight_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
 							<input type="radio" name="quotation[highlight]" id="highlight_off" value="0" {if !$quotation->highlight}checked{/if}>
 							<label for="highlight_off">{l s='Non' d='Shop.Theme.Labels'}</label>
 							<a class="slide-button btn"></a>
@@ -156,15 +167,48 @@
 					</div>
 				</div>
 			</div>
+			<div class="panel">
+				<div class="panel-heading">
+					{l s="Options"}
+				</div>
+				{assign var=options value=OrderOption::getOrderOptions()}
+				{if !empty($options)}
+					<table class="table" width="100%">
+						<tbody>
+							{foreach from=$options item=option}
+								{assign var=selected value=$option->id|in_array:$quotation->getOptions()}
+								<tr>
+									<td>
+										{$option->name}
+									</td>
+									<td class="text-right">
+										<span class="switch prestashop-switch fixed-width-lg" style="float:right">
+											<input type="radio" name="quotation[options][]" id="option_{$option->id}_on" value="{$option->id}" {if $selected}checked{/if}>
+											<label for="option_{$option->id}_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
+											<input type="radio" name="quotation[options][]" id="option_{$option->id}_off" value="" {if !$selected}checked{/if}>
+											<label for="option_{$option->id}_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+											<a class="slide-button btn"></a>
+										</span>
+									</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				{else}
+					<div class="alert alert-info">
+						{l s="Aucune option de commande disponible"}
+					</div>
+				{/if}
+			</div>
 		</div>
 
 		<div class="col-lg-3">
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Attribution" mod='webequip_quotation'}
+					{l s="Attribution"}
 				</div>
 				<div class="form-group">
-					<label for="id_customer">{l s="Client" mod='webequip_quotation'}</label>
+					<label for="id_customer">{l s="Client"}</label>
 					<select name="quotation[id_customer]" class="form-control select2">
 						<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
 						{foreach $customers as $customer}
@@ -175,8 +219,8 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="origin">{l s="Provenance" mod='webequip_quotation'}</label>
-					<select name="quotation[origin]" class="form-control">
+					<label for="origin">{l s="Provenance"} <em class="text-danger">*</em></label>
+					<select name="quotation[origin]" class="form-control" required>
 						<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
 						{foreach $origins as $id => $origin}
 							<option value="{$id}" {if $quotation->origin == $id}selected{/if}>
@@ -186,8 +230,8 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="source">{l s="Source" mod='webequip_quotation'}</label>
-					<select name="quotation[source]" class="form-control">
+					<label for="source">{l s="Source"} <em class="text-danger">*</em></label>
+					<select name="quotation[source]" class="form-control" required>
 						<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
 						{foreach from=$sources key=id item=name}
 							<option value="{$id}" {if $quotation->source == $id}selected{/if}>
@@ -199,25 +243,25 @@
 			</div>
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Contact" mod='webequip_quotation'}
+					{l s="Contact"}
 				</div>
 				<div class="form-group">
-					<label for="email">{l s="E-mails" mod='webequip_quotation'}</label>
-					<span class="text-muted pull-right">{l s="Séparés par une virgule" mod='webequip_quotation'}</span>
+					<label for="email">{l s="E-mails"}</label>
+					<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
 					<input type="text" name="quotation[email]" id="email" class="form-control" value="{$quotation->email}">
 				</div>
 				<div class="form-group">
-					<label for="hidden_emails">{l s="E-mails (CC)" mod='webequip_quotation'}</label>
-					<span class="text-muted pull-right">{l s="Séparés par une virgule" mod='webequip_quotation'}</span>
+					<label for="hidden_emails">{l s="E-mails (CC)"}</label>
+					<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
 					<input type="text" name="quotation[hidden_emails]" id="hidden_emails" class="form-control" value="{$quotation->hidden_emails}">
 				</div>
 				<hr />
 				<div class="form-group">
-					<label for="phone">{l s="Téléphone" mod='webequip_quotation'}</label>
+					<label for="phone">{l s="Téléphone"}</label>
 					<input type="text" name="quotation[phone]" id="phone" class="form-control" value="{$quotation->phone}">
 				</div>
 				<div class="form-group">
-					<label for="fax">{l s="Fax" mod='webequip_quotation'}</label>
+					<label for="fax">{l s="Fax"}</label>
 					<input type="text" name="quotation[fax]" id="fax" class="form-control" value="{$quotation->fax}">
 				</div>
 			</div>
@@ -232,7 +276,7 @@
 			<div class="col-lg-12">
 				<div class="panel">
 					<div class="panel-heading">
-						{l s="Liste des produits" mod='webequip_quotation'}
+						{l s="Liste des produits"}
 						<span class="panel-heading-action">
 							<a href="" id="new_product" class="list-toolbar-btn" data-toggle="modal" data-target="#new_product_modal" title="{l s='New' d='Shop.Theme.Actions'}">
 								<i class="process-icon-new"></i>

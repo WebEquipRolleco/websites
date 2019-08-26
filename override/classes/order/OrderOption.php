@@ -152,23 +152,33 @@ class OrderOptionCore extends ObjectModel {
     /**
     * Vérifie si l'option doit être disponible dans le panier en fonction des produits
     * EDIT : L'option n'est pas affichée si tous les produits du panier sont dans la liste noire
+    * EDIT : L'option n'est pas affichée si un devis dans le panier ne l'autorise pas
     **/
     public function display() {
+        $cart = Context::getContext()->cart;
 
-        if($this->active and $this->black_list) {
+        if($this->active) {
 
-            $ids = Db::getInstance()->executeS("SELECT id_product FROM ps_cart_product WHERE id_cart = ".Context::getContext()->cart->id);
-            $ids = array_map(function($e) { return $e['id_product']; }, $ids);
+            // Vérification autorisation devis
+            if(!$cart->allowOption($this->id))
+                return false;
+            
+            // Vérification liste noire
+            if($this->black_list) {
 
-            $current = 0;
-            $nb = count($ids);
+                $ids = Db::getInstance()->executeS("SELECT id_product FROM ps_cart_product WHERE id_cart = ".$cart->id);
+                $ids = array_map(function($e) { return $e['id_product']; }, $ids);
 
-            $bl = $this->getBlackList();
-            foreach($ids as $id)
-                if(in_array($id, $bl))
-                    $current++;
+                $current = 0;
+                $nb = count($ids);
 
-            return ($current < $nb);
+                $bl = $this->getBlackList();
+                foreach($ids as $id)
+                    if(in_array($id, $bl))
+                        $current++;
+
+                return ($current < $nb);
+            }
         }
 
         return $this->active;
