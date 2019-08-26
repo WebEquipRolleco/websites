@@ -44,7 +44,7 @@
 	</td>
 	<td class="text-right">
 		<div class="btn-group">
-			<button type="submit" class="btn btn-xs btn-default" name="remove_product" value="{$line->id}">
+			<button type="submit" class="btn btn-xs btn-danger remove_product" name="remove_product" value="{$line->id}" title="{l s='Remove' d='Admin.Actions'}">
 				<i class="icon-times"></i>
 			</button>
 		</div>

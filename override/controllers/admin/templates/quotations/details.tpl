@@ -9,13 +9,13 @@
 
 	<div class="panel">
 		<span class="label label-{$quotation->getStatusClass()} border-secondary">
-			<b>{l s='Devis' d='Shop.Theme.Labels'} {$quotation->getStatusLabel()}</b>
+			<b>{l s='Devis' d='Admin.Labels'} {$quotation->getStatusLabel()}</b>
 		</span>
 		<span class="pull-right">
-			<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Shop.Theme.Labels'}</a>
+			<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Admin.Labels'}</a>
 			&nbsp;
 			<button type="submit" class="btn btn-xs btn-success">
-				<b>{l s='Enregistrer' d='Shop.Theme.Labels'}</b>
+				<b>{l s='Enregistrer' d='Admin.Labels'}</b>
 			</button>
 		</span>
 	</div>
@@ -61,9 +61,9 @@
 				</div>
 				<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
 					<input type="radio" name="quotation[active]" id="active_on" value="1" {if $quotation->active}checked{/if}>
-					<label for="active_on">{l s='Active' d='Shop.Theme.Labels'}</label>
+					<label for="active_on">{l s='Active' d='Admin.Labels'}</label>
 					<input type="radio" name="quotation[active]" id="active_off" value="0" {if !$quotation->active}checked{/if}>
-					<label for="active_off">{l s='Inactive' d='Shop.Theme.Labels'}</label>
+					<label for="active_off">{l s='Inactive' d='Admin.Labels'}</label>
 					<a class="slide-button btn"></a>
 				</span>
 				<div class="form-group">
@@ -145,9 +145,9 @@
 						</div>
 						<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
 							<input type="radio" name="quotation[new]" id="new_on" value="1" {if $quotation->new}checked{/if}>
-							<label for="new_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
+							<label for="new_on">{l s='Oui' d='Admin.Labels'}</label>
 							<input type="radio" name="quotation[new]" id="new_off" value="0" {if !$quotation->new}checked{/if}>
-							<label for="new_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+							<label for="new_off">{l s='Non' d='Admin.Labels'}</label>
 							<a class="slide-button btn"></a>
 						</span>
 					</div>
@@ -159,9 +159,9 @@
 						</div>
 						<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
 							<input type="radio" name="quotation[highlight]" id="highlight_on" value="1" {if $quotation->highlight}checked{/if}>
-							<label for="highlight_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
+							<label for="highlight_on">{l s='Oui' d='Admin.Labels'}</label>
 							<input type="radio" name="quotation[highlight]" id="highlight_off" value="0" {if !$quotation->highlight}checked{/if}>
-							<label for="highlight_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+							<label for="highlight_off">{l s='Non' d='Admin.Labels'}</label>
 							<a class="slide-button btn"></a>
 						</span>
 					</div>
@@ -184,9 +184,9 @@
 									<td class="text-right">
 										<span class="switch prestashop-switch fixed-width-lg" style="float:right">
 											<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_on" value="{$option->id}" {if $selected}checked{/if}>
-											<label for="option_{$option->id}_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
+											<label for="option_{$option->id}_on">{l s='Oui' d='Admin.Labels'}</label>
 											<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_off" value="" {if !$selected}checked{/if}>
-											<label for="option_{$option->id}_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+											<label for="option_{$option->id}_off">{l s='Non' d='Admin.Labels'}</label>
 											<a class="slide-button btn"></a>
 										</span>
 									</td>
@@ -210,7 +210,7 @@
 				<div class="form-group">
 					<label for="id_customer">{l s="Client"}</label>
 					<select name="quotation[id_customer]" class="form-control select2">
-						<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
+						<option value="">{l s='Choisir' d='Admin.Labels'}</option>
 						{foreach $customers as $customer}
 							<option value="{$customer.id_customer}" {if $quotation->id_customer == $customer.id_customer}selected{/if}>
 								{$customer.firstname} {$customer.lastname} ({$customer.email})
@@ -221,7 +221,7 @@
 				<div class="form-group">
 					<label for="origin">{l s="Provenance"} <em class="text-danger">*</em></label>
 					<select name="quotation[origin]" class="form-control" required>
-						<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
+						<option value="">{l s='Choisir' d='Admin.Labels'}</option>
 						{foreach $origins as $id => $origin}
 							<option value="{$id}" {if $quotation->origin == $id}selected{/if}>
 								{$origin}
@@ -232,7 +232,7 @@
 				<div class="form-group">
 					<label for="source">{l s="Source"} <em class="text-danger">*</em></label>
 					<select name="quotation[source]" class="form-control" required>
-						<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
+						<option value="">{l s='Choisir' d='Admin.Labels'}</option>
 						{foreach from=$sources key=id item=name}
 							<option value="{$id}" {if $quotation->source == $id}selected{/if}>
 								{$name}
@@ -281,7 +281,7 @@
 							<a href="" id="new_product" class="list-toolbar-btn" data-toggle="modal" data-target="#new_product_modal" title="{l s='New' d='Shop.Theme.Actions'}">
 								<i class="process-icon-new"></i>
 							</a>
-							<a href="" id="save_products" class="list-toolbar-btn" title="{l s='Save' d='Shop.Theme.Actions'}">
+							<a href="" id="save_products" class="list-toolbar-btn" title="{l s='Save' d='Admin.Actions'}">
 								<i class="process-icon-save"></i>
 							</a>
 						</span>
@@ -289,14 +289,14 @@
 					<table class="table">
 						<thead>
 							<th width="85px"></th>
-							<th width="10%" class="text-center"><b>{l s="Référence" d="Shop.Theme.Actions"}</b></th>
-							<th class="text-center"><b>{l s="Produit" d="Shop.Theme.Actions"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Quantité" d="Shop.Theme.Actions"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="PA" d="Shop.Theme.Actions"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="PV" d="Shop.Theme.Actions"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Marge" d="Shop.Theme.Actions"}</b></th>
-							<th class="text-center"><b>{l s="Commentaire" d="Shop.Theme.Actions"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Position" d="Shop.Theme.Actions"}</b></th>
+							<th width="10%" class="text-center"><b>{l s="Référence" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="Quantité" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="PA" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="PV" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="Marge" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="Commentaire" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="Position" d="Admin.Labels"}</b></th>
 							<th></th>
 						</thead>
 						<tbody id="quotation_products">
@@ -326,11 +326,20 @@
 			      		<div class="row">
 			      			<div class="col-lg-12">
 			      				<div class="form-group">
-			      					<select id="id_product" class="form-control select2" name="id_product">
+			      					<select class="form-control select2" name="product_infos">
 			      						<option value="">{l s="Produit libre"}</option>
 			      						{foreach $products as $product}
-			      							<option value="{$product.id_product}">
-			      								{if $product.reference}{$product.reference} - {/if}{$product.name}</option>
+			      							<option value="{$product.id_product}_{$product.id_product_attribute}">
+			      								{if $product.reference_attribute}
+			      									{$product.reference_attribute} - 
+			      								{elseif $product.reference}
+			      									{$product.reference} - 
+			      								{/if}
+			      								{$product.name}
+			      								{if $product.name_attribute}
+			      									: {$product.name_attribute}
+			      								{/if}
+			      							</option>
 			      						{/foreach}
 			      					</select>
 			      				</div>
@@ -340,10 +349,10 @@
 			      	</div>
 			      	<div class="modal-footer">
 			        	<button id="close_modal" type="button" class="btn btn-link" data-dismiss="modal">
-			        		{l s='Annuler' d='Shop.Theme.Labels'}
+			        		{l s='Annuler' d='Admin.Labels'}
 			        	</button>
 			        	<button type="submit" class="btn btn-success">
-			        		<b>{l s='Ajouter' d='Shop.Theme.Labels'}</b>
+			        		<b>{l s='Ajouter' d='Admin.Labels'}</b>
 			        	</button>
 			      	</div>
 			  	</div>
@@ -360,7 +369,7 @@
 				<div class="col-lg-4">
 					<div class="form-group">
 						<select name="id_customer" class="form-control select2">
-							<option value="">{l s='Choisir' d='Shop.Theme.Labels'}</option>
+							<option value="">{l s='Choisir' d='Admin.Labels'}</option>
 							{foreach $customers as $customer}
 								<option value="{$customer.id_customer}" {if $employee->email == $customer.email}selected{/if}>
 									{$customer.firstname} {$customer.lastname} ({$customer.email})
@@ -387,8 +396,13 @@
 			width: 'auto'
 		});
 
+		$('.remove_product').on('click', function(e) {
+			if(!confirm('Etes-vous sûr de vouloir supprimer ce produit du devis ?'))
+				e.preventDefault();
+		});
+
 		$('#add_to_customer').on('click', function(e) {
-			if(!confirm("Etes-vous sur de vouloir ajouter les produits au panier de ce client ?"))
+			if(!confirm("Etes-vous sûr de vouloir ajouter les produits au panier de ce client ?"))
 				e.preventDefault();
 		});
 
@@ -429,26 +443,6 @@
 			else
 				$(target).val(null);
 
-		});
-
-		$('#id_product').on('change', function() {
-			
-			var id_product = $(this).val();
-			$('#ajax_details_product').html(null);
-
-			if(id_product)
-				$.ajax({
-					url: $('#new_product_form').attr('action'),
-					data: {
-						'id_product' : id_product,
-						'action' : 'product_details',
-						'ajax' : 1
-					},
-					dataType: 'json',
-					success: function(response) {
-						$('#ajax_details_product').html(response.view);
-					}
-				});
 		});
 
 		$('#new_product_form').on('submit', function(e) {

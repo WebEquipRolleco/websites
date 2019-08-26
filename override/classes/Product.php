@@ -38,14 +38,27 @@ class Product extends ProductCore {
         if(!in_array($context->controller->controller_type, array('front', 'modulefront')))
             $front = false;
 
-        $sql = 'SELECT p.`id_product`, p.`reference`, pl.`name`
-				FROM `'._DB_PREFIX_.'product` p
-				'.Shop::addSqlAssociation('product', 'p').'
-				LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product` '.Shop::addSqlRestrictionOnLang('pl').')
-				WHERE pl.`id_lang` = '.(int)$id_lang.'
-				AND p.active = 1
-				'.($front ? ' AND product_shop.`visibility` IN ("both", "catalog")' : '').'
-				ORDER BY pl.`name`';
+        $sql = 'SELECT 
+        			p.`id_product`, 
+        			p.`reference`, 
+        			pl.`name`, 
+        			pa.`id_product_attribute`, 
+        			pa.`reference` AS reference_attribute, 
+        			(
+        				SELECT GROUP_CONCAT(al.name)
+						FROM ps_product_attribute_combination pac, ps_attribute_lang al 
+						WHERE pac.id_attribute = al.id_attribute
+						AND pac.id_product_attribute = pa.id_product_attribute
+						AND al.id_lang = 1
+						GROUP BY pac.id_product_attribute
+					) AS name_attribute
+					FROM `'._DB_PREFIX_.'product` p
+					'.Shop::addSqlAssociation('product', 'p').'
+					LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product` '.Shop::addSqlRestrictionOnLang('pl').')
+					LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa ON (p.`id_product` = pa.`id_product`)
+					WHERE pl.`id_lang` = '.(int)$id_lang.'
+					AND p.active = 1
+					'.($front ? ' AND product_shop.`visibility` IN ("both", "catalog")' : '');
 
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
     }

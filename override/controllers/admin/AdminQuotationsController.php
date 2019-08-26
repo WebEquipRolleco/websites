@@ -24,10 +24,6 @@ class AdminQuotationsController extends AdminController {
     			$this->addProduct();
     		break;
 
-    		case 'product_details':
-    			$this->productDetails();
-    		break;
-
             case 'load_quotations':
                 $this->loadQuotations();
             break;
@@ -251,9 +247,12 @@ class AdminQuotationsController extends AdminController {
     	$line->position = QuotationLine::getNextPosition($line->id_quotation);
     	$line->save();
 
-    	$product = new Product(Tools::getValue('id_product'), false, 1);
+        $infos = Tools::getValue('product_infos');
+        $infos = explode('_', $infos);
+
+    	$product = new Product(($infos[0] ?? null), false, 1);
     	if($product->id) {
-    		$product->id_product_attribute = Tools::getValue('id_combination');
+    		$product->id_product_attribute = $infos[1] ?? null;
 
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
@@ -264,31 +263,6 @@ class AdminQuotationsController extends AdminController {
 
     	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_line.tpl");
     	$this->context->smarty->assign('line', $line);
-    	$data['view'] = $tpl->fetch();
-
-    	die(json_encode($data));
-    }
-
-    /**
-    * Récupère les informations d'un produit
-    **/
-    private function productDetails() {
-
-    	$id_product = Tools::getValue('id_product');
-    	$attributes = Product::getAttributesInformationsByProduct($id_product);
-
-    	$combinations = array();
-    	foreach($attributes as $attribute) {
-
-    		$combinations[$attribute['reference']]['id'] = $attribute['id_attribute'];
-    		$combinations[$attribute['reference']]['name'][] = $attribute['group']." : ".$attribute['attribute'];
-    	}
-
-    	foreach($combinations as $key => $combination)
-    		$combinations[$key]['name'] = implode(" - ", $combination['name']);
-
-    	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_details.tpl");
-    	$this->context->smarty->assign('combinations', $combinations);
     	$data['view'] = $tpl->fetch();
 
     	die(json_encode($data));
