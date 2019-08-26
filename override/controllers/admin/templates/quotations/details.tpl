@@ -183,9 +183,9 @@
 									</td>
 									<td class="text-right">
 										<span class="switch prestashop-switch fixed-width-lg" style="float:right">
-											<input type="radio" name="quotation[options][]" id="option_{$option->id}_on" value="{$option->id}" {if $selected}checked{/if}>
+											<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_on" value="{$option->id}" {if $selected}checked{/if}>
 											<label for="option_{$option->id}_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
-											<input type="radio" name="quotation[options][]" id="option_{$option->id}_off" value="" {if !$selected}checked{/if}>
+											<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_off" value="" {if !$selected}checked{/if}>
 											<label for="option_{$option->id}_off">{l s='Non' d='Shop.Theme.Labels'}</label>
 											<a class="slide-button btn"></a>
 										</span>
