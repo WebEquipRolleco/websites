@@ -49,7 +49,7 @@ class AdminIconographyControllerCore extends AdminController {
         if(Tools::isSubmit('submitResetproduct_icon'))
             $this->processResetFilters();
 
-    	if(Tools::getIsset('updateproduct_icon'))
+    	if(Tools::getIsset('updateproduct_icon') or Tools::getIsset('addproduct_icon'))
     		$this->displayForm();
         else
     	   $this->displayList();
