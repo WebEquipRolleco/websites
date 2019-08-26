@@ -113,18 +113,25 @@
         <div class="panel-heading">
           <i class="icon-cogs"></i>
           {l s='Etat client' d='Admin.Global'}
-        </div>
-        {assign var='state' value=$order->getCustomer()->getState()}
-        {if $state}
-          <span class="label" style="background-color:{$state->color};{if $state->light_text}color:white;{/if}"><b>{$state->name}</b></span>
-          {if $order->getCustomer()->comment}
-            - {$order->getCustomer()->comment}
-          {/if}
-        {else}
-          <span class="label label-success">
-            <i class="icon-check-square"></i> {l s="OK"}
+          <span class="panel-heading-action">
+            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}">
+                <i class="process-icon-edit"></i>
+            </a>
           </span>
-        {/if}
+        </div>
+        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" style="text-decoration:none">
+          {assign var='state' value=$order->getCustomer()->getState()}
+          {if $state}
+            <span class="label" style="background-color:{$state->color};{if $state->light_text}color:white;{/if}"><b>{$state->name}</b></span>
+            {if $order->getCustomer()->comment}
+              - {$order->getCustomer()->comment}
+            {/if}
+          {else}
+            <span class="label label-success">
+              <i class="icon-check-square"></i> {l s="OK"}
+            </span>
+          {/if}
+        </a>
       </div>
     </div>
 
@@ -133,20 +140,27 @@
         <div class="panel-heading">
           <i class="icon-cogs"></i>
           {l s='Solvabilité client' d='Admin.Global'}
+          <span class="panel-heading-action">
+            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}">
+                <i class="process-icon-edit"></i>
+            </a>
+          </span>
         </div>
-        {if !$order->getCustomer()->funding}
-          <span class="label label-danger text-center">
-            <i class="icon-warning"></i>
-          </span>
-          &nbsp; <b class="text-danger">{l s="Client non solvable"}</b>
-          {if $order->getCustomer()->date_funding != '0000-00-00'}
-            - {$order->getCustomer()->date_funding|date_format:'d/m/Y'}
+        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" style="text-decoration:none">
+          {if !$order->getCustomer()->funding}
+            <span class="label label-danger text-center">
+              <i class="icon-warning"></i>
+            </span>
+            &nbsp; <b class="text-danger">{l s="Client non solvable"}</b>
+            {if $order->getCustomer()->date_funding != '0000-00-00'}
+              - {$order->getCustomer()->date_funding|date_format:'d/m/Y'}
+            {/if}
+          {else}
+            <span class="label label-success">
+              <i class="icon-check-square"></i> {l s="OK"}
+            </span>
           {/if}
-        {else}
-          <span class="label label-success">
-            <i class="icon-check-square"></i> {l s="OK"}
-          </span>
-        {/if}
+        </a>
       </div>
     </div>
 
@@ -155,17 +169,24 @@
         <div class="panel-heading">
           <i class="icon-cogs"></i>
           {l s='TVA client' d='Admin.Global'}
+          <span class="panel-heading-action">
+            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}">
+                <i class="process-icon-edit"></i>
+            </a>
+          </span>
         </div>
-        {if !$order->getCustomer()->checkTVA()}
-          <span class="label label-danger">
-            <i class="icon-warning"></i>
-            <b>&nbsp; {l s="Le numéro de TVA interne du client n'a pas été renseignée."}</b>
-          </span>
-        {else}
-          <span class="label label-success">
-            <i class="icon-check-square"></i> {l s="OK"}
-          </span>
-        {/if}
+        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" style="text-decoration:none">
+          {if !$order->getCustomer()->checkTVA()}
+            <span class="label label-danger">
+              <i class="icon-warning"></i>
+              <b>&nbsp; {l s="Le numéro de TVA interne du client n'a pas été renseignée."}</b>
+            </span>
+          {else}
+            <span class="label label-success">
+              <i class="icon-check-square"></i> {l s="OK"}
+            </span>
+          {/if}
+        </a>
       </div>
     </div>
 
