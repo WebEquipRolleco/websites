@@ -18,6 +18,11 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         AdminController::__construct();
 
+        $this->toolbar_btn['import'] = array(
+            'href' => '#import',
+            'desc' => $this->l('Import')
+        );
+
         $this->_select = '
         a.id_currency,
         a.id_order AS id_pdf,
@@ -156,7 +161,51 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         );
     }
 
+    /**
+    * Ajoute la modal import à la page liste
+    **/
+    public function renderList() {
+
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/orders/import.tpl");
+        return parent::renderList().$tpl->fetch();
+    }
+
     public function initContent() {
+
+        // Import commande
+        if(Tools::isSubmit('import')) {
+            if(isset($_FILES['file'])) {
+
+                $handle = fopen($_FILES['file']['tmp_name'], 'r');
+                $not_found = array();
+
+                if(Tools::getValue('skip'));
+                    fgetcsv($handle, 0, ";");
+
+                while($row = fgetcsv($handle, 0, ";")) {
+
+                    if($order = Order::getIdByReference($row[0])) {
+
+                        if($row[4]) $order->invoice_number = $row[4];
+                        if($row[5]) $order->invoice_date = DateTime::createFromFormat('d/m/Y', $row[5]);
+                        $order->save();
+
+                        if($row[2])
+                            OrderHistory::changeIdOrderState($row[2], $order->id);
+                    }
+                    else
+                        $not_found[] = $row[0];
+                }
+
+                fclose($handle);
+
+                if(!empty($not_found))
+                    $this->errors[] = "L'import est terminé mais les commandes suivantes n'ont pas été trouvées : ".implode(', ', $not_found);
+                else
+                    $this->confirmations[] = "Import terminé";
+            }
+            
+        }
 
         // Modification référence interne
         if(Tools::getIsset('new_internal_reference')) {

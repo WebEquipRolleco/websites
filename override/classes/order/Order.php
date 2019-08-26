@@ -250,7 +250,7 @@ class Order extends OrderCore {
 		if(!$reference)
 			return false;
 
-		return Db::getInstance()->getValue("SELECT id_order FROM ps_orders WHERE reference = '$reference'");
+		return Db::getInstance()->getValue("SELECT id_order FROM ps_orders WHERE reference = '$reference' OR internal_reference = '$reference'");
 	}
 
 	/**
