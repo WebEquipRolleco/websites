@@ -286,6 +286,7 @@ class AdminQuotationsController extends AdminController {
                 $line->id_supplier = $form['id_supplier'];
     			$line->quantity = $form['quantity'];
     			$line->comment = $form['comment'];
+                $line->position = $form['position'];
     			$line->save();
 
                 if(isset($_FILES['lines']['name'][$form['id']])) {

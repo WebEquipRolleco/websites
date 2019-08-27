@@ -133,7 +133,7 @@ class Quotation extends ObjectModel {
     public function getProducts() {
 
         $data = array();
-        $rows = Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_quotation = ".$this->id);
+        $rows = Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_quotation = ".$this->id.' ORDER BY position');
         foreach($rows as $row) {
             $data[] = new QuotationLine($row[QuotationLine::TABLE_PRIMARY]);
         }

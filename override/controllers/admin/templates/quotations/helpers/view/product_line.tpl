@@ -40,7 +40,7 @@
 		<textarea rows="3" class="form-control" name="lines[{$line->id}][comment]">{$line->comment}</textarea>
 	</td>
 	<td>
-		<input type="text" class="form-control text-center" name="lines[{$line->id}][position]" value="{$line->position}" disabled>
+		<input type="text" class="form-control text-center" name="lines[{$line->id}][position]" value="{$line->position}">
 	</td>
 	<td class="text-right">
 		<div class="btn-group">
