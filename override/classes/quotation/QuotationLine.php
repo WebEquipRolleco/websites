@@ -79,18 +79,25 @@ class QuotationLine extends ObjectModel {
 	}
 
 	/**
+	* Calcule le prix d'achat (charges comprises : ports)
+	**/
+	public function getBuyingPrice() {
+		return $this->buying_price + $this->buying_fees;
+	}
+
+	/**
 	* Calcule la marge du produit
 	**/
 	public function getMargin() {
-		return $this->selling_price - $this->buying_price;
+		return $this->selling_price - $this->getBuyingPrice();
 	}
 
 	/**
 	* Calcule le taux de marge du produit
 	**/
 	public function getMarginRate() {
-		if(!$this->selling_price or !$this->buying_price) return 0;
-		return ($this->selling_price * $this->buying_price) / 100;
+		if(!$this->selling_price or !$this->getBuyingPrice()) return 0;
+		return ($this->selling_price * $this->getBuyingPrice()) / 100;
 	}
 
 	/**
