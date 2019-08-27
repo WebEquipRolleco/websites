@@ -6,6 +6,10 @@ $(document).ready(function() {
   		return $(document).width() - (this.offset().left + this.outerWidth());
 	}*/
 
+	$('.add-to-cart').on('click', function() {
+		$(document).find('#modal_product_added').remove();
+	});
+
 	$('.show-menu').on('mouseover', function() {
 
 		$('.megamenu_level_2').hide();
