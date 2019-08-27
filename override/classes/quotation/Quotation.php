@@ -2,8 +2,8 @@
 
 class Quotation extends ObjectModel {
 
-	const TABLE_NAME = 'webequip_quotations';
-	const TABLE_PRIMARY = 'id';
+	const TABLE_NAME = 'quotation';
+	const TABLE_PRIMARY = 'id_quotation';
 
     const DELIMITER = ";";
 

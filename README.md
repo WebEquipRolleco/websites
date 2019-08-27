@@ -166,8 +166,8 @@ CREATE TABLE IF NOT EXISTS `ps_account_type` (
     PRIMARY KEY (`id_account_type`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `ps_webequip_quotations` (
-    `id` INT NOT NULL AUTO_INCREMENT, 
+CREATE TABLE IF NOT EXISTS `ps_quotation` (
+    `id_quotation` INT NOT NULL AUTO_INCREMENT, 
     `reference` VARCHAR(255) NULL, 
     `status` INTEGER(1) NOT NULL, 
     `id_customer` INTEGER(11) NULL, 
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotations` (
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `ps_webequip_quotation_lines` (
+CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
     `id` INT NOT NULL AUTO_INCREMENT, 
     `reference` VARCHAR(255) NULL, 
     `name` VARCHAR(255) NULL, 
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `ps_webequip_quotation_lines` (
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `ps_webequip_quotation_associations` (
+CREATE TABLE IF NOT EXISTS `ps_quotation_association` (
     `id` INT NOT NULL AUTO_INCREMENT, 
     `id_line` INTEGER(11) NULL,
     `id_cart` INTEGER(11) NULL,

@@ -2,7 +2,7 @@
 
 class QuotationLine extends ObjectModel {
 
-	const TABLE_NAME = 'webequip_quotation_lines';
+	const TABLE_NAME = 'quotation_line';
 	const TABLE_PRIMARY = 'id';
 
 	public $reference;

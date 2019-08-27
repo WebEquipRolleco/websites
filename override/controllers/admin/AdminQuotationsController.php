@@ -11,10 +11,107 @@ class AdminQuotationsController extends AdminController {
 
         $this->bootstrap = true;
         $this->show_toolbar = false;
+        $this->table = Quotation::TABLE_NAME;
+        $this->className = 'Quotation';
+        $this->id_quotation = Tools::getValue('id_quotation');
+
+        $this->addRowAction('edit');
+        $this->addRowAction('delete');
+        $this->allow_export = true;
 
         parent::__construct();
 
-        $this->id_quotation = Tools::getValue('id');
+        $this->bulk_actions = array(
+            'delete' => array(
+                'text' => $this->trans('Delete selected', array(), 'Admin.Notifications.Info'),
+                'confirm' => $this->trans('Delete selected items?', array(), 'Admin.Notifications.Info'),
+                'icon' => 'icon-trash'
+            )
+        );
+        
+        //$this->processResetFilters();
+
+        $this->_select = "a.*, a.id_quotation AS id, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee";
+        $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
+
+        $this->fields_list = array(
+            'reference' => array(
+                'title' => $this->trans('Référence', array(), 'Admin.Global'),
+                'filter_key' => 'a!reference'
+            ),
+            'customer' => array(
+                'title' => $this->trans('Client', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'employee' => array(
+                'title' => $this->trans('Créateur', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
+            'origin' => array(
+                'title' => $this->trans('Origine', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatOrigin',
+            ),
+            'source' => array(
+                'title' => $this->trans('Source', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatSource',
+            ),
+            'status' => array(
+                'title' => $this->trans('Etat', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatStatus',
+            ),
+            'active' => array(
+                'title' => $this->trans('Actif', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'active' => 'status',
+                'type' => 'bool',
+                'search' => false
+            ),
+            'date_add' => array(
+                'title' => $this->trans('Création', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatDate',
+                'type' => 'date',
+            ),
+            'id' => array(
+                'title' => $this->trans('Actions', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatActions',
+                'search' => false
+            ),
+        );
+    }
+
+    public function formatDate($value) {
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
+        return $date->format('d/m/Y');
+    }
+
+    public function formatOrigin($value) {
+       $origins = Quotation::getOrigins();
+       return $origins[$value] ?? '-';
+    }
+
+    public function formatSource($value) {
+        $sources = Quotation::getSources();
+        return $sources[$value] ?? '-';
+    }
+
+    public function formatStatus($value) {
+        $quotation = new Quotation();
+        $quotation->status = $value;
+
+        return "<span class='label label-".$quotation->getStatusClass()."'><b>".$quotation->getStatusLabel()."</b></span>";
+    }
+
+    public function formatActions($value) {
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/actions.tpl");
+        $this->context->smarty->assign('id', $value);
+        
+        return $tpl->fetch();
     }
 
     public function displayAjax() {
@@ -23,10 +120,6 @@ class AdminQuotationsController extends AdminController {
     		case 'add_product':
     			$this->addProduct();
     		break;
-
-            case 'load_quotations':
-                $this->loadQuotations();
-            break;
     	}
     }
 
@@ -42,14 +135,13 @@ class AdminQuotationsController extends AdminController {
 
         // Gestion de la liste des devis
         $this->downloadQuotation();
-        $this->removeQuotation();
         $this->copyQuotation();
 
         // Gestion des produits d'un devis
     	$this->saveProducts();
     	$this->removeProduct();
 
-    	if(Tools::getIsset('details')) {
+    	if(Tools::getIsset('updatequotation') or Tools::getIsset('addquotation')) {
 
     		$quotation = new Quotation($this->id_quotation);
 
@@ -93,7 +185,7 @@ class AdminQuotationsController extends AdminController {
                 //$quotation->id_shop = $form['id_shop'];
 
 			    $quotation->save();
-			    $this->context->smarty->assign('validation', "Devis enregistré");
+			    $this->confirmations[] = "Devis enregistré";
     		}
     		
     		$this->context->controller->addjQueryPlugin('select2');
@@ -114,20 +206,6 @@ class AdminQuotationsController extends AdminController {
     }
 
     /**
-    * Récupère les options de filtre
-    **/ 
-    private function getOptions() {
-
-        $options['reference'] = Tools::getValue('reference');
-        $options['date_add'] = Tools::getValue('date');
-        $options['id_customer'] = Tools::getValue('customer');
-        $options['id_employee'] = Tools::getValue('employee');
-        if($id = Tools::getValue('state')) $options['states'] = array($id);
-
-        return $options;
-    }
-
-    /**
     * Export des devis
     **/
     public function export() {
@@ -137,7 +215,7 @@ class AdminQuotationsController extends AdminController {
 
             $csv = implode(self::DELIMITER, $header).self::END_OF_LINE;
 
-            foreach(Quotation::find($this->getOptions()) as $quotation) {
+            foreach(Quotation::find() as $quotation) {
 
                 $row['reference'] = $quotation->reference;
                 $row['shop'] = $quotation->getShop() ? $quotation->getShop()->name : null;
@@ -175,7 +253,7 @@ class AdminQuotationsController extends AdminController {
                     QuotationAssociation::addLine($cart->id, $line->id);
             }
 
-            $this->context->smarty->assign('validation', "Les produits ont été ajoutés au panier client");
+            $this->confirmations[] = "Les produits ont été ajoutés au panier client";
         }
     }
 
@@ -191,34 +269,10 @@ class AdminQuotationsController extends AdminController {
     }
 
     /**
-    * Charge la liste des devis
-    **/
-    private function loadQuotations() {
-
-        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/quotation_lines.tpl");
-        $this->context->smarty->assign('quotations', Quotation::find($this->getOptions()));
-        die($tpl->fetch());
-    }
-
-    /**
-    * Gère la suppression des devis
-    **/
-    private function removeQuotation() {
-        if($id = Tools::getValue('remove_quotation')) {
-
-            $quotation = new Quotation($id);
-            if($quotation->id) {
-                $quotation->delete();
-                $this->context->smarty->assign('alert', array('type'=>'success', 'message'=>'Le devis a été supprimé.'));
-            }
-        }
-    }
-
-    /**
     * Copie un devis
     **/
     private function copyQuotation() {
-        if($id = Tools::getValue('copy_quotation')) {
+        if(Tools::getIsset('dupplicate') and $this->id_quotation) {
 
             $quotation = new Quotation($id);
             if($quotation->id) {
@@ -233,7 +287,7 @@ class AdminQuotationsController extends AdminController {
                     $product->save();
                 }
 
-                $this->context->smarty->assign('alert', array('type'=>'success', 'message'=>'Une copie du devis a été créée.'));
+                $this->confirmations[] = 'Une copie du devis a été créée.';
             }
         }
     }
@@ -243,7 +297,7 @@ class AdminQuotationsController extends AdminController {
     private function addProduct() {
 
     	$line = new QuotationLine();
-    	$line->id_quotation = Tools::getValue('id_quotation');
+    	$line->id_quotation = $this->id_quotation;
     	$line->position = QuotationLine::getNextPosition($line->id_quotation);
     	$line->save();
 

@@ -2,7 +2,7 @@
 
 class QuotationAssociation extends ObjectModel {
 
-	const TABLE_NAME = 'webequip_quotation_associations';
+	const TABLE_NAME = 'quotation_association';
 	const TABLE_PRIMARY = 'id';
 
 	public $id_line;
