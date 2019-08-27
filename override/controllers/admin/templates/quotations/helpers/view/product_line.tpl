@@ -29,10 +29,10 @@
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees}">
 	</td>
 	<td>
-		<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
-		<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
 		<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price}">
+		<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
+		<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
 	</td>
 	<td class="text-center">
 		<b>{displayPrice price=$line->getMargin()}</b>

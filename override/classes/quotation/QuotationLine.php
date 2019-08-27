@@ -96,8 +96,7 @@ class QuotationLine extends ObjectModel {
 	* Calcule le taux de marge du produit
 	**/
 	public function getMarginRate() {
-		if(!$this->selling_price or !$this->getBuyingPrice()) return 0;
-		return ($this->selling_price * $this->getBuyingPrice()) / 100;
+		return Tools::getMarginRate($this->getMargin(), $this->selling_price);
 	}
 
 	/**
