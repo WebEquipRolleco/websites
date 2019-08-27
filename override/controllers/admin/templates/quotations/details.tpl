@@ -291,9 +291,8 @@
 							<th width="85px"></th>
 							<th width="10%" class="text-center"><b>{l s="Référence" d="Admin.Labels"}</b></th>
 							<th class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Quantité" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="PA" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="PV" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="Achat" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="Vente" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Marge" d="Admin.Labels"}</b></th>
 							<th class="text-center"><b>{l s="Commentaire" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Position" d="Admin.Labels"}</b></th>

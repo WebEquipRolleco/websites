@@ -335,7 +335,8 @@ class AdminQuotationsController extends AdminController {
     			$line->reference = $form['reference'];
     			$line->name = $form['name'];
     			$line->information = $form['information'];
-    			$line->buying_price = $form['buying_price'];
+                $line->buying_price = $form['buying_price'];
+    			$line->buying_fees = $form['buying_fees'];
     			$line->selling_price = $form['selling_price'];
                 $line->id_supplier = $form['id_supplier'];
     			$line->quantity = $form['quantity'];

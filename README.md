@@ -199,6 +199,7 @@ CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
     `information` TEXT NULL, 
     `comment` TEXT NULL, 
     `buying_price` FLOAT(11) NULL, 
+    `buying_fees` FLOAT(11) NULL, 
     `selling_price` FLOAT(11) NULL, 
     `quantity` INTEGER(11) NULL,
     `position` INTEGER(11) NULL,

@@ -23,12 +23,15 @@
 		<input type="text" class="form-control" name="lines[{$line->id}][information]" value="{$line->information}" placeholder="{l s='Information complémentaire'}" style="margin-top:5px">
 	</td>
 	<td>
-		<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
-	</td>
-	<td>
+		<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price}">
+		<div class="text-center text-muted"><em>{l s="Ports" d="Admin.Labels"}</em></div>
+		<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees}">
 	</td>
 	<td>
+		<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
+		<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
+		<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price}">
 	</td>
 	<td class="text-center">
