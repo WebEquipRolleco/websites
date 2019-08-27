@@ -41,16 +41,18 @@
 
         <table class="table combinations-table no-bottom">
           <tbody>
-            <tr class="cart-total">
-              <td class="bg-blue">{$cart.totals.total.label} {$cart.labels.tax_short}</td>
-              <td class="bg-blue value text-right" style="border-left: 0px">{$cart.totals.total.value}</td>
+            <tr class="cart-summary-line">
+              <td class="bold">{l s='Total HT' d='Shop.Theme.Actions'}</td>
+              <td class="bold text-right" style="border-left: 0px">{$cart.totals.total_excluding_tax.value}</td>
             </tr>
-            {if $cart.subtotals.tax}
-              <tr class="cart-summary-line">
-                <td>{$cart.subtotals.tax.label}</td>
-                <td class="value text-right">{$cart.subtotals.tax.value}</td>
-              </tr>
-            {/if}
+            <tr class="cart-summary-line">
+              <td class="bold">{l s='TVA' d='Shop.Theme.Actions'}</td>
+              <td class="bold text-right" style="border-left: 0px">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
+            </tr>
+            <tr class="cart-total">
+              <td class="bg-blue">{l s='Total TTC' d='Shop.Theme.Actions'}</td>
+              <td class="bg-blue value text-right" style="border-left: 0px">{$cart.totals.total_including_tax.value}</td>
+            </tr>
             <tr>
               <td colspan="2" class="text-center">
                 <a href="{$urls.pages.order}" class="btn btn-success bold">
