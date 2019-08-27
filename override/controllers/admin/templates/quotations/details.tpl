@@ -8,16 +8,37 @@
 	<input type="hidden" name="id" value="{$quotation->id}">
 
 	<div class="panel">
-		<span class="label label-{$quotation->getStatusClass()} border-secondary">
-			<b>{l s='Devis' d='Admin.Labels'} {$quotation->getStatusLabel()}</b>
-		</span>
-		<span class="pull-right">
+		<div class="row">
+		<div class="col-lg-3">
+			<span class="label label-{$quotation->getStatusClass()} border-secondary">
+				<b>{l s='Devis' d='Admin.Labels'} {$quotation->getStatusLabel()}</b>
+			</span>
+		</div>
+		<div class="col-lg-6 text-center">
+			<span class="label label-warning">
+				<b>Total HT :</b> {Tools::displayPrice($quotation->getPrice())}
+			</span>
+			&nbsp;
+			<span class="label label-warning">
+				<b>TVA :</b> {Tools::displayPrice($quotation->getPrice(true) - $quotation->getPrice())}
+			</span>
+			&nbsp;
+			<span class="label label-warning">
+				<b>Total TTC :</b> {Tools::displayPrice($quotation->getPrice(true))}
+			</span>
+			&nbsp;
+			<span class="label label-warning">
+				<b>Eco-tax :</b> XXX €
+			</span>
+		</div>
+		<div class="col-lg-3 text-right">
 			<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Admin.Labels'}</a>
 			&nbsp;
 			<button type="submit" class="btn btn-xs btn-success">
 				<b>{l s='Enregistrer' d='Admin.Labels'}</b>
 			</button>
-		</span>
+		</div>
+		</div>
 	</div>
 
 	<div class="row">
