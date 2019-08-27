@@ -185,7 +185,7 @@ class AdminQuotationsController extends AdminController {
     public function downloadQuotation() {
 
         if(Tools::getIsset('dl_pdf') and $this->id_quotation) {
-            $pdf = new PDF(array('quotation'=>new Quotation($id)), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
+            $pdf = new PDF(array('quotation'=>new Quotation($this->id_quotation)), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
             die($pdf->render());
         }
     }

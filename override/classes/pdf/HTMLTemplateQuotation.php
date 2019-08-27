@@ -33,7 +33,7 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 	 * @return string filename
 	 */
 	public function getBulkFilename() {
-		return 'devis.pdf';
+		return $this->quotation->reference.'.pdf';
 	}
 
 	/**
@@ -41,7 +41,7 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 	 * @return string filename
 	 */
 	public function getFilename() {
-		return 'devis.pdf';
+		return $this->quotation->reference.'.pdf';
 	}
 
 }
