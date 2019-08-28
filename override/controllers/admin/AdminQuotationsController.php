@@ -197,7 +197,7 @@ class AdminQuotationsController extends AdminController {
     		$this->context->smarty->assign('sources', Quotation::getSources());
     		$this->context->smarty->assign('employees', Employee::getEmployees());
     		$this->context->smarty->assign('customers', Customer::getCustomers());
-    		$this->context->smarty->assign('products', Product::getSimpleActiveProducts());
+    		$this->context->smarty->assign('products', Product::getSimpleActiveProducts(1, true));
             $this->context->smarty->assign('suppliers', Supplier::getSuppliers());
             $this->context->smarty->assign('shops', Shop::getShops());
 

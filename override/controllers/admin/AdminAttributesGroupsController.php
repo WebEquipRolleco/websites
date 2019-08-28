@@ -34,7 +34,7 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
                 'search' => false
             ),
             'quotation' => array(
-            	'title' => $this->trans('Active', array(), 'Admin.Global'), 
+            	'title' => $this->trans('Devis', array(), 'Admin.Global'), 
             	'align' => 'center', 
             	'active' => 'status',
                 'type' => 'bool', 

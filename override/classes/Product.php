@@ -26,39 +26,35 @@ class Product extends ProductCore {
 	* Retourne une liste des produits actifs
 	* UTILISATION : devis
 	* @param int $id_lang
-	* @param Context $context
+	* @param bool $quotation
 	* @return array
 	**/
-	public static function getSimpleActiveProducts($id_lang = 1, Context $context = null) {
+	public static function getSimpleActiveProducts($id_lang = 1, $quotation = false) {
         
-        if (!$context)
-            $context = Context::getContext();
+        $context = Context::getContext();
 
         $front = true;
         if(!in_array($context->controller->controller_type, array('front', 'modulefront')))
             $front = false;
 
-        $sql = 'SELECT 
-        			p.`id_product`, 
-        			p.`reference`, 
-        			pl.`name`, 
-        			pa.`id_product_attribute`, 
-        			pa.`reference` AS reference_attribute, 
-        			(
-        				SELECT GROUP_CONCAT(al.name)
-						FROM ps_product_attribute_combination pac, ps_attribute_lang al 
-						WHERE pac.id_attribute = al.id_attribute
-						AND pac.id_product_attribute = pa.id_product_attribute
-						AND al.id_lang = 1
-						GROUP BY pac.id_product_attribute
-					) AS name_attribute
-					FROM `'._DB_PREFIX_.'product` p
-					'.Shop::addSqlAssociation('product', 'p').'
-					LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product` '.Shop::addSqlRestrictionOnLang('pl').')
-					LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa ON (p.`id_product` = pa.`id_product`)
-					WHERE pl.`id_lang` = '.(int)$id_lang.'
-					AND p.active = 1
-					'.($front ? ' AND product_shop.`visibility` IN ("both", "catalog")' : '');
+        $sub_sql = "SELECT GROUP_CONCAT(al.name)
+					FROM ps_product_attribute_combination pac, ps_attribute a, ps_attribute_group g, ps_attribute_lang al 
+					WHERE pac.id_attribute = al.id_attribute
+					AND pac.id_attribute = a.id_attribute
+					AND a.id_attribute_group = g.id_attribute_group
+					AND pac.id_product_attribute = pa.id_product_attribute
+					AND al.id_lang = 1".
+					($quotation ? " AND g.quotation = 1" : "")."
+					GROUP BY pac.id_product_attribute";
+
+        $sql = 'SELECT p.`id_product`, p.`reference`, pl.`name`, pa.`id_product_attribute`, pa.`reference` AS reference_attribute, ('.$sub_sql.') AS name_attribute
+				FROM `'._DB_PREFIX_.'product` p
+				'.Shop::addSqlAssociation('product', 'p').'
+				LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product` '.Shop::addSqlRestrictionOnLang('pl').')
+				LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa ON (p.`id_product` = pa.`id_product`)
+				WHERE pl.`id_lang` = '.(int)$id_lang.'
+				AND p.active = 1
+				'.($front ? ' AND product_shop.`visibility` IN ("both", "catalog")' : '');
 
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
     }
