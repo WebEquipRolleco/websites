@@ -311,8 +311,8 @@
 					<table class="table">
 						<thead>
 							<th width="85px"></th>
-							<th width="10%" class="text-center"><b>{l s="Référence" d="Admin.Labels"}</b></th>
 							<th class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
+							<th width="10%" class="text-center"><b>{l s="Fournisseur" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Achat" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Vente" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Marge" d="Admin.Labels"}</b></th>

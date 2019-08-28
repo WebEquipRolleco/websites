@@ -8,8 +8,22 @@
 		</button>
 	</td>
 	<td>
-		<input type="text" class="form-control" name="lines[{$line->id}][reference]" value="{$line->reference}">
-		<select class="form-control" name="lines[{$line->id}][id_supplier]" style="margin-top:5px">
+		<div class="text-muted"><em>{l s="Désignation" d="Admin.Labels"}</em></div>
+		<input type="text" class="form-control" name="lines[{$line->id}][name]" value="{$line->name}">
+		<div class="row">
+			<div class="col-lg-3">
+				<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
+				<input type="text" class="form-control" name="lines[{$line->id}][reference]" value="{$line->reference}">
+			</div>
+			<div class="col-lg-9">
+				<div class="text-center text-muted"><em>{l s="Informations complémentaires" d="Admin.Labels"}</em></div>
+				<input type="text" class="form-control" name="lines[{$line->id}][information]" value="{$line->information}">
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="text-center text-muted"><em>{l s="Sous-traitant" d="Admin.Labels"}</em></div>
+		<select class="form-control" name="lines[{$line->id}][id_supplier]">
 			<option value="0">-</option>
 			{foreach from=$suppliers item=supplier}
 				<option value="{$supplier.id_supplier}" {if $line->id_supplier == $supplier.id_supplier}selected{/if}>
@@ -17,10 +31,8 @@
 				</option>
 			{/foreach}
 		</select>
-	</td>
-	<td>
-		<input type="text" class="form-control" name="lines[{$line->id}][name]" value="{$line->name}" placeholder="{l s='Nom du produit'}">
-		<input type="text" class="form-control" name="lines[{$line->id}][information]" value="{$line->information}" placeholder="{l s='Information complémentaire'}" style="margin-top:5px">
+		<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
+		<input type="text" class="form-control" name="lines[{$line->id}][reference_supplier]" value="{$line->reference_supplier}">
 	</td>
 	<td>
 		<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
@@ -40,7 +52,7 @@
 		{$line->getMarginRate()|round:2}%
 	</td>
 	<td>
-		<textarea rows="3" class="form-control" name="lines[{$line->id}][comment]">{$line->comment}</textarea>
+		<textarea rows="4" class="form-control" name="lines[{$line->id}][comment]">{$line->comment}</textarea>
 	</td>
 	<td>
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][position]" value="{$line->position}">

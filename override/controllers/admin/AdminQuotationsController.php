@@ -299,24 +299,28 @@ class AdminQuotationsController extends AdminController {
     	$line = new QuotationLine();
     	$line->id_quotation = $this->id_quotation;
     	$line->position = QuotationLine::getNextPosition($line->id_quotation);
-    	$line->save();
 
         $infos = Tools::getValue('product_infos');
         $infos = explode('_', $infos);
 
     	$product = new Product(($infos[0] ?? null), false, 1);
     	if($product->id) {
-    		$product->id_product_attribute = $infos[1] ?? null;
-
-            if($product->id_product_attribute)
-                $line->information = Product::getCombinationName($product->id_product_attribute);
 
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
+            $line->reference_supplier = $product->supplier_reference;
     		$line->name = $product->name;
     		$line->selling_price = $product->getPrice(false);
-    		$line->save();
+
+            $product->id_product_attribute = $infos[1] ?? null;
+            if($product->id_product_attribute and $combination = new Combination($product->id_product_attribute)) {
+                $line->information = Product::getCombinationName($product->id_product_attribute);
+                $line->reference = $combination->reference;
+                $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
+            }
+    		
     	}
+        $line->save();
 
     	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_line.tpl");
     	$this->context->smarty->assign('line', $line);
@@ -337,6 +341,7 @@ class AdminQuotationsController extends AdminController {
 
     			$line = new QuotationLine($form['id']);
     			$line->reference = $form['reference'];
+                $line->reference_supplier = $form['reference_supplier'];
     			$line->name = $form['name'];
     			$line->information = $form['information'];
                 $line->buying_price = $form['buying_price'];

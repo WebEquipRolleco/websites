@@ -197,6 +197,7 @@ CREATE TABLE IF NOT EXISTS `ps_quotation` (
 CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
     `id` INT NOT NULL AUTO_INCREMENT, 
     `reference` VARCHAR(255) NULL, 
+    `reference_supplier` VARCHAR(255) NULL, 
     `name` VARCHAR(255) NULL, 
     `information` TEXT NULL, 
     `comment` TEXT NULL, 

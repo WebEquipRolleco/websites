@@ -6,6 +6,7 @@ class QuotationLine extends ObjectModel {
 	const TABLE_PRIMARY = 'id';
 
 	public $reference;
+	public $reference_supplier;
 	public $name;
 	public $information;
 	public $comment;
@@ -28,6 +29,7 @@ class QuotationLine extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
             'reference' => array('type' => self::TYPE_STRING),
+            'reference_supplier' => array('type' => self::TYPE_STRING),
             'name' => array('type' => self::TYPE_STRING),
             'information' => array('type' => self::TYPE_STRING),
             'comment' => array('type' => self::TYPE_STRING),
