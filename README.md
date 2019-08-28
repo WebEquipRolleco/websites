@@ -52,6 +52,8 @@ ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price
 
 ALTER TABLE `ps_employee` ADD `sav` TINYINT DEFAULT '0' AFTER `active`;
 
+ALTER TABLE `ps_attribute_group` ADD `quotation` TINYINT DEFAULT '1' AFTER `is_color_group`;
+
 CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `id_product_icon` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NULL, 
