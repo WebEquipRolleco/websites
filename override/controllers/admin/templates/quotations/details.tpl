@@ -14,24 +14,7 @@
 				<b>{l s='Devis' d='Admin.Labels'} {$quotation->getStatusLabel()}</b>
 			</span>
 		</div>
-		<div class="col-lg-6 text-center">
-			<span class="label label-warning">
-				<b>Total HT :</b> {Tools::displayPrice($quotation->getPrice())}
-			</span>
-			&nbsp;
-			<span class="label label-warning">
-				<b>TVA :</b> {Tools::displayPrice($quotation->getPrice(true) - $quotation->getPrice())}
-			</span>
-			&nbsp;
-			<span class="label label-warning">
-				<b>Total TTC :</b> {Tools::displayPrice($quotation->getPrice(true))}
-			</span>
-			&nbsp;
-			<span class="label label-warning">
-				<b>Eco-tax :</b> XXX €
-			</span>
-		</div>
-		<div class="col-lg-3 text-right">
+		<div class="col-lg-9 text-right">
 			<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Admin.Labels'}</a>
 			&nbsp;
 			<button type="submit" class="btn btn-xs btn-success">
@@ -298,6 +281,24 @@
 				<div class="panel">
 					<div class="panel-heading">
 						{l s="Liste des produits"}
+						<span class="label label-warning" style="margin-left:25px;">
+							<b>Total HT :</b> {Tools::displayPrice($quotation->getPrice())}
+						</span>
+						<span class="label label-warning" style="margin-left:5px;">
+							<b>TVA :</b> {Tools::displayPrice($quotation->getPrice(true) - $quotation->getPrice())}
+						</span>
+						<span class="label label-warning" style="margin-left:5px;">
+							<b>Total TTC :</b> {Tools::displayPrice($quotation->getPrice(true))}
+						</span>
+						<span class="label label-warning" style="margin-left:5px;">
+							<b>Eco-tax :</b> XXX €
+						</span>
+						<span class="label label-warning" style="margin-left:25px;">
+							<b>Marge :</b> {Tools::displayPrice($quotation->getMargin())}
+						</span>
+						<span class="label label-warning" style="margin-left:5px;">
+							<b>Taux :</b> {$quotation->getMarginRate()|round:2}%
+						</span>
 						<span class="panel-heading-action">
 							<a href="" id="new_product" class="list-toolbar-btn" data-toggle="modal" data-target="#new_product_modal" title="{l s='New' d='Shop.Theme.Actions'}">
 								<i class="process-icon-new"></i>

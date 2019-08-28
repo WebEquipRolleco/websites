@@ -366,6 +366,15 @@ class Quotation extends ObjectModel {
     }
 
     /**
+    * Calcule le taux de marge du produit
+    * @param bool $use_taxes
+    * @return float
+    **/
+    public function getMarginRate($use_taxes = false) {
+        return Tools::getMarginRate($this->getMargin(), $this->getPrice($use_taxes));
+    }
+
+    /**
     * Retourne les devis présents dans un panier
     * @param int $id_cart
     * @param bool $full
