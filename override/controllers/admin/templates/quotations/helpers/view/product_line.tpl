@@ -52,7 +52,7 @@
 		{$line->getMarginRate()|round:2}%
 	</td>
 	<td>
-		<textarea rows="4" class="form-control" name="lines[{$line->id}][comment]">{$line->comment}</textarea>
+		<textarea rows="4" class="form-control" name="lines[{$line->id}][comment]" style="resize:vertical">{$line->comment}</textarea>
 	</td>
 	<td>
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][position]" value="{$line->position}">
