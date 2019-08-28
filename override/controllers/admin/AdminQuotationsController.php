@@ -308,6 +308,9 @@ class AdminQuotationsController extends AdminController {
     	if($product->id) {
     		$product->id_product_attribute = $infos[1] ?? null;
 
+            if($product->id_product_attribute)
+                $line->information = Product::getCombinationName($product->id_product_attribute, true);
+            
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
     		$line->name = $product->name;

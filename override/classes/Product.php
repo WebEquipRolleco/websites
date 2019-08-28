@@ -79,4 +79,21 @@ class Product extends ProductCore {
         );
     }
 
+    public static function getCombinationName($id_product_attribute, $quotation = false) {
+
+    	$sql = "SELECT GROUP_CONCAT(CONCAT(pagl.public_name, ' : ', pal.name) separator ' | ')
+				FROM ps_product_attribute_combination pac, ps_attribute pa, ps_attribute_lang pal, ps_attribute_group pag, ps_attribute_group_lang pagl
+				WHERE pac.id_product_attribute = $id_product_attribute
+				AND pac.id_attribute = pa.id_attribute
+				AND pa.id_attribute_group = pag.id_attribute_group
+				AND pa.id_attribute_group = pagl.id_attribute_group
+				AND pa.id_attribute = pal.id_attribute
+				AND pal.id_lang = 1
+				AND pagl.id_lang = 1";
+
+		if($quotation)
+			$sql .= " AND pag.quotation = 1";
+
+		return Db::getInstance()->getValue($sql);
+    }
 }
