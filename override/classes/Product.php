@@ -79,7 +79,7 @@ class Product extends ProductCore {
         );
     }
 
-    public static function getCombinationName($id_product_attribute, $quotation = false) {
+    public static function getCombinationName($id_product_attribute) {
 
     	$sql = "SELECT GROUP_CONCAT(CONCAT(pagl.public_name, ' : ', pal.name) separator ' | ')
 				FROM ps_product_attribute_combination pac, ps_attribute pa, ps_attribute_lang pal, ps_attribute_group pag, ps_attribute_group_lang pagl
@@ -90,9 +90,6 @@ class Product extends ProductCore {
 				AND pa.id_attribute = pal.id_attribute
 				AND pal.id_lang = 1
 				AND pagl.id_lang = 1";
-
-		if($quotation)
-			$sql .= " AND pag.quotation = 1";
 
 		return Db::getInstance()->getValue($sql);
     }
