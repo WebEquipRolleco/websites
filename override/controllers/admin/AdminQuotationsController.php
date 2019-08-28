@@ -320,6 +320,7 @@ class AdminQuotationsController extends AdminController {
 
     	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_line.tpl");
     	$this->context->smarty->assign('line', $line);
+        $this->context->smarty->assign('suppliers', Supplier::getSuppliers());
     	$data['view'] = $tpl->fetch();
 
     	die(json_encode($data));
