@@ -9,7 +9,7 @@
 	</td>
 	<td>
 		<div class="text-muted"><em>{l s="Désignation" d="Admin.Labels"}</em></div>
-		<input type="text" class="form-control" name="lines[{$line->id}][name]" value="{$line->name}">
+		<textarea rows="1" class="form-control" name="lines[{$line->id}][name]" style="resize:vertical">{$line->name}</textarea>
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
@@ -17,7 +17,7 @@
 			</div>
 			<div class="col-lg-9">
 				<div class="text-center text-muted"><em>{l s="Informations complémentaires" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control" name="lines[{$line->id}][information]" value="{$line->information}">
+				<textarea rows="1" class="form-control" name="lines[{$line->id}][information]" style="resize:vertical">{$line->information}</textarea>
 			</div>
 		</div>
 	</td>
