@@ -15,7 +15,7 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
         $this->lang = true;
         $this->_defaultOrderBy = 'position';
 
-        parent::__construct();
+        AdminController::__construct();
 
         $this->fields_list = array(
             'id_attribute_group' => array(
