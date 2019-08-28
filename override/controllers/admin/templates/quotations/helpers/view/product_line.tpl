@@ -35,18 +35,32 @@
 		<input type="text" class="form-control" name="lines[{$line->id}][reference_supplier]" value="{$line->reference_supplier}">
 	</td>
 	<td>
-		<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
-		<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price}">
-		<div class="text-center text-muted"><em>{l s="Ports" d="Admin.Labels"}</em></div>
-		<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees}">
-	</td>
-	<td>
-		<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
-		<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price}">
-		<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
-		<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
+				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price}">
+			</div>
+			<div class="col-lg-6">
+				<div class="text-center text-muted"><em>{l s="Ports" d="Admin.Labels"}</em></div>
+				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees}">
+			</div>
+			<div class="col-lg-6">
+				<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
+				<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price}">
+			</div>
+			<div class="col-lg-6">
+				<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
+				<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
+			</div>
+		</div>
 	</td>
 	<td class="text-center">
+		{if $line->eco_tax}
+			<span class="label label-success" title="{l s="Eco-participation" d="Admin.Labels"}">
+				<i class="icon-leaf"></i> &nbsp;<b>{Tools::displayPrice($line->eco_tax)}</b>
+			</span>
+			<br /><br />
+		{/if}
 		<b>{displayPrice price=$line->getMargin()}</b>
 		<br />
 		{$line->getMarginRate()|round:2}%

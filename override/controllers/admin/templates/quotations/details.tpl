@@ -291,7 +291,7 @@
 							<b>Total TTC :</b> {Tools::displayPrice($quotation->getPrice(true))}
 						</span>
 						<span class="label label-warning" style="margin-left:5px;">
-							<b>Eco-tax :</b> XXX €
+							<b>Eco-tax :</b> {Tools::displayPrice($quotation->getEcoTax())}
 						</span>
 						<span class="label label-warning" style="margin-left:25px;">
 							<b>Marge :</b> {Tools::displayPrice($quotation->getMargin())}
@@ -313,8 +313,7 @@
 							<th width="85px"></th>
 							<th class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
 							<th width="10%" class="text-center"><b>{l s="Fournisseur" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Achat" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Vente" d="Admin.Labels"}</b></th>
+							<th width="10%" class="text-center"><b>{l s="Prix" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Marge" d="Admin.Labels"}</b></th>
 							<th class="text-center"><b>{l s="Commentaire" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Position" d="Admin.Labels"}</b></th>

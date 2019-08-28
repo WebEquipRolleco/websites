@@ -375,6 +375,19 @@ class Quotation extends ObjectModel {
     }
 
     /**
+    * Calcule la participation éco totale
+    * @return float
+    **/
+    public function getEcoTax() {
+
+        $total = 0;
+        foreach($this->getProducts() as $line)
+            $total += $line->eco_tax;
+
+        return $total;
+    }
+    
+    /**
     * Retourne les devis présents dans un panier
     * @param int $id_cart
     * @param bool $full

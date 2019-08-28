@@ -312,6 +312,7 @@ class AdminQuotationsController extends AdminController {
     		$line->name = $product->name;
             $line->buying_price = $product->wholesale_price;
     		$line->selling_price = $product->getPrice(false);
+            $line->eco_tax = $product->ecotax;
 
             $product->id_product_attribute = $infos[1] ?? null;
             if($product->id_product_attribute and $combination = new Combination($product->id_product_attribute)) {
@@ -319,6 +320,7 @@ class AdminQuotationsController extends AdminController {
                 $line->reference = $combination->reference;
                 $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
                 $line->buying_price = round($combination->wholesale_price, 2);
+                $line->eco_tax = $combination->ecotax;
             }
     		
     	}

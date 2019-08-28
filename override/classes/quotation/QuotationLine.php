@@ -14,6 +14,7 @@ class QuotationLine extends ObjectModel {
 	public $buying_price = 0;
 	public $buying_fees = 0;
 	public $selling_price = 0;
+	public $eco_tax = 0;
 	public $quantity = 1;
 
 	public $position;
@@ -36,6 +37,7 @@ class QuotationLine extends ObjectModel {
             'buying_price' => array('type' => self::TYPE_FLOAT),
             'buying_fees' => array('type' => self::TYPE_FLOAT),
             'selling_price' => array('type' => self::TYPE_FLOAT),
+            'eco_tax' => array('type' => self::TYPE_FLOAT),
             'quantity' => array('type' => self::TYPE_INT),
             'position' => array('type' => self::TYPE_INT),
             'id_supplier' => array('type' => self::TYPE_INT),
