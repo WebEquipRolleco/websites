@@ -50,6 +50,18 @@ class AdminShopController extends AdminShopControllerCore {
                     'label' => $this->trans('Longueur de la référence commande', array(), 'Admin.Shopparameters.Feature'),
                     'name' => 'reference_length',
                     'required' => false,
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Préfix de la référence des devis', array(), 'Admin.Shopparameters.Feature'),
+                    'name' => 'quotation_prefix',
+                    'required' => false,
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Index courant des références de devis', array(), 'Admin.Shopparameters.Feature'),
+                    'name' => 'quotation_number',
+                    'required' => false,
                 )
             )
         );

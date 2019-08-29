@@ -17,6 +17,9 @@ ALTER TABLE `ps_order_state` ADD `rollcash` TINYINT DEFAULT '0' AFTER `proforma`
 
 ALTER TABLE `ps_shop` ADD `reference_prefix` VARCHAR(10) NULL AFTER `name`;
 ALTER TABLE `ps_shop` ADD `reference_length` INT NOT NULL DEFAULT '5' AFTER `reference_prefix`;
+ALTER TABLE `ps_shop` ADD `quotation_prefix` VARCHAR(10) NULL AFTER `reference_length`;
+ALTER TABLE `ps_shop` ADD `quotation_number` INT NOT NULL DEFAULT '0' AFTER `quotation_prefix`;
+ALTER TABLE `ps_shop` ADD `color` VARCHAR(30) NULL AFTER `theme_name`;
 
 ALTER TABLE `ps_customer` ADD `id_account_type` INT(11) NULL AFTER `id_risk`;
 ALTER TABLE `ps_customer` ADD `id_customer_state` INT(11) NULL AFTER `id_account_type`;
@@ -42,8 +45,6 @@ ALTER TABLE `ps_orders` ADD `supplier_information` TEXT NULL AFTER `delivery_inf
 ALTER TABLE `ps_orders` ADD `no_recall` TINYINT DEFAULT '0' AFTER `valid`;
 ALTER TABLE `ps_orders` ADD `display_with_taxes` TINYINT DEFAULT '0' AFTER `no_recall`;
 ALTER TABLE `ps_orders` ADD `invoice_comment` TEXT NULL AFTER `invoice_number`;
-
-ALTER TABLE `ps_shop` ADD `color` VARCHAR(30) NULL AFTER `theme_name`;
 
 ALTER TABLE `ps_category_lang` ADD `bottom_description` TEXT NULL AFTER `description`;
 

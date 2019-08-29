@@ -4,11 +4,17 @@ class Shop extends ShopCore {
 
     const CONDITIONS_DIR = "/documents/";
 
-	/** @var string Préfix de la référence commande */
+	/** @var string Préfix de la référence commande **/
     public $reference_prefix;
 
-    /** @var int Longueur de la référence */
+    /** @var int Longueur de la référence **/
     public $reference_length;
+
+    /** @var string Préfix de la référence des devis **/
+    public $quotation_prefix;
+
+    /** @var int Indice actuelle de la référence des devis **/
+    public $quotation_number = 0;
 
     /** @var string Color **/
     public $color;
@@ -23,6 +29,8 @@ class Shop extends ShopCore {
         
 		self::$definition['fields']['reference_prefix'] = array('type'=>self::TYPE_STRING, 'validate' => 'isString');
 		self::$definition['fields']['reference_length'] = array('type'=>self::TYPE_INT, 'validate' => 'isUnsignedId');
+        self::$definition['fields']['quotation_prefix'] = array('type'=>self::TYPE_STRING, 'validate' => 'isString');
+        self::$definition['fields']['quotation_number'] = array('type'=>self::TYPE_INT, 'validate' => 'isUnsignedId');
         self::$definition['fields']['color'] = array('type'=>self::TYPE_STRING, 'validate' => 'isString');
 
 		parent::__construct($id, $id_lang, $id_shop);
