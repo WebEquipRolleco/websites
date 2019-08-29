@@ -807,8 +807,12 @@
               {/foreach}
             </div>
           </div>
+        {else}
+          <div class="alert alert-info">
+            {l s="Aucun message de la part du client"}
+          </div>
         {/if}
-        <div id="messages" class="well hidden-print">
+        {*<div id="messages" class="well hidden-print">
           <form action="{$smarty.server.REQUEST_URI|escape:'html':'UTF-8'}&amp;token={$smarty.get.token|escape:'html':'UTF-8'}" method="post" onsubmit="if (getE('visibility').checked == true) return confirm('{l s='Do you want to send this message to the customer?' d='Admin.Orderscustomers.Notification'}');">
             <div id="message" class="form-horizontal">
               <div class="form-group">
@@ -866,7 +870,7 @@
               </a>
             </div>
           </form>
-        </div>
+        </div>*}
       </div>
       
       {hook h="displayAdminOrderRight" id_order=$order->id}
