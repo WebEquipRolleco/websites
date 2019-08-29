@@ -50,7 +50,7 @@
 			</div>
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
-				<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
+				<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}" {if $line->min_quantity}title="Quantité minimum : {$line->min_quantity}" min="{$line->min_quantity}"{/if}>
 			</div>
 		</div>
 	</td>
