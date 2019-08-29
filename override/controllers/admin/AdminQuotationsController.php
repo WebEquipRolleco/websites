@@ -156,7 +156,7 @@ class AdminQuotationsController extends AdminController {
 
             // Initialisation du devis
             if(!$quotation->id) {
-    
+        
                 $quotation->id_shop = $this->context->shop->id;
                 $quotation->id_employee = $this->context->cookie->id_employee;
                 $quotation->date_begin = new DateTime('today');
@@ -165,6 +165,8 @@ class AdminQuotationsController extends AdminController {
                 $quotation->date_end = clone($quotation->date_begin);
                 $quotation->date_end->modify('+30 days');
                 $quotation->date_end = $quotation->date_end->format('Y-m-d H:i:s');
+
+                $quotation->generateReference();
             }
 
             // Enregistrement des informations
@@ -172,7 +174,6 @@ class AdminQuotationsController extends AdminController {
 
     			$form = Tools::getValue('quotation');
 
-    			$quotation->reference = $form['reference'];
     			$quotation->status = $form['status'];
     			$quotation->id_customer = $form['id_customer'];
                 $quotation->origin = $form['origin'];
@@ -192,6 +193,9 @@ class AdminQuotationsController extends AdminController {
                 $quotation->highlight = $form['highlight'];
                 $quotation->option_ids = implode(Quotation::DELIMITER, $form['options']);
                 //$quotation->id_shop = $form['id_shop'];
+
+                if(!$quotation->id)
+                    $quotation->generateReference(true);
 
 			    $quotation->save();
 			    $this->confirmations[] = "Devis enregistré";

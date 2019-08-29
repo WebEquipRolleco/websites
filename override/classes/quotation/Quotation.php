@@ -408,4 +408,18 @@ class Quotation extends ObjectModel {
         return $data;
     }
 
+    /**
+    * Génère une référence en fonction de la boutique
+    * @param bool $update_shop
+    **/
+    public function generateReference($update_shop = false) {
+
+        $this->reference = $this->getShop()->quotation_prefix.$this->getShop()->quotation_number;
+        
+        if($update_shop) {
+            $this->getShop()->quotation_number++;
+            $this->getShop()->save();
+        }
+    }
+
 }

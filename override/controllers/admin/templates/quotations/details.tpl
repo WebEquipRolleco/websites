@@ -9,12 +9,16 @@
 
 	<div class="panel">
 		<div class="row">
-		<div class="col-lg-3">
+		<div class="col-lg-6">
+			<span class="label label-default">
+				<strong>{$quotation->reference}</strong>
+			</span>
+			&nbsp;
 			<span class="label label-{$quotation->getStatusClass()} border-secondary">
 				<b>{l s='Devis' d='Admin.Labels'} {$quotation->getStatusLabel()}</b>
 			</span>
 		</div>
-		<div class="col-lg-9 text-right">
+		<div class="col-lg-6 text-right">
 			<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Admin.Labels'}</a>
 			&nbsp;
 			<button type="submit" class="btn btn-xs btn-success">
@@ -122,15 +126,6 @@
 			<div class="panel">
 				<div class="panel-heading">
 					{l s="Affichage"}
-				</div>
-				<div class="form-group">
-					<label for="reference">{l s="Référence"} <em class="text-danger">*</em></label>
-					<div class="pull-right">
-						<button type="button" class="btn btn-xs btn-primary change-reference">
-							<i class="icon-refresh"></i>
-						</button>
-					</div>
-					<input type="text" name="quotation[reference]" id="reference" class="form-control" value="{$quotation->reference}" required>
 				</div>
 				<div class="form-group">
 					<label for="comment">{l s="Commentaire"}</label>
@@ -428,10 +423,6 @@
 
 		$('.change-picture').on('click', function() {
 			$($(this).data('id')).click();
-		});
-
-		$('.change-reference').on('click', function() {
-			$('#reference').val(Date.now());
 		});
 
 		$('#save_products').on('click', function(e) {
