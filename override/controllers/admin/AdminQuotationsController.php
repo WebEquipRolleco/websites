@@ -341,7 +341,8 @@ class AdminQuotationsController extends AdminController {
         // Gestion de l'image
         $image = Product::getCover($product->id, $product->id_product_attribute);
         if($img_path = $image->getProductFilePath('cart')) {
-            @copy($img_path, $line->getDirectory(true).$line->getFileName());
+            if(!copy($img_path, $line->getDirectory(true).$line->getFileName()))
+                $this->errors[] = "Erreur lors de la copie de l'image du produit";
         }
 
     	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_line.tpl");
