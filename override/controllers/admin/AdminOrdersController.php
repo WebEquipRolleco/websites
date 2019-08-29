@@ -258,6 +258,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $order->invoice_number = Tools::getValue('invoice_number');
             $order->no_recall = Tools::getValue('no_recall');
             $order->display_with_taxes = Tools::getValue('display_with_taxes');
+            $order->invoice_comment = Tools::getValue('invoice_comment');
             $order->save();
         }
         // Enregistrement des infomations complémentaires

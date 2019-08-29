@@ -15,6 +15,9 @@ class Order extends OrderCore {
 	/** @var string Supplier Information */
 	public $supplier_information;
 
+	/** @var string Invoice comment */
+	public $invoice_comment;
+	
 	/** @var bool No recall */
 	public $no_recall = false;
 
@@ -36,6 +39,7 @@ class Order extends OrderCore {
 		self::$definition['fields']['internal_reference'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['delivery_information'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['supplier_information'] = array('type' => self::TYPE_STRING);
+		self::$definition['fields']['invoice_comment'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['display_with_taxes'] = array('type' => self::TYPE_BOOL);
 		self::$definition['fields']['no_recall'] = array('type' => self::TYPE_BOOL);
 		

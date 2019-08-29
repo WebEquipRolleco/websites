@@ -41,6 +41,7 @@ ALTER TABLE `ps_orders` ADD `delivery_information` TEXT NULL AFTER `internal_ref
 ALTER TABLE `ps_orders` ADD `supplier_information` TEXT NULL AFTER `delivery_information`;
 ALTER TABLE `ps_orders` ADD `no_recall` TINYINT DEFAULT '0' AFTER `valid`;
 ALTER TABLE `ps_orders` ADD `display_with_taxes` TINYINT DEFAULT '0' AFTER `no_recall`;
+ALTER TABLE `ps_orders` ADD `invoice_comment` TEXT NULL AFTER `invoice_number`;
 
 ALTER TABLE `ps_shop` ADD `color` VARCHAR(30) NULL AFTER `theme_name`;
 

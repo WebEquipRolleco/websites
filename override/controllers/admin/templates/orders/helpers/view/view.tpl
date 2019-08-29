@@ -973,19 +973,22 @@
 
   </div>
 
-  <div class="row">
+  <div id="informations" class="row">
     <div class="col-lg-6">
       <div class="panel">
         <div class="panel-heading">
           <i class="icon-home"></i>
           {l s='Informations fournisseur' d='Admin.Global'}
         </div>
-        <form method="post">
+        <form method="post" action="#informations">
           <div class="form-group">
             <textarea class="form-control" name="supplier_information">{$order->supplier_information}</textarea>
           </div>
-          <div class="text-right">
-            <button type="submit" class="btn btn-primary" name="save_supplier_information">{l s='Enregistrer'|upper d='Admin.Actions'}</button>
+          <div class="panel-footer text-right">
+            <button type="submit" class="btn btn-success" name="save_supplier_information">
+              <i class="process-icon-save"></i>
+              {l s='Save' d='Admin.Actions'}
+            </button>
           </div>
         </form>
       </div>
@@ -996,12 +999,15 @@
           <i class="icon-truck"></i>
           {l s='Informations livraison' d='Admin.Global'}
         </div>
-        <form method="post">
+        <form method="post" action="#informations">
           <div class="form-group">
             <textarea class="form-control" name="delivery_information">{$order->delivery_information}</textarea>
           </div>
-          <div class="text-right">
-            <button type="submit" class="btn btn-primary" name="save_delivery_information">{l s='Enregistrer'|upper d='Admin.Actions'}</button>
+          <div class="panel-footer text-right">
+            <button type="submit" class="btn btn-success" name="save_supplier_information">
+              <i class="process-icon-save"></i>
+              {l s='Save' d='Admin.Actions'}
+            </button>
           </div>
         </form>
       </div>
@@ -1585,55 +1591,65 @@
   </div>
 
   {* PERSONNALISATION DE LA FACTURE *}
-  <div class="panel">
+  <div id="invoice_customization" class="panel">
     <div class="panel-heading">
       <i class="icon-file-text"></i>
       {l s="Facturation" d='Admin.Global'}
     </div>
-    <form method="post" class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-lg-3">{l s="Date de facturation"}</label>
-        <div class="col-lg-9">
-          <input type="date" class="form-control" name="invoice_date" value="{$order->invoice_date|date_format:'Y-m-d'}">
-          {if $order->getPaymentDeadline()}
-            <b>{l s='Date limite de paiment :'} <span class="text-danger">{$order->getPaymentDeadline()->format('d/m/Y')}</span></b>
-          {/if}
+    <form method="post" action="#invoice_customization" class="form-horizontal">
+      <div class="row">
+        <div class="col-lg-5">
+          <div class="form-group">
+            <label class="control-label col-lg-3">{l s="Date de facturation"}</label>
+            <div class="col-lg-9">
+              <input type="date" class="form-control" name="invoice_date" value="{$order->invoice_date|date_format:'Y-m-d'}">
+              {if $order->getPaymentDeadline()}
+                <b>{l s='Date limite de paiment :'} <span class="text-danger">{$order->getPaymentDeadline()->format('d/m/Y')}</span></b>
+              {/if}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-3">{l s="Numéro de facturation"}</label>
+            <div class="col-lg-9">
+              <input type="text" class="form-control" name="invoice_number" {if $order->invoice_number}value="{$order->invoice_number}"{/if}>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-3">{l s="Exclure des rappels"}</label>
+            <div class="col-lg-9">
+              <span class="switch prestashop-switch fixed-width-lg">
+                <input type="radio" name="no_recall" id="no_recall_on" value="1" {if $order->no_recall}checked{/if}>
+                <label for="no_recall_on">Oui</label>
+                <input type="radio" name="no_recall" id="no_recall_off" value="0" {if !$order->no_recall}checked{/if}>
+                <label for="no_recall_off">Non</label>
+                <a class="slide-button btn"></a>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-3">{l s="Afficher les prix"}</label>
+            <div class="col-lg-9">
+              <span class="switch prestashop-switch fixed-width-lg">
+                <input type="radio" name="display_with_taxes" id="display_with_taxes_on" value="1" {if $order->display_with_taxes}checked{/if}>
+                <label for="display_with_taxes_on">TTC</label>
+                <input type="radio" name="display_with_taxes" id="display_with_taxes_off" value="0" {if !$order->display_with_taxes}checked{/if}>
+                <label for="display_with_taxes_off">HT</label>
+                <a class="slide-button btn"></a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <textarea rows="8" class="form-control" name="invoice_comment" style="resize:vertical" placeholder="Commentaire">{$order->invoice_comment}</textarea>
         </div>
       </div>
-      <div class="form-group">
-        <label class="control-label col-lg-3">{l s="Numéro de facturation"}</label>
-        <div class="col-lg-9">
-          <input type="text" class="form-control" name="invoice_number" {if $order->invoice_number}value="{$order->invoice_number}"{/if}>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-lg-3">{l s="Exclure des rappels"}</label>
-        <div class="col-lg-9">
-          <span class="switch prestashop-switch fixed-width-lg">
-            <input type="radio" name="no_recall" id="no_recall_on" value="1" {if $order->no_recall}checked{/if}>
-            <label for="no_recall_on">Oui</label>
-            <input type="radio" name="no_recall" id="no_recall_off" value="0" {if !$order->no_recall}checked{/if}>
-            <label for="no_recall_off">Non</label>
-            <a class="slide-button btn"></a>
-          </span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-lg-3">{l s="Afficher les prix"}</label>
-        <div class="col-lg-9">
-          <span class="switch prestashop-switch fixed-width-lg">
-            <input type="radio" name="display_with_taxes" id="display_with_taxes_on" value="1" {if $order->display_with_taxes}checked{/if}>
-            <label for="display_with_taxes_on">TTC</label>
-            <input type="radio" name="display_with_taxes" id="display_with_taxes_off" value="0" {if !$order->display_with_taxes}checked{/if}>
-            <label for="display_with_taxes_off">HT</label>
-            <a class="slide-button btn"></a>
-          </span>
-        </div>
-      </div>
-      <div class="form-group text-right">
-        <button type="submit" class="btn btn-primary" name="save_invoice">
-          {l s='Enregistrer'|upper d='Admin.Actions'}
-        </button> 
+      <div class="panel-footer">
+        <div class="form-group text-right">
+            <button type="submit" class="btn btn-success" name="save_invoice">
+              <i class="process-icon-save"></i>
+              {l s='Save' d='Admin.Actions'}
+            </button> 
+          </div>
       </div>
     </form>
   </div>
