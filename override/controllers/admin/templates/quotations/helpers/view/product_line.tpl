@@ -55,7 +55,7 @@
 		</div>
 	</td>
 	<td class="text-center">
-		{if $line->eco_tax}
+		{if $line->eco_tax > 0}
 			<span class="label label-success" title="{l s="Eco-participation" d="Admin.Labels"}">
 				<i class="icon-leaf"></i> &nbsp;<b>{Tools::displayPrice($line->eco_tax)}</b>
 			</span>
