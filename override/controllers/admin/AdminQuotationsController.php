@@ -31,7 +31,7 @@ class AdminQuotationsController extends AdminController {
         
         //$this->processResetFilters();
 
-        $this->_select = "a.*, a.id_quotation AS id, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee";
+        $this->_select = "a.*, a.id_quotation AS id, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
 
@@ -57,6 +57,11 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Source', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatSource',
+            ),
+            'price' => array(
+                'title' => $this->trans('Montant HT', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatPrice',
             ),
             'status' => array(
                 'title' => $this->trans('Etat', array(), 'Admin.Global'),
@@ -98,6 +103,10 @@ class AdminQuotationsController extends AdminController {
     public function formatSource($value) {
         $sources = Quotation::getSources();
         return $sources[$value] ?? '-';
+    }
+
+    public function formatPrice($value) {
+        return Tools::displayPrice($value);
     }
 
     public function formatStatus($value) {
