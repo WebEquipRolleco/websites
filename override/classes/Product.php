@@ -75,6 +75,11 @@ class Product extends ProductCore {
         );
     }
 
+    /**
+    * Retourne la nom d'une déclinaison (liste de caractéristiques)
+    * @param int $id_product_attribute
+    * @return string
+    **/
     public static function getCombinationName($id_product_attribute) {
 
     	$sql = "SELECT GROUP_CONCAT(CONCAT(pagl.public_name, ' : ', pal.name) separator ' | ')
@@ -90,7 +95,29 @@ class Product extends ProductCore {
 		return Db::getInstance()->getValue($sql);
     }
 
+    /**
+    * Retourne la référence fournisseur d'une déclinaison
+    * @param int $id_product
+    * @param int $id_product_attribute
+    * @return string
+    **/
     public static function getSupplierReference($id_product, $id_product_attribute) {
     	return Db::getInstance()->getValue("SELECT product_supplier_reference FROM ps_product_supplier WHERE id_product = $id_product AND id_product_attribute = $id_product_attribute");
+    }
+
+    /**
+    * Retourne l'image de couverture d'un produit ou d'une de ses déclinaisons
+    * @param int $id_product
+    * @param int $id_product_attribute
+    * @return Image
+    **/
+    public static function getCover($id_product, $id_product_attribute = null) {
+
+    	if($id_product_attribute)
+    		$id = Db::getInstance()->getValue("SELECT i.id_image FROM ps_image i, ps_product_attribute_image ai WHERE i.id_image = ai.id_image AND ai.id_product_attribute = $id_product_attribute ORDER BY i.position");
+    	else
+    		$id = Db::getInstance()->getValue("SELECT id_image FROM ps_image WHERE id_product = $id_product AND cover = 1 ORDER BY position");
+
+    	return new Image($id);
     }
 }

@@ -335,7 +335,14 @@ class AdminQuotationsController extends AdminController {
             }
     		
     	}
+
         $line->save();
+
+        // Gestion de l'image
+        $image = Product::getCover($product->id, $product->id_product_attribute);
+        if($img_path = $image->getProductFilePath('cart')) {
+            @copy($img_path, $line->getDirectory(true).$line->getFileName());
+        }
 
     	$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/helpers/view/product_line.tpl");
     	$this->context->smarty->assign('line', $line);
