@@ -116,7 +116,8 @@ class Product extends ProductCore {
 
     	if($id_product_attribute)
     		$id = Db::getInstance()->getValue("SELECT i.id_image FROM ps_image i, ps_product_attribute_image ai WHERE i.id_image = ai.id_image AND ai.id_product_attribute = $id_product_attribute ORDER BY i.position");
-    	else
+    	
+    	if(!isset($id) or !$id)
     		$id = Db::getInstance()->getValue("SELECT id_image FROM ps_image WHERE id_product = $id_product AND cover = 1 ORDER BY position");
 
     	return new Image($id);
