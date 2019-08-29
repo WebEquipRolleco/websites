@@ -107,11 +107,12 @@ class Product extends ProductCore {
 
     /**
     * Retourne l'image de couverture d'un produit ou d'une de ses déclinaisons
+    * UTILISATION : devis
     * @param int $id_product
     * @param int $id_product_attribute
     * @return Image
     **/
-    public static function getCover($id_product, $id_product_attribute = null) {
+    public static function getCoverPicture($id_product, $id_product_attribute = null) {
 
     	if($id_product_attribute)
     		$id = Db::getInstance()->getValue("SELECT i.id_image FROM ps_image i, ps_product_attribute_image ai WHERE i.id_image = ai.id_image AND ai.id_product_attribute = $id_product_attribute ORDER BY i.position");
