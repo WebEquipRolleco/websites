@@ -276,22 +276,22 @@
 				<div class="panel">
 					<div class="panel-heading">
 						{l s="Liste des produits"}
-						<span class="label label-warning" style="margin-left:25px;">
+						<span class="label label-warning" style="margin-left:25px; font-size:14px">
 							<b>Total HT :</b> {Tools::displayPrice($quotation->getPrice())}
 						</span>
-						<span class="label label-warning" style="margin-left:5px;">
+						<span class="label label-warning" style="margin-left:5px; font-size:14px">
 							<b>TVA :</b> {Tools::displayPrice($quotation->getPrice(true) - $quotation->getPrice())}
 						</span>
-						<span class="label label-warning" style="margin-left:5px;">
+						<span class="label label-warning" style="margin-left:5px; font-size:14px">
 							<b>Total TTC :</b> {Tools::displayPrice($quotation->getPrice(true))}
 						</span>
-						<span class="label label-warning" style="margin-left:5px;">
+						<span class="label label-warning" style="margin-left:5px; font-size:14px">
 							<b>Eco-tax :</b> {Tools::displayPrice($quotation->getEcoTax())}
 						</span>
-						<span class="label label-warning" style="margin-left:25px;">
+						<span class="label label-warning" style="margin-left:25px; font-size:14px">
 							<b>Marge :</b> {Tools::displayPrice($quotation->getMargin())}
 						</span>
-						<span class="label label-warning" style="margin-left:5px;">
+						<span class="label label-warning" style="margin-left:5px; font-size:14px">
 							<b>Taux :</b> {$quotation->getMarginRate()|round:2}%
 						</span>
 						<span class="panel-heading-action">

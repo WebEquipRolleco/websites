@@ -333,9 +333,10 @@ class AdminQuotationsController extends AdminController {
             $product->id_product_attribute = $infos[1] ?? null;
             if($product->id_product_attribute and $combination = new Combination($product->id_product_attribute)) {
 
-                $line->information = Product::getCombinationName($product->id_product_attribute);
+                $information = Product::getCombinationName($product->id_product_attribute);
+                if($information) $line->name = implode(" | ", array($line->name, $information));
+
                 $line->reference = $combination->reference;
-                
                 $line->buying_price = round($combination->wholesale_price, 2);
                 $line->eco_tax = $combination->ecotax;
 
