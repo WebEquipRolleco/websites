@@ -321,7 +321,6 @@ class AdminQuotationsController extends AdminController {
 
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
-            $line->reference_supplier = $product->supplier_reference;
     		$line->name = $product->name;
 
             $line->buying_price = $product->wholesale_price;
@@ -336,7 +335,6 @@ class AdminQuotationsController extends AdminController {
 
                 $line->information = Product::getCombinationName($product->id_product_attribute);
                 $line->reference = $combination->reference;
-                $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
                 
                 $line->buying_price = round($combination->wholesale_price, 2);
                 $line->eco_tax = $combination->ecotax;
@@ -345,7 +343,7 @@ class AdminQuotationsController extends AdminController {
                 if($line->min_quantity) $line->quantity = $line->min_quantity;
             }
     		
-            // Prix de vente
+            $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
             $line->selling_price = $product->getPrice(false, $product->id_product_attribute, 2);
     	}
 
