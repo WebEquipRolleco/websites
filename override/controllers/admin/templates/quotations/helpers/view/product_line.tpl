@@ -55,12 +55,18 @@
 		</div>
 	</td>
 	<td class="text-center">
+		<span class="label label-default" title="{l s='PV sans éco-taxe' d="Admin.Labels"}">
+			<em>{l s='HT' d="Admin.Labels"}</em> &nbsp; <b>{Tools::displayPrice($line->getPrice())}</b>
+		</span>
 		{if $line->eco_tax > 0}
-			<span class="label label-success" title="{l s="Eco-participation" d="Admin.Labels"}">
-				<i class="icon-leaf"></i> &nbsp;<b>{Tools::displayPrice($line->eco_tax)}</b>
-			</span>
-			<br /><br />
+			<div style="margin-top:10px">
+				<span class="label label-success" title="{l s="Eco-participation" d="Admin.Labels"}">
+					<i class="icon-leaf"></i> &nbsp;<b>{Tools::displayPrice($line->eco_tax)}</b>
+				</span>
+			</div>
 		{/if}
+	</td>
+	<td class="text-center">
 		<b>{displayPrice price=$line->getMargin()}</b>
 		<br />
 		{$line->getMarginRate()|round:2}%
