@@ -345,7 +345,7 @@ class AdminQuotationsController extends AdminController {
             }
     		
             $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
-            $line->selling_price = $product->getPrice(false, $product->id_product_attribute, 2);
+            $line->selling_price = $product->getPrice(false, $product->id_product_attribute, 2) - $line->eco_tax;
     	}
 
         $line->save();
