@@ -212,6 +212,10 @@ class OrderOptionCore extends ObjectModel {
     * @param int $id_shop
     **/
     public function hasShop($id_shop) {
+
+        if(!$this->id)
+            return true;
+
         return (bool)Db::getInstance()->getValue("SELECT active FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_shop = $id_shop AND ".self::TABLE_PRIMARY." = ".$this->id);
     }
 

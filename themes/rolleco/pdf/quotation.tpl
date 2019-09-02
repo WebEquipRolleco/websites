@@ -6,26 +6,50 @@
 
 {assign var=block_height value=60}
 
-<table class="left-title">
-	<thead>
-		<tr>
-			<th colspan="2">{l s='Devis #' pdf=true}{$quotation->reference}</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="title">{l s='Votre contact' pdf=true}</td>
-			<td>{$quotation->getEmployee()->firstname} {$quotation->getEmployee()->lastname}</td>
-		</tr>
-		<tr>
-			<td class="title">{l s='Début de validité' pdf=true}</td>
-			<td>{$quotation->date_begin|date_format:'d/m/Y'}</td>
-		</tr>
-		<tr>
-			<td class="title">{l s='Fin de validité' pdf=true}</td>
-			<td>{$quotation->date_end|date_format:'d/m/Y'}</td>
-		</tr>
-	</tbody>
+<table class="combinations">
+	<tr>
+		<td style="width:{$left_column}%;">
+
+			<table class="combinations">
+				<thead>
+					<tr>
+						<th>{l s="Devis #" pdf=true}{$quotation->reference}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="bg-light">
+						<td><b>{l s="Date :"}</b> {$quotation->date_add|date_format:'d/m/Y'}</td>
+					</tr>
+					<tr class="bg-light">
+						<td><b>{l s="Valide jusqu'au :"}</b> {$quotation->date_end|date_format:'d/m/Y'}</td>
+					</tr>
+					<tr class="bg-light">
+						<td><b>{l s="Votre contact :"}</b> {$quotation->getEmployee()->firstname}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</td>
+		<td style="width:{$space_column}%"></td>
+		<td style="width:{$right_column}%;">
+
+			<table class="combinations">
+				<thead>
+					<tr>
+						<th>{l s="Informations client" pdf=true}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="bg-light">
+						<td class="text-center">
+							{$quotation->details|replace:"\r\n":"<br />"}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</td>
+	</tr>
 </table>
 
 <table>
@@ -49,7 +73,7 @@
 				<td>
 					<img src="{$product->getImageLink()}" style="height:25px; width:25px">
 				</td>
-				<td style="padding:5px">
+				<td>
 					<b>{$product->getProductName()}</b>
 					{foreach from=$product->getProductProperties() item=property}
 						<br /> {$property}
@@ -58,16 +82,16 @@
 						<br /> {$product->information}
 					{/if}
 				</td>
-				<td style="text-align:center; padding:5px">
+				<td class="text-center">
 					<b>{$product->reference}</b>
 				</td>
-				<td style="text-align:center; padding:5px">
+				<td class="text-center">
 					{Tools::displayPrice($product->getPrice(false, false, false, 1))}
 				</td>
-				<td style="text-align:center; padding:5px">
+				<td class="text-center">
 					{$product->quantity}
 				</td>
-				<td style="text-align:center; padding:5px">
+				<td class="text-center bold">
 					{Tools::displayPrice($product->getPrice())}
 				</td>
 			</tr>
@@ -81,8 +105,28 @@
 
 <table>
 	<tr>
-		<td style="width:{$left_column}%; background-color: blue; height:10px;">
+		<td style="width:{$left_column}%;">
 
+			{if !empty($quotation->getOptions())}
+				<table class="combinations">
+					<thead>
+						<tr>
+							<th colspan="3">{l s="Options" pdf=true}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach from=OrderOption::getOrderOptions($true, $quotation->id_shop) item=option}
+							{if $option->id|in_array:$quotation->getOptions()}
+								<tr class="bg-light">
+									<td class="text-center" style="width:5%; border:1px solid black"></td>
+									<td class="text-center"style="width:80%">{$option->name}</td>
+									<td class="text-center" style="width:15%">{Tools::displayPrice($option->getPrice())}</td>
+								</tr>
+							{/if}
+						{/foreach}
+					</tbody>
+				</table>
+			{/if}
 
 		</td>
 		<td style="width:{$space_column}%"></td>

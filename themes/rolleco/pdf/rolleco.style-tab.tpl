@@ -68,8 +68,13 @@
 		background-color: {$darkGrey};
 	}
 
-	.box {
+	.check {
+		width: 20px;
+		height: 20px;
 		border: 2px solid {$dark};
+		border-radius: 4px;
+		background-color: white;
+		margin-top: 5px;
 	}
 
 	.text-center { text-align: center; }
