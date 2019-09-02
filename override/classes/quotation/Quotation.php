@@ -177,7 +177,13 @@ class Quotation extends ObjectModel {
             return null;
     }
 
-    public function getPrice($use_tax = false) {
+    /**
+    * Retourne le prix total du devis
+    * @param bool $use_tax
+    * @param bool $eco_tax
+    * @return float
+    **/
+    public function getPrice($use_tax = false, $eco_tax = false) {
 
         $price = 0;
         foreach($this->getProducts() as $line)
@@ -188,6 +194,7 @@ class Quotation extends ObjectModel {
 
         return $price;
     }
+    
     /**
     * Retourne le label de l'état courant du devis
     **/

@@ -50,6 +50,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Création statique
+	* @return QuotationLine
 	**/
 	public static function find($id) {
 		return new self($id);
@@ -57,6 +58,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourne le devis lié
+	* @return Quotation|null
 	**/
 	public function getQuotation() {
 
@@ -68,6 +70,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourne le fournisseur du produit
+	* @return Supplier|null
 	**/
 	public function getSupplier() {
 
@@ -78,15 +81,22 @@ class QuotationLine extends ObjectModel {
 	}
 
 	/**
-	* Retourne le prix total
+	* Retourne le prix total 
+	* @param bool $use_taxes
+	* @param bool $eco_tax
+	* @return float
 	**/
-	public function getPrice($tax = false) {
-		$price = ($tax) ? $this->selling_price * 1.2 : $this->selling_price;
+	public function getPrice($use_taxes = false, $eco_tax = false) {
+
+		$price = ($use_taxes) ? $this->selling_price * 1.2 : $this->selling_price;
+		if($eco_tax) $price += $this->eco_tax;
+
 		return round($price * $this->quantity, 2);
 	}
 
 	/**
 	* Calcule le prix d'achat (charges comprises : ports)
+	* @return float
 	**/
 	public function getBuyingPrice() {
 		return $this->buying_price + $this->buying_fees;
@@ -94,6 +104,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Calcule la marge du produit
+	* @return float
 	**/
 	public function getMargin() {
 		return $this->selling_price - $this->getBuyingPrice();
@@ -101,6 +112,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Calcule le taux de marge du produit
+	* @return float
 	**/
 	public function getMarginRate() {
 		return Tools::getMarginRate($this->getMargin(), $this->selling_price);
@@ -108,6 +120,8 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourn la prochaine position pour un produit devis
+	* @param int $id_quotation
+	* @return int
 	**/
 	public static function getNextPosition($id_quotation) {
 		$position = (int)Db::getInstance()->getValue('SELECT MAX(position) FROM '._DB_PREFIX_.self::TABLE_NAME.' WHERE id_quotation = '.$id_quotation);
@@ -116,6 +130,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourne le chemin du dossier image
+	* @return string
 	**/
 	public function getDirectory($absolute = false) {
 
@@ -132,6 +147,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourne le nom de l'image personnalisée asociée
+	* @return string
 	**/
 	public function getFileName() {
 		return $this->id.'.png';
@@ -139,6 +155,7 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourne le lien de l'image
+	* @return string
 	**/
 	public function getImageLink() {
 
