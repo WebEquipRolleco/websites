@@ -183,18 +183,31 @@ class Quotation extends ObjectModel {
     * @param bool $eco_tax
     * @return float
     **/
-    public function getPrice($use_tax = false, $eco_tax = false) {
+    public function getPrice($use_tax = false, $fees = false, $eco_tax = false) {
 
         $price = 0;
         foreach($this->getProducts() as $line)
-            $price += $line->getPrice();
-
-        if($use_tax)
-            $price *= 1.2;
+            $price += $line->getPrice($use_tax, $fees, $eco_tax);
 
         return $price;
     }
     
+    /**
+    * Retourne le montant total des frais du devis
+    * @return float
+    **/
+    public function getBuyingFees($use_taxes = false) {
+
+        $price = 0;
+        foreach($this->getProducts() as $line)
+            $price += $line->buying_fees;
+
+        if($this->use_taxes)
+            $price *= 1.2;
+
+        return $price;
+    }
+
     /**
     * Retourne le label de l'état courant du devis
     **/
@@ -389,7 +402,7 @@ class Quotation extends ObjectModel {
 
         $total = 0;
         foreach($this->getProducts() as $line)
-            $total += $line->eco_tax;
+            $total += $line->getEcoTax();
 
         return $total;
     }

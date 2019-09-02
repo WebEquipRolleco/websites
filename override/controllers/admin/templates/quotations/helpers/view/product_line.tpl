@@ -55,9 +55,14 @@
 		</div>
 	</td>
 	<td class="text-center">
-		<span class="label label-default" title="{l s='PV sans éco-taxe' d="Admin.Labels"}">
+		<span class="label label-default" title="{l s='PV sans frais de port ni éco-tax' d="Admin.Labels"}">
 			<em>{l s='HT' d="Admin.Labels"}</em> &nbsp; <b>{Tools::displayPrice($line->getPrice())}</b>
 		</span>
+		<div style="margin-top:10px">
+			<span class="label label-primary" title="{l s='Frais de port HT' d="Admin.Labels"}">
+				<i class="icon-truck"></i> &nbsp; <b>{Tools::displayPrice($line->getFees())}</b>
+			</span>
+		</div>
 		{if $line->eco_tax > 0}
 			<div style="margin-top:10px">
 				<span class="label label-success" title="{l s="Eco-participation" d="Admin.Labels"}">

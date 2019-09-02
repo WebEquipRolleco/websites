@@ -5,6 +5,8 @@ class QuotationLine extends ObjectModel {
 	const TABLE_NAME = 'quotation_line';
 	const TABLE_PRIMARY = 'id';
 
+	const DELIMITER = "|";
+
 	public $reference;
 	public $reference_supplier;
 	public $name;
@@ -49,6 +51,50 @@ class QuotationLine extends ObjectModel {
     );
 
 	/**
+	* Retourne le prix total 
+	* @param bool $use_taxes
+	* @param bool $fees
+	* @param bool $eco_tax
+	* @param int $quantity
+	* @return float
+	**/
+	public function getPrice($use_taxes = false, $fees = false, $eco_tax = false, $quantity = 0) {
+
+		if(!$quantity) $quantity = $this->quantity;
+
+		$price = $this->selling_price * $quantity;
+		if($fees) $price += $this->getFees();
+		if($use_taxes) $price *= 1.2;
+		if($eco_tax) $price += $this->getEcoTax($quantity);
+
+		return round($price * $this->quantity, 2);
+	}
+
+	/**
+	* Retourne les frais de port total
+	* @param bool $use_taxes
+	* @return float
+	**/
+	public function getFees($use_taxes = false) {
+
+		$price = $this->buying_fees * $this->quantity;
+		if($use_taxes) $price *= 1.2;
+
+		return $price;
+	}
+
+	/**
+    * Calcule la participation éco totale
+    * @param int $quantity
+    * @return float
+    **/
+    public function getEcoTax($quantity = 0) {
+
+    	if(!$quantity) $quantity = $this->quantity;
+    	return $this->eco_tax * $quantity;
+    }
+
+	/**
 	* Création statique
 	* @return QuotationLine
 	**/
@@ -78,20 +124,6 @@ class QuotationLine extends ObjectModel {
 			$this->supplier = new Supplier($this->id_supplier);
 
 		return $this->supplier;
-	}
-
-	/**
-	* Retourne le prix total 
-	* @param bool $use_taxes
-	* @param bool $eco_tax
-	* @return float
-	**/
-	public function getPrice($use_taxes = false, $eco_tax = false) {
-
-		$price = ($use_taxes) ? $this->selling_price * 1.2 : $this->selling_price;
-		if($eco_tax) $price += $this->eco_tax;
-
-		return round($price * $this->quantity, 2);
 	}
 
 	/**
@@ -163,6 +195,28 @@ class QuotationLine extends ObjectModel {
 			return $this->getDirectory().$this->getFileName();
 		else
 			return "/img/quotations/default.jpg";
+	}
+
+	/**
+	* Retourne le nom du produit
+	* @return string
+	**/
+	public function getProductName() {
+
+		$rows = explode(self::DELIMITER, $this->name);
+		return $rows[0] ?? null;
+	}
+
+	/**
+	* Retourne les propriétés du produit
+	* @return string
+	**/
+	public function getProductProperties() {
+
+		$rows = explode(self::DELIMITER, $this->name);
+		array_shift($rows);
+
+		return $rows;
 	}
 
 }

@@ -68,4 +68,21 @@
 		background-color: {$darkGrey};
 	}
 
+	.box {
+		border: 2px solid {$dark};
+	}
+
+	.text-center { text-align: center; }
+	.text-right { text-align: right; }
+
+	.text-primary { color: {$blue}; }
+	.text-danger { color: {$red}; }
+	.text-light { color: white; }
+
+	.bg-primary { background-color: {$blue}; color: white;}
+	.bg-light { background-color: {$grey}; }
+	.bg-grey { background-color: {$darkGrey}; }
+
+	.bold { font-weight: bold; }
+
 </style>
