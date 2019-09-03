@@ -289,6 +289,8 @@ class AdminQuotationsController extends AdminController {
             // Envoi des e-mails
             foreach($emails as $email)
                 Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop), $attachments);
+
+            $this->confirmations[] = "Le devis a été envoyé au client";
         }
     }
 
