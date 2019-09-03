@@ -35,8 +35,11 @@ class Customer extends CustomerCore {
 	/** @var string Email tracking **/
 	public $email_tracking;
 
-	/** @var flat Rollcash **/
+	/** @var float Rollcash **/
 	public $rollcash;
+
+	/** @var int Rollcash **/
+	public $quotation = 0;
 
 	// Variables temporaires
 	private $type = null;
@@ -55,6 +58,7 @@ class Customer extends CustomerCore {
 		self::$definition['fields']['email_invoice'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['email_tracking'] =array('type' => self::TYPE_STRING);
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
+		self::$definition['fields']['quotation'] = array('type' => self::TYPE_INT);
 		
 		parent::__construct($id_category, $id_lang, $id_shop);
 	}
@@ -158,7 +162,7 @@ class Customer extends CustomerCore {
 	* @return bool
 	**/
 	public function isNewFromQuotation() {
-		return true;
+		return $this->quotation == self::QUOTATION_NEW;
 	}
 
 }

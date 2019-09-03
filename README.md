@@ -32,6 +32,7 @@ ALTER TABLE `ps_customer` ADD `date_funding` DATE AFTER `funding`;
 ALTER TABLE `ps_customer` ADD `email_invoice` VARCHAR(255) NULL AFTER `email`;
 ALTER TABLE `ps_customer` ADD `email_tracking` VARCHAR(255) NULL AFTER `email_invoice`;
 ALTER TABLE `ps_customer` ADD `rollcash` FLOAT DEFAULT '0' AFTER `email_tracking`; 
+ALTER TABLE `ps_customer` ADD `quotation` INT DEFAULT '0' AFTER `rollcash`; 
 
 ALTER TABLE `ps_supplier` ADD `reference` VARCHAR(30) NULL AFTER `id_supplier`;
 ALTER TABLE `ps_supplier` ADD `emails` VARCHAR(255) NULL AFTER `name`;
