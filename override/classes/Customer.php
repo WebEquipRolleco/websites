@@ -2,6 +2,9 @@
 
 class Customer extends CustomerCore {
 
+	const QUOTATION_NEW = 1;
+	const QUOTATION_OK = 2;
+
 	/** @var string Reference **/
 	public $reference;
 
@@ -148,6 +151,14 @@ class Customer extends CustomerCore {
         $cart->save();
 
         return $cart;
+	}
+
+	/**
+	* Vérifie si un client a été notifié de la création d'un compte pour un devis
+	* @return bool
+	**/
+	public function isNewFromQuotation() {
+		return true;
 	}
 
 }

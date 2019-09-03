@@ -294,16 +294,19 @@ class Quotation extends ObjectModel {
 
     /**
     * Retourne les emails de contacts
+    * @return array
     **/
     public function getEmails() {
 
+        $emails = array();
+
         if($this->email)
-            return explode(',', $this->email);
+            $emails = explode(',', $this->email);
 
         $customer = $this->getCustomer();
-        if($customer) return array($customer->email);
+        if($customer) $emails[] = $customer->email;
 
-        return false;
+        return $emails;
     }
 
     /**

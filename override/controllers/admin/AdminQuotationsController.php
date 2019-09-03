@@ -85,6 +85,7 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Actions', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatActions',
+                'remove_onclick' => true,
                 'search' => false
             ),
         );
@@ -123,32 +124,58 @@ class AdminQuotationsController extends AdminController {
         return $tpl->fetch();
     }
 
+    /**
+    * Ajoute la modal import à la page liste
+    **/
+    public function renderList() {
+
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/ajax.tpl");
+        return parent::renderList().$tpl->fetch();
+    }
+
+    /**
+    * Gestion appels AJAX
+    **/
     public function displayAjax() {
     	switch(Tools::getValue('action')) {
     		
     		case 'add_product':
     			$this->addProduct();
     		break;
+
+            case 'contact_modal':
+                $this->renderContactModal();
+            break;
     	}
     }
 
-    public function initContent() {
-
-    	parent::initContent();
-
+    public function postProcess() {
+        
         // Export des devis
         $this->export();
 
         // Ajouter au panier
         $this->addToCart();
 
-        // Gestion de la liste des devis
+        // Téléchargement du PDF
         $this->downloadQuotation();
+
+        // Réplication d'un devis
         $this->copyQuotation();
 
-        // Gestion des produits d'un devis
-    	$this->saveProducts();
-    	$this->removeProduct();
+        // Enregistrement de la liste des produits
+        $this->saveProducts();
+
+        // Suppression d'un produit
+        $this->removeProduct();
+
+        // Envoi du mail au client
+        $this->sendMail();
+    }
+
+    public function initContent() {
+
+    	parent::initContent();
 
     	if(Tools::getIsset('updatequotation') or Tools::getIsset('addquotation')) {
 
@@ -216,6 +243,53 @@ class AdminQuotationsController extends AdminController {
 
 			$this->setTemplate("details.tpl");
     	}
+    }
+
+    /**
+    * Envoi du mail au client
+    **/
+    public function sendMail() {
+        if(Tools::isSubmit('send') and $this->id_quotation) {
+
+            $quotation = new Quotation($this->id_quotation);
+            $attachments = array();
+            
+            // Gestion du bloc "nouvel utilisateur"
+            $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/account.tpl");
+            $tpl->assign('quotation', $quotation);
+
+            $data['{user}'] = $tpl->fetch();
+            $data['{reference}'] = $quotation->reference;
+            $data['{message}'] = str_replace("\r\n", "<br />", Tools::getValue('content'));
+            $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop);
+            $data['{shop_email}'] = Configuration::get('PS_SHOP_EMAIL', null, $quotation->id_shop);
+            $data['{shop_phone}'] = Configuration::get('PS_SHOP_PHONE', null, $quotation->id_shop);
+            $data['{shop_fax}'] = Configuration::get('PS_SHOP_FAX', null, $quotation->id_shop);
+            $data['{shop_url}'] = ShopUrl::getMainShopDomain($quotation->id_shop);
+
+            // Gestion des destinataires
+            $emails = explode(',', Tools::getValue('emails'));
+            $emails[] = Configuration::get('PS_SHOP_EMAIL', null, $quotation->id_shop);
+            
+            // Gestion pièces jointes : PDF
+            if(Tools::getValue('pdf')) {
+                $pdf = new PDF(array('quotation'=>$quotation), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
+                $attachment['pdf']['content'] = $pdf->render(false);
+                $attachment['pdf']['name'] = "devis.pdf";
+                $attachment['pdf']['mime'] = 'application/pdf';
+            }
+
+            // Gestion pièces jointes : CGV
+            if(Tools::getValue('cgv')) {
+                $attachment['cgv']['content'] = file_get_contents($quotation->getShop()->getConditionsFilePath(true));
+                $attachment['cgv']['name'] = "cgv.pdf";
+                $attachment['cgv']['mime'] = 'application/pdf';
+            }
+
+            // Envoi des e-mails
+            foreach($emails as $email)
+                Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop), $attachments);
+        }
     }
 
     /**
@@ -402,6 +476,19 @@ class AdminQuotationsController extends AdminController {
     		$line = new QuotationLine($id);
     		if($line->id) $line->delete();
     	}
+    }
+
+    /**
+    * Renvoie la modal d'envoi au client
+    **/
+    public function renderContactModal() {
+        
+        //$this->addJS(_PS_JS_DIR_.'tiny_mce/tiny_mce.js');
+
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/contact.tpl");
+        $tpl->assign('quotation', new Quotation($this->id_quotation));
+
+        die($tpl->fetch());
     }
 
 }
