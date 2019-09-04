@@ -11,6 +11,10 @@
 		<div class="row">
 		<div class="col-lg-6">
 			<span class="label label-default">
+				<strong>{$quotation->getShop()->name}</strong>
+			</span>
+			&nbsp;
+			<span class="label label-default">
 				<strong>{$quotation->reference}</strong>
 			</span>
 			&nbsp;
@@ -35,15 +39,14 @@
 				<div class="panel-heading">
 					{l s="Gestion"}
 				</div>
-				<div class="form-group">
+				{*<div class="form-group">
 					<label for="id_shop">{l s="Boutique"}</label>
-					<input type="text" class="form-control" value="{$quotation->getShop()->name}" disabled>
-					{*<select name="quotation[id_shop]" class="form-control" disabled>
+					<select name="quotation[id_shop]" class="form-control" disabled>
 						{foreach $shops as $shop}
 							<option value="{$shop.id_shop}" {if $quotation->id_shop == $shop.id_shop}selected{/if}>{$shop.name}</option>
 						{/foreach}
-					</select>*}
-				</div>
+					</select>
+				</div>*}
 				<div class="form-group">
 					<label for="status">{l s="Etat"}</label>
 					<select name="quotation[status]" class="form-control">
@@ -120,23 +123,12 @@
 					<input type="date" name="quotation[date_recall]" id="date_recall" class="form-control" {if $quotation->date_recall}value="{$quotation->date_recall|date_format:'Y-m-d'}"{/if}>
 				</div>
 			</div>
-		</div>
-
-		<div class="col-lg-6">
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Affichage"}
-				</div>
-				<div class="form-group">
-					<label for="comment">{l s="Commentaire"}</label>
-					<textarea rows="5" name="quotation[comment]" id="comment" class="form-control">{$quotation->comment}</textarea>
-				</div>
-				<div class="form-group">
-					<label for="details">{l s="Information client"}</label>
-					<textarea rows="5" name="quotation[details]" id="details" class="form-control">{$quotation->details}</textarea>
+					{l s="Options"}
 				</div>
 				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-12">
 						<div class="text-center">
 							<span class="label label-default" title="{l s='Le client verra sont devis en tant que nouveauté jusqu\'à son ouverture.'}" style="cursor:help">
 								<b>{l s="Nouveau"}</b>
@@ -150,7 +142,7 @@
 							<a class="slide-button btn"></a>
 						</span>
 					</div>
-					<div class="col-lg-6">
+					<div class="col-lg-12">
 						<div class="text-center">
 							<span class="label label-default" title="{l s='Le devis sera mis en valeur pour attirer l\'attention du client.'}" style="cursor:help">
 								<b>{l s="Valoriser"}</b>
@@ -166,45 +158,53 @@
 					</div>
 				</div>
 			</div>
-			<div class="panel">
-				<div class="panel-heading">
-					{l s="Options"}
-				</div>
-				{assign var=options value=OrderOption::getOrderOptions()}
-				{if !empty($options)}
-					<table class="table" width="100%">
-						<tbody>
-							{foreach from=$options item=option}
-								{assign var=selected value=$option->id|in_array:$quotation->getOptions()}
-								<tr>
-									<td>
-										{$option->name}
-									</td>
-									<td class="text-right">
-										<span class="switch prestashop-switch fixed-width-lg" style="float:right">
-											<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_on" value="{$option->id}" {if $selected}checked{/if}>
-											<label for="option_{$option->id}_on">{l s='Oui' d='Admin.Labels'}</label>
-											<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_off" value="" {if !$selected}checked{/if}>
-											<label for="option_{$option->id}_off">{l s='Non' d='Admin.Labels'}</label>
-											<a class="slide-button btn"></a>
-										</span>
-									</td>
-								</tr>
-							{/foreach}
-						</tbody>
-					</table>
-				{else}
-					<div class="alert alert-info">
-						{l s="Aucune option de commande disponible"}
-					</div>
-				{/if}
-			</div>
 		</div>
 
-		<div class="col-lg-3">
+		<div class="col-lg-9">
 			<div class="panel">
 				<div class="panel-heading">
-					{l s="Attribution"}
+					{l s="Affichage"}
+				</div>
+				{if $quotation->id}
+					<div class="row">
+						<div class="col-lg-12">
+							<b>{l s="Lien du devis" d='Admin.Labels'}</b>
+						</div>
+						<div class="col-lg-12">
+							<a href="{$quotation->getLink()}" class="quotation-link" target="_blank">
+								{$quotation->getLink()}
+							</a>
+						</div>
+					</div>
+					<br />
+				{/if}
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="origin">{l s="Provenance"} <em class="text-danger">*</em></label>
+							<select name="quotation[origin]" class="form-control" required>
+								<option value="">{l s='Choisir' d='Admin.Labels'}</option>
+								{foreach $origins as $id => $origin}
+									<option value="{$id}" {if $quotation->origin == $id}selected{/if}>
+										{$origin}
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="source">{l s="Source"} <em class="text-danger">*</em></label>
+							<select name="quotation[source]" class="form-control" required>
+								<option value="">{l s='Choisir' d='Admin.Labels'}</option>
+								{foreach from=$sources key=id item=name}
+									<option value="{$id}" {if $quotation->source == $id}selected{/if}>
+										{$name}
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="id_customer">{l s="Client"}</label>
@@ -217,51 +217,53 @@
 						{/foreach}
 					</select>
 				</div>
-				<div class="form-group">
-					<label for="origin">{l s="Provenance"} <em class="text-danger">*</em></label>
-					<select name="quotation[origin]" class="form-control" required>
-						<option value="">{l s='Choisir' d='Admin.Labels'}</option>
-						{foreach $origins as $id => $origin}
-							<option value="{$id}" {if $quotation->origin == $id}selected{/if}>
-								{$origin}
-							</option>
-						{/foreach}
-					</select>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="email">{l s="E-mails"}</label>
+							<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
+							<input type="text" name="quotation[email]" id="email" class="form-control" value="{$quotation->email}">
+						</div>
+						<div class="form-group">
+							<label for="phone">{l s="Téléphone"}</label>
+							<input type="text" name="quotation[phone]" id="phone" class="form-control" value="{$quotation->phone}">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="hidden_emails">{l s="E-mails (CC)"}</label>
+							<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
+							<input type="text" name="quotation[hidden_emails]" id="hidden_emails" class="form-control" value="{$quotation->hidden_emails}">
+						</div>
+						<div class="form-group">
+							<label for="fax">{l s="Fax"}</label>
+							<input type="text" name="quotation[fax]" id="fax" class="form-control" value="{$quotation->fax}">
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
-					<label for="source">{l s="Source"} <em class="text-danger">*</em></label>
-					<select name="quotation[source]" class="form-control" required>
-						<option value="">{l s='Choisir' d='Admin.Labels'}</option>
-						{foreach from=$sources key=id item=name}
-							<option value="{$id}" {if $quotation->source == $id}selected{/if}>
-								{$name}
-							</option>
-						{/foreach}
-					</select>
-				</div>
-			</div>
-			<div class="panel">
-				<div class="panel-heading">
-					{l s="Contact"}
+					<label for="comment">{l s="Commentaire"}</label>
+					<textarea rows="5" name="quotation[comment]" id="comment" class="form-control">{$quotation->comment}</textarea>
 				</div>
 				<div class="form-group">
-					<label for="email">{l s="E-mails"}</label>
-					<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
-					<input type="text" name="quotation[email]" id="email" class="form-control" value="{$quotation->email}">
+					<label for="details">{l s="Information client"}</label>
+					<textarea rows="5" name="quotation[details]" id="details" class="form-control">{$quotation->details}</textarea>
 				</div>
-				<div class="form-group">
-					<label for="hidden_emails">{l s="E-mails (CC)"}</label>
-					<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
-					<input type="text" name="quotation[hidden_emails]" id="hidden_emails" class="form-control" value="{$quotation->hidden_emails}">
-				</div>
-				<hr />
-				<div class="form-group">
-					<label for="phone">{l s="Téléphone"}</label>
-					<input type="text" name="quotation[phone]" id="phone" class="form-control" value="{$quotation->phone}">
-				</div>
-				<div class="form-group">
-					<label for="fax">{l s="Fax"}</label>
-					<input type="text" name="quotation[fax]" id="fax" class="form-control" value="{$quotation->fax}">
+				<div class="row">
+					{foreach from=OrderOption::getOrderOptions() item=option}
+						{assign var=selected value=$option->id|in_array:$quotation->getOptions()}
+						{assign var=empty value=empty($quotation->getOptions())}
+						<div class="col-lg-3 text-center">
+							<span class="label label-default" title="{l s='Autoriser cette option dans le panier'}"><b>{$option->name}</b></span>
+							<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
+								<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_on" value="{$option->id}" {if $selected or $empty}checked{/if}>
+								<label for="option_{$option->id}_on">{l s='Oui' d='Admin.Labels'}</label>
+								<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_off" value="" {if !$selected and !$empty}checked{/if}>
+								<label for="option_{$option->id}_off">{l s='Non' d='Admin.Labels'}</label>
+								<a class="slide-button btn"></a>
+							</span>
+						</div>
+					{/foreach}
 				</div>
 			</div>
 		</div>
@@ -400,13 +402,6 @@
 					</button>
 				</div>
 			</div>
-			{if $quotation->id}
-				<hr />
-				<b>{l s="Lien du devis : " d='Admin.Labels'} </b>
-				<a href="{$quotation->getLink()}" class="quotation-link" target="_blank">
-					{$quotation->getLink()}
-				</a>
-			{/if}
 		</div>
 	</form>
 
