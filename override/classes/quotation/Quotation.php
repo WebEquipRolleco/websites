@@ -81,7 +81,7 @@ class Quotation extends ObjectModel {
     public function __construct($id = null, $id_lang = null, $id_shop = null, $translator = null) {
         
         parent::__construct($id, $id_lang, $id_shop, $translator);
-        $this->secure_key = uniqid();
+        if(!$this->secure_key) $this->secure_key = uniqid();
     }
 
     /**
