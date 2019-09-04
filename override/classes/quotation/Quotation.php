@@ -38,6 +38,7 @@ class Quotation extends ObjectModel {
     public $highlight = 0;
     public $option_ids;
     public $id_shop;
+    public $secure_key;
 
     // Variables temporaires
     private $options = array();
@@ -69,9 +70,19 @@ class Quotation extends ObjectModel {
             'new' => array('type' => self::TYPE_BOOL),
             'highlight' => array('type' => self::TYPE_BOOL),
             'option_ids' => array('type' => self::TYPE_STRING),
-            'id_shop' => array('type' => self::TYPE_INT)
+            'id_shop' => array('type' => self::TYPE_INT),
+            'secure_key' => array('type' => self::TYPE_STRING)
         ),
     );
+
+    /**
+    * Initialisation de la clé de sécurité
+    **/
+    public function __construct($id = null, $id_lang = null, $id_shop = null, $translator = null) {
+        
+        parent::__construct($id, $id_lang, $id_shop, $translator);
+        $this->secure_key = uniqid();
+    }
 
     /**
     * Retourne la liste des IDs options autorisés pour le devis
@@ -358,7 +369,7 @@ class Quotation extends ObjectModel {
         $sql .= " ORDER BY date_add DESC ";
 
         foreach(Db::getInstance()->executeS($sql) as $row)
-            $data[] = new Quotation($row['id']);
+            $data[] = new Quotation($row[self::TABLE_PRIMARY]);
 
         return $data;
     }
@@ -445,4 +456,13 @@ class Quotation extends ObjectModel {
         }
     }
 
+    /**
+    * Retourne le lien d'ajout panier
+    * @return string
+    **/
+    public function getLink() {
+
+        $link = new Link();
+        return $link->getPageLink('QuotationRegistration&accept='.$this->reference.'&key='.$this->secure_key, null, 1, null, false, $this->id_shop);
+    }
 }

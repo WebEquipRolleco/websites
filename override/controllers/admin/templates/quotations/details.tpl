@@ -400,6 +400,11 @@
 					</button>
 				</div>
 			</div>
+			<hr />
+			<b>{l s="Lien du devis : " d='Admin.Labels'} </b>
+			<a href="{$quotation->getLink()}" class="quotation-link" target="_blank">
+				{$quotation->getLink()}
+			</a>
 		</div>
 	</form>
 
@@ -410,6 +415,11 @@
 		
 		$('.select2').select2({
 			width: 'auto'
+		});
+
+		$('.quotation-link').on('click', function(e) {
+			if(!confirm('Etes-vous sûr de vouloir ajouter le devis a votre panier ?'))
+				e.preventDefault();
 		});
 
 		$('.remove_product').on('click', function(e) {

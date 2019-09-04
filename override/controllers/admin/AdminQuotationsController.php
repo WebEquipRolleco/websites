@@ -259,6 +259,7 @@ class AdminQuotationsController extends AdminController {
             $tpl->assign('quotation', $quotation);
 
             $data['{user}'] = $tpl->fetch();
+            $data['{link}'] = $quotation->getLink();
             $data['{reference}'] = $quotation->reference;
             $data['{message}'] = str_replace("\r\n", "<br />", Tools::getValue('content'));
             $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop);

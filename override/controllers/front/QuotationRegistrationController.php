@@ -3,8 +3,8 @@
 class QuotationRegistrationControllerCore extends FrontController {
 
 	/**
-     * @see FrontController::initContent()
-     */
+    ** @see FrontController::initContent()
+    **/
     public function initContent() {
 
     	parent::initContent();
@@ -29,4 +29,31 @@ class QuotationRegistrationControllerCore extends FrontController {
 
         $this->setTemplate('quotation');
     }
+
+    /**
+    * Gère le lien d'ajout de devis au panier
+    **/
+    public function postProcess() {
+
+        if($reference = Tools::getValue('accept') and $key = Tools::getValue('key')) {
+
+            $quotation = Quotation::findByReference($reference);
+            if($quotation->id and $quotation->secure_key == $key) {
+                if($quotation->isValid()) {
+
+                    foreach($quotation->getProducts() as $line)
+                        QuotationAssociation::addLine($this->context->cart->id, $line->id);
+
+                    Tools::redirect($this->context->link->getPageLink('cart', null, $this->context->language->id, ['action' => 'show']));
+                }
+                else
+                    die("Ce devis n'est plus valide");
+            }
+            else
+                die("Devis inconnu ou clé de sécurité incorrecte");
+        }
+
+        parent::postProcess();
+    }
+
 }

@@ -194,6 +194,7 @@ CREATE TABLE IF NOT EXISTS `ps_quotation` (
     `hightlight` TINYINT(1) NULL,
     `option_ids` VARCHAR(255) NULL, 
     `id_shop` INT(1) NULL,
+    `secure_key` VARCHAR(255) NULL, 
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
