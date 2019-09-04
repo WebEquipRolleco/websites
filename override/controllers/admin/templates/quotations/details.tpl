@@ -400,7 +400,7 @@
 					</button>
 				</div>
 			</div>
-			{if quotation->id}
+			{if $quotation->id}
 				<hr />
 				<b>{l s="Lien du devis : " d='Admin.Labels'} </b>
 				<a href="{$quotation->getLink()}" class="quotation-link" target="_blank">
