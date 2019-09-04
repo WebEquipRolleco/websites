@@ -400,11 +400,13 @@
 					</button>
 				</div>
 			</div>
-			<hr />
-			<b>{l s="Lien du devis : " d='Admin.Labels'} </b>
-			<a href="{$quotation->getLink()}" class="quotation-link" target="_blank">
-				{$quotation->getLink()}
-			</a>
+			{if quotation->id}
+				<hr />
+				<b>{l s="Lien du devis : " d='Admin.Labels'} </b>
+				<a href="{$quotation->getLink()}" class="quotation-link" target="_blank">
+					{$quotation->getLink()}
+				</a>
+			{/if}
 		</div>
 	</form>
 
