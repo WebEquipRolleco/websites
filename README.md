@@ -238,6 +238,15 @@ CREATE TABLE IF NOT EXISTS `ps_after_sale` (
     PRIMARY KEY (`id_after_sale`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `ps_after_sale_history` (
+    `id_after_sale_history` INT NOT NULL AUTO_INCREMENT, 
+    `id_after_sale` INTEGER(11) NULL,
+    `name` VARCHAR(255) NULL, 
+    `id_employee` INTEGER(11) NULL, 
+    `date_add` DATETIME NULL DEFAULT NULL, 
+    PRIMARY KEY (`id_after_sale_history`)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `ps_after_sale_message` (
     `id_after_sale_message` INT NOT NULL AUTO_INCREMENT, 
     `id_after_sale` INTEGER(11) NULL, 

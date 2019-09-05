@@ -86,7 +86,7 @@ class AfterSale extends ObjectModel {
     **/
     public function getStatusLabel($fixed = false) {
 
-        if($this->condition)
+        if($this->condition and !$fixed)
             return $this->condition;
 
         return self::getStatuses()[$this->status];
@@ -349,6 +349,31 @@ class AfterSale extends ObjectModel {
             $data[] = $this->email;
 
         return $data;
+    }
+
+    /**
+    * Retourne l'historique du SAV
+    * @return array
+    **/
+    public function getHistory() {
+        return AfterSaleHistory::find($this->id);
+    }
+
+    /**
+    * Ajoute un historique
+    * @param string $name
+    * @param int $id_employee
+    **/
+    public function addHistory($name, $id_employee = null) {
+
+        $history = new AfterSaleHistory();
+
+        $history->id_after_sale = $this->id;
+        $history->name = $name;
+        $history->id_employee = $id_employee;
+        $history->date_add = date('Y-m-d H:i:s');
+
+        $history->save();
     }
 
 }

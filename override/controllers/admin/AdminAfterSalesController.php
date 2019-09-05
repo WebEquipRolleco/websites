@@ -154,11 +154,9 @@ class AdminAfterSalesControllerCore extends AdminController {
 
     	// Changement de statut
     	if($status = Tools::getValue('new_state') and $sav->status != $status) {
-    		$sav->status = $status;
     		
-            // Effacer le statut personnalisé
-            if(Tools::getValue('eraze'))
-                $sav->condition = null;
+            $sav->status = $status;
+            $sav->condition = null;
 
             // Notification client
             $messages = Tools::getValue('message');
@@ -177,6 +175,9 @@ class AdminAfterSalesControllerCore extends AdminController {
 
             $sav->hasBeenUpdated();
             $sav->save();
+
+            // Enregistrer dans l'historique
+            $sav->addHistory($sav->getStatusLabel(true), $this->context->employee->id);
     	}
     	
     	// Mise à jour des informations

@@ -28,6 +28,33 @@
 						{l s="Dernière mise à jour le "} {$sav->date_upd|date_format:'d/m/Y à H:i'}
 					</em>
 				</div>
+				{assign var=history value=$sav->getHistory()}
+				{if !empty($history)}
+					<table class="table" style="margin-top:10px;">
+						<thead>
+							<tr class="bg-primary">
+								<th><b>{l s="Etat"}</b></th>
+								<th></th>
+								<th class="text-right"><b>{l s="Date"}</b></th>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach from=$history item=line}
+								<tr>
+									<td>
+										{$line->name}
+									</td>
+									<td class="text-center">
+										<i class="icon-user" title="{$line->getEmployee()->firstname} {$line->getEmployee()->lastname}"></i>
+									</td>
+									<td class="text-muted text-right">
+										{$line->date_add|date_format:'d/m/Y H:i'}
+									</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				{/if}
 			</div>
 		{/if}
 
@@ -284,19 +311,6 @@
 	        				{/foreach}
 	        			</select>
 	        		</div>
-	        	</div>
-	        	<div class="col-lg-2"></div>
-	        	<div class="col-lg-4">
-	        		<div class="form-group">
-						<label>{l s="Effacer le statut personnalisé"}</label>
-						<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
-							<input type="radio" name="eraze" id="eraze_on" value="1" checked>
-							<label for="eraze_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
-							<input type="radio" name="eraze" id="eraze_off" value="0">
-							<label for="eraze_off">{l s='Non' d='Shop.Theme.Labels'}</label>
-							<a class="slide-button btn"></a>
-						</span>
-					</div>
 	        	</div>
 	        	<div id="message_area" class="col-lg-12">
 	        		<div class="form-group">
