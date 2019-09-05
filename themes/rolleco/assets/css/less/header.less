@@ -33,7 +33,7 @@
 	a:hover {
 		color: @mainBlue;
 		.fa-power-off {
-			color: @mainRed;
+			color: @mainText;
 		}
 	}
 	#nav_contact {
@@ -56,7 +56,6 @@
 }
 
 #_desktop_cart {
-	border-left: 1px solid @mainDarkGrey;
 	border-right: 1px solid @mainDarkGrey;
 }
 
@@ -116,4 +115,22 @@
 			transition: 0.25s linear all;
 		}
 	}
+}
+
+.nav-button {
+	display:inline; 
+	padding:10px; 
+	padding-top:15px; 
+	border-left:1px solid @mainDarkGrey;
+}
+
+#logout {
+	background-color: @mainRed;
+	border-left:0px !important;
+	a {
+		color: white;
+	}
+}
+#logout:hover {
+	background-color: @mainDarkRed;	
 }

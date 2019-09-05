@@ -331,7 +331,7 @@ table .description-cell {
   color: #1e4688;
 }
 #header a:hover .fa-power-off {
-  color: #d5121d;
+  color: white;
 }
 #header #nav_contact {
   padding-left: 15px;
@@ -350,7 +350,6 @@ table .description-cell {
   border-left: 1px solid lightgrey;
 }
 #_desktop_cart {
-  border-left: 1px solid lightgrey;
   border-right: 1px solid lightgrey;
 }
 #_mobile_cart {
@@ -404,6 +403,22 @@ table .description-cell {
   color: #1e4688;
   font-size: 14px;
   transition: 0.25s linear all;
+}
+.nav-button {
+  display: inline;
+  padding: 10px;
+  padding-top: 15px;
+  border-left: 1px solid lightgrey;
+}
+#logout {
+  background-color: #d5121d;
+  border-left: 0px !important;
+}
+#logout a {
+  color: white;
+}
+#logout:hover {
+  background-color: #ad0c1c;
 }
 #top-menu {
   margin-bottom: 0px !important;

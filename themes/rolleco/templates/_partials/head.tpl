@@ -61,6 +61,7 @@
 
 {* iziModal *}
 <link rel="stylesheet" href="/themes/_libraries/iziModal/css/iziModal.css" type="text/css" media="all">
+<link rel="stylesheet" href="/themes/_libraries/hover-css/hover-min.css" type="text/css" media="all">
 
 {block name='javascript_head'}
   {include file="_partials/javascript.tpl" javascript=$javascript.head vars=$js_custom_vars}

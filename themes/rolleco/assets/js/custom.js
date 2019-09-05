@@ -125,6 +125,20 @@ $(document).ready(function() {
 		$('#product_image_'+$(this).data('image-id')).click();
 	});
 
+	$('#quick_navigation').on('click', function(e) {
+
+      $('#modal_navigation').iziModal({
+        headerColor: "#1e4688",
+        icon: 'fas fa-list',
+        title: "Mon Compte",
+        subtitle: "Navigation rapide",
+        padding: "15px",
+        closeButton: true,
+        autoOpen: 1
+      });
+
+    });
+
 });
 
 function updateSelectionPrice() {
