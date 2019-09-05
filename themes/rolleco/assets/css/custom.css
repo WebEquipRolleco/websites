@@ -346,8 +346,12 @@ table .description-cell {
   padding-left: 5px;
   padding-right: 5px;
 }
+#_desktop_user_info_logged {
+  border-left: 1px solid lightgrey;
+}
 #_desktop_user_info {
   border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
 }
 #_desktop_cart {
   border-right: 1px solid lightgrey;
