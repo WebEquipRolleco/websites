@@ -1,11 +1,14 @@
 <?php
 
+use PrestaShop\PrestaShop\Adapter\ServiceLocator;
+
 class AdminQuotationsController extends AdminController {
 
     const DELIMITER = ";";
     const END_OF_LINE = "\n";
 
     private $id_quotation;
+    private $crypto;
 
     public function __construct() {
 
@@ -14,6 +17,7 @@ class AdminQuotationsController extends AdminController {
         $this->table = Quotation::TABLE_NAME;
         $this->className = 'Quotation';
         $this->id_quotation = Tools::getValue('id_quotation');
+        $this->crypto = ServiceLocator::get('\\PrestaShop\\PrestaShop\\Core\\Crypto\\Hashing');
 
         $this->addRowAction('edit');
         $this->addRowAction('delete');
@@ -198,7 +202,6 @@ class AdminQuotationsController extends AdminController {
 
             // Enregistrement des informations
     		if(Tools::getIsset('quotation')) {
-
     			$form = Tools::getValue('quotation');
 
     			$quotation->status = $form['status'];
@@ -223,6 +226,23 @@ class AdminQuotationsController extends AdminController {
 
                 if(!$quotation->id)
                     $quotation->generateReference(true);
+
+                if(Tools::getValue('creation')) {
+                    $form = Tools::getValue('new_account'); 
+
+                    $customer = new Customer();
+                    $customer->email = $form['email'];
+                    $customer->firstname = $form['firstname'];
+                    $customer->lastname = $form['lastname'];
+                    $customer->id_account_type = $form['id_account_type'];
+
+                    $customer->id_shop = $quotation->id_shop;
+                    $customer->quotation = Customer::QUOTATION_NEW;
+                    $customer->passwd = $this->crypto->hash($quotation->reference);
+
+                    $customer->save();
+                    $quotation->id_customer = $customer->id;
+                }
 
 			    $quotation->save();
 			    $this->confirmations[] = "Devis enregistré";

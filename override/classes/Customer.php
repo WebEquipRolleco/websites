@@ -6,37 +6,37 @@ class Customer extends CustomerCore {
 	const QUOTATION_OK = 2;
 
 	/** @var string Reference **/
-	public $reference;
+	public $reference = null;
 
 	/** @var string Chorus **/
-	public $chorus;
+	public $chorus = null;
 
 	/** @var string Tva **/
-	public $tva;
+	public $tva = null;
 
 	/** @var int id_type **/
-	public $id_account_type;
+	public $id_account_type = null;
 
 	/** @var int id_state **/
-	public $id_customer_state;
+	public $id_customer_state = null;
 
 	/** @var string Comment **/
-	public $comment;
+	public $comment = null;
 
 	/** @var bool Funding **/
 	public $funding = true;
 
 	/** @var date Date funding **/
-    public $date_funding;
+    public $date_funding = null;
 
 	/** @var string Email invoice **/
-	public $email_invoice;
+	public $email_invoice = null;
 
 	/** @var string Email tracking **/
-	public $email_tracking;
+	public $email_tracking = null;
 
 	/** @var float Rollcash **/
-	public $rollcash;
+	public $rollcash = 0;
 
 	/** @var int Rollcash **/
 	public $quotation = 0;

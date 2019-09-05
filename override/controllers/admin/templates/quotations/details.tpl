@@ -5,7 +5,7 @@
 {/if}
 
 <form method="post">
-	<input type="hidden" name="id" value="{$quotation->id}">
+	<input type="hidden" name="id_quotation" value="{$quotation->id}">
 
 	<div class="panel">
 		<div class="row">
@@ -206,16 +206,29 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="id_customer">{l s="Client"}</label>
-					<select name="quotation[id_customer]" class="form-control select2">
-						<option value="">{l s='Choisir' d='Admin.Labels'}</option>
-						{foreach $customers as $customer}
-							<option value="{$customer.id_customer}" {if $quotation->id_customer == $customer.id_customer}selected{/if}>
-								{$customer.firstname} {$customer.lastname} ({$customer.email})
-							</option>
-						{/foreach}
-					</select>
+				<label>{l s="Client"}</label>
+				<div class="well" style="padding:5px">
+					<div class="row">
+						<div class="col-lg-10">
+							{if $quotation->getCustomer()}
+								<b>{$quotation->getCustomer()->firstname} {$quotation->getCustomer()->lastname}</b>
+								{if $quotation->getCustomer()->getType()}
+									<em class="text-muted"> - {$quotation->getCustomer()->getType()->name}</em>
+								{/if}
+								<br /> 
+								<a href="mailto:{$quotation->getCustomer()->email}">{$quotation->getCustomer()->email}</a>
+							{else}
+								<span class="label label-default" style="line-height:21px">
+									<b>{l s="Le devis n'est rattaché a aucun compte client"}</b>
+								</span>
+							{/if}
+						</div>
+						<div class="col-lg-2 text-right">
+							<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#customer_modal">
+								<b>{l s="Change" d='Admin.Actions'}</b>
+							</button>
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-6">
@@ -269,6 +282,84 @@
 		</div>
 
 	</div>
+
+	<div class="modal fade" id="customer_modal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-group">
+						<div class="alert bg-primary"><b>{l s="Compte client existant"}</b></div>
+						<select name="quotation[id_customer]" class="form-control select2">
+							<option value="">{l s='Choisir' d='Admin.Labels'}</option>
+							{foreach $customers as $customer}
+								<option value="{$customer.id_customer}" {if $quotation->id_customer == $customer.id_customer}selected{/if}>
+									{$customer.firstname} {$customer.lastname} ({$customer.email})
+								</option>
+							{/foreach}
+						</select>
+					</div>
+					<hr>
+					<div class="alert bg-primary" style="margin-bottom:0px; border-radius:3px 3px 0px 0px">
+						<div class="row">
+							<div class="col-lg-6">
+								<b>{l s="Création de compte"}</b>
+							</div>
+							<div class="col-lg-6 text-right">
+								<span class="switch prestashop-switch fixed-width-lg" style="position:absolute; top:-8px; right:0px">
+									<input type="radio" id="creation_on" name="creation" value="1">
+									<label for="creation_on">{l s='Oui' d='Admin.Labels'}</label>
+									<input type="radio" id="creation_off" name="creation" value="0" checked>
+									<label for="creation_off">{l s='Non' d='Admin.Labels'}</label>
+									<a class="slide-button btn"></a>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div id="account_box" style="display:none; border:1px solid #00aff0; padding:10px">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="new_email">{l s="E-mail" d='Admin.Labels'} <em class="text-danger">*</em></label>
+									<input type="text" id="new_email" class="form-control" name="new_account[email]">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="new_firstname">{l s="Prénom" d='Admin.Labels'} <em class="text-danger">*</em></label>
+									<input type="text" id="new_firstname" class="form-control" name="new_account[firstname]">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label for="new_lastname">{l s="Nom" d='Admin.Labels'} <em class="text-danger">*</em></label>
+									<input type="text" id="new_lastname" class="form-control" name="new_account[lastname]">
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label>{l s="Type de compte" d='Admin.Labels'} <em class="text-danger">*</em></label>
+									<select class="form-control" id="new_type" name="new_account[id_account_type]">
+										{foreach from=AccountType::getAccountTypes() item=type}
+											<option value="{$type->id}" {if $type->default_value}selected{/if}>{$type->name}</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+				    <button id="close_modal" type="button" class="btn btn-default" data-dismiss="modal">
+				        <b><i class="icon-times"></i> &nbsp; {l s='Close' d='Admin.Actions'}
+				    </button>
+				    <button type="submit" class="btn btn-success">
+				        <b><i class="icon-check-square"></i> &nbsp; {l s='Enregistrer le devis' d='Admin.Labels'}</b>
+				    </button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </form>
 
 {if $quotation->id}
@@ -439,6 +530,16 @@
 			$('#save_products_form').submit();
 		});
 
+		$('#creation_on').on('change', function() {
+			$('#account_box').slideDown('fast');
+			changeFieldsRequirements(true);
+		});
+
+		$('#creation_off').on('change', function() {
+			$('#account_box').slideUp('fast');
+			changeFieldsRequirements(false);
+		});
+
 		$('.change-recall').on('click', function() {
 			
 			var source = $(this).data('source');
@@ -480,4 +581,12 @@
 		});
 
 	});
+
+	function changeFieldsRequirements(bool) {
+		$('#new_email').prop('required', bool);
+		$('#new_firstname').prop('required', bool);
+		$('#new_lastname').prop('required', bool);
+		$('#new_type').prop('required', bool);
+	}
+
 </script>
