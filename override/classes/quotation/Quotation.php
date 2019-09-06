@@ -144,8 +144,8 @@ class Quotation extends ObjectModel {
     public function getProducts() {
 
         $data = array();
-        $rows = Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_quotation = ".$this->id.' ORDER BY position');
-        foreach($rows as $row) {
+
+        foreach(Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_quotation = ".$this->id.' ORDER BY position') as $row) {
             $data[] = new QuotationLine($row[QuotationLine::TABLE_PRIMARY]);
         }
 
@@ -213,7 +213,7 @@ class Quotation extends ObjectModel {
         foreach($this->getProducts() as $line)
             $price += $line->buying_fees;
 
-        if($this->use_taxes)
+        if($use_taxes)
             $price *= 1.2;
 
         return $price;
@@ -419,27 +419,6 @@ class Quotation extends ObjectModel {
             $total += $line->getEcoTax();
 
         return $total;
-    }
-    
-    /**
-    * Retourne les devis présents dans un panier
-    * @param int $id_cart
-    * @param bool $full
-    * @return array
-    **/
-    public static function getFromCart($id_cart, $full = true) {
-
-        $sql = "SELECT DISTINCT(q.".self::TABLE_PRIMARY.") 
-            FROM "._DB_PREFIX_.self::TABLE_NAME." q, "._DB_PREFIX_.QuotationLine::TABLE_NAME." l, "._DB_PREFIX_.QuotationAssociation::TABLE_NAME." a 
-            WHERE q.".self::TABLE_PRIMARY." = l.id_quotation 
-            AND l.".QuotationLine::TABLE_PRIMARY." = a.id_line
-            AND a.id_cart = ".$id_cart;
-
-        $data = array();
-        foreach(Db::getInstance()->executeS($sql) as $row)
-            $data[] = $full ? new self($row[self::TABLE_PRIMARY]) : $row[self::TABLE_PRIMARY];
-
-        return $data;
     }
 
     /**

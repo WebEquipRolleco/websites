@@ -41,9 +41,7 @@ class QuotationRegistrationControllerCore extends FrontController {
             if($quotation->id and $quotation->secure_key == $key) {
                 if($quotation->isValid()) {
 
-                    foreach($quotation->getProducts() as $line)
-                        QuotationAssociation::addLine($this->context->cart->id, $line->id);
-
+                    QuotationAssociation::addToCart($quotation->id, $this->context->cart->id);
                     Tools::redirect($this->context->link->getPageLink('cart', null, $this->context->language->id, ['action' => 'show']));
                 }
                 else

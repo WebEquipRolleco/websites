@@ -350,18 +350,13 @@ class AdminQuotationsController extends AdminController {
     }
 
     /**
-    * Ajoute les produits du devis à un client
+    * Ajoute un devis dans un client
     **/
     private function addToCart() {
         if(Tools::isSubmit('add_to_customer') and $id_customer = Tools::getValue('id_customer')) {
 
             $cart = Customer::getLastCart($id_customer);
-            $quotation = new Quotation($this->id_quotation);
-
-            foreach($quotation->getProducts() as $line) {
-                if(!QuotationAssociation::hasLine($cart->id, $line->id))
-                    QuotationAssociation::addLine($cart->id, $line->id);
-            }
+            QuotationAssociation::addToCart($this->id_quotation, $cart->id);
 
             $this->confirmations[] = "Les produits ont été ajoutés au panier client";
         }

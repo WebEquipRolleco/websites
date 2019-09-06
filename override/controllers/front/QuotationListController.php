@@ -30,8 +30,7 @@ class QuotationListControllerCore extends FrontController {
                     $this->context->cookie->write();
                 }
 
-                foreach($quotation->getProducts() as $line)
-                    QuotationAssociation::addLine($this->context->cart->id, $line->id);
+                QuotationAssociation::addToCart($quotation->id, $this->context->cart->id);
             }
 
         }
@@ -39,9 +38,11 @@ class QuotationListControllerCore extends FrontController {
         // Refuser un devis
         if($reference = Tools::getValue('refuse')) {
 
+
             $quotation = Quotation::findByReference($reference);
             if($quotation->id) {
 
+                QuotationAssociation::removeFromCart($quotation->id);
                 $quotation->status = Quotation::STATUS_REFUSED;
                 $quotation->save();
             }

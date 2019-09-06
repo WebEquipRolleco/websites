@@ -52,8 +52,9 @@ class OrderDetail extends OrderDetailCore {
         foreach ($product_list as $product)
             $this->create($order, $cart, $product, $id_order_state, $id_order_invoice, $use_taxes, $id_warehouse);
 
-        foreach(QuotationAssociation::getCartLines($cart->id) as $line)
-            $this->createQuotationLine($order, $cart, $line, $id_order_invoice, $id_warehouse);
+        foreach(QuotationAssociation::find($cart->id) as $quotation)
+            foreach($quotation->getProducts() as $line)
+                $this->createQuotationLine($order, $cart, $line, $id_order_invoice, $id_warehouse);
 
         foreach(OrderOptionCart::findByCart($cart->id) as $option)
         	$this->createOption($order, $cart, $option, $id_order_invoice, $id_warehouse);

@@ -26,7 +26,7 @@ class Cart extends CartCore {
 
     public function allowOption($id_option) {
 
-        foreach(Quotation::getFromCart($this->id) as $quotation){
+        foreach(QuotationAssociation::find($this->id) as $quotation) {
             if(!in_array($id_option, $quotation->getOptions()))
                 return false;
         }
@@ -167,9 +167,9 @@ class Cart extends CartCore {
 
         if(in_array($type, array(Cart::BOTH, Cart::BOTH_WITHOUT_SHIPPING, Cart::ONLY_PRODUCTS))) {
 
-            $lines = QuotationAssociation::getCartLines($this->id);
-            foreach($lines as $line)
-                $value += $line->getPrice($withTaxes);
+            foreach(QuotationAssociation::find($this->id) as $quotation)
+                foreach($quotation->getProducts() as $line)
+                    $value += $line->getPrice($withTaxes);
 
         }
 
@@ -197,8 +197,7 @@ class Cart extends CartCore {
             WHERE `id_cart` = '.(int)$id
         );
 
-        $quotations_lines = QuotationAssociation::getCartLines($id);
-        self::$_nbProducts[$id] += count($quotations_lines);
+        self::$_nbProducts[$id] += QuotationAssociation::countProducts($id);
         
         return self::$_nbProducts[$id];
     }

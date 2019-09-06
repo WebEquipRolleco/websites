@@ -14,12 +14,16 @@
 				</th>
 				{if $quotation->isValid()}
 					<th width="160px" class="text-center">
-						<a href="?accept={$quotation->reference}" class="btn btn-xs btn-success" title="{l s='Ajouter au panier'}">
-							<span class="fa fa-cart-plus"></span>
-						</a>
-						<a href="?refuse={$quotation->reference}" class="btn btn-xs btn-danger" title="{l s='Refuser le devis'}">
-							<span class="fa fa-ban"></span>
-						</a>
+						<div class="btn-group">
+							{if !QuotationAssociation::has($quotation->id)}
+								<a href="{$link->getPageLink('QuotationList&accept='|cat:$quotation->reference)}" class="btn btn-xs btn-success hvr-icon-pulse-grow" title="{l s='Ajouter au panier'}">
+									<span class="fa fa-cart-plus hvr-icon"></span>
+								</a>
+							{/if}
+							<a href="{$link->getPageLink('QuotationList')}?refuse={$quotation->reference}" class="btn btn-xs btn-danger hvr-icon-buzz-out" title="{l s='Refuser le devis'}">
+								<span class="fa fa-ban hvr-icon"></span>
+							</a>
+						</div>
 					</th>
 				{/if}
 			</tr>		

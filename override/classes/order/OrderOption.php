@@ -129,6 +129,23 @@ class OrderOptionCore extends ObjectModel {
     }
 
     /**
+    * Retourne le prix de l'option 
+    * @param Quotation $quotation
+    * @return float
+    **/
+    public function getQuotationPrice($quotation) {
+
+        if($this->type == self::TYPE_FLAT)
+            return $this->value;
+
+        $total = $quotation->getPrice(false, true);
+        if($total and $this->type == self::TYPE_PERCENT)
+            return ($total * $this->value) / 100;
+
+        return 0;
+    }
+
+    /**
     * Retourne la liste blanche des produits
     * @param bool $full
     * @return array

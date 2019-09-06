@@ -115,12 +115,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						{foreach from=OrderOption::getOrderOptions($true, $quotation->id_shop) item=option}
+						{foreach from=OrderOption::getOrderOptions(true, $quotation->id_shop) item=option}
 							{if $option->id|in_array:$quotation->getOptions()}
 								<tr class="bg-light">
 									<td class="text-center" style="width:5%; border:1px solid black"></td>
 									<td class="text-center"style="width:80%">{$option->name}</td>
-									<td class="text-center" style="width:15%">{Tools::displayPrice($option->getPrice())}</td>
+									<td class="text-center" style="width:15%">{Tools::displayPrice($option->getQuotationPrice($quotation))}</td>
 								</tr>
 							{/if}
 						{/foreach}
@@ -171,12 +171,6 @@
 		</td>
 	</tr>
 </table>
-
-<table>
-	<tr><td>&nbsp;</td></tr>
-</table>
-
-<hr>
 
 <table>
 	<tr><td>&nbsp;</td></tr>

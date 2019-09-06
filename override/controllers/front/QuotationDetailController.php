@@ -20,12 +20,7 @@ class QuotationDetailControllerCore extends FrontController {
         if($accept_reference = Tools::getValue('accept')) {
 
             $quotation = Quotation::findByReference($accept_reference);
-            if($quotation->id) {
-
-                foreach($quotation->getProducts() as $line)
-                    QuotationAssociation::addLine($this->context->cart->id, $line->id);
-            }
-
+            QuotationAssociation::addToCart($quotation->id, $this->context->cart->id);
         }
 
         // Refuser un devis

@@ -218,10 +218,10 @@ CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_quotation_association` (
-    `id` INT NOT NULL AUTO_INCREMENT, 
-    `id_line` INTEGER(11) NULL,
+    `id_quotation_association` INT NOT NULL AUTO_INCREMENT, 
+    `id_quotation` INTEGER(11) NULL,
     `id_cart` INTEGER(11) NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_quotation_association`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_after_sale` (
