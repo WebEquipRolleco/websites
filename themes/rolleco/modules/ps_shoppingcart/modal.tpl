@@ -1,11 +1,13 @@
+{assign var=nb_products value=Context::getContext()->cart->nbProducts()}
+
 <div id="modal_product_added" class="iziModal">
   
   <h1>{l s='Product successfully added to your shopping cart' d='Shop.Theme.Checkout'}</h1>
   
-  {if $cart.products_count > 1}
-    <p class="cart-products-count">{l s='There are %products_count% items in your cart.' sprintf=['%products_count%' => $cart.products_count] d='Shop.Theme.Checkout'}</p>
+  {if $nb_products > 1}
+    <p class="cart-products-count">{l s='There are %products_count% items in your cart.' sprintf=['%products_count%' => $nb_products] d='Shop.Theme.Checkout'}</p>
   {else}
-    <p class="cart-products-count">{l s='There is %product_count% item in your cart.' sprintf=['%product_count%' =>$cart.products_count] d='Shop.Theme.Checkout'}</p>
+    <p class="cart-products-count">{l s='There is %product_count% item in your cart.' sprintf=['%product_count%' =>$nb_products] d='Shop.Theme.Checkout'}</p>
   {/if}
 
   <div class="row">
