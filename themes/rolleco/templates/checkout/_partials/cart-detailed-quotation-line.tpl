@@ -1,39 +1,18 @@
 <tr>
-	<td class="text-center">
-		<img src="{$line->getImageLink()}" class="cart-image">
-	</td>
-	<td>
-		{if $line->information}
-			<div class="bold">{$line->name}</div>
-			<em class="text-muted">{$line->information}</em>
-		{else}
-			{$line->name}
-		{/if}
-	</td>
-	<td class="cart_reference text-center">
-		{$line->reference}
-	</td>
-	<td class="price text-center">
-		<div class="product-line-info product-price h5 ">
-            <div class="current-price">
-        		<span class="price">{Tools::displayPrice($line->selling_price)}</span>
-            </div>
-    	</div>
-	</td>
-	<td class="text-center">
-		{$line->quantity}
-	</td>
-	<td class="price text-center">
-		<span class="product-price">
-      		<strong>{Tools::displayPrice($line->getPrice())}</strong>
-    	</span>
-		
-	</td>
-	<td class="text-center">
-		<div class="cart-line-product-actions">
-			<a href="" class="remove-from-cart">
-				<i class="material-icons fa fa-trash-alt"></i>
-			</a>
-		</div>
-	</td>
+    <td class="bg-darkgrey" colspan="6">
+        <b>{l s="Devis %s" sprintf=[$quotation->reference] d="Shop.Theme.Checkout"}</b>
+        <em class="text-muted">- {l s="Valide jusqu'au %s" sprintf=[$quotation->date_end|date_format:'d/m/Y'] d="Shop.Theme.Checkout"}
+    </td>
+    <td class="bg-darkgrey text-center">
+        <div class="cart-line-product-actions">
+            <form method="post">
+                <button type="submit" class="btn btn-danger hvr-icon-buzz-out" name="remove_quotation" value="{$quotation->id}" title="{l s='Retirer du panier' d='Shop.Theme.Checkout'}">
+                    <i class="fa fa-trash hvr-icon"></i>
+                </button>
+            </form>
+        </div>
+    </td>
 </tr>
+{foreach from=$quotation->getProducts() item=line}
+    {include file='checkout/_partials/cart-detailed-quotation-product-line.tpl'}
+{/foreach}

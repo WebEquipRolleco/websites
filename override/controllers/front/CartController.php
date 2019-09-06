@@ -28,6 +28,11 @@ class CartController extends CartControllerCore {
     		}
     	}
 
+        // Suppression devis
+        if($id = Tools::getValue('remove_quotation')) {
+            QuotationAssociation::removeFromCart($id);
+        }
+
         // Convertion Rollcash
         if(Tools::getIsset('use_rollcash')) {
             $customer = Context::getContext()->cart->getCustomer();

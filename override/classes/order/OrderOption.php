@@ -60,6 +60,7 @@ class OrderOptionCore extends ObjectModel {
 
     /**
     * Retourne le label du statut
+    * @return string
     **/
     public function getTypeLabel() {
         return self::getTypes()[$this->type];
@@ -67,6 +68,9 @@ class OrderOptionCore extends ObjectModel {
 
     /**
     * Retourne la liste des options de commandes
+    * @param bool $active
+    * @param int $id_shop
+    * @return array
     **/
     public static function getOrderOptions($active = true, $id_shop = null) {
 
@@ -89,6 +93,7 @@ class OrderOptionCore extends ObjectModel {
 
     /**
     * Retourne la liste des types de calcul de prix
+    * @return array
     **/
     public static function getTypes() {
 
@@ -125,6 +130,8 @@ class OrderOptionCore extends ObjectModel {
 
     /**
     * Retourne la liste blanche des produits
+    * @param bool $full
+    * @return array
     **/
     public function getWhiteList($full = false) {
         

@@ -239,7 +239,10 @@ table .description-cell {
   float: right;
 }
 .bg-grey {
-  background-color: #f2f2f2;
+  background-color: #f2f2f2 !important;
+}
+.bg-darkgrey {
+  background-color: lightgrey !important;
 }
 .bg-green {
   background-color: #5ac62f !important;

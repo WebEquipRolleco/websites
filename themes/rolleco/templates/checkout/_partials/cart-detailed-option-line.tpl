@@ -3,12 +3,12 @@
 		<td class="text-center">
 			<form method="post">
 				{if OrderOptionCart::hasAssociation(Context::getContext()->cart->id, $option->id)}
-					<button type="submit" class="btn btn-default" name="remove_option" value="{$option->id}" title="{l s='Retirer du panier' d='Shop.Theme.Checkout'}">
-						<i class="fa fa-trash"></i>
+					<button type="submit" class="btn btn-danger hvr-icon-buzz-out" name="remove_option" value="{$option->id}" title="{l s='Retirer du panier' d='Shop.Theme.Checkout'}">
+						<i class="fa fa-trash hvr-icon"></i>
 					</button>
 				{else}
-					<button type="submit" class="btn btn-success" name="add_option" value="{$option->id}" title="{l s='Ajouter au panier' d='Shop.Theme.Checkout'}">
-						<i class="fa fa-cart-plus"></i>
+					<button type="submit" class="btn btn-success hvr-icon-pulse-grow" name="add_option" value="{$option->id}" title="{l s='Ajouter au panier' d='Shop.Theme.Checkout'}">
+						<i class="fa fa-cart-plus hvr-icon"></i>
 					</button>
 				{/if}
 			</form>

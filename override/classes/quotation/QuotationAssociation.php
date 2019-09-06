@@ -46,6 +46,7 @@ class QuotationAssociation extends ObjectModel {
 
     /**
     * Récupère les lignes devis associées à un panier
+    * @deprecated
     **/
     public static function getCartLines($id_cart = null) {
 
@@ -61,5 +62,18 @@ class QuotationAssociation extends ObjectModel {
         }
         
     	return $data;
+    }
+
+    /**
+    * Supprime un devis du panier
+    * @param int $id_quotation
+    * @param int $id_cart
+    **/
+    public static function removeFromCart($id_quotation, $id_cart = null) {
+
+        if(!$id_cart)
+            $id_cart = Context::getContext()->cart->id;
+
+        Db::getInstance()->execute("DELETE a.* FROM "._DB_PREFIX_.self::TABLE_NAME." AS a LEFT JOIN "._DB_PREFIX_.QuotationLine::TABLE_NAME." AS l ON (a.id_line = l.id AND l.id_quotation = $id_quotation) AND a.id_cart = $id_cart");
     }
 }
