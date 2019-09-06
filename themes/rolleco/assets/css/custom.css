@@ -202,6 +202,9 @@ table .description-cell {
 .quickview .modal-content {
   background-color: white;
 }
+#main p {
+  color: initial !important;
+}
 .text-left {
   text-align: left;
 }
