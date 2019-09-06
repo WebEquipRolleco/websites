@@ -2,7 +2,6 @@
 	<table class="table combinations-table vertical-align">
 		<thead>
 			<tr>
-				<th>{l s="Désignation"}</th>
 				<th class="hidden-lg-up bold text-center">
 					{l s="Propriétés"}
 				</th>
@@ -19,18 +18,14 @@
 				{assign var='loop_from_quantity' value=0}
 				{assign var='loop_price' value=0}
 				<tr>
-					<td>
+					<td class="hidden-lg-up text-center">
 						{if $combination.id_image > 0}
 							<a href="#" class="display-image" data-image-id="{$combination.id_image}">
-						{/if}
-							{$product.name}
-						{if $combination.id_image > 0}
+								<b>{$combination.reference}</b>
 							</a>
+						{else}
+							<b>{$combination.reference}</b>
 						{/if}
-						</a>
-					</td>
-					<td class="hidden-lg-up text-center">
-						<b>{$combination.reference}</b>
 						{foreach from=$combination.attributes_values item=value}
 							<br />{$value}
 						{/foreach}
