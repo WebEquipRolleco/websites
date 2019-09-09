@@ -52,6 +52,10 @@ ALTER TABLE `ps_category_lang` ADD `bottom_description` TEXT NULL AFTER `descrip
 ALTER TABLE `ps_product` ADD `rollcash` FLOAT DEFAULT '0' AFTER `state`;
 
 ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price`;
+ALTER TABLE `ps_product_attribute` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
+
+ALTER TABLE `ps_product_attribute_shop` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price`;
+ALTER TABLE `ps_product_attribute_shop` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
 
 ALTER TABLE `ps_employee` ADD `sav` TINYINT DEFAULT '0' AFTER `active`;
 

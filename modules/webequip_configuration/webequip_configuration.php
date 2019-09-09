@@ -25,9 +25,6 @@ class Webequip_Configuration extends Module {
 
         $check = parent::install();
 
-        $this->registerHook('displayAdminProductsPriceStepBottom');
-        $this->registerHook('displayAdminProductsCombinationBottom');
-
         if(!isTabInstalled("WEBEQUIP"))
             $check .= $this->installTab("Web-équip", "WEBEQUIP", false, 0);
 
@@ -83,6 +80,13 @@ class Webequip_Configuration extends Module {
     * Configuration du module
     **/
     public function getContent() {
+
+        // Gestion des hooks
+        if(!$this->isRegisteredInHook("displayAdminProductsPriceStepBottom"))
+            $this->registerHook('displayAdminProductsPriceStepBottom');
+
+        if(!$this->isRegisteredInHook("displayAdminProductsPriceStepBottom"))
+            $this->registerHook('displayAdminProductsPriceStepBottom');
 
         // Installation manuelle des menus
         switch (Tools::getValue('action')) {
