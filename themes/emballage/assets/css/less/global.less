@@ -1,18 +1,15 @@
 body {
-background-image:url('/img/bg-grey.png');
-font-family: Arial,Tahoma,sans-serif;
+	background-image:url('/img/bg-grey.png');
+	font-family: Arial,Tahoma,sans-serif;
+	background-attachment: fixed;
 }
 
 #wrapper {
-	margin-top: 180px;
-	padding-bottom: 25px;
 	background-color: transparent !important;
 	box-shadow: none !important; 
 	.breadcrumb {
-		border: 1px solid @mainGrey;
 		margin-top: @mainMarginBottom;
 		margin-bottom: @mainMarginBottom;
-		background-color: @bgGrey;
 		padding: 10px;
 		padding-left: 20px;
 		li a {
@@ -26,6 +23,11 @@ font-family: Arial,Tahoma,sans-serif;
 		li:after {
 			content: ">";
 		}
+	}
+	.container {
+		background-color: @mainBg;
+		padding-top: 180px;
+		padding-bottom: 15px;
 	}
 }
 

@@ -4,9 +4,9 @@
 			<span>{l s="Vos avantages %s" sprintf=[Configuration::get('PS_SHOP_NAME')] mod="webequip_reassurance"}</span>
 		</div>
 		<div class="col-lg-9">
-			<ul style="display:table">
+			<ul>
 				{foreach from=$reassurances item=reassurance}
-					<li style="display:table-cell; padding:30px 15px 30px 15px;">
+					<li>
 						{if $reassurance->link}<a href="{$reassurance->link}">{/if}
 			        	{$reassurance->icon nofilter}
 			        	{$reassurance->text nofilter}

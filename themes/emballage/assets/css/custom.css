@@ -95,24 +95,21 @@
   transition: all 0.5s ease;
 }
 .btn-danger:hover {
-  background-color: #e0001b;
+  background-color: #b00015;
   border-color: inherit !important;
 }
 body {
   background-image: url('/img/bg-grey.png');
   font-family: Arial, Tahoma, sans-serif;
+  background-attachment: fixed;
 }
 #wrapper {
-  margin-top: 180px;
-  padding-bottom: 25px;
   background-color: transparent !important;
   box-shadow: none !important;
 }
 #wrapper .breadcrumb {
-  border: 1px solid #999;
   margin-top: 15px;
   margin-bottom: 15px;
-  background-color: #efefef;
   padding: 10px;
   padding-left: 20px;
 }
@@ -126,6 +123,11 @@ body {
 }
 #wrapper .breadcrumb li:after {
   content: ">";
+}
+#wrapper .container {
+  background-color: white;
+  padding-top: 180px;
+  padding-bottom: 15px;
 }
 .no-bottom {
   margin-bottom: 0px;
@@ -439,13 +441,22 @@ table .icon-cell {
   color: white !important;
 }
 #logout {
-  padding-right: 3px;
   background-color: #e0001b;
+  color: white !important;
+}
+#logout:hover {
+  background-color: #b00015;
 }
 .nav-link {
   line-height: 48px;
   padding: 0px 15px 0px 15px;
   border-right: 1px solid #efefef;
+}
+.nav-link-right {
+  line-height: 48px;
+  padding: 0px 15px 0px 15px;
+  border-left: 1px solid #efefef;
+  float: right;
 }
 .nav-block {
   display: inline-block;
@@ -758,7 +769,7 @@ h1.category-title {
 }
 .review-link {
   font-size: 12px;
-  color: #1e4688;
+  color: #8bc44e;
   text-decoration: underline;
 }
 #table_reviews .author {
@@ -766,7 +777,7 @@ h1.category-title {
   color: #999;
 }
 .discount-product {
-  background-color: #e0001b !important;
+  background-color: #8bc44e !important;
 }
 .featured-products {
   margin-bottom: 15px;
@@ -775,10 +786,10 @@ h1.category-title {
   background-color: #663366 !important;
 }
 .product-images > li.thumb-container > .thumb.selected {
-  border: 3px solid #1e4688;
+  border: 3px solid #00924b;
 }
 .product-images > li.thumb-container > .thumb:hover {
-  border: 3px solid #0d2a59;
+  border: 3px solid #8bc44e;
 }
 .description-link {
   font-size: 14px;
@@ -821,7 +832,7 @@ h1.category-title {
 }
 .miniature {
   background-color: white;
-  border: 1px solid #999;
+  border: 1px solid transparent;
 }
 .miniature img {
   margin-left: 0px !important;
@@ -831,6 +842,9 @@ h1.category-title {
 .miniature .description {
   padding: 5px;
   height: 50px;
+}
+.miniature:hover {
+  opacity: 0.7;
 }
 a:hover .miniature {
   border: 1px solid #00924b;
@@ -844,6 +858,7 @@ a:hover .miniature .btn {
 #reassurance_bottom {
   border-top: 4px solid #efefef;
   border-bottom: 4px solid #efefef;
+  color: #484a45;
 }
 #reassurance_bottom .title {
   font-size: 16px;
@@ -853,6 +868,16 @@ a:hover .miniature .btn {
 #reassurance_bottom .reassurance {
   padding-top: 30px;
   padding-bottom: 30px;
+}
+#reassurance_bottom ul {
+  display: table;
+}
+#reassurance_bottom li {
+  display: table-cell;
+  padding: 30px 15px 30px 15px;
+}
+#reassurance_table {
+  display: table;
 }
 .page-my-account #content .links a:hover i {
   color: #1e4688;
@@ -883,12 +908,12 @@ a:hover .miniature .btn {
   height: 30px;
 }
 .links .link-item:hover {
-  border: 1px solid #e0001b;
+  border: 1px solid #8bc44e;
   color: #e0001b;
 }
 .links .link-item:hover i,
 .links .link-item:hover p {
-  color: #e0001b;
+  color: #8bc44e;
 }
 #checkout #header .header-nav {
   padding: 10px !important;

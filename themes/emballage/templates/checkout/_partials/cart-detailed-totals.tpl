@@ -50,8 +50,8 @@
               <td class="bold text-right" style="border-left: 0px">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
             </tr>
             <tr class="cart-total">
-              <td class="bg-red">{l s='Total TTC' d='Shop.Theme.Actions'}</td>
-              <td class="bg-red value text-right" style="border-left: 0px">{$cart.totals.total_including_tax.value}</td>
+              <td class="bg-darkgreen">{l s='Total TTC' d='Shop.Theme.Actions'}</td>
+              <td class="bg-darkgreen bold value text-right" style="border-left: 0px">{$cart.totals.total_including_tax.value}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center">

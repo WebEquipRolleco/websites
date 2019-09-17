@@ -26,7 +26,7 @@
 
 {block name='product_list_header'}
 
-  <h1 class="category-title margin-top-15">{$category.name}</h1>
+  <h1 class="category-title">{$category.name}</h1>
   {if $category.description}
     <div class="row">
       {*if $category.image.large.url}
@@ -46,6 +46,12 @@
 {/block}
 
 {block name='product_list_footer'}
+  {if $category.bottom_description}
+    <div class="margin-bottom-15">
+      <hr class="dotted-line" />
+      <hr class="dotted-line" />
+    </div>
+  {/if}
   <div class="row">
     <div class="col-lg-12">
       {$category.bottom_description nofilter}

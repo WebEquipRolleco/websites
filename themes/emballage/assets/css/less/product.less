@@ -101,7 +101,7 @@
 
 .review-link {
 	font-size: 12px;
-	color: @mainBlue;
+	color: @mainGreen;
 	text-decoration: underline;
 }
 
@@ -113,7 +113,7 @@
 }
 
 .discount-product {
-	background-color: @mainRed !important;
+	background-color: @mainGreen !important;
 }
 
 .featured-products {
@@ -123,10 +123,10 @@
 	}
 }
 .product-images>li.thumb-container>.thumb.selected {
-	border: 3px solid @mainBlue;
+	border: 3px solid @mainDarkGreen;
 }
 .product-images>li.thumb-container>.thumb:hover {
-	border: 3px solid @mainDarkBlue;	
+	border: 3px solid @mainGreen;	
 }
 
 .description-link {
@@ -176,7 +176,7 @@
 
 .miniature {
 	background-color: @mainBg;
-	border: 1px solid @mainGrey;
+	border: 1px solid transparent;
 	img {
 		margin-left:0px !important;
 		margin-top: 15px;
@@ -185,6 +185,9 @@
 	.description {
 		padding: 5px;
 		height: 50px;
+	}
+	&:hover {
+		opacity: 0.7;
 	}
 }
 
@@ -202,6 +205,7 @@ a:hover .miniature {
 #reassurance_bottom {
 	border-top: 4px solid @bgGrey;
 	border-bottom:4px solid @bgGrey;
+	color: @mainDarkGrey;
 	.title {
 		font-size: 16px;
 		font-weight: bold;
@@ -210,6 +214,13 @@ a:hover .miniature {
 	.reassurance {
 		padding-top: 30px;
 		padding-bottom: 30px;
+	}
+	ul {
+		display: table;
+	}
+	li {
+		display:table-cell; 
+		padding:30px 15px 30px 15px;
 	}
 }
 
