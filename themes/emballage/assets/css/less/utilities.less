@@ -1,0 +1,44 @@
+.col-slim {
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+}
+
+.text-left		{ text-align: left; }
+.text-center	{ text-align: center; }
+.text-right		{ text-align: right; }
+.inner-space	{ padding: 10px; }
+
+.text-info		{ color: @mainBlue !important; }
+.text-primary	{ color: @mainDarkBlue !important; }
+.text-success	{ color: @mainGreen !important; }
+.text-warning	{ color: @mainOrange !important; }
+.text-danger	{ color: @mainRed !important; }
+
+.bold 		{ font-weight: bold; }
+.uppercase 	{ text-transform: uppercase; }
+.pull-right { float: right; }
+
+.background(@text-color, @background-color) {
+	background-color: @background-color !important;
+	* {
+		color: @text-color !important;
+	}
+}
+
+.bg-grey 		{ .background(@mainText, @mainGrey); }
+.bg-darkgrey	{ background-color:@mainDarkGrey !important; }
+.bg-green 		{ .background(@mainText, @mainGreen); }
+.bg-darkgreen 	{ .background(@mainText, @mainDarkGreen); }
+.bg-blue 		{ .background(@mainText, @mainBlue); font-weight: bold; }
+.bg-red 		{ .background(@mainText, @mainRed); font-weight: bold; }
+.bg-danger		{ .background(@mainText, @mainRed); }
+.bg-warning		{ .background(@mainText, @mainYellow); }
+
+.label(@text-color, @background-color) {
+	.background(@text-color, @background-color);
+	padding: 5px 10px 5px 10px;
+}
+
+.label-info 	{ .label(@mainText, @mainLightBlue); }
+.label-success 	{ .label(@mainText, @mainGreen); }
+.label-default 	{ .label(@mainText, @mainGrey); }

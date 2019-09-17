@@ -48,10 +48,14 @@ class Reassurance extends ObjectModel {
         return $check;
     }
 
-    public static function findByPosition($location) {
+    public static function findByPosition($location, $id_shop = null) {
+
+        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE location IN($location, ".self::POSITION_BOTH.")";
+        if($id_shop) $sql .= "AND ".self::TABLE_PRIMARY." IN (SELECT id_reassurance FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_shop = $id_shop AND active = 1)";
+        $sql .= "  ORDER BY position";
 
         $data = array();
-        $rows = Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE location IN($location, ".self::POSITION_BOTH.") ORDER BY position");
+        $rows = Db::getInstance()->executeS($sql);
 
         foreach($rows as $row)
             $data[] = new Reassurance($row['id']);

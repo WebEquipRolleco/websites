@@ -42,8 +42,10 @@ class QuotationAssociation extends ObjectModel {
             $id_cart = Context::getContext()->cart->id;
 
         $data = array();
-        foreach(Db::getInstance()->executeS("SELECT id_quotation FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_cart = $id_cart") as $row)
-            $data[] = new Quotation($row['id_quotation']);
+
+        if($id_cart)
+            foreach(Db::getInstance()->executeS("SELECT id_quotation FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_cart = $id_cart") as $row)
+                $data[] = new Quotation($row['id_quotation']);
 
         return $data;
     }

@@ -1,0 +1,41 @@
+.page-my-account #content .links a:hover i {
+	color: @mainBlue;
+}
+
+.address {
+	.address-header {
+		padding: 10px;
+		background-color: @mainGrey;
+		border-bottom: 1px solid @mainDarkGrey;
+	}
+	.address-footer {
+		background-color: @mainGrey;
+		border-top: 1px solid @mainDarkGrey !important;
+	}
+}
+
+.links {
+	.link-item {
+		padding: 15px;
+		margin-top: 10px;
+		text-align: center;
+		border: 1px solid @mainDarkGrey;
+		background-color: @mainBg;
+		i {
+			color: @darkText;
+			display: block;
+		}
+		p {
+			margin-top: 10px;
+			font-weight: 14px;
+			height: 30px;
+		}
+		&:hover {
+			border: 1px solid @mainRed;
+			color: @mainRed;
+			i, p {
+				color: @mainRed;
+			}
+		}
+	}
+}

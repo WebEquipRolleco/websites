@@ -1,0 +1,18 @@
+.btn_style(@lightColor, @darkColor) {
+	color: @mainText !important;
+	background-color: @lightColor;
+	border-color: inherit !important;
+	&:hover {
+		background-color: @darkColor;
+		border-color: inherit !important;
+	}
+	transition: all 0.5s ease;	
+}
+
+.btn 			{ text-transform: uppercase; }
+.btn-light		{ .btn_style(@mainDarkGrey, @mainBlue); }
+.btn-default	{ .btn_style(@mainDarkGrey, @darkText); }
+.btn-success	{ .btn_style(@mainGreen, @mainGreen); }
+.btn-info		{ .btn_style(@mainBlue, @mainDarkBlue); }
+.btn-warning	{ .btn_style(@mainYellow, @mainDarkYellow); }
+.btn-danger		{ .btn_style(@mainRed, @mainDarkRed); }

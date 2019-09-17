@@ -77,13 +77,25 @@ class Webequip_Reassurance extends Module {
 
     public function hookDisplayWrapperTop($params) {
 
-        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP));
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP, $this->context->shop->id));
     	return $this->display(__FILE__, 'header.tpl');
+    }
+
+    public function hookDisplayNav1($params) {
+
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP, $this->context->shop->id));
+        return $this->display(__FILE__, 'header.tpl');
     }
 
     public function hookDisplayReassurance($params) {
 
-        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM));
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM, $this->context->shop->id));
+        return $this->display(__FILE__, 'content.tpl');
+    }
+
+    public function hookDisplayFooterProduct($params) {
+
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM, $this->context->shop->id));
         return $this->display(__FILE__, 'content.tpl');
     }
 }

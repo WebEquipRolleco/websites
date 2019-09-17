@@ -57,6 +57,7 @@
 										<i class="icon-times"></i>
 									</span>
 								{/if}
+								&nbsp;
 							{/foreach}
 						</td>
 						<td class="text-right">
