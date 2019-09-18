@@ -23,8 +23,8 @@
 				color: @mainText;
 			}
 		}
-		&:hover {
-		background-color: @mainGreen;
+		&.main-category:hover {
+			background-color: @mainGreen;
 		}
 		
 	}
@@ -48,7 +48,7 @@
 	div a {
 		font-size: 14px;
 		font-weight: bold;
-		color: @mainBlue !important; 
+		color: @mainGreen !important; 
 	}
 	ul li a {
 		font-size: 12px;
@@ -64,19 +64,22 @@
 		box-shadow: 0px 5px 15px 1px lightgrey;
 		padding-top: 20px;
 		margin-bottom: 20px;
-		color: @mainBlue;
+		color: @mainGreen;
 		img {
 			height: @pictureSize;
 			width: @pictureSize;
 			margin-bottom: 15px;
 		}
 		.title {
+			line-height: 16px;
+			margin-bottom: 15px;
+			height: 32px;
 			font-size: 12px;
 			width: @pictureSize;
 			color: @darkText;
 		}
 		&:hover .title{
-			color: @mainBlue;
+			color: @mainGreen;
 		}
 		&:not(:last-child) {
 			margin-right: 20px;

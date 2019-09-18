@@ -327,6 +327,50 @@ table .icon-cell {
 .label-default * {
   color: white !important;
 }
+.periodic-buzz {
+  animation-name: periodic-buzz;
+  animation-delay: 60s;
+  animation-duration: 60s;
+  animation-iteration-count: infinite;
+}
+@-webkit-keyframes periodic-buzz {
+  0.2% {
+    -webkit-transform: translateX(3px) rotate(2deg);
+    transform: translateX(3px) rotate(2deg);
+  }
+  0.3% {
+    -webkit-transform: translateX(-3px) rotate(-2deg);
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  0.4% {
+    -webkit-transform: translateX(3px) rotate(2deg);
+    transform: translateX(3px) rotate(2deg);
+  }
+  0.5% {
+    -webkit-transform: translateX(-3px) rotate(-2deg);
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  0.6% {
+    -webkit-transform: translateX(3px) rotate(2deg);
+    transform: translateX(3px) rotate(2deg);
+  }
+  0.7% {
+    -webkit-transform: translateX(-3px) rotate(-2deg);
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  0.8% {
+    -webkit-transform: translateX(3px) rotate(2deg);
+    transform: translateX(3px) rotate(2deg);
+  }
+  0.9% {
+    -webkit-transform: translateX(-3px) rotate(-2deg);
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  1% {
+    -webkit-transform: translateX(0px) rotate(0deg);
+    transform: translateX(0px) rotate(0deg);
+  }
+}
 /** BLOCKS **/
 #header {
   background-color: white !important;
@@ -477,8 +521,8 @@ table .icon-cell {
   font-size: 14px;
   border-radius: 10px;
   padding: 0px 3px 0px 3px;
-  top: 15px;
-  right: 75px;
+  top: -5px;
+  right: 15px;
 }
 #top-menu {
   margin-bottom: 0px !important;
@@ -504,7 +548,7 @@ table .icon-cell {
 #megamenu li.main-category a:hover {
   color: white;
 }
-#megamenu li:hover {
+#megamenu li.main-category:hover {
   background-color: #8bc44e;
 }
 .megamenu_level_2 {
@@ -526,7 +570,7 @@ table .icon-cell {
 .megamenu_level_2 div a {
   font-size: 14px;
   font-weight: bold;
-  color: #1e4688 !important;
+  color: #8bc44e !important;
 }
 .megamenu_level_2 ul li a {
   font-size: 12px;
@@ -541,7 +585,7 @@ table .icon-cell {
   box-shadow: 0px 5px 15px 1px lightgrey;
   padding-top: 20px;
   margin-bottom: 20px;
-  color: #1e4688;
+  color: #8bc44e;
 }
 .megamenu_level_2 li img {
   height: 175px;
@@ -549,12 +593,15 @@ table .icon-cell {
   margin-bottom: 15px;
 }
 .megamenu_level_2 li .title {
+  line-height: 16px;
+  margin-bottom: 15px;
+  height: 32px;
   font-size: 12px;
   width: 175px;
   color: #4c4c4c;
 }
 .megamenu_level_2 li:hover .title {
-  color: #1e4688;
+  color: #8bc44e;
 }
 .megamenu_level_2 li:not(:last-child) {
   margin-right: 20px;
