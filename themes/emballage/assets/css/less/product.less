@@ -198,6 +198,10 @@ a:hover .miniature {
 	}
 }
 
+.product-cover img {
+	box-shadow: none !important;
+}
+
 .product-flag.new {
 	background-color: @mainGrey;
 }
@@ -226,4 +230,29 @@ a:hover .miniature {
 
 #reassurance_table {
 	display: table;
+}
+
+#table_products {
+	tr {
+		border-bottom: 1px solid @mainGrey;
+	}
+	.product-miniature {
+		vertical-align: middle;
+	}
+	.product-options {
+		vertical-align: bottom;
+	}
+	.description a {
+		font-weight: bold;
+		color: @mainDarkGreen;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	.price {
+		font-family: Exo,Arial,Verdana,sans-serif;
+		font-weight: 700;
+		font-size: 26px;
+		white-space: nowrap;
+	}
 }
