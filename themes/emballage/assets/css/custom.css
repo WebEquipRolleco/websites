@@ -511,14 +511,14 @@ table .icon-cell {
   box-shadow: 0px 5px 15px 1px lightgrey;
   position: fixed;
   width: 100%;
-  top: 107px;
+  top: 190px;
   left: 0px;
   z-index: 200;
   margin-top: 0px;
   padding-top: 15px;
   padding-bottom: 10px;
   background: white;
-  border-bottom: 3px solid #1e4688;
+  border-bottom: 3px solid #00924b;
 }
 .megamenu_level_2 .main-menu {
   height: 40px;
@@ -632,7 +632,7 @@ table .icon-cell {
 }
 #category_list .category-item .title .nb-products {
   display: block;
-  color: #1e4688;
+  color: #8bc44e;
 }
 #nav_categories .category {
   background-color: #efefef;
