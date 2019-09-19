@@ -36,7 +36,7 @@
             </td>
             <td class="text-center hidden-md-down">
               {if $order.details.invoice_url}
-                <a href="{$order.details.invoice_url}" class="btn btn-default">
+                <a href="{$order.details.invoice_url}" class="btn btn-default bg-grey">
                   <i class="fa fa-file-pdf"></i>
                 </a>
               {else}
@@ -46,7 +46,7 @@
               {/if}
             </td>
             <td class="text-center order-actions">
-              <a href="{$order.details.details_url}" class="btn btn-default" data-link-action="view-order-details" title="{l s='Details' d='Shop.Theme.Customeraccount'}">
+              <a href="{$order.details.details_url}" class="btn btn-default bg-grey" data-link-action="view-order-details" title="{l s='Details' d='Shop.Theme.Customeraccount'}">
                 <i class="fa fa-edit"></i>  
               </a>
               {if $order.details.reorder_url}
@@ -70,7 +70,7 @@
             <tr>
               <th class="bold">{$order.details.reference}</th>
               <td class="text-right">
-                <a href="{$order.details.details_url}" class="btn btn-default" data-link-action="view-order-details" title="{l s='Details' d='Shop.Theme.Customeraccount'}">
+                <a href="{$order.details.details_url}" class="btn btn-default bg-grey" data-link-action="view-order-details" title="{l s='Details' d='Shop.Theme.Customeraccount'}">
                     <i class="fa fa-edit"></i>
                   </a>
                   {if $order.details.reorder_url}

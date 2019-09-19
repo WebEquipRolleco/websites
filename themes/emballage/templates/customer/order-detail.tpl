@@ -45,7 +45,7 @@
             </th>
             <th class="text-right">
               {if $order.details.invoice_url}
-                <a href="{$order.details.invoice_url}" class="btn btn-default" title="{l s='Download your invoice as a PDF file.' d='Shop.Theme.Customeraccount'}">
+                <a href="{$order.details.invoice_url}" class="btn btn-default bg-grey" title="{l s='Download your invoice as a PDF file.' d='Shop.Theme.Customeraccount'}">
                   <i class="fa fa-file-pdf"></i>
                 </a>
               {/if}
@@ -100,7 +100,7 @@
       <table class="table combinations-table table-labeled">
         <thead>
           <tr>
-            <th colspan="2" class="bg-blue uppercase">
+            <th colspan="2" class="bg-darkgrey uppercase">
               {l s='Follow your order\'s status step-by-step' d='Shop.Theme.Customeraccount'}
             </th>
           </tr>
@@ -128,7 +128,7 @@
           <table id="delivery-address" class="table combinations-table">
             <thead>
               <tr>
-                <th class="bg-blue">
+                <th class="bg-darkgrey">
                   {l s='Adresse de livraison' d='Shop.Theme.Checkout'}
                 </th>
               </tr>
@@ -150,7 +150,7 @@
         <table id="invoice-address" class="table combinations-table">
             <thead>
               <tr>
-                <th class="bg-blue">
+                <th class="bg-darkgrey">
                   {l s='Adresse de facturation' d='Shop.Theme.Checkout'}
                 </th>
               </tr>

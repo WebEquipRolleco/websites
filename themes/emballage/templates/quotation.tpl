@@ -9,15 +9,8 @@
 		<tr>
 			<td class="icon-cell"><i class="far fa-4x fa-comment-dots"></i></td>
 			<td class="description-cell">
-				<b>{l s="Pro Signalisation est à votre écoute pour toutes vos demandes spécifiques :"}</b>
-				<ul>
-					<li>Produits sur-mesure</li>
-					<li>Dimensions particulières</li>
-					<li>Grande quantité</li>
-					<li>Produits non présents sur le site</li>
-					<li>...</li>
-				</ul>
-				<p class="bold">{l s="Remplissez le formulaire ci-dessous et nous vous contacterons dans les plus brefs délais. Nous sommes également à votre disposition au %s." sprintf=[Configuration::get('PS_SHOP_PHONE')]}</p>
+				{l s='Une demande particulière sur l’un des produits ? Prix ? Quantité ? Sur-mesure ?'}
+				<p class="text-success bold">{l s="Complétez la demande de devis ci-dessous et notre équipe répondra à votre demande dans les 24h* !"}</p>
 			</td>
 		</tr>
 	</table>
@@ -122,7 +115,7 @@
 							{l s="* Délai moyen habituellement constaté. 24h (jour ouvrable)."}
 						</td>
 						<td class="text-right">
-							<button type="submit" class="btn btn-info bold">
+							<button type="submit" class="btn btn-success bold">
 								{l s="Envoyer ma demande de devis" d='Shop.Forms.Labels'}
 							</button>
 						</td>

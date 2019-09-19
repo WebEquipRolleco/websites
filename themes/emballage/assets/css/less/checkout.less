@@ -2,8 +2,8 @@
 	#header .header-nav {
 		padding: 10px !important;	
 	}
-	#wrapper {
-		margin-top: 60px !important;
+	#wrapper .container {
+		padding-top: 65px !important;
 	}
 }
 
@@ -72,12 +72,13 @@
 	.checkout-step {
 		display: block;
 		padding: 10px 0px 10px 15px;
-		background-color: @mainGrey;
+		background-color: @bgGrey;
 		font-weight: bold;
 		text-transform: uppercase;
 		color: @darkText;
 		&.-reachable {
-			color: @mainBlue;
+			background-color: @mainDarkGreen;
+			color: @mainText;
 		}
 
 		i {

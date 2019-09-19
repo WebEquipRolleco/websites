@@ -259,6 +259,9 @@ table .icon-cell {
 .pull-right {
   float: right;
 }
+.bg-light {
+  background-color: white !important;
+}
 .bg-grey {
   background-color: #999 !important;
 }
@@ -956,12 +959,12 @@ a:hover .miniature .btn {
 }
 .address .address-header {
   padding: 10px;
-  background-color: #999;
-  border-bottom: 1px solid #484a45;
+  background-color: #efefef;
+  border-bottom: 1px solid #999;
 }
 .address .address-footer {
-  background-color: #999;
-  border-top: 1px solid #484a45 !important;
+  background-color: #efefef;
+  border-top: 1px solid #999 !important;
 }
 .links .link-item {
   padding: 15px;
@@ -990,8 +993,8 @@ a:hover .miniature .btn {
 #checkout #header .header-nav {
   padding: 10px !important;
 }
-#checkout #wrapper {
-  margin-top: 60px !important;
+#checkout #wrapper .container {
+  padding-top: 65px !important;
 }
 .cart-image {
   width: 45px;
@@ -1049,13 +1052,14 @@ a:hover .miniature .btn {
 #checkout_step_list .checkout-step {
   display: block;
   padding: 10px 0px 10px 15px;
-  background-color: #999;
+  background-color: #efefef;
   font-weight: bold;
   text-transform: uppercase;
   color: #4c4c4c;
 }
 #checkout_step_list .checkout-step.-reachable {
-  color: #1e4688;
+  background-color: #00924b;
+  color: white;
 }
 #checkout_step_list .checkout-step i {
   display: none;

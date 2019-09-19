@@ -48,10 +48,10 @@
       {/block}
 
       {block name="address_form_footer"}
-      <footer class="form-footer clearfix">
+      <footer class="form-footer text-right clearfix">
         <input type="hidden" name="submitAddress" value="1">
         {block name='form_buttons'}
-          <button class="btn btn-primary float-xs-right" type="submit" class="form-control-submit">
+          <button class="btn btn-success bold margin-bottom-15" type="submit" class="form-control-submit">
             {l s='Save' d='Shop.Theme.Actions'}
           </button>
         {/block}

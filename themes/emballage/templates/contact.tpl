@@ -41,8 +41,8 @@
 			<tr>
 				<td class="icon-cell"><i class="far fa-4x fa-comments"></i></td>
 				<td class="description-cell">
-					{l s='Pour toute demande ou information, vous pouvez nous contacter en remplissant le formulaire ci-dessous, nous vous répondrons dans les plus brefs délais.'}
-					<p class="bold">{l s="Vous pouvez également nous joindre par téléphone au %s" sprintf=[Configuration::get('PS_SHOP_PHONE')]}</p>
+					{l s='Vous avez besoin d’informations plus précises ? Contactez nous en remplissant le formulaire ci-dessous. Notre équipe vous répondra dans les plus brefs délais.'}
+					<p class="text-success bold">{l s="Vous pouvez également nous joindre par téléphone au %s" sprintf=[Configuration::get('PS_SHOP_PHONE')]}</p>
 				</td>
 			</tr>
 		</tbody>
@@ -110,7 +110,7 @@
 
 		  	<div class="col-lg-12 margin-bottom-15 text-right">
 		  		<div class="well">
-			  		<button type="submit" class="btn btn-info bold">
+			  		<button type="submit" class="btn btn-success bold">
 			  			{l s="Envoyer ma demande" d='Shop.Forms.Labels'}
 			  		</button>
 			  	</div>

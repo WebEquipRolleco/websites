@@ -38,7 +38,7 @@
   {/foreach}
   <div class="clearfix"></div>
   <div class="addresses-footer">
-    <a href="{$urls.pages.address}" class="btn btn-info bold" data-link-action="add-address">
+    <a href="{$urls.pages.address}" class="btn btn-success bold" data-link-action="add-address">
       {l s='Create new address' d='Shop.Theme.Actions'}
     </a>
   </div>

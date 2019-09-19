@@ -28,7 +28,7 @@
       <table class="table combinations-table">
         <thead>
           <tr>
-            <th colspan="2" class="bg-blue">{l s='Messages' d='Shop.Theme.Customeraccount'}</th>
+            <th colspan="2" class="bg-darkgrey">{l s='Messages' d='Shop.Theme.Customeraccount'}</th>
           </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@
       <table class="table combinations-table">
         <thead>
           <tr>
-            <th class="bg-blue">{l s='Ajouter un message' d='Shop.Theme.Customeraccount'}</th>
+            <th class="bg-darkgrey">{l s='Ajouter un message' d='Shop.Theme.Customeraccount'}</th>
           </tr>
           {*<tr>
             <th class="bg-grey">
@@ -72,7 +72,7 @@
         <tbody>
           <tr>
             <td>
-              <select name="id_product" class="form-control form-control-select">
+              <select name="id_product" class="bg-light form-control form-control-select">
                 <option value="0">{l s='-- please choose --' d='Shop.Forms.Labels'}</option>
                 {foreach from=$order.products item=product}
                   <option value="{$product.id_product}">{$product.name}</option>
@@ -82,13 +82,13 @@
           </tr>
           <tr>
             <td>
-              <textarea rows="3" name="msgText" class="form-control" placeholder="{l s='Mon message à envoyer' d='Shop.Forms.Labels'}"></textarea>
+              <textarea rows="3" name="msgText" class="bg-light form-control" placeholder="{l s='Mon message à envoyer' d='Shop.Forms.Labels'}"></textarea>
             </td>
           </tr>
           <tr>
             <td class="text-center">
               <input type="hidden" name="id_order" value="{$order.details.id}">
-              <button type="submit" name="submitMessage" class="btn btn-info bold form-control-submit">
+              <button type="submit" name="submitMessage" class="btn btn-success bold form-control-submit">
                 {l s='Send' d='Shop.Theme.Actions'}
               </button>
             </td>

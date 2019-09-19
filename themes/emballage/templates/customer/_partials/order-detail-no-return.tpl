@@ -26,10 +26,10 @@
     <table id="order-products" class="table combinations-table">
       <thead class="thead-default">
         <tr>
-          <th class="bg-blue">{l s='Product' d='Shop.Theme.Catalog'}</th>
-          <th class="bg-blue">{l s='Quantity' d='Shop.Theme.Catalog'}</th>
-          <th class="bg-blue">{l s='Unit price' d='Shop.Theme.Catalog'}</th>
-          <th class="bg-blue">{l s='Total price' d='Shop.Theme.Catalog'}</th>
+          <th class="bg-darkgrey">{l s='Product' d='Shop.Theme.Catalog'}</th>
+          <th class="bg-darkgrey">{l s='Quantity' d='Shop.Theme.Catalog'}</th>
+          <th class="bg-darkgrey">{l s='Unit price' d='Shop.Theme.Catalog'}</th>
+          <th class="bg-darkgrey">{l s='Total price' d='Shop.Theme.Catalog'}</th>
         </tr>
       </thead>
       {foreach from=$order.products item=product}
