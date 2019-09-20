@@ -104,17 +104,12 @@
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
-  padding-bottom: 25px;
   background-color: white !important;
   box-shadow: none !important;
 }
 #wrapper .breadcrumb {
-  border: 1px solid #999;
-  margin-top: 15px;
   margin-bottom: 15px;
-  background-color: #efefef;
   padding: 10px;
-  padding-left: 20px;
 }
 #wrapper .breadcrumb li a {
   font-size: 12px;
@@ -500,6 +495,9 @@ table .icon-cell {
 #megamenu li.main-category a:hover {
   color: white;
 }
+#megamenu li.main-category:hover {
+  background-color: #484a45;
+}
 .megamenu_level_2 {
   box-shadow: 0px 5px 15px 1px lightgrey;
   position: fixed;
@@ -653,6 +651,7 @@ table .icon-cell {
 #nav_categories .category.active {
   background-color: #e0001b;
   color: white;
+  font-weight: bold;
 }
 h1.category-title {
   text-transform: uppercase;
@@ -864,6 +863,34 @@ a:hover .miniature .btn {
 #reassurance_bottom .reassurance {
   padding-top: 30px;
   padding-bottom: 30px;
+}
+#table_products tr {
+  border-bottom: 1px solid #999;
+}
+#table_products .product-miniature {
+  vertical-align: middle;
+}
+#table_products .product-options {
+  vertical-align: bottom;
+}
+#table_products .description a {
+  font-weight: bold;
+  color: #e0001b;
+}
+#table_products .description a:hover {
+  text-decoration: underline;
+}
+#table_products .price {
+  font-family: Exo, Arial, Verdana, sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  white-space: nowrap;
+}
+.rollcash {
+  display: inline-block;
+  background-color: #efefef;
+  color: #e0001b;
+  font-weight: bold;
 }
 .page-my-account #content .links a:hover i {
   color: #1e4688;
