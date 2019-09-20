@@ -58,6 +58,12 @@
   background-color: #4c4c4c;
   border-color: inherit !important;
 }
+.btn-primary {
+  background-color: #00924b;
+}
+.btn-primary:hover {
+  background-color: #00924b;
+}
 .btn-success {
   color: white !important;
   background-color: #8bc44e;
@@ -239,7 +245,7 @@ table .icon-cell {
   color: #1e4688 !important;
 }
 .text-primary {
-  color: #0d2a59 !important;
+  color: #00924b !important;
 }
 .text-success {
   color: #8bc44e !important;
@@ -724,7 +730,7 @@ h1.category-title {
   margin-right: auto;
 }
 .combinations-table th {
-  background-color: #333;
+  background-color: #484a45;
   text-transform: uppercase;
   text-align: center;
   color: white;
@@ -732,7 +738,7 @@ h1.category-title {
   vertical-align: middle !important;
 }
 .combinations-table td {
-  background-color: #ECECEC;
+  background-color: #efefef;
   border-left: 1px solid white;
   font-size: 14px;
 }
@@ -872,7 +878,7 @@ h1.category-title {
 #prices_summary #total_price_selection {
   font-size: 20px;
   font-weight: bold;
-  color: #1e4688;
+  color: #00924b;
 }
 #prices_summary #total_price_selection_wt {
   font-weight: 14px;
@@ -908,6 +914,9 @@ a:hover .miniature .btn {
 .product-flag.new {
   background-color: #999;
 }
+.product-flag.rollcash {
+  background-color: #00924b;
+}
 #reassurance_bottom {
   border-top: 4px solid #efefef;
   border-bottom: 4px solid #efefef;
@@ -924,6 +933,7 @@ a:hover .miniature .btn {
 }
 #reassurance_bottom ul {
   display: table;
+  margin-bottom: 0px;
 }
 #reassurance_bottom li {
   display: table-cell;
@@ -953,6 +963,12 @@ a:hover .miniature .btn {
   font-weight: 700;
   font-size: 26px;
   white-space: nowrap;
+}
+.rollcash {
+  display: inline-block;
+  background-color: #efefef;
+  color: #00924b;
+  font-weight: bold;
 }
 .page-my-account #content .links a:hover i {
   color: #1e4688;

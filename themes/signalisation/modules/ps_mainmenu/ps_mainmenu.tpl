@@ -1,7 +1,7 @@
 {function name="sub_menu" nodes=[] index=0}
   <menu id="submenu_{$index}" class="megamenu_level_2 text-center" type="navigation_categories" style="display:none">
     {foreach from=$nodes key=key item=node}
-      <li class="text-center">
+      <li class="hvr-sink text-center">
         <a href="{$node.url}" {if $node.open_in_new_window}target="_blank"{/if}>
           <img src="{$link->getCatImageLink(null, $node.page_identifier|replace:'category-':'')}">
           <div class="title">{$node.label}</div>

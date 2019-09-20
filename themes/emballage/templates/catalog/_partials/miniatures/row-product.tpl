@@ -19,6 +19,9 @@
 	    <div class="margin-top-10">
 	    	{$product.description_short nofilter}
 	    </div>
+	    {if $product.rollcash}
+	   		<span class="well rollcash">{l s="AtoutCash"} {$product.rollcash}%</span>
+	   	{/if}
 	</td>
 	<td class="product-options">
 		{block name='product_price_and_shipping'}

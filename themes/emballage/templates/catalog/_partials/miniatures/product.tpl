@@ -85,6 +85,9 @@
         {foreach from=$product.flags item=flag}
           <li class="product-flag {$flag.type}">{$flag.label}</li>
         {/foreach}
+        {if $product.rollcash}
+          <li class="product-flag bg-darkgreen">{l s="AtoutCash"} {$product.rollcash}%</li>
+        {/if}
       </ul>
     {/block}
 

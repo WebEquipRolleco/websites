@@ -100,10 +100,10 @@
 }
 #wrapper {
   background-image: url('/img/bg-blue.jpg');
+  background-attachment: fixed;
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
-  margin-top: 245px;
   padding-bottom: 25px;
   background-color: white !important;
   box-shadow: none !important;
@@ -127,6 +127,10 @@
 #wrapper .breadcrumb li:after {
   content: ">";
 }
+#wrapper .container {
+  padding-top: 180px;
+  background-color: white;
+}
 .no-bottom {
   margin-bottom: 0px;
 }
@@ -138,6 +142,9 @@
 }
 .margin-top-sm {
   margin-top: 25px;
+}
+.margin-bottom-10 {
+  margin-bottom: 10px;
 }
 .margin-bottom-15 {
   margin-bottom: 15px;
@@ -340,12 +347,14 @@ table .icon-cell {
   background-color: #1e4688;
 }
 #header .header-top {
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  padding-bottom: 0px !important;
   background-color: black;
 }
 #header .header-top .menu {
   margin-bottom: 0px !important;
+}
+#header a {
+  color: #484a45;
 }
 #header a:hover {
   color: #e0001b;
@@ -425,7 +434,10 @@ table .icon-cell {
   color: white !important;
 }
 #logout {
-  padding-right: 3px;
+  background-color: #e0001b;
+  color: white !important;
+}
+#logout:hover {
   background-color: #e0001b;
 }
 .nav-link {
@@ -433,10 +445,15 @@ table .icon-cell {
   padding: 0px 15px 0px 15px;
   border-right: 1px solid #efefef;
 }
+.nav-link-right {
+  line-height: 48px;
+  padding: 0px 15px 0px 15px;
+  border-left: 1px solid #efefef;
+  float: right;
+}
 .nav-block {
   display: inline-block;
   vertical-align: top;
-  padding-top: 25px;
   margin-right: 40px;
 }
 #_desktop_nav_quotation {
@@ -445,23 +462,39 @@ table .icon-cell {
   font-weight: bold;
   text-transform: uppercase;
 }
+.label-cart {
+  position: absolute;
+  background-color: #e0001b;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 10px;
+  padding: 0px 3px 0px 3px;
+  top: -5px;
+  right: 15px;
+}
 #top-menu {
   margin-bottom: 0px !important;
 }
 #megamenu {
   margin: 0px;
   padding-left: 0px;
+  border-left: 1px solid white;
+  font-size: 0px;
 }
 #megamenu li {
   display: inline-block;
+  border-right: 1px solid white;
   list-style: none;
-  line-height: 40px;
+  line-height: 50px;
   padding-left: 20px;
   padding-right: 20px;
   text-transform: uppercase;
   font-weight: bold;
+  margin-left: 0px !important;
 }
 #megamenu li.main-category a {
+  vertical-align: middle;
   color: white;
 }
 #megamenu li.main-category a:hover {
@@ -471,14 +504,14 @@ table .icon-cell {
   box-shadow: 0px 5px 15px 1px lightgrey;
   position: fixed;
   width: 100%;
-  top: 107px;
+  top: 190px;
   left: 0px;
   z-index: 200;
   margin-top: 0px;
   padding-top: 15px;
   padding-bottom: 10px;
   background: white;
-  border-bottom: 3px solid #1e4688;
+  border-bottom: 3px solid #484a45;
 }
 .megamenu_level_2 .main-menu {
   height: 40px;
@@ -486,7 +519,7 @@ table .icon-cell {
 .megamenu_level_2 div a {
   font-size: 14px;
   font-weight: bold;
-  color: #1e4688 !important;
+  color: #e0001b !important;
 }
 .megamenu_level_2 ul li a {
   font-size: 12px;
@@ -501,7 +534,7 @@ table .icon-cell {
   box-shadow: 0px 5px 15px 1px lightgrey;
   padding-top: 20px;
   margin-bottom: 20px;
-  color: #1e4688;
+  color: #e0001b;
 }
 .megamenu_level_2 li img {
   height: 175px;
@@ -514,7 +547,7 @@ table .icon-cell {
   color: #4c4c4c;
 }
 .megamenu_level_2 li:hover .title {
-  color: #1e4688;
+  color: #e0001b;
 }
 .megamenu_level_2 li:not(:last-child) {
   margin-right: 20px;

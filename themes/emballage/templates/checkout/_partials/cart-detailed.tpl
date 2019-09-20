@@ -46,7 +46,7 @@
       </div>
       <div class="row">
         <div class="col-lg-12 text-center">
-          <a href="/" class="btn btn-info bold">{l s='Continue shopping' d='Shop.Theme.Actions'}</a>
+          <a href="/" class="btn btn-primary bold">{l s='Continue shopping' d='Shop.Theme.Actions'}</a>
         </div>
       </div>
 

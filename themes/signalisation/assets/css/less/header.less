@@ -22,12 +22,14 @@
 		}
 	}
 	.header-top {
-		padding-top: 8px !important;
-		padding-bottom: 8px !important;
+		padding-bottom: 0px !important;
 		background-color: @darkBg;
 		.menu {
 			margin-bottom: 0px !important;
 		}
+	}
+	a {
+		color: @mainDarkGrey;
 	}
 	a:hover {
 		color: @mainRed;
@@ -116,12 +118,11 @@
 }
 
 #logout {
-	padding-right: 3px;
 	background-color: @mainRed;
+	color: @mainText !important;
 }
-
 #logout:hover {
-	
+	background-color: @mainDarkRed;
 }
 
 .nav-link {
@@ -129,11 +130,16 @@
 	padding: 0px 15px 0px 15px;
 	border-right: 1px solid @bgGrey;
 }
+.nav-link-right {
+	line-height:48px;
+	padding: 0px 15px 0px 15px;
+	border-left: 1px solid @bgGrey;
+	float: right;
+}
 
 .nav-block {
 	display: inline-block;
 	vertical-align: top;
-	padding-top: 25px;
 	margin-right:40px;
 }
 
@@ -142,4 +148,16 @@
 	color: @mainText !important;
 	font-weight: bold;
 	text-transform: uppercase;
+}
+
+.label-cart {
+	position: absolute;
+	background-color: @mainRed;
+	color: @mainText;
+	font-weight: bold;
+	font-size: 14px;
+	border-radius: 10px;
+	padding: 0px 3px 0px 3px;
+	top: -5px;
+	right: 15px;
 }

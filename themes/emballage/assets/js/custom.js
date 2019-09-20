@@ -162,7 +162,7 @@ function reloadCartPreview() {
 		},
 		success : function(response) {
 
-			$('#_desktop_cart').html(response.preview);
+			$('#_desktop_cart').replaceWith(response.preview);
 			if(response.modal) $('#ajax_content').html(response.modal);
 		}	
 	});

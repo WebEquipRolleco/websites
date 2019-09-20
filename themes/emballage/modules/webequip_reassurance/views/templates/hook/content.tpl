@@ -1,5 +1,5 @@
 {if !empty($reassurances)}
-	<div id="reassurance_bottom" class="row">
+	<div id="reassurance_bottom" class="row margin-top-sm">
 		<div class="col-lg-3 reassurance title">
 			<span>{l s="Vos avantages %s" sprintf=[Configuration::get('PS_SHOP_NAME')] mod="webequip_reassurance"}</span>
 		</div>

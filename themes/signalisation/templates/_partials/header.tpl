@@ -51,20 +51,24 @@
 
 {block name="brand_top"}
     <div id="brand_nav" class="row">
-      <div class="col-xs-12 col-lg-3 text-center" style="padding:15px !important;">
+      <div class="col-xs-12 col-lg-3 text-center">
         <a href="/">
-          <img src="/img/signalisation.png" style="width:175px;">
+          <img src="/img/signalisation.png" class="margin-top-15" style="width:150px;">
         </a>
       </div>
-      <div class="col-xs-12 col-lg-6">
-
+      <div class="col-xs-12 col-lg-3">
+          <form method="get" action="{$link->getPageLink('search')}" class="margin-top-15 margin-bottom-10">
+            <input type="hidden" name="controller" value="search">
+            <em class="text-muted">{l s="Site reservé aux professionnels"}</em>
+            <input type="text" style="width:100%; padding:10px" placeholder="{l s='Rechercher'}">
+            <a href="" class="hvr-icon-forward" style="position:absolute; top:42px; right:25px;">
+              <i class="fa fa-2x fa-play hvr-icon"></i>
+            </a>
+          </form>
       </div>
-      <div class="col-xs-12 col-lg-3 text-right">
+      <div class="col-xs-12 col-lg-6 text-right">
         {hook h='displayNav2'}
       </div>
-      {*<div class="col-xs-12 col-sm-7">
-        {hook h="displayWrapperTop"}
-      </div>*}
     </div>
 {/block}
 

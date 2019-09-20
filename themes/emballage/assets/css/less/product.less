@@ -6,7 +6,7 @@
 
 .combinations-table {
 	th {
-		background-color: #333;
+		background-color: @mainDarkGrey;
 		text-transform: uppercase;
 		text-align:center;
 		color: @mainText;
@@ -14,7 +14,7 @@
 		vertical-align: middle !important;
 	}
 	td {
-		background-color: #ECECEC;
+		background-color: @bgGrey;
 		border-left: 1px solid @mainText;
 		font-size: 14px;
 	}
@@ -164,7 +164,7 @@
 	#total_price_selection {
 		font-size: 20px;
 		font-weight: bold;
-		color: @mainBlue;
+		color: @mainDarkGreen;
 	}
 	#total_price_selection_wt {
 		font-weight: 14px;
@@ -205,6 +205,9 @@ a:hover .miniature {
 .product-flag.new {
 	background-color: @mainGrey;
 }
+.product-flag.rollcash {
+	background-color: @mainDarkGreen;
+}
 
 #reassurance_bottom {
 	border-top: 4px solid @bgGrey;
@@ -221,6 +224,7 @@ a:hover .miniature {
 	}
 	ul {
 		display: table;
+		margin-bottom: 0px;
 	}
 	li {
 		display:table-cell; 
@@ -255,4 +259,11 @@ a:hover .miniature {
 		font-size: 26px;
 		white-space: nowrap;
 	}
+}
+
+.rollcash {
+	display: inline-block;
+	background-color: @bgGrey;
+	color: @mainDarkGreen;
+	font-weight: bold;
 }
