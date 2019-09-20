@@ -20,7 +20,7 @@
 	    	{$product.description_short nofilter}
 	    </div>
 	    {if $product.rollcash}
-	   		<span class="well rollcash">{l s="AtoutCash"} {$product.rollcash}%</span>
+	   		<span class="well rollcash">{l s="SignalCash"} {$product.rollcash}%</span>
 	   	{/if}
 	</td>
 	<td class="product-options">

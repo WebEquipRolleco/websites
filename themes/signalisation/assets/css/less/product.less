@@ -176,7 +176,7 @@
 
 .miniature {
 	background-color: @mainBg;
-	border: 1px solid @mainGrey;
+	border: 1px solid transparent;
 	img {
 		margin-left:0px !important;
 		margin-top: 15px;
@@ -185,6 +185,9 @@
 	.description {
 		padding: 5px;
 		height: 50px;
+	}
+	&:hover {
+		opacity: 0.8;
 	}
 }
 

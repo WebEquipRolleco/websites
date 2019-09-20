@@ -831,7 +831,7 @@ h1.category-title {
 }
 .miniature {
   background-color: white;
-  border: 1px solid #999;
+  border: 1px solid transparent;
 }
 .miniature img {
   margin-left: 0px !important;
@@ -841,6 +841,9 @@ h1.category-title {
 .miniature .description {
   padding: 5px;
   height: 50px;
+}
+.miniature:hover {
+  opacity: 0.8;
 }
 a:hover .miniature {
   border: 1px solid #e0001b;
