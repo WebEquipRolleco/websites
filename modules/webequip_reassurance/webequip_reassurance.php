@@ -56,6 +56,13 @@ class Webequip_Reassurance extends Module {
             }
         }
 
+        if($id = Tools::getValue('remove')) {
+            $reassurance = new Reassurance($id);
+            if($reassurance->id) {
+                $reassurance->delete();
+            }
+        }
+        
         $this->context->smarty->assign('shops', Shop::getShops());
         $this->context->smarty->assign('locations', Reassurance::getLocations());
         $this->context->smarty->assign('reassurances', Reassurance::findAll());

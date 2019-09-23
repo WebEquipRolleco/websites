@@ -65,7 +65,7 @@
 								<button type="button" class="btn btn-default load-details" data-id="{$reassurance->id}" title="{l s='Editer' d='Shop.Theme.Actions'}">
 									<i class="icon-edit"></i>
 								</button>
-								<button type="submit" class="btn btn-danger" name="remove" value="{$reassurance->id}" title="{l s='Supprimer' d='Shop.Theme.Actions'}">
+								<button type="submit" class="btn btn-danger remove-link" name="remove" value="{$reassurance->id}" title="{l s='Supprimer' d='Shop.Theme.Actions'}">
 									<i class="icon-trash"></i>
 								</button>
 							</form>
@@ -93,6 +93,11 @@
 		$('.load-details').on('click', function() {
 			loadDetails($(this).data('id'));
 		});
+
+		$('.remove-link').on('click', function(e) {
+			if(!confirm('Etes-vous sûr de vouloir suppprimer cet élément ?'))
+				e.preventDefault();
+		})
 	});
 
 	{literal}
