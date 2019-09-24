@@ -61,7 +61,7 @@ class QuotationAssociation extends ObjectModel {
         if(!$id_cart)
             $id_cart = Context::getContext()->cart->id;
 
-    	if(self::has($id_cart, $id_quotation))
+    	if(self::has($id_quotation, $id_cart))
     		return false;
 
     	$association = new QuotationAssociation();
@@ -93,7 +93,7 @@ class QuotationAssociation extends ObjectModel {
        if(!$id_cart)
             $id_cart = Context::getContext()->cart->id;
 
-        return (int)Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." a, "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE a.id_quotation = l.id_quotation AND a.id_quotation = $id_cart");  
+        return (int)Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." a, "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE a.id_quotation = l.id_quotation AND a.id_cart = $id_cart");  
     }
 
 }
