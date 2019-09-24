@@ -125,7 +125,7 @@ class AdminAfterSalesControllerCore extends AdminController {
 
             // Envoi du mail
             $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME');
-            $data['{message}'] = $message;
+            $data['{message}'] = $message->message;
 
             if(Tools::getIsset('attachments'))
             foreach(Tools::getValue('attachments') as $file_name) {
