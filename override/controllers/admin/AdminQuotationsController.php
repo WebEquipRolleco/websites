@@ -94,6 +94,12 @@ class AdminQuotationsController extends AdminController {
                 'search' => false
             ),
         );
+
+        if($order_by = Tools::getValue('quotationOrderby'))
+            $this->_orderBy = $order_by;
+
+        if($order_way = Tools::getValue('quotationOrderway'))
+        $this->_orderWay = $order_way;
     }
 
     public function formatDate($value) {
