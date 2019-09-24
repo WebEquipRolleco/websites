@@ -38,6 +38,7 @@ class AdminQuotationsController extends AdminController {
         $this->_select = "a.*, a.id_quotation AS id, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
+        $this->_where = " AND a.id_shop = ".$this->context->shop->id;
 
         $this->fields_list = array(
             'reference' => array(
