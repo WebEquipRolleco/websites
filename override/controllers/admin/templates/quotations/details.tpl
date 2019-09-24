@@ -350,7 +350,7 @@
 				</div>
 				<div class="modal-footer">
 				    <button id="close_modal" type="button" class="btn btn-default" data-dismiss="modal">
-				        <b><i class="icon-times"></i> &nbsp; {l s='Close' d='Admin.Actions'}
+				        <b><i class="icon-times"></i> &nbsp; {l s='Close' d='Admin.Actions'}</b>
 				    </button>
 				    <button type="submit" class="btn btn-success">
 				        <b><i class="icon-check-square"></i> &nbsp; {l s='Enregistrer le devis' d='Admin.Labels'}</b>
@@ -575,7 +575,7 @@
 				success : function(response) {
 
 					$('#quotation_products').append(response.view);
-					$('#close_modal').click();
+					$('#new_product_modal').modal('hide');
 				}
 			});
 		});
