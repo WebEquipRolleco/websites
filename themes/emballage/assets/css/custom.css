@@ -540,6 +540,7 @@ table .icon-cell {
   margin: 0px;
   padding-left: 0px;
   border-left: 1px solid white;
+  font-size: 0px;
 }
 #megamenu li {
   display: inline-block;
@@ -552,6 +553,7 @@ table .icon-cell {
   font-weight: bold;
 }
 #megamenu li.main-category a {
+  vertical-align: middle;
   color: white;
 }
 #megamenu li.main-category a:hover {

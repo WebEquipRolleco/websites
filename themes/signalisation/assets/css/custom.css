@@ -540,6 +540,8 @@ table .icon-cell {
   margin-bottom: 15px;
 }
 .megamenu_level_2 li .title {
+  line-height: 16px;
+  margin-bottom: 15px;
   font-size: 12px;
   width: 175px;
   color: #4c4c4c;
