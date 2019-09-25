@@ -30,7 +30,7 @@
             <td>
               <select name="id_supplier" required>
                 {foreach from=$suppliers item=supplier}
-                  <option value="{$supplier.id}" {if $oa->id_supplier == $supplier.id}selected{/if}>
+                  <option value="{$supplier.id_supplier}" {if $oa->id_supplier == $supplier.id_supplier}selected{/if}>
                     {$supplier.name}
                   </option>
                 {/foreach}
@@ -88,7 +88,7 @@
             <select name="new_oa[id_supplier]" required>
               <option value="">{l s="Nouveau fournisseur"}</option>
               {foreach from=$suppliers item=supplier}
-                <option value="{$supplier.id}">{$supplier.name}</option>
+                <option value="{$supplier.id_supplier}">{$supplier.name}</option>
               {/foreach}
             </select>
           </td>

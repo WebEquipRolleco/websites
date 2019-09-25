@@ -270,7 +270,25 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             }
         }
 
-        $this->context->smarty->assign('suppliers', Supplier::getLiteSuppliersList(1));
+        // Enregistrement des modifications produits
+        if($rows = Tools::getValue('update')) {
+            foreach($rows as $id => $row) {
+
+                $detail = new OrderDetail($id);
+                if($detail->id) {
+                    
+                    $detail->id_supplier = $row['id_supplier'];
+                    $detail->product_reference = $row['product_reference'];
+                    $detail->product_supplier_reference = $row['product_supplier_reference'];
+                    $detail->purchase_supplier_price = $row['purchase_supplier_price'];
+                    $detail->total_shipping_price_tax_excl = $row['total_shipping_price_tax_excl'];
+                    
+                    $detail->save();
+                }
+            }
+        }
+
+        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
         AdminController::initContent();
     }
 

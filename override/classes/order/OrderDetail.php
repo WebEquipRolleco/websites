@@ -6,7 +6,7 @@ class OrderDetail extends OrderDetailCore {
     public $id_quotation_line;
 
 	/** @var int Supplier **/
-	public $id_supplier;
+	public $id_product_supplier;
 
 	/** @var string Day **/
 	public $day;
@@ -23,7 +23,7 @@ class OrderDetail extends OrderDetailCore {
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
         self::$definition['fields']['id_quotation_line'] = array('type' => self::TYPE_INT);
-		self::$definition['fields']['id_supplier'] = array('type' => self::TYPE_INT);
+		self::$definition['fields']['id_product_supplier'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['day'] = array('type' => self::TYPE_DATE);
 		self::$definition['fields']['week'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['comment'] = array('type' => self::TYPE_HTML);
@@ -92,7 +92,7 @@ class OrderDetail extends OrderDetailCore {
         $this->product_reference = empty($product['reference']) ? null : pSQL($product['reference']);
         $this->product_supplier_reference = empty($product['supplier_reference']) ? null : pSQL($product['supplier_reference']);
         $this->product_weight = $product['id_product_attribute'] ? (float)$product['weight_attribute'] : (float)$product['weight'];
-        $this->id_supplier = $product['id_supplier'] ?? null;
+        $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
 
         $product_quantity = (int)Product::getQuantity($this->product_id, $this->product_attribute_id, null, $cart);
@@ -137,7 +137,7 @@ class OrderDetail extends OrderDetailCore {
         $details->product_name = $line->name;
         $details->product_quantity = $line->quantity;
         $details->id_quotation_line = $line->id;
-        $details->id_supplier = $line->id_supplier;
+        $details->id_product_supplier = $line->id_supplier;
         
         $details->product_price = $price_ttc;
         $details->unit_price_tax_incl = $price_ttc;
@@ -184,8 +184,8 @@ class OrderDetail extends OrderDetailCore {
 	**/
 	public function getSupplier() {
 
-		if(!$this->supplier and $this->id_supplier)
-			$this->supplier = new Supplier($this->id_supplier);
+		if(!$this->supplier and $this->id_product_supplier)
+			$this->supplier = new Supplier($this->id_product_supplier);
 
 		return $this->supplier;
 	}
