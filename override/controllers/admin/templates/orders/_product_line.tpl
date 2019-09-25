@@ -43,6 +43,8 @@
 	</td>
 	<td>
 		<span class="product_price_show">{displayPrice price=$product_price currency=$currency->id}</span>
+		<br /><br />
+		<b>{l s="PA : "}</b> <span class="product_price_show">{displayPrice price=$product.purchase_supplier_price currency=$currency->id}</span>
 		{if $can_edit}
 		<div class="product_price_edit" style="display:none;">
 			<input type="hidden" name="product_id_order_detail" class="edit_product_id_order_detail" value="{$product['id_order_detail']}" />
@@ -115,6 +117,8 @@
 	{if $stock_management}<td class="productQuantity product_stock text-center">{$product['current_stock']}</td>{/if}
 	<td class="total_product">
 		{displayPrice price=(Tools::ps_round($product_price, 2) * ($product['product_quantity'] - $product['customizationQuantityTotal'])) currency=$currency->id}
+		<br /><br />
+		<b>{l s="Ports : "}</b> <span class="product_price_show">{displayPrice price=$product.total_shipping_price_tax_excl currency=$currency->id}</span>
 	</td>
 	<td colspan="2" style="display: none;" class="add_product_fields">&nbsp;</td>
 	<td class="cancelCheck standard_refund_fields current-edit" style="display:none">
