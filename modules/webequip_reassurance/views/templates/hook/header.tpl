@@ -1,10 +1,6 @@
-<div id="reassurance_top" class="row hidden-md-down">
-  {foreach from=$reassurances item=reassurance}
-    <div class="col-xs-4">
-     	{if $reassurance->link}<a href="{$reassurance->link}">{/if}
+{foreach from=$reassurances item=reassurance}
+	<a href="{$reassurance->link}" class="nav-link">
         {$reassurance->icon nofilter}
-        {$reassurance->text nofilter}
-      	{if $reassurance->link}</a>{/if}
-    </div>
-  {/foreach}
-</div>
+        {$reassurance->text|strip_tags:true}
+    </a>
+{/foreach}

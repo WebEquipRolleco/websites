@@ -54,7 +54,7 @@
 
       <section id="wrapper">
 
-        {include file='layouts/layout-brand.tpl'}
+        {*include file='layouts/layout-brand.tpl'*}
 
         <div class="container">
           {block name='breadcrumb'}

@@ -11,7 +11,6 @@
         <div class="hidden-sm-down">
           <div class="col-xs-12">
             
-
             {* BLOC DEVIS *}
             <a href="{$link->getPageLink('QuotationRegistration')}" id="_desktop_nav_quotation" class="nav-link">
               <i class="fa fa-calculator periodic-buzz"></i>

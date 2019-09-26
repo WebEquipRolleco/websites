@@ -1,11 +1,15 @@
+body {
+	background-image:url('/img/bg-square.png');
+	font-family: Arial,Tahoma,sans-serif;
+	background-attachment: fixed;
+}
+
 #wrapper {
-	margin-top: 100px;
-	background-color: @mainBg !important;
+	background-color: transparent !important;
 	box-shadow: none !important; 
 	.breadcrumb {
 		margin-top: @mainMarginBottom;
 		margin-bottom: @mainMarginBottom;
-		background-color: @mainGrey;
 		padding: 10px;
 		padding-left: 20px;
 		li a {
@@ -21,12 +25,18 @@
 			content: ">";
 		}
 	}
+	.container {
+		background-color: @mainBg;
+		padding-top: 180px;
+		padding-bottom: 15px;
+	}
 }
 
 .no-bottom { margin-bottom: 0px; }
 .margin-top-10 { margin-top: 10px; }
 .margin-top-15 { margin-top: 15px; }
 .margin-top-sm { margin-top: 25px; }
+.margin-bottom-10 { margin-bottom: 10px; }
 .margin-bottom-15 { margin-bottom: 15px; }
 .padding-left-15 { padding-left: 15px !important; }
 .padding-left-20 { padding-left: 20px !important; }
