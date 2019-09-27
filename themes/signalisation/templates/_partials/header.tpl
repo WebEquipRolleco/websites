@@ -11,7 +11,6 @@
         <div class="hidden-sm-down">
           <div class="col-xs-12">
             
-
             {* BLOC DEVIS *}
             <a href="{$link->getPageLink('QuotationRegistration')}" id="_desktop_nav_quotation" class="nav-link">
               <i class="fa fa-calculator"></i>
@@ -19,9 +18,8 @@
             </a>
             {assign var=nb_quotations value=Quotation::countNew(Context::getContext()->customer->id)}
             {if $nb_quotations}
-              &nbsp;
-              <a href="{$link->getPageLink('QuotationList')}" title="{l s='Vous avez %s nouveau(x) devis' sprintf=[$nb_quotations]}">
-                <i class="fa fa-exclamation" style="background-color:#d5121d; color:white; padding:5px"></i>
+              <a href="{$link->getPageLink('QuotationList')}" class="nav-link text-danger text-center" title="{l s='Vous avez %s nouveau(x) devis' sprintf=[$nb_quotations]}">
+                <i class="fa fa-exclamation-triangle"></i>
               </a>
             {/if}
 

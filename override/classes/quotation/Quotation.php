@@ -351,6 +351,9 @@ class Quotation extends ObjectModel {
             $sql .= " AND (date_end = '0000-00-00' OR date_end >= '".date('Y-m-d')."')";
         }
 
+        if(isset($options['highlight']))
+            $sql .= " AND highlight = ".(int)$options['highlight'];
+
         if(isset($options['reference']) and $options['reference'])
             $sql .= " AND reference LIKE '%".$options['reference']."%'";
 
@@ -384,7 +387,7 @@ class Quotation extends ObjectModel {
         if(!$id_customer)
             return 0;
 
-        return Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND new = 1");
+        return Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND (new = 1 OR highlight = 1)");
     }
 
     /**

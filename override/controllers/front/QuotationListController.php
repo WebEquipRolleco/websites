@@ -54,7 +54,8 @@ class QuotationListControllerCore extends FrontController {
         $options['active'] = true;
 
         $this->context->smarty->assign('breadcrumb', $data);
-        $this->context->smarty->assign('quotations', Quotation::find($options));
+        $this->context->smarty->assign('highlights', Quotation::find(array_merge($options, array('highlight' => true))));
+        $this->context->smarty->assign('quotations', Quotation::find(array_merge($options, array('highlight' => false))));
         $this->setTemplate('customer/quotation-list');
     
     }
