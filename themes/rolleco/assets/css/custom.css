@@ -108,10 +108,7 @@ body {
   box-shadow: none !important;
 }
 #wrapper .breadcrumb {
-  margin-top: 15px;
   margin-bottom: 15px;
-  padding: 10px;
-  padding-left: 20px;
 }
 #wrapper .breadcrumb li a {
   font-size: 12px;
