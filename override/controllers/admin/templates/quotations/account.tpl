@@ -10,10 +10,10 @@
 								<div style="color:red">Afin de facilité votre démarche, nous avons également pris la liberté de vous créer un compte sur notre site. Vous pourrez ainsi vous connecter avec les identifiants suivant et retrouver ce devis directement dans votre compte.</div>
 								<br />
 								<div><b>Identifiant</b></div>
-								<div>{quotation->getCustomer()->email}</div>
+								<div>{$quotation->getCustomer()->email}</div>
 								<br />
 								<div><b>Mot de passe</b></div>
-								<div>{quotation->reference}</div>
+								<div>{$quotation->reference}</div>
 							</span>
 						</font>
 					</td>

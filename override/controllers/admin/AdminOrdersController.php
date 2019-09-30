@@ -157,7 +157,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
 
         $this->bulk_actions = array(
-            'updateOrderStatus' => array('text' => $this->trans('Change Order Status', array(), 'Admin.Orderscustomers.Feature'), 'icon' => 'icon-refresh')
+            'updateOrderStatus' => array('text' => $this->trans('Change Order Status', array(), 'Admin.Orderscustomers.Feature'), 'icon' => 'icon-refresh'),
+            //'downloadPreparationSlips' => array('text'=>$this->trans('Télécharger les bons de préparation', array(), 'Admin.Orderscustomers.Feature'), 'icon'=>'icon-download')
         );
     }
 
@@ -290,6 +291,22 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
         AdminController::initContent();
+    }
+
+    public function processBulkDownloadPreparationSlips() {
+        if($ids = Tools::getValue('orderBox') and !empty($ids)) {
+
+            //header('Content-Disposition: attachment; filename="préparation.pdf";');
+
+            foreach($ids as $id) {
+                $order = new Order($id);
+
+                $pdf = new PDF($order, PDF::TEMPLATE_PREPARATION_SLIP, $this->context->smarty);
+                $pdf->render(false);
+
+            }
+
+        }
     }
 
     public function ajaxProcessEditProductOnOrder()
