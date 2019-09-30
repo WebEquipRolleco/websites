@@ -98,7 +98,7 @@
 	</div>
 </form>
 
-<form methdod="post">
+<form method="post">
 	<div class="panel">
 		<legend>{l s="Destinataires des mails d'échéances dépassées" mod="webequip_recall"}</legend>
 		<div class="alert alert-info">
