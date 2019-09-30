@@ -1318,16 +1318,21 @@
                         </p>
                       </td>
                     </tr>
-                    {if ($order->getTaxCalculationMethod() == $smarty.const.PS_TAX_EXC)}
                     <tr id="total_taxes">
-                      <td class="text-right">{l s='Taxes' d='Admin.Global'}</td>
-                      <td class="amount text-right nowrap" >{displayPrice price=($order->total_paid_tax_incl-$order->total_paid_tax_excl) currency=$currency->id}</td>
+                      <td class="text-right"><b>{l s='Total HT' d='Admin.Global'}</b></td>
+                      <td class="amount text-right nowrap" ><b>{displayPrice price=($order->total_paid_tax_excl) currency=$currency->id}</b></td>
                       <td class="partial_refund_fields current-edit" style="display:none;"></td>
                     </tr>
-                    {/if}
+                    {*if ($order->getTaxCalculationMethod() == $smarty.const.PS_TAX_EXC)*}
+                    <tr id="total_taxes">
+                      <td class="text-right"><b>{l s='Taxes' d='Admin.Global'}</b></td>
+                      <td class="amount text-right nowrap" ><b>{displayPrice price=($order->total_paid_tax_incl-$order->total_paid_tax_excl) currency=$currency->id}</b></td>
+                      <td class="partial_refund_fields current-edit" style="display:none;"></td>
+                    </tr>
+                    {*/if*}
                     {assign var=order_total_price value=$order->total_paid_tax_incl}
                     <tr id="total_order">
-                      <td class="text-right"><strong>{l s='Total' d='Admin.Global'}</strong></td>
+                      <td class="text-right"><strong>{l s='Total TTC' d='Admin.Global'}</strong></td>
                       <td class="amount text-right nowrap">
                         <strong>{displayPrice price=$order_total_price currency=$currency->id}</strong>
                       </td>
