@@ -32,13 +32,15 @@ class AdminContactInformationControllerCore extends AdminController {
 		);
 
 		$data[2]['Information légales'] = array(
+			array('label'=>'Type société', 'name'=>'PS_SHOP_TYPE'),
 			array('label'=>'RIB', 'name'=>'PS_SHOP_RIB'),
 			array('label'=>'IBAN', 'name'=>'PS_SHOP_IBAN'),
 			array('label'=>'CIC', 'name'=>'PS_SHOP_CIC'),
 			array('label'=>'BIC', 'name'=>'PS_SHOP_BIC'),
 			array('label'=>'SIRET', 'name'=>'PS_SHOP_SIRET'),
 			array('label'=>'TVA', 'name'=>'PS_SHOP_TVA'),
-			array('label'=>'APE', 'name'=>'PS_SHOP_APE')
+			array('label'=>'APE', 'name'=>'PS_SHOP_APE'),
+			array('label'=>'RCS', 'name'=>'PS_SHOP_RCS')
 		);
 
 		$data[3]['Contact'] = array(
