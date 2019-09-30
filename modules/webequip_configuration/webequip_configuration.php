@@ -3,9 +3,13 @@
 if (!defined('_PS_VERSION_'))
     exit;
 
+
 class Webequip_Configuration extends Module {
 
     const OLD_SAV_TAB = 'AdminParentCustomerThreads';
+
+    const CONFIG_DEFAULT_STATE_SUCCESS = 'DEFAULT_STATE_SUCCESS';
+    const CONFIG_DEFAULT_STATE_FAILURE = 'DEFAULT_STATE_FAILURE';
 
 	public function __construct() {
         $this->name = 'webequip_configuration';
@@ -200,9 +204,30 @@ class Webequip_Configuration extends Module {
         if(Tools::isSubmit('uninstall_sav'))
             Db::getInstance()->execute("DELETE FROM ps_tab WHERE class_name = '".self::OLD_SAV_TAB."'");
 
+        // Enregistrement des états commandes par défaut
+        if(Tools::getIsset(self::CONFIG_DEFAULT_STATE_SUCCESS)) {
+            $id_state = Tools::getValue(self::CONFIG_DEFAULT_STATE_SUCCESS);
+
+            $names = array(self::CONFIG_DEFAULT_STATE_SUCCESS, 'DEFAULT_ID_STATE_OK', 'PS_OS_CHEQUE', 'PS_OS_PAYMENT', 'PS_OS_PREPARATION', 'PS_OS_WS_PAYMENT', 'PS_OS_BANKWIRE', 'PS_OS_BANKWIRE_45J', 'PS_OS_PAYPAL', 'PS_OS_BANKWIRE_ADMIN');
+            foreach($names as $name)
+                Configuration::updateValue($name, $id_state);
+        }
+
+        if(Tools::getIsset(self::CONFIG_DEFAULT_STATE_FAILURE)) {
+            $id_state = Tools::getValue(self::CONFIG_DEFAULT_STATE_FAILURE);
+
+            $names = array(self::CONFIG_DEFAULT_STATE_FAILURE, 'PS_OS_ERROR');
+            foreach($names as $name)
+                Configuration::updateValue($name, $id_state);
+        }
+
         $this->context->smarty->assign('tabs', $tabs);
         $this->context->smarty->assign('cms', CMS::getCMSPages(1));
         $this->context->smarty->assign('old_sav_id', $this->isTabInstalled(self::OLD_SAV_TAB));
+
+        $this->context->smarty->assign('states', OrderState::getOrderStates(1));
+        $this->context->smarty->assign(self::CONFIG_DEFAULT_STATE_SUCCESS, Configuration::get(self::CONFIG_DEFAULT_STATE_SUCCESS));
+        $this->context->smarty->assign(self::CONFIG_DEFAULT_STATE_FAILURE, Configuration::get(self::CONFIG_DEFAULT_STATE_FAILURE));
 
         return $this->display(__FILE__, 'config.tpl');
     }

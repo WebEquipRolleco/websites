@@ -114,6 +114,41 @@
 <form method="post">
 	<div class="panel">
 		<div class="panel-heading">
+			<i class="icon-cogs"></i> Etat commandes par défaut	
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="form-group">
+					<label>Succès de l'enregistrement</label>
+					<select class="form-control" name="DEFAULT_STATE_SUCCESS">
+						<option value=""></option>
+						{foreach from=$states item=state}
+							<option value="{$state.id_order_state}" {if $DEFAULT_STATE_SUCCESS == $state.id_order_state}selected{/if}>{$state.name}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Echec de l'enregistrement</label>
+					<select class="form-control" name="DEFAULT_STATE_FAILURE">
+						<option value=""></option>
+						{foreach from=$states item=state}
+							<option value="{$state.id_order_state}" {if $DEFAULT_STATE_FAILURE == $state.id_order_state}selected{/if}>{$state.name}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="submit" class="btn btn-success">
+				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
+			</button>
+		</div>
+	</div>
+</form>
+
+<form method="post">
+	<div class="panel">
+		<div class="panel-heading">
 			<i class="icon-cogs"></i> Forcer la police du menu principal	
 		</div>
 		<div class="row">
