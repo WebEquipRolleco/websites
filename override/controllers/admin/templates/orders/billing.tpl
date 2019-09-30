@@ -33,10 +33,16 @@
             </span>
           </div>
         </div>
+        <style>
+          #price_switch input:last-of-type:checked~a {
+            border: 1px solid #279cbb !important;
+            background-color: #2eacce !important;
+          }
+        </style>
         <div class="form-group">
           <label class="control-label col-lg-3">{l s="Afficher les prix"}</label>
           <div class="col-lg-9">
-            <span class="switch prestashop-switch fixed-width-lg">
+            <span id="price_switch" class="switch prestashop-switch fixed-width-lg">
               <input type="radio" name="display_with_taxes" id="display_with_taxes_on" value="1" {if $order->display_with_taxes}checked{/if}>
               <label for="display_with_taxes_on">TTC</label>
               <input type="radio" name="display_with_taxes" id="display_with_taxes_off" value="0" {if !$order->display_with_taxes}checked{/if}>
