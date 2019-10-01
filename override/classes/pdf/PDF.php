@@ -3,6 +3,7 @@
 class PDF extends PDFCore {
 
 	const TEMPLATE_PREPARATION_SLIP = 'PreparationSlip';
+	const TEMPLATE_PREPARATION_SLIPS = 'PreparationSlips';
 	const TEMPLATE_PURCHASE_ORDER = 'PurchaseOrder';
 	
 	const TEMPLATE_PRODUCT = "Product";

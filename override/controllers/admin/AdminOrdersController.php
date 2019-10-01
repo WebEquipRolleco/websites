@@ -158,7 +158,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         $this->bulk_actions = array(
             'updateOrderStatus' => array('text' => $this->trans('Change Order Status', array(), 'Admin.Orderscustomers.Feature'), 'icon' => 'icon-refresh'),
-            //'downloadPreparationSlips' => array('text'=>$this->trans('Télécharger les bons de préparation', array(), 'Admin.Orderscustomers.Feature'), 'icon'=>'icon-download')
+            'downloadPreparationSlips' => array('text'=>$this->trans('Télécharger les bons de préparation', array(), 'Admin.Orderscustomers.Feature'), 'icon'=>'icon-download')
         );
     }
 
@@ -296,16 +296,14 @@ class AdminOrdersController extends AdminOrdersControllerCore {
     public function processBulkDownloadPreparationSlips() {
         if($ids = Tools::getValue('orderBox') and !empty($ids)) {
 
-            //header('Content-Disposition: attachment; filename="préparation.pdf";');
+            $orders = array();
+            foreach($ids as $id)
+                $orders[] = new Order($id);
 
-            foreach($ids as $id) {
-                $order = new Order($id);
+            $pdf = new PDF(array($orders), PDF::TEMPLATE_PREPARATION_SLIPS, $this->context->smarty);
 
-                $pdf = new PDF($order, PDF::TEMPLATE_PREPARATION_SLIP, $this->context->smarty);
-                $pdf->render(false);
-
-            }
-
+            header('Content-Disposition: attachment; filename="préparations.pdf";');
+            die($pdf->render(false));
         }
     }
 
