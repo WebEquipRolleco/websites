@@ -47,10 +47,13 @@
       {/if}
       <div class="current-price">
         <span class="price">{$product.price}</span>
-        {if $product.unit_price_full}
+        {*if $product.unit_price_full}
           <div class="unit-price-cart">{$product.unit_price_full}</div>
-        {/if}
+        {/if*}
       </div>
+    </div>
+    <div class="text-muted">
+      <small>{l s="Dont %s d'écotaxe" sprintf=[$product.ecotax.value] d='Shop.Theme.Checkout'}</small>
     </div>
   </td>
 
@@ -74,6 +77,9 @@
         {/if}
       </strong>
     </span>
+    <div class="text-muted">
+      <small>{l s="Dont %s d'écotaxe" sprintf=[Tools::displayPrice($product.ecotax.amount * $product.quantity)] d='Shop.Theme.Checkout'}</small>
+    </div>
   </td>
 
   {* ACTIONS *}
