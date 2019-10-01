@@ -52,7 +52,7 @@
         {/if*}
       </div>
     </div>
-    {if $product.ecotax.amount}
+    {if $product.ecotax.amount > 0}
       <div class="text-muted">
         <small>{l s="Dont %s d'écotaxe" sprintf=[$product.ecotax.value] d='Shop.Theme.Checkout'}</small>
       </div>
@@ -79,7 +79,7 @@
         {/if}
       </strong>
     </span>
-    {if $product.ecotax.amount}
+    {if $product.ecotax.amount > 0}
       <div class="text-muted">
         <small>{l s="Dont %s d'écotaxe" sprintf=[Tools::displayPrice($product.ecotax.amount * $product.quantity)] d='Shop.Theme.Checkout'}</small>
       </div>
