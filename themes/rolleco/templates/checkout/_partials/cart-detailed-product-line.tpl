@@ -52,9 +52,11 @@
         {/if*}
       </div>
     </div>
-    <div class="text-muted">
-      <small>{l s="Dont %s d'écotaxe" sprintf=[$product.ecotax.value] d='Shop.Theme.Checkout'}</small>
-    </div>
+    {if $product.ecotax.amount}
+      <div class="text-muted">
+        <small>{l s="Dont %s d'écotaxe" sprintf=[$product.ecotax.value] d='Shop.Theme.Checkout'}</small>
+      </div>
+    {/if}
   </td>
 
   {* QUANTITE *}
@@ -77,9 +79,11 @@
         {/if}
       </strong>
     </span>
-    <div class="text-muted">
-      <small>{l s="Dont %s d'écotaxe" sprintf=[Tools::displayPrice($product.ecotax.amount * $product.quantity)] d='Shop.Theme.Checkout'}</small>
-    </div>
+    {if $product.ecotax.amount}
+      <div class="text-muted">
+        <small>{l s="Dont %s d'écotaxe" sprintf=[Tools::displayPrice($product.ecotax.amount * $product.quantity)] d='Shop.Theme.Checkout'}</small>
+      </div>
+    {/if}
   </td>
 
   {* ACTIONS *}
