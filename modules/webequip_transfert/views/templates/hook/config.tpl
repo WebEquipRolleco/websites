@@ -66,6 +66,20 @@
 			loadActions();
 		}
 
+		$(document).on('submit', '#transfer_form', function(e) {
+			e.preventDefault();
+
+			$.post(
+				"{$link->getAdminLink('AdminModules')}&configure=webequip_transfert",
+				$(this).serialize(), 
+				function(response) {
+					$('#ajax_result').html(response);
+					$('#loading').hide();
+					$('#ajax_result').show();
+				}
+			);
+		});
+
 	});
 
 	function loadActions() {
