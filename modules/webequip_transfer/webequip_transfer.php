@@ -1,6 +1,6 @@
 <?php
 
-class webequip_transfert extends Module {
+class webequip_transfer extends Module {
 
 	private $old_db;
 
@@ -16,7 +16,7 @@ class webequip_transfert extends Module {
 	**/
 	public function __construct() {
 
-		$this->name = 'webequip_transfert';
+		$this->name = 'webequip_transfer';
 		$this->tab = 'others';
 		$this->version = '1.0';
 		$this->author = 'Web-equip';
@@ -86,6 +86,10 @@ class webequip_transfert extends Module {
 	private function getTransfertList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
+		$data['ps_customer'] = array('name'=>"Clients", 'lang'=>false, 'shop'=>false);
+		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
+		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
+		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
 
@@ -153,6 +157,9 @@ class webequip_transfert extends Module {
 				break;
 
 				case 'load_data':
+					ini_set("memory_limit", "-1");
+					set_time_limit(0);
+
 					$method = "transfer_".Tools::getValue('transfert_name');
 					$this->{$method}();
 					die("<div class='alert alert-success'>Transfert terminé</div>");
@@ -227,5 +234,242 @@ class webequip_transfert extends Module {
 		$result = $this->old_db->query("SELECT * FROM ps_address");
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_address VALUES(".$row['id_address'].", ".$row['id_country'].", ".$row['id_state'].", ".$row['id_customer'].", ".$row['id_manufacturer'].", ".$row['id_supplier'].", ".$row['id_warehouse'].", '".pSql($row['alias'])."', '".pSql($row['company'])."', '".pSql($row['lastname'])."', '".pSql($row['firstname'])."', '".pSql($row['address1'])."', '".pSql($row['address2'])."', '".$row['postcode']."', '".pSql($row['city'])."', '".pSql($row['other'])."', '".$row['phone']."', '".$row['phone_mobile']."', '".$row['vat_number']."', '".$row['dni']."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['deleted'].")");
+	}
+
+	/**
+	* Transfert des clients
+	**/
+	private function transfer_ps_customer() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_customer");
+		Db::getInstance()->execute("DELETE FROM ps_customer_group");
+
+		$result = $this->old_db->query("SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_customer VALUES(
+				".$row['id_customer'].",
+				".$row['id_shop_group'].",
+				".$row['id_shop'].",
+				".$row['id_gender'].",
+				".$row['id_default_group'].",
+				".$row['id_lang'].",
+				".$row['id_risk'].",
+				'".pSql($row['reference_m3'])."',
+				'".pSql($row['reference_chorus'])."',
+				'".$row['tva']."',
+				".$row['funding'].",
+				'".$row['date_funding']."',
+				1,
+				NULL,
+				NULL,
+				'".pSql($row['company'])."',
+				'".pSql($row['siret'])."',
+				'".$row['ape']."',
+				'".pSql($row['firstname'])."',
+				'".pSql($row['lastname'])."',
+				'".pSql($row['email'])."',
+				'".$row['email_invoice']."',
+				'".$row['email_tracking']."',
+				".($row['rollcash'] ?? 0).",
+				0,
+				'".$row['passwd']."',
+				'".$row['last_passwd_gen']."',
+				'".$row['birthday']."',
+				".$row['newsletter'].",
+				'".$row['ip_registration_newsletter']."',
+				'".$row['newsletter_date_add']."',
+				".$row['optin'].",
+				'".$row['website']."',
+				".$row['outstanding_allow_amount'].",
+				".($row['shop_public_prices'] ?? 0).",
+				".$row['max_payment_days'].",
+				'".$row['secure_key']."',
+				'".pSql($row['note'])."',
+				".$row['active'].",
+				".$row['is_guest'].",
+				".$row['deleted'].",
+				'".$row['date_add']."',
+				'".$row['date_upd']."',
+				NULL,
+				NULL
+			)");
+
+		$result = $this->old_db->query("SELECT * FROM ps_customer_group");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_customer_group VALUES(".$row['id_customer'].", ".$row['id_group'].")");
+	}
+
+	/**
+	* Transfert des commandes
+	**/
+	private function transfer_ps_orders() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_orders");
+		Db::getInstance()->execute("DELETE FROM ps_order_history");
+
+		$result = $this->old_db->query("SELECT * FROM ps_orders");
+		while($row = $result->fetch_assoc()) 
+			Db::getInstance()->execute("INSERT INTO ps_orders VALUES(
+				".$row['id_order'].",
+				'".$row['reference']."',
+				'".pSql($row['internal_reference'])."', 
+				NULL,
+				NULL,
+				".$row['id_shop_group'].",
+				".$row['id_shop'].",
+				".$row['id_carrier'].",
+				".$row['id_lang'].",
+				".$row['id_customer'].",
+				".$row['id_cart'].",
+				".$row['id_currency'].",
+				".$row['id_address_delivery'].",
+				".$row['id_address_invoice'].",
+				".$row['current_state'].",
+				'".$row['secure_key']."',
+				'".$row['payment']."',
+				".$row['conversion_rate'].",
+				'".$row['module']."',
+				".$row['recyclable'].",
+				".$row['gift'].",
+				'".$row['gift_message']."',
+				".$row['mobile_theme'].",
+				'".$row['shipping_number']."',
+				".$row['total_discounts'].",
+				".$row['total_discounts_tax_incl'].",
+				".($row['total_discount_tax_excl'] ?? 0).",
+				".$row['total_paid'].",
+				".$row['total_paid_tax_incl'].",
+				".$row['total_paid_tax_excl'].",
+				".$row['total_paid_real'].",
+				".$row['total_products'].",
+				".$row['total_products_wt'].",
+				".$row['total_shipping'].",
+				".$row['total_shipping_tax_incl'].",
+				".$row['total_shipping_tax_excl'].",
+				".$row['carrier_tax_rate'].",
+				".$row['total_wrapping'].",
+				".$row['total_wrapping_tax_incl'].",
+				".$row['total_wrapping_tax_excl'].",
+				2,
+				1,
+				".$row['invoice_number'].",
+				NULL,
+				".$row['delivery_number'].",
+				'".$row['invoice_date']."',
+				'".$row['delivery_date']."',
+				".$row['valid'].",
+				0,
+				0,
+				'".$row['date_add']."',
+				'".$row['date_upd']."'
+			)");
+	}
+
+	/**
+	* Transfert des détails de commande
+	**/
+	private function transfer_ps_order_detail() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_order_detail");
+		$result = $this->old_db->query("SELECT * FROM ps_order_detail ORDER BY id_order_detail");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_order_detail VALUES(
+				".$row['id_order_detail'].",
+				".$row['id_order'].",
+				".($row['id_order_invoice'] ?? 0).",
+				".$row['id_warehouse'].",
+				".$row['id_shop'].",
+				".$row['product_id'].",
+				".($row['product_attribute_id'] ?? 0).",
+				NULL,
+				NULL,
+				0,
+				'".pSql($row['product_name'])."',
+				".$row['product_quantity'].",
+				".$row['product_quantity_in_stock'].",
+				".$row['product_quantity_refunded'].",
+				".$row['product_quantity_return'].",
+				".$row['product_quantity_reinjected'].",
+				".$row['product_price'].",
+				".$row['reduction_percent'].",
+				".$row['reduction_amount'].",
+				".$row['reduction_amount_tax_incl'].",
+				".$row['reduction_amount_tax_excl'].",
+				".$row['group_reduction'].",
+				".$row['product_quantity_discount'].",
+				'".$row['product_ean13']."',
+				'".$row['product_isbn']."',
+				'".$row['product_upc']."',
+				'".$row['product_reference']."',
+				'".$row['product_supplier_reference']."',
+				".$row['product_weight'].",
+				0,
+				".$row['tax_computation_method'].",
+				'".$row['tax_name']."',
+				".$row['tax_rate'].",
+				".$row['ecotax'].",
+				".$row['ecotax_tax_rate'].",
+				".$row['discount_quantity_applied'].",
+				'".$row['download_hash']."',
+				".$row['download_nb'].",
+				'".$row['download_deadline']."',
+				".$row['total_price_tax_incl'].",
+				".$row['total_price_tax_excl'].",
+				".$row['unit_price_tax_incl'].",
+				".$row['unit_price_tax_excl'].",
+				".$row['total_shipping_price_tax_incl'].",
+				".$row['total_shipping_price_tax_excl'].",
+				".$row['purchase_supplier_price'].",
+				".$row['original_product_price'].",
+				0,
+				NULL,
+				NULL,
+				'".trim(pSql($row['commentaire1']).' '.pSql($row['commentaire2']))."'
+			)");
+	}
+
+	private function transfer_ps_order_state() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_order_state");
+		Db::getInstance()->execute("DELETE FROM ps_order_state_lang");
+
+		$result = $this->old_db->query("SELECT * FROM ps_order_state");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_order_state VALUES(
+				".$row['id_order_state'].",
+				".$row['invoice'].",
+				".$row['send_email'].",
+				'".$row['module_name']."',
+				'".$row['color']."',
+				".$row['unremovable'].",
+				".$row['hidden'].",
+				".$row['logable'].",
+				".$row['delivery'].",
+				".$row['shipped'].",
+				".$row['paid'].",
+				".$row['proforma'].",
+				0,
+				0,
+				0,
+				0,
+				".$row['deleted']."
+			)");
+
+		$result = $this->old_db->query("SELECT * FROM ps_order_state_lang");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_order_state_lang VALUES(
+				".$row['id_order_state'].",
+				".$row['id_lang'].",
+				'".pSql(utf8_encode($row['name']))."',
+				'".$row['template']."'
+			)");
 	}
 }

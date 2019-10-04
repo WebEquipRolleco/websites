@@ -69,6 +69,9 @@
 		$(document).on('submit', '#transfer_form', function(e) {
 			e.preventDefault();
 
+			$('#loading').show();
+			$('#ajax_result').hide();
+
 			$.post(
 				"{$link->getAdminLink('AdminModules')}&configure=webequip_transfert",
 				$(this).serialize(), 
