@@ -4,8 +4,8 @@
 	<div class="row">
 		<div class="col-lg-4">
 			<div class="form-group">
-				<label>{l s="Données à transférer"}</label>
-				<select class="form-control" name="transfert_name" required>
+				<label>{l s="Données à transférer" mod="webequip_transfer"}</label>
+				<select class="form-control" name="transfer_name" required>
 					<option value=""></option>
 					{foreach from=$data_list item=data key=type}
 						<option value='{$type}'>{$data.name}</option>

@@ -1,7 +1,7 @@
 <form id="form" method="post">
 	<div class="panel">
 		<div class="panel-heading">
-			<i class="icon-cogs"></i> {l s="Configuration" mod="webequip_transfert"}
+			<i class="icon-cogs"></i> {l s="Configuration" mod="webequip_transfer"}
 			<div class="panel-heading-action">
 				<a href="" id="save_configuration" class="list-toolbar-btn" title="{l s="Save" d='Shop.Theme.Actions'}">
 					<i class="process-icon-save"></i>
@@ -24,9 +24,9 @@
 {if $is_configured}
 	<div class="panel">
 		<div class="panel-heading">
-			<i class="icon-cogs"></i> {l s="Gestion des transfert" mod="webequip_transfert"}
+			<i class="icon-cogs"></i> {l s="Gestion des transfert" mod="webequip_transfer"}
 			<div class="panel-heading-action">
-				<a href="" id="refresh_actions" class="list-toolbar-btn" title="{l s='Réessayer' mod="webequip_transfert"}">
+				<a href="" id="refresh_actions" class="list-toolbar-btn" title="{l s='Réessayer' mod="webequip_transfer"}">
 					<i class="process-icon-refresh"></i>
 				</a>
 			</div>
@@ -42,7 +42,7 @@
 	</div>
 {else}
 	<div class="alert alert-info">
-		{l s="La BDD n'est pas configurée" mod="webequip_transfert"}
+		{l s="La BDD n'est pas configurée" mod="webequip_transfer"}
 	</div>
 {/if}
 
@@ -73,7 +73,7 @@
 			$('#ajax_result').hide();
 
 			$.post(
-				"{$link->getAdminLink('AdminModules')}&configure=webequip_transfert",
+				"{$link->getAdminLink('AdminModules')}&configure=webequip_transfer",
 				$(this).serialize(), 
 				function(response) {
 					$('#ajax_result').html(response);
@@ -91,9 +91,9 @@
 		$('#ajax_result').hide();
 
 		$.post(
-			"{$link->getAdminLink('AdminModules')}&configure=webequip_transfert", {
+			"{$link->getAdminLink('AdminModules')}&configure=webequip_transfer", {
 				ajax:true, 
-				action: 'load_transfert'
+				action: 'load_transfer'
 			}, 
 			function(response) {
 				$('#ajax_result').html(response);

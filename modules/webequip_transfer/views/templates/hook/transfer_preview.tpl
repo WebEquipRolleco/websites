@@ -4,8 +4,8 @@
 			<thead>
 				<tr class="bg-primary">
 					<th></th>
-					<th class="text-center"><b>{l s="Ancienne BDD" mod='webequip_transfert'}</b></th>
-					<th class="text-center"><b>{l s="Nouvelle BDD" mod='webequip_transfert'}</b></th>
+					<th class="text-center"><b>{l s="Ancienne BDD" mod='webequip_transfer'}</b></th>
+					<th class="text-center"><b>{l s="Nouvelle BDD" mod='webequip_transfer'}</b></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,11 +30,11 @@
 <form id="transfer_form" method="post">
 	<input type="hidden" name="ajax" value="1">
 	<input type="hidden" name="action" value="load_data">
-	<input type="hidden" name="transfert_name" value="{$transfert_name}">
+	<input type="hidden" name="transfer_name" value="{$transfer_name}">
 	<div class="alert alert-danger">
-		<div><b>ATTENTION !</b> Le contenu actuel des tables sera effacé.</div>
+		<div><b>ATTENTION !</b> {l s="Le contenu actuel des tables sera effacé."  mod="webequip_transfer"}</div>
 		<button type="submit" class="btn btn-danger">
-			<b>{l s="Effacer le contenu et transférer les données"}</b>
+			<b>{l s="Effacer le contenu et transférer les données" mod="webequip_transfer"}</b>
 		</button>
 	</div>
 </form>

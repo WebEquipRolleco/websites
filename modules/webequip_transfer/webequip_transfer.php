@@ -83,7 +83,7 @@ class webequip_transfer extends Module {
 	* Retourne la liste des données pouvant être transférées
 	* @return array
 	**/
-	private function getTransfertList() {
+	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
 		$data['ps_customer'] = array('name'=>"Clients", 'lang'=>false, 'shop'=>false);
@@ -99,11 +99,11 @@ class webequip_transfer extends Module {
 	/**
 	* Assigne les données de la preview
 	**/
-	private function getTransfertPreview() {
+	private function getTransferPreview() {
 
 		$this->connectToDB();
-		$table = Tools::getValue('transfert_name');
-		$infos = $this->getTransfertList()[$table];
+		$table = Tools::getValue('transfer_name');
+		$infos = $this->getTransferList()[$table];
 
 		$query = "SELECT COUNT(*) AS nb FROM ".$table;
 		$result = $this->old_db->query($query);
@@ -145,14 +145,14 @@ class webequip_transfer extends Module {
     		// Gestion des transfert
 			switch (Tools::getValue('action')) {
 					
-				case 'load_transfert':
-					$this->context->smarty->assign('data_list', $this->getTransfertList());
+				case 'load_transfer':
+					$this->context->smarty->assign('data_list', $this->getTransferList());
 					die($this->display(__FILE__, 'transfer_form.tpl'));
 				break;
 
 				case 'load_preview':
-					$this->context->smarty->assign('data_list', $this->getTransfertPreview());
-					$this->context->smarty->assign('transfert_name', Tools::getValue('transfert_name'));
+					$this->context->smarty->assign('data_list', $this->getTransferPreview());
+					$this->context->smarty->assign('transfer_name', Tools::getValue('transfer_name'));
 					die($this->display(__FILE__, 'transfer_preview.tpl'));
 				break;
 
@@ -160,7 +160,7 @@ class webequip_transfer extends Module {
 					ini_set("memory_limit", "-1");
 					set_time_limit(0);
 
-					$method = "transfer_".Tools::getValue('transfert_name');
+					$method = "transfer_".Tools::getValue('transfer_name');
 					$this->{$method}();
 					die("<div class='alert alert-success'>Transfert terminé</div>");
 				break;
