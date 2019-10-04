@@ -92,6 +92,8 @@ class webequip_transfer extends Module {
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
+		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
+		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute');
 
 		return $data;
 	}
@@ -104,30 +106,29 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 		$table = Tools::getValue('transfer_name');
 		$infos = $this->getTransferList()[$table];
+		$new_table = isset($infos['new_table']) ? $infos['new_table'] : $table;
 
-		$query = "SELECT COUNT(*) AS nb FROM ".$table;
-		$result = $this->old_db->query($query);
+		$query = "SELECT COUNT(*) AS nb FROM ";
+		$result = $this->old_db->query($query.$table);
 
 		$data[0][] = $infos['name'];
 		$data[0][] = $result->fetch_object()->nb;
-		$data[0][] = Db::getInstance()->getValue($query);
+		$data[0][] = Db::getInstance()->getValue($query.$new_table);
 
 		if($infos['lang']) {
-			$query = "SELECT COUNT(*) AS nb FROM ".$table."_lang";
-			$result = $this->old_db->query($query);
+			$result = $this->old_db->query($query.$table."_lang");
 
 			$data[1][] = "Gestion des langues";
 			$data[1][] = $result->fetch_object()->nb;
-			$data[1][] = Db::getInstance()->getValue($query);
+			$data[1][] = Db::getInstance()->getValue($query.$new_table."_lang");
 		}
 
 		if($infos['shop']) {
-			$query = "SELECT COUNT(*) AS nb FROM ".$table."_shop";
-			$result = $this->old_db->query($query);
+			$result = $this->old_db->query($query.$table."_shop");
 
 			$data[2][] = "Gestion des boutiques";
 			$data[2][] = $result->fetch_object()->nb;
-			$data[2][] = Db::getInstance()->getValue($query);
+			$data[2][] = Db::getInstance()->getValue($query.$new_table."_shop");
 		}
 
 		return $data;
@@ -472,4 +473,53 @@ class webequip_transfer extends Module {
 				'".$row['template']."'
 			)");
 	}
+
+	/**
+	* Transfert des groupes d'attributs
+	**/
+	private function transfer_ps_feature() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_attribute_group");
+		Db::getInstance()->execute("DELETE FROM ps_attribute_group_lang");
+		Db::getInstance()->execute("DELETE FROM ps_attribute_group_shop");
+
+		$result = $this->old_db->query("SELECT * FROM ps_feature");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_attribute_group VALUES(".$row['id_feature'].", 0, 0, 'select', ".$row['position'].")");
+
+		$result = $this->old_db->query("SELECT * FROM ps_feature_lang");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_attribute_group_lang VALUES(".$row['id_feature'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['name']))."', '".pSql(utf8_encode($row['name']))."')");
+
+		$result = $this->old_db->query("SELECT * FROM ps_feature_shop");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_attribute_group_shop VALUES(".$row['id_feature'].", ".$row['id_shop'].")");
+	}
+
+	/**
+	* Transfert des valeurs d'attributs
+	**/
+	private function transfer_ps_feature_value() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_attribute");
+		Db::getInstance()->execute("DELETE FROM ps_attribute_lang");
+		Db::getInstance()->execute("DELETE FROM ps_attribute_shop");
+
+		$result = $this->old_db->query("SELECT * FROM ps_feature_value");
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("INSERT INTO ps_attribute VALUES(".$row['id_feature_value'].", ".$row['id_feature'].", '', 1)");
+			Db::getInstance()->execute("INSERT INTO ps_attribute_shop VALUES(".$row['id_feature_value'].", 1)");
+			Db::getInstance()->execute("INSERT INTO ps_attribute_shop VALUES(".$row['id_feature_value'].", 2)");
+			Db::getInstance()->execute("INSERT INTO ps_attribute_shop VALUES(".$row['id_feature_value'].", 3)");
+		}
+
+		$result = $this->old_db->query("SELECT * FROM ps_feature_value_lang");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_attribute_lang VALUES(".$row['id_feature_value'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['value']))."')");
+	}
+
 }
