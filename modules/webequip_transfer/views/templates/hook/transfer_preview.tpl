@@ -9,7 +9,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{foreach from=$data_list item=row}
+				{foreach from=$data_list.data item=row}
 					<tr>
 						{foreach from=$row item=data name=line}
 							{if $smarty.foreach.line.first}
@@ -31,10 +31,22 @@
 	<input type="hidden" name="ajax" value="1">
 	<input type="hidden" name="action" value="load_data">
 	<input type="hidden" name="transfer_name" value="{$transfer_name}">
+	{if $data_list.updatable}
+	<span class="switch prestashop-switch fixed-width-lg">
+		<input type="radio" name="eraze" id="eraze_on" value="1" checked>
+		<label for="eraze_on">{l s='Effacer' mod='webequip_transfer'}</label>
+		<input type="radio" name="eraze" id="eraze_off" value="0">
+		<label for="eraze_off">{l s='Garder' mod='webequip_transfer'}</label>
+		<a class="slide-button btn"></a>
+	</span>
+	<br />
+	{else}
+		<input type="hidden" name="eraze" value="1">
+	{/if}
 	<div class="alert alert-danger">
-		<div><b>ATTENTION !</b> {l s="Le contenu actuel des tables sera effacé."  mod="webequip_transfer"}</div>
+		<div><b>ATTENTION !</b> {l s="Les actions effectuées pourraient être irréversibles."  mod="webequip_transfer"}</div>
 		<button type="submit" class="btn btn-danger">
-			<b>{l s="Effacer le contenu et transférer les données" mod="webequip_transfer"}</b>
+			<b>{l s="Transférer les données" mod="webequip_transfer"}</b>
 		</button>
 	</div>
 </form>

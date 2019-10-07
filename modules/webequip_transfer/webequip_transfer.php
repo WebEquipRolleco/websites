@@ -3,6 +3,7 @@
 class webequip_transfer extends Module {
 
 	private $old_db;
+	private $nb_rows;
 
 	public static $configurations = array(
         'host' 	=> array('name'=>"WEBEQUIP_OLD_DB_HOST", "label"=>"Hôte", "type"=>"text"),
@@ -91,7 +92,8 @@ class webequip_transfer extends Module {
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
-		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>'ps_quotation');
+		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME, 'updatable'=>true);
+		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
@@ -113,24 +115,26 @@ class webequip_transfer extends Module {
 		$query = "SELECT COUNT(*) AS nb FROM ";
 		$result = $this->old_db->query($query.$table);
 
-		$data[0][] = $infos['name'];
-		$data[0][] = $result->fetch_object()->nb;
-		$data[0][] = Db::getInstance()->getValue($query.$new_table);
+		$data['updatable'] = $infos['updatable'] ?? false;
+
+		$data['data'][0][] = $infos['name'];
+		$data['data'][0][] = $result->fetch_object()->nb;
+		$data['data'][0][] = Db::getInstance()->getValue($query.$new_table);
 
 		if($infos['lang']) {
 			$result = $this->old_db->query($query.$table."_lang");
 
-			$data[1][] = "Gestion des langues";
-			$data[1][] = $result->fetch_object()->nb;
-			$data[1][] = Db::getInstance()->getValue($query.$new_table."_lang");
+			$data['data'][1][] = "Gestion des langues";
+			$data['data'][1][] = $result->fetch_object()->nb;
+			$data['data'][1][] = Db::getInstance()->getValue($query.$new_table."_lang");
 		}
 
 		if($infos['shop']) {
 			$result = $this->old_db->query($query.$table."_shop");
 
-			$data[2][] = "Gestion des boutiques";
-			$data[2][] = $result->fetch_object()->nb;
-			$data[2][] = Db::getInstance()->getValue($query.$new_table."_shop");
+			$data['data'][2][] = "Gestion des boutiques";
+			$data['data'][2][] = $result->fetch_object()->nb;
+			$data['data'][2][] = Db::getInstance()->getValue($query.$new_table."_shop");
 		}
 
 		return $data;
@@ -163,9 +167,14 @@ class webequip_transfer extends Module {
 					ini_set("memory_limit", "-1");
 					set_time_limit(0);
 
+					$this->nb_rows = 0;
 					$method = "transfer_".Tools::getValue('transfer_name');
 					$this->{$method}();
-					die("<div class='alert alert-success'>Transfert terminé</div>");
+
+					if($this->nb_rows)
+						die("<div class='alert alert-success'>Transfert terminé : ".$this->nb_rows." lignes importées</div>");
+					else
+						die("<div class='alert alert-success'>Transfert terminé</div>");
 				break;
 			}	
 		}
@@ -531,9 +540,24 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_quotation");
-		$result = $this->old_db->query("SELECT d.*, (SELECT s.id_shop FROM ps_activis_devis_shop s WHERE d.id_activis_devis = s.id_activis_devis LIMIT 1) AS id_shop FROM ps_activis_devis d");
-		while($row = $result->fetch_assoc())
+		if(Tools::getValue('eraze'))
+			Quotation::erazeContent();
+		else {
+
+			$ids = Db::getInstance()->executeS("SELECT ".Quotation::TABLE_PRIMARY." FROM "._DB_PREFIX_.Quotation::TABLE_NAME);
+			if($ids) {
+				$ids = array_map(function($e) { return $e[Quotation::TABLE_PRIMARY]; }, $ids);
+				$ids = trim(implode(',', $ids));
+			}
+		}
+
+		$query = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
+		if($ids) $query .= " WHERE d.id_activis_devis NOT IN ($ids)";
+		$query .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis ORDER BY d.id_activis_devis DESC";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+
 			if($row['hash'] != "Deleted")
 				Db::getInstance()->execute("INSERT INTO ps_quotation VALUES(
 					".$row['id_activis_devis'].",
@@ -560,6 +584,56 @@ class webequip_transfer extends Module {
 					".($row['id_shop'] ?? 1).",
 					'".pSql($row['hash'])."'
 				)");
+
+			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* Transfert des lignes produits pour les devis
+	**/
+	private function transfer_ps_activis_devis_line() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze'))
+			QuotationLine::erazeContent();
+		else {
+
+			$ids = Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME);
+			if($ids) {
+				$ids = array_map(function($e) { return $e[QuotationLine::TABLE_PRIMARY]; }, $ids);
+				$ids = trim(implode(',', $ids));
+			}
+		}
+
+		$query = "SELECT * FROM ps_activis_devis_line";
+		if($ids) $query .= " WHERE id_activis_devis_line NOT IN ($ids)";
+		$query .= " ORDER BY id_activis_devis DESC";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+
+			Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.QuotationLine::TABLE_NAME." VALUES(
+				".$row['id_activis_devis_line'].",
+				'".pSql(utf8_encode($row['reference']))."',
+				NULL,
+				'".pSql(utf8_encode($row['name']))."',
+				'".pSql(utf8_encode($row['information']))."',
+				NULL,
+				".$row['devis_buying_price'].",
+				0,
+				".$row['devis_selling_price'].",
+				".((float)$row['devis_dee'] + (float)$row['devis_m']).",
+				".$row['quantity'].",
+				1,
+				".$row['position'].",
+				".$row['id_activis_devis'].",
+				NULL
+			)");
+
+			$this->nb_rows++;
+		}
 	}
 
 	/**
@@ -572,7 +646,7 @@ class webequip_transfer extends Module {
 		Db::getInstance()->execute("DELETE FROM ps_employee");
 		Db::getInstance()->execute("DELETE FROM ps_employee_shop");
 		Db::getInstance()->execute("DELETE FROM ps_employee_supplier");
-		
+
 		$result = $this->old_db->query("SELECT * FROM ps_employee");
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("INSERT INTO ps_employee VALUES(

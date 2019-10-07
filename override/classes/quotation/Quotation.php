@@ -85,6 +85,13 @@ class Quotation extends ObjectModel {
     }
 
     /**
+    * Efface le contenu de la table
+    **/
+    public static function erazeContent() {
+        Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME);
+    }
+
+    /**
     * Retourne la liste des IDs options autorisés pour le devis
     * @return array
     **/

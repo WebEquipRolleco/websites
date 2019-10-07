@@ -51,6 +51,13 @@ class QuotationLine extends ObjectModel {
     );
 
 	/**
+    * Efface le contenu de la table
+    **/
+    public static function erazeContent() {
+        Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME);
+    }
+    
+	/**
 	* Retourne le prix total 
 	* @param bool $use_taxes
 	* @param bool $fees
