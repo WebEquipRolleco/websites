@@ -86,10 +86,12 @@ class webequip_transfer extends Module {
 	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
-		$data['ps_customer'] = array('name'=>"Clients", 'lang'=>false, 'shop'=>false);
+		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false);
+		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
+		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>'ps_quotation');
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
@@ -522,4 +524,96 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("INSERT INTO ps_attribute_lang VALUES(".$row['id_feature_value'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['value']))."')");
 	}
 
+	/**
+	* Transfert des devis
+	**/
+	private function transfer_ps_activis_devis() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_quotation");
+		$result = $this->old_db->query("SELECT d.*, (SELECT s.id_shop FROM ps_activis_devis_shop s WHERE d.id_activis_devis = s.id_activis_devis LIMIT 1) AS id_shop FROM ps_activis_devis d");
+		while($row = $result->fetch_assoc())
+			if($row['hash'] != "Deleted")
+				Db::getInstance()->execute("INSERT INTO ps_quotation VALUES(
+					".$row['id_activis_devis'].",
+					'".pSql($row['hash'])."',
+					".$row['id_state'].",
+					".$row['id_customer'].",
+					NULL,
+					NULL,
+					'".pSql(utf8_encode($row['email']))."',
+					'".pSql(utf8_encode($row['mail_cc']))."',
+					'".$row['date_add']."',
+					'".$row['date_from']."',
+					'".$row['date_to']."',
+					'".$row['date_recall']."',
+					'".pSql(utf8_encode($row['phone']))."',
+					'".$row['fax']."',
+					'".pSql(utf8_encode($row['comment']))."',
+					'".pSql(utf8_encode($row['contact']))."',
+					".$row['id_employee'].",
+					".$row['active'].",
+					0,
+					0,
+					NULL,
+					".($row['id_shop'] ?? 1).",
+					'".pSql($row['hash'])."'
+				)");
+	}
+
+	/**
+	* Transfert des comptes employés
+	**/
+	private function transfer_ps_employee() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("DELETE FROM ps_employee");
+		Db::getInstance()->execute("DELETE FROM ps_employee_shop");
+		Db::getInstance()->execute("DELETE FROM ps_employee_supplier");
+		
+		$result = $this->old_db->query("SELECT * FROM ps_employee");
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("INSERT INTO ps_employee VALUES(
+				".$row['id_employee'].",
+				".$row['id_profile'].",
+				".$row['id_lang'].",
+				'".pSql(utf8_encode($row['lastname']))."',
+				'".pSql(utf8_encode($row['firstname']))."',
+				'".pSql(utf8_encode($row['email']))."',
+				'".pSql($row['passwd'])."',
+				'".pSql($row['last_passwd_gen'])."',
+				'".pSql($row['stats_date_from'])."',
+				'".pSql($row['stats_date_to'])."',
+				NULL,
+				NULL,
+				1,
+				NULL,
+				'".pSql(utf8_encode($row['bo_color']))."',
+				'".pSql(utf8_encode($row['bo_theme']))."',
+				NULL,
+				".$row['default_tab'].",
+				".$row['bo_width'].",
+				1,
+				".$row['active'].",
+				0,
+				1,
+				".$row['id_last_order'].",
+				".$row['id_last_customer_message'].",
+				".$row['id_last_customer'].",
+				NULL,
+				NULL,
+				NULL
+			)");
+
+			Db::getInstance()->execute("INSERT INTO ps_employee_shop VALUES(".$row['id_employee'].", 1)");
+			Db::getInstance()->execute("INSERT INTO ps_employee_shop VALUES(".$row['id_employee'].", 2)");
+			Db::getInstance()->execute("INSERT INTO ps_employee_shop VALUES(".$row['id_employee'].", 3)");
+		}
+
+		$result = $this->old_db->query("SELECT * FROM ps_employee_supplier");
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_employee_supplier VALUES(".$row['id'].", ".$row['id_employee'].", ".$row['id_supplier'].")");
+	}
 }
