@@ -18,6 +18,7 @@ class Webequip_recall extends Module {
 	const ACTION_PAYMENT = "payment";
 	const ACTION_INVOICE = "invoice";
 	const ACTION_SAV = "sav";
+	const ACTION_QUOTATION = "quotation";
 
 	const LIST_DELIMITER = ',';
 	const ACTIONS_DELIMITER = '|';
@@ -97,6 +98,8 @@ class Webequip_recall extends Module {
 		$this->context->smarty->assign('nb_orders_recall_7', count($this->getOrders(90)));
 		$this->context->smarty->assign('date_invoice_recall_7', $this->getInvoiceDate(90));
 		$this->context->smarty->assign('nb_no_facturation', count($this->getNoFacturationIds()));
+		$this->context->smarty->assign('nb_recall_quotation', count(Quotation::needToRecall()));
+
 		return $this->display(__FILE__, 'views/templates/admin/content.tpl');
 	}
 
@@ -147,6 +150,9 @@ class Webequip_recall extends Module {
 
 		if(in_array(self::ACTION_SAV, $actions))
 			$this->checkSAV();
+
+		if(in_array(self::ACTION_QUOTATION, $actions))
+			$this->checkQuotations();
 	}
 
 	public function getCronActions() {
@@ -154,6 +160,7 @@ class Webequip_recall extends Module {
 		$data[self::ACTION_RECALL] = "Envoyer les mails de rappels de demande de paiement aux clients";
 		$data[self::ACTION_PAYMENT] = "Vérifie les paiements des clients à problèmes (et les replace en clients OK)";
 		$data[self::ACTION_INVOICE] = "Envoyer un mail en cas d'informations facture non renseignés";
+		$data[self::ACTION_QUOTATION] = "Envoyer les mails de rappel de relance devis";
 
 		return $data;
 	}
@@ -452,6 +459,36 @@ class Webequip_recall extends Module {
 
 			foreach($employees as $employee)
 				Mail::send(1, "recall_sav_2", $this->l("SAV à relancer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+		}
+	}
+
+
+	/**
+	* Envoie les mails de rappel de relance de devis
+	**/
+	public function checkQuotations() {
+
+		$data = array();
+		foreach(Quotation::needToRecall() as $quotation) {
+
+			if(!isset($employees[$quotation->id_employee])) {
+				$data[$quotation->id_employee]['employee'] = $quotation->getEmployee();
+				$data[$quotations->id_employee]['quotations'] = array();
+			}
+			
+			$data[$quotations->id_employee]['quotations'][] = $quotation;
+		}
+
+		if(!empty($data)) {
+			foreach($data as $row) {
+
+				$tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/quotation_lines.tpl');
+				$tpl->assign('quotations', $row['quotations']);	
+
+				$data['{$lines}'] = $tpl->fetch();
+
+				Mail::send(1, "recall_quotation", $this->l("Devis à relancer"), $data, $row['employee']->email, $row['employee']->firstname." ".$row['employee']->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+			}
 		}
 	}
 

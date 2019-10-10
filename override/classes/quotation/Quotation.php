@@ -454,4 +454,16 @@ class Quotation extends ObjectModel {
         $link = new Link();
         return $link->getPageLink('QuotationRegistration&accept='.$this->reference.'&key='.$this->secure_key, null, 1, null, false, $this->id_shop);
     }
+
+    /**
+    * Retourne la liste des devis à relancer
+    **/
+    public static function needToRecall() {
+
+        $options['date_recall'] = date('Y-m-d');
+        $options['states'] = array(self::STATUS_WAITING);
+
+        return self::find($options);
+    }
+    
 }

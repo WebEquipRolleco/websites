@@ -153,6 +153,10 @@
 						<td colspan="2">Clients à mettre en OK (commande payée)</td>
 						<td class="text-center">{$nb_customers_to_update}</td>
 					</tr>
+					<tr>
+						<td colspan="2">Devis à relancer</td>
+						<td class="text-center">{$nb_recall_quotation}</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
