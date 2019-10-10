@@ -40,7 +40,11 @@
           }
         </style>
         <div class="form-group">
-          <label class="control-label col-lg-3">{l s="Afficher les prix"}</label>
+          <label class="control-label col-lg-3">
+            <span class="label label-default" title="{l s='Cette modification ne concerne que les documents clients'}">
+              {l s="Afficher les prix"}
+            </span>
+          </label>
           <div class="col-lg-9">
             <span id="price_switch" class="switch prestashop-switch fixed-width-lg">
               <input type="radio" name="display_with_taxes" id="display_with_taxes_on" value="1" {if $order->display_with_taxes}checked{/if}>
@@ -54,6 +58,11 @@
       </div>
       <div class="col-lg-7">
         <textarea rows="8" class="form-control" name="invoice_comment" style="resize:vertical" placeholder="Commentaire">{$order->invoice_comment}</textarea>
+      </div>
+      <div class="col-lg-12">
+        <div class="alert alert-info">
+          {l s="Sur les documents clients, les montants seront affichés en "} <b>{if $order->display_with_taxes}TTC{else}HT{/if}</b>
+        </div>
       </div>
     </div>
     <div class="panel-footer">

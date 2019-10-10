@@ -96,6 +96,7 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
+		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute');
 
@@ -541,7 +542,7 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		if(Tools::getValue('eraze'))
-			Quotation::erazeContent();
+			Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.Quotation::TABLE_NAME);
 		else {
 
 			$ids = Db::getInstance()->executeS("SELECT ".Quotation::TABLE_PRIMARY." FROM "._DB_PREFIX_.Quotation::TABLE_NAME);
@@ -597,7 +598,7 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		if(Tools::getValue('eraze'))
-			QuotationLine::erazeContent();
+			Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME);
 		else {
 
 			$ids = Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME);
@@ -689,5 +690,155 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query("SELECT * FROM ps_employee_supplier");
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_employee_supplier VALUES(".$row['id'].", ".$row['id_employee'].", ".$row['id_supplier'].")");
+	}
+
+	/**
+	* Transfert des produits
+	**/
+	private function transfer_ps_product() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_product");
+			Db::getInstance()->execute("DELETE FROM ps_product_shop");
+			Db::getInstance()->execute("DELETE FROM ps_product_lang");
+		}
+		else {
+
+			$ids = Db::getInstance()->executeS("SELECT id_product FROM ps_product");
+			if($ids) {
+				$ids = array_map(function($e) { return $e['id_product']; }, $ids);
+				$ids = trim(implode(',', $ids));
+			}
+		}
+
+		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
+		if($ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
+
+		$query = "SELECT * FROM ps_product WHERE id_product IN ($sub_query)";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_product VALUES(
+				".$row['id_product'].",
+				".$row['id_supplier'].",
+				".$row['id_manufacturer'].",
+				".$row['id_category_default'].",
+				".$row['id_shop_default'].",
+				".$row['id_tax_rules_group'].",
+				".$row['on_sale'].",
+				".$row['online_only'].",
+				'".pSql(utf8_encode($row['ean13']))."',
+				NULL,
+				'".pSql(utf8_encode($row['upc']))."',
+				".$row['ecotax'].",
+				".$row['quantity'].",
+				".$row['minimal_quantity'].",
+				NULL,
+				0,
+				".$row['price'].",
+				".$row['wholesale_price'].",
+				'".pSql(utf8_encode($row['unity']))."',
+				".$row['unit_price_ratio'].",
+				".$row['additional_shipping_cost'].",
+				'".pSql(utf8_encode($row['reference']))."',
+				'".pSql(utf8_encode($row['supplier_reference']))."',
+				'".pSql(utf8_encode($row['location']))."',
+				".$row['width'].",
+				".$row['height'].",
+				".$row['depth'].",
+				".$row['weight'].",
+				".$row['out_of_stock'].",
+				0.00,
+				".$row['quantity_discount'].",
+				".$row['customizable'].",
+				".$row['uploadable_files'].",
+				".$row['text_fields'].",
+				".$row['active'].",
+				'".pSql(utf8_encode($row['redirect_type']))."',
+				0,
+				".$row['available_for_order'].",
+				'".pSql(utf8_encode($row['available_date']))."',
+				0,
+				'".pSql(utf8_encode($row['condition']))."',
+				".$row['show_price'].",
+				".$row['indexed'].",
+				'".pSql(utf8_encode($row['visibility']))."',
+				".$row['cache_is_pack'].",
+				".$row['cache_has_attachments'].",
+				".$row['is_virtual'].",
+				".$row['cache_default_attribute'].",
+				'".pSql(utf8_encode($row['date_add']))."',
+				'".pSql(utf8_encode($row['date_upd']))."',
+				".$row['advanced_stock_management'].",
+				3,
+				1,
+				0
+			)");
+
+		$query = 'SELECT * FROM ps_product_shop';
+		if($ids) $query .= " WHERE id_product NOT IN ($ids)";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_product_shop VALUES (
+				".$row['id_product'].",
+				".$row['id_shop'].",
+				".$row['id_category_default'].",
+				".$row['id_tax_rules_group'].",
+				".$row['on_sale'].",
+				".$row['online_only'].",
+				".$row['ecotax'].",
+				".$row['minimal_quantity'].",
+				NULL,
+				0,
+				".$row['price'].",
+				".$row['wholesale_price'].",
+				'".$row['unity']."',
+				".$row['unit_price_ratio'].",
+				".$row['additional_shipping_cost'].",
+				".$row['customizable'].",
+				".$row['uploadable_files'].",
+				".$row['text_fields'].",
+				".$row['active'].",
+				'".$row['redirect_type']."',
+				".$row['id_type_redirected'].",
+				".$row['available_for_order'].",
+				'".$row['available_date']."',
+				0,
+				'".$row['condition']."',
+				".$row['show_price'].",
+				".$row['indexed'].",
+				'".$row['visibility']."',
+				".$row['cache_default_attribute'].",
+				".$row['advanced_stock_management'].",
+				'".$row['date_add']."',
+				'".$row['date_upd']."',
+				3
+			)");
+
+		$query = 'SELECT * FROM ps_product_lang';
+		if($ids) $query .= " WHERE id_product NOT IN ($ids)";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc())
+			Db::getInstance()->execute("INSERT INTO ps_product_lang VALUES (
+				".$row['id_product'].",
+				".$row['id_shop'].",
+				".$row['id_lang'].",
+				'".pSql(utf8_encode($row['description']))."',
+				'".pSql(utf8_encode($row['description_short']))."',
+				'".pSql(utf8_encode($row['link_rewrite']))."',
+				'".pSql(utf8_encode($row['meta_description']))."',
+				'".pSql(utf8_encode($row['meta_keywords']))."',
+				'".pSql(utf8_encode($row['meta_title']))."',
+				'".pSql(utf8_encode($row['name']))."',
+				'".pSql(utf8_encode($row['available_now']))."',
+				'".pSql(utf8_encode($row['available_later']))."',
+				NULL,
+				NULL
+			)");
+
 	}
 }
