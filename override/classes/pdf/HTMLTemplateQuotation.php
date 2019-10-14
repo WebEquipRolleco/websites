@@ -17,13 +17,25 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 	}
 
 	/**
+    * Returns the template's HTML header
+    * @return string HTML header
+    **/
+    public function getHeader() {
+
+        $this->assignCommonHeaderData();
+        $this->smarty->assign('quotation', $this->quotation);
+
+        return $this->smarty->fetch($this->getTemplate('header-quotation'));
+    }
+
+	/**
 	 * Returns the template's HTML content
 	 * @return string HTML content
 	 */
 	public function getContent() {
 
 		$this->smarty->assign('quotation', $this->quotation);
-		$this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('rolleco.style-tab')));
+		$this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('style-tab')));
 		
 		return $this->smarty->fetch($this->getTemplate('quotation'));
 	}

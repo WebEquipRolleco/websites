@@ -38,7 +38,7 @@ class HTMLTemplateProductCore extends HTMLTemplate {
 
         //$this->assignCommonHeaderData();
         $this->smarty->assign('product', $this->product);
-        $this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('rolleco.style-tab')));
+        $this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('style-tab')));
         return $this->smarty->fetch($this->getTemplate('product.header'));
     }
 
@@ -51,7 +51,7 @@ class HTMLTemplateProductCore extends HTMLTemplate {
         //$this->assignCommonHeaderData();
         $this->smarty->assign('company', $this->company);
         $this->smarty->assign('date', date('d/m/Y H:i:s'));
-        $this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('rolleco.style-tab')));
+        $this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('style-tab')));
         return $this->smarty->fetch($this->getTemplate('product.footer'));
     }
 

@@ -7,64 +7,14 @@
 {assign var=block_height value=60}
 
 <table class="combinations">
-	<tr>
-		<td style="width:{$left_column}%;">
-
-			<table class="combinations">
-				<thead>
-					<tr>
-						<th>{l s="Devis #" pdf=true}{$quotation->reference}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="bg-light">
-						<td><b>{l s="Date :"}</b> {$quotation->date_add|date_format:'d/m/Y'}</td>
-					</tr>
-					<tr class="bg-light">
-						<td><b>{l s="Valide jusqu'au :"}</b> {$quotation->date_end|date_format:'d/m/Y'}</td>
-					</tr>
-					<tr class="bg-light">
-						<td><b>{l s="Votre contact :"}</b> {$quotation->getEmployee()->firstname}</td>
-					</tr>
-				</tbody>
-			</table>
-
-		</td>
-		<td style="width:{$space_column}%"></td>
-		<td style="width:{$right_column}%;">
-
-			<table class="combinations">
-				<thead>
-					<tr>
-						<th>{l s="Informations client" pdf=true}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="bg-light">
-						<td class="text-center">
-							{$quotation->details|replace:"\r\n":"<br />"}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-		</td>
-	</tr>
-</table>
-
-<table>
-	<tr><td>&nbsp;</td></tr>
-</table>
-
-<table class="combinations">
 	<thead>
 		<tr>
-			<th></th>
-			<th>{l s="Produit" pdf='true'}</th>
-			<th>{l s="Référence" pdf='true'}</th>
-			<th>{l s="PU HT" pdf='true'}</th>
-			<th>{l s="Quantité" pdf='true'}</th>
-			<th>{l s="Prix HT" pdf='true'}</th>
+			<th>{l s="Images" d='Shop.Pdf' pdf='true'}</th>
+			<th>{l s="Produit" d='Shop.Pdf' pdf='true'}</th>
+			<th>{l s="Réf." d='Shop.Pdf' pdf='true'}</th>
+			<th>{l s="Prix unitaire" d='Shop.Pdf' pdf='true'}</th>
+			<th>{l s="Qté" d='Shop.Pdf' pdf='true'}</th>
+			<th>{l s="Total" d='Shop.Pdf' pdf='true'}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -82,20 +32,31 @@
 						<br /> {$product->information}
 					{/if}
 				</td>
-				<td class="text-center">
-					<b>{$product->reference}</b>
+				<td class="text-center" style="font-size:10px; font-weight:bold;">
+					{$product->reference}
 				</td>
 				<td class="text-center">
-					{Tools::displayPrice($product->getPrice(false, false, false, 1))}
+					<div>{Tools::displayPrice($product->getPrice(false, false, false, 1))}</div>
+					<i style="font-size:7px; color:{$quotation->getShop()->color}">
+						{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax(1))]}
+					</i>
 				</td>
-				<td class="text-center">
+				<td class="text-center" style="font-size:10px; font-weight:bold;">
 					{$product->quantity}
 				</td>
 				<td class="text-center bold">
-					{Tools::displayPrice($product->getPrice())}
+					<div>{Tools::displayPrice($product->getPrice())}</div>
+					<i style="font-size:7px; color:{$quotation->getShop()->color}">
+						{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax())]}
+					</i>
 				</td>
 			</tr>
 		{/foreach}
+		<tr>
+			<td colspan="6">
+				{l s="Fin devis %s" sprintf=[$quotation->date_end|date_format:'d/m/Y'] d='Shop.Pdf' pdf='true'}
+			</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -111,7 +72,7 @@
 				<table class="combinations">
 					<thead>
 						<tr>
-							<th colspan="3">{l s="Options" pdf=true}</th>
+							<th colspan="3">{l s="Options" d='Shop.Pdf' pdf='true'}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -135,24 +96,31 @@
 			<table class="combinations">
 				<tbody>
 					<tr class="bg-light">
-						<td>{l s='Total produits HT' pdf=true}</td>
-						<td class="text-right">{Tools::displayPrice($quotation->getPrice())}</td>
+						<td class="text-right">
+							{l s='Total produits HT :' d='Shop.Pdf' pdf='true'} <br />
+							{l s="dont Ecotaxe :" d='Shop.Pdf' pdf='true'}
+						</td>
+						<td class="text-right">
+							{Tools::displayPrice($quotation->getPrice())} <br />
+							<i style="font-size:7px; color:{$quotation->getShop()->color}">
+								{Tools::displayPrice($quotation->getEcoTax())}
+							</i>
+						</td>
 					</tr>
 					<tr class="bg-light">
-						<td>{l s='Frais de port HT' pdf=true} <em class="text-primary">**</em></td>
+						<td class="text-right">
+							{l s='Frais de port HT' d='Shop.Pdf' pdf='true'} <br />
+							<i>{l s='** hors îles accessibles par un pont gratuit' d='Shop.Pdf' pdf='true'}</i>
+						</td>
 						<td class="text-right">{Tools::displayPrice($quotation->getBuyingFees())}</td>
 					</tr>
 					<tr class="bg-light">
-						<td>{l s='Total HT' pdf=true}</td>
+						<td class="text-right">{l s='Total HT' pdf=true}</td>
 						<td class="text-right">{Tools::displayPrice($quotation->getPrice(false, true))}</td>
 					</tr>
 					<tr class="bg-light">
 						<td>{l s='Total TVA' pdf=true}</td>
 						<td class="text-right">{Tools::displayPrice($quotation->getPrice(true, true) - $quotation->getPrice(false, true))}</td>
-					</tr>
-					<tr class="bg-light">
-						<td>{l s='Eco-participation' pdf=true}</td>
-						<td class="text-right">{Tools::displayPrice($quotation->getEcoTax())}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -160,10 +128,12 @@
 			<table class="combinations">
 				<tbody>
 					<tr>
-						<td class="bg-primary text-center bold">{l s='Total TTC' pdf=true}</td>
+						<th class="text-center bold">{l s='Total TTC (sans options)' pdf=true}</th>
 					</tr>
 					<tr class="bg-light">
-						<td class="text-center text-primary bold">{Tools::displayPrice($quotation->getPrice(true, true, true))}</td>
+						<td class="text-center bold" style="font-size:12px; color:{$quotation->getShop()->color}">
+							{Tools::displayPrice($quotation->getPrice(true, true, true))}
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -348,5 +318,4 @@
 <table>
 	<tr><td>&nbsp;</td></tr>
 	<tr><td class="text-danger text-center">{l s='* à préciser obligatoirement' pdf=true}</td></tr>
-	<tr><td class="text-primary text-center">{l s='** hors îles accessibles par un pont gratuit' pdf=true}</td></tr>
 </table>
