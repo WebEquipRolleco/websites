@@ -9,9 +9,6 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 		$this->quotation = $quotation;
 		$this->smarty = $smarty;
 
-		// footer informations
-		$this->display_footer = false;
-
 		$this->smarty->assign('header_mail', Configuration::get('PS_TEAM_PHONE'));
 		$this->smarty->assign('header_phone', Configuration::get('PS_TEAM_EMAIL'));
 	}
@@ -25,7 +22,19 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
         $this->assignCommonHeaderData();
         $this->smarty->assign('quotation', $this->quotation);
 
-        return $this->smarty->fetch($this->getTemplate('header-quotation'));
+        return $this->smarty->fetch($this->getTemplate('header.quotation'));
+    }
+
+    /**
+     * Returns the template's HTML footer
+     *
+     * @return string HTML footer
+     */
+    public function getFooter() {
+
+    	$this->smarty->assign('shop', $this->quotation->getShop());
+
+        return $this->smarty->fetch($this->getTemplate('footer.quotation'));
     }
 
 	/**

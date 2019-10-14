@@ -77,6 +77,10 @@
 		margin-top: 5px;
 	}
 
+	.block {
+		border:2px solid black;
+	}
+	
 	.text-center { text-align: center; }
 	.text-right { text-align: right; }
 

@@ -9,4 +9,11 @@ class Configuration extends ConfigurationCore {
 		return self::get($name, null, $order->id_shop_group, $order->id_shop, $default);
 	}
 	
+	/**
+	* Configuration en fonction d'une boutique (peu importe le contexte)
+	**/
+	public static function getForShop($name, $shop, $default = false) {
+		return self::get($name, null, null, $shop->id, $default);
+	}
+	
 }
