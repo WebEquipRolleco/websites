@@ -34,7 +34,7 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 
     	$this->smarty->assign('shop', $this->quotation->getShop());
 
-        return $this->smarty->fetch($this->getTemplate('footer.quotation'));
+        return $this->smarty->fetch($this->getTemplate('footer'));
     }
 
 	/**

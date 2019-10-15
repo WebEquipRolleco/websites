@@ -53,8 +53,13 @@
 		text-align: center;
 	}
 
+	table.combinations {
+		border-collapse: collapse;
+	}
 	table.combinations th {
 		background-color: {$dark};
+		border-top: 4px solid white;
+		border-right: 2px solid white;
 		color: white;
 		font-weight: bold;
 		font-size: 14px;
@@ -68,6 +73,11 @@
 		background-color: {$darkGrey};
 	}
 
+	table.combinations td {
+		border-top: 4px solid white;
+		border-right: 2px solid white;
+	}
+
 	.check {
 		width: 20px;
 		height: 20px;
@@ -78,7 +88,7 @@
 	}
 
 	.block {
-		border:2px solid black;
+		border:1px solid black;
 	}
 	
 	.text-center { text-align: center; }

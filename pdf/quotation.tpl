@@ -7,58 +7,55 @@
 {assign var=block_height value=60}
 {assign var=line_height value=16}
 
-<table class="combinations" cellspacing=2>
-	<thead>
-		<tr>
-			<th>{l s="Images" d='Shop.Pdf' pdf=true}</th>
-			<th>{l s="Produit" d='Shop.Pdf' pdf=true}</th>
-			<th>{l s="Réf." d='Shop.Pdf' pdf=true}</th>
-			<th>{l s="Prix unitaire" d='Shop.Pdf' pdf=true}</th>
-			<th>{l s="Qté" d='Shop.Pdf' pdf=true}</th>
-			<th>{l s="Total" d='Shop.Pdf' pdf=true}</th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$quotation->getProducts() item=product}
-			<tr class="odd">
-				<td>
-					<img src="{$product->getImageLink()}" style="height:25px; width:25px">
-				</td>
-				<td>
-					<b>{$product->getProductName()}</b>
-					{foreach from=$product->getProductProperties() item=property}
-						<br /> {$property}
-					{/foreach}
-					{if $product->information} 
-						<br /> <div style="font-size:8px">{$product->information|replace:"|":"<br />"}</div>
-					{/if}
-				</td>
-				<td class="text-center" style="font-size:10px; font-weight:bold;">
-					{$product->reference}
-				</td>
-				<td class="text-center">
-					<div>{Tools::displayPrice($product->getPrice(false, false, false, 1))}</div>
-					<i style="font-size:7px; color:{$quotation->getShop()->color}">
-						{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax(1))] d='Shop.Pdf' pdf=true}
-					</i>
-				</td>
-				<td class="text-center" style="font-size:10px; font-weight:bold;">
-					{$product->quantity}
-				</td>
-				<td class="text-center bold">
-					<div>{Tools::displayPrice($product->getPrice())}</div>
-					<i style="font-size:7px; color:{$quotation->getShop()->color}">
-						{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax())] d='Shop.Pdf' pdf=true}
-					</i>
-				</td>
-			</tr>
-		{/foreach}
+<page>
+<table cellpadding="3" class="combinations">
+	<tr>
+		<th>{l s="Images" d='Shop.Pdf' pdf=true}</th>
+		<th>{l s="Produit" d='Shop.Pdf' pdf=true}</th>
+		<th>{l s="Réf." d='Shop.Pdf' pdf=true}</th>
+		<th>{l s="Prix unitaire" d='Shop.Pdf' pdf=true}</th>
+		<th>{l s="Qté" d='Shop.Pdf' pdf=true}</th>
+		<th>{l s="Total" d='Shop.Pdf' pdf=true}</th>
+	</tr>
+	{foreach from=$quotation->getProducts() item=product}
 		<tr class="odd">
-			<td colspan="6">
-				{l s="Fin devis %s" sprintf=[$quotation->date_end|date_format:'d/m/Y'] d='Shop.Pdf' pdf=true}
+			<td class="text-center" style="vertical-align:middle;">
+				<img src="{$product->getImageLink()}" width="30" height="30">
+			</td>
+			<td>
+				<b>{$product->getProductName()}</b>
+				{foreach from=$product->getProductProperties() item=property}
+					<br /> {$property}
+				{/foreach}
+				{if $product->information} 
+					<br /> <div style="font-size:8px">{$product->information|replace:"|":"<br />"}</div>
+				{/if}
+			</td>
+			<td class="text-center" style="font-size:10px; font-weight:bold;">
+				{$product->reference}
+			</td>
+			<td class="text-center">
+				<div>{Tools::displayPrice($product->getPrice(false, false, false, 1))}</div>
+				<i style="font-size:7px; color:{$quotation->getShop()->color}">
+					{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax(1))] d='Shop.Pdf' pdf=true}
+				</i>
+			</td>
+			<td class="text-center" style="font-size:10px; font-weight:bold;">
+				{$product->quantity}
+			</td>
+			<td class="text-center bold">
+				<div>{Tools::displayPrice($product->getPrice())}</div>
+				<i style="font-size:7px; color:{$quotation->getShop()->color}">
+					{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax())] d='Shop.Pdf' pdf=true}
+				</i>
 			</td>
 		</tr>
-	</tbody>
+	{/foreach}
+	<tr class="odd">
+		<td colspan="6">
+			{l s="Fin devis %s" sprintf=[$quotation->date_end|date_format:'d/m/Y'] d='Shop.Pdf' pdf=true}
+		</td>
+	</tr>
 </table>
 
 <table>
@@ -70,19 +67,21 @@
 		<td style="width:{$left_column}%;">
 
 			{if !empty($quotation->getOptions())}
-				<table class="combinations">
+				<table cellpadding="3" class="combinations">
 					<thead>
 						<tr>
-							<th colspan="3">{l s="Options" d='Shop.Pdf' pdf=true}</th>
+							<th style="width:5%;"></th>
+							<th style="width:65%">{l s="Options" d='Shop.Pdf' pdf=true}</th>
+							<th style="width:30%">{l s="Prix HT" d='Shop.Pdf' pdf=true}</th>
 						</tr>
 					</thead>
 					<tbody>
 						{foreach from=OrderOption::getOrderOptions(true, $quotation->id_shop) item=option}
 							{if $option->id|in_array:$quotation->getOptions()}
 								<tr class="bg-light">
-									<td class="text-center" style="width:5%; border:1px solid black"></td>
-									<td class="text-center"style="width:80%">{$option->name}</td>
-									<td class="text-center" style="width:15%">{Tools::displayPrice($option->getQuotationPrice($quotation))}</td>
+									<td class="text-center" style="width:5%;"></td>
+									<td class="text-center" style="width:65%">{$option->name}</td>
+									<td class="text-center" style="width:30%">{Tools::displayPrice($option->getQuotationPrice($quotation))}</td>
 								</tr>
 							{/if}
 						{/foreach}
@@ -94,8 +93,8 @@
 		<td style="width:{$space_column}%"></td>
 		<td style="width:{$right_column}%;">
 
-			<table class="combinations">
-				<tbody>
+			<table cellpadding="3" class="combinations">
+
 					<tr class="bg-light">
 						<td class="text-right" style="width:70%">
 							{l s='Total produits HT :' d='Shop.Pdf' pdf=true} <br />
@@ -123,22 +122,16 @@
 						<td class="text-right">{l s='Total TVA :' d='Shop.Pdf' pdf=true}</td>
 						<td class="text-right">{Tools::displayPrice($quotation->getPrice(true, true) - $quotation->getPrice(false, true))}</td>
 					</tr>
-				</tbody>
-			</table>
-
-			<table class="combinations">
-				<tbody>
 					<tr>
-						<th class="text-center bold">
+						<th colspan="2" class="text-center bold">
 							{l s='Total TTC (sans options) :' d='Shop.Pdf' pdf=true}
 						</th>
 					</tr>
 					<tr class="bg-light">
-						<td class="text-center bold" style="font-size:12px; color:{$quotation->getShop()->color}">
+						<td colspan="2" class="text-center bold" style="font-size:12px; color:{$quotation->getShop()->color}">
 							{Tools::displayPrice($quotation->getPrice(true, true, true))}
 						</td>
 					</tr>
-				</tbody>
 			</table>
 
 		</td>
@@ -271,3 +264,4 @@
 		</td>
 	</tr>
 </table>
+</page>
