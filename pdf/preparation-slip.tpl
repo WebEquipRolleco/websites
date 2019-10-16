@@ -35,6 +35,14 @@
 							{/foreach}
 						</td>
 					</tr>
+					<tr>
+						<td style="text-align:center">{l s="Numéro de client" d='Shop.Pdf' pdf=true}</td>
+						<td style="text-align:center">{$order->id_customer}</td>
+					</tr>
+					<tr>
+						<td style="text-align:center">{l s="Numéro de panier" d='Shop.Pdf' pdf=true}</td>
+						<td style="text-align:center">{$order->id_cart}</td>
+					</tr>
 					<tr style="background-color:lightblue;">
 						<td style="text-align:center; font-weight:bold;">
 							{l s="ADRESSE DE FACTURATION" d='Shop.Pdf' pdf=true}
