@@ -227,6 +227,18 @@ class Quotation extends ObjectModel {
     }
 
     /**
+    * Retourne le montant de la TVA
+    * @return float
+    **/
+    public function getTVA() {
+        
+        $taxes = $this->getPrice(true, true) - $this->getPrice(false, true);
+        $taxes -= $this->getEcoTax();
+
+        return $taxes;
+    }
+
+    /**
     * Retourne le label de l'état courant du devis
     **/
     public function getStatusLabel() {

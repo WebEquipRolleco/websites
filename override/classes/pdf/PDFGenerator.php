@@ -9,7 +9,7 @@ class PDFGenerator extends PDFGeneratorCore {
 		// [/Activis] Modified
 		$this->setMargins(10, 30, 10);
 		// [/Activis]
-		$this->SetAutoPageBreak(true, 27);
+		$this->SetAutoPageBreak(true, 31);
 	
 		$this->AddPage();
 	

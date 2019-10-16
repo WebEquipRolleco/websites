@@ -110,9 +110,15 @@
 					<tr class="bg-light">
 						<td class="text-right">
 							{l s='Frais de port HT :' d='Shop.Pdf' pdf=true} <br />
-							<i>{l s='hors îles accessibles par un pont gratuit' d='Shop.Pdf' pdf=true}</i>
+							<i style="font-size:8px">{l s='hors îles accessibles par un pont gratuit' d='Shop.Pdf' pdf=true}</i>
 						</td>
-						<td class="text-right">{Tools::displayPrice($quotation->getBuyingFees())}</td>
+						<td class="text-right">
+							{if $quotation->getShop()->id == 1}
+								{l s="Gratuit" d='Shop.Pdf' pdf=true}
+							{else}
+								{Tools::displayPrice($quotation->getBuyingFees())}
+							{/if}
+						</td>
 					</tr>
 					<tr class="bg-light">
 						<td class="text-right">{l s='Total HT :' d='Shop.Pdf' pdf=true}</td>
@@ -120,7 +126,7 @@
 					</tr>
 					<tr class="bg-light">
 						<td class="text-right">{l s='Total TVA :' d='Shop.Pdf' pdf=true}</td>
-						<td class="text-right">{Tools::displayPrice($quotation->getPrice(true, true) - $quotation->getPrice(false, true))}</td>
+						<td class="text-right">{Tools::displayPrice($quotation->getTVA())}</td>
 					</tr>
 					<tr>
 						<th colspan="2" class="text-center bold">
