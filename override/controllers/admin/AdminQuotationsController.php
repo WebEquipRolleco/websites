@@ -185,6 +185,9 @@ class AdminQuotationsController extends AdminController {
 
         // Envoi du mail au client
         $this->sendMail();
+
+        // Actions groupées
+        $this->handleBulkActions();
     }
 
     public function initContent() {
@@ -521,6 +524,36 @@ class AdminQuotationsController extends AdminController {
         $tpl->assign('quotation', new Quotation($this->id_quotation));
 
         die($tpl->fetch());
+    }
+
+    /**
+    * Gestion des actions groupées
+    **/
+    public function handleBulkActions() {
+        if($ids = Tools::getValue('quotationBox')) {
+            $ids = implode(',', $ids);
+
+            // Suppression
+            if(Tools::getIsset('submitBulkdeletequotation')) {
+                Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.Quotation::TABLE_NAME." WHERE ".Quotation::TABLE_PRIMARY." IN ($ids)");
+                Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.QuotationAssociation::TABLE_NAME." WHERE ".Quotation::TABLE_PRIMARY." IN ($ids)");
+                Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE ".Quotation::TABLE_PRIMARY." IN ($ids)");
+                $this->confirmations[] = "Les devis ont été supprimés";
+            }
+
+            // Activation
+            if(Tools::getIsset('submitBulkenableSelectionquotation')) {
+                Db::getInstance()->execute("UPDATE "._DB_PREFIX_.Quotation::TABLE_NAME." SET active = 1 WHERE ".Quotation::TABLE_PRIMARY." IN ($ids)");
+                $this->confirmations[] = "Les devis ont été activés";
+            }
+
+            // Desactivation
+            if(Tools::getIsset('submitBulkdisableSelectionquotation')) {
+                Db::getInstance()->execute("UPDATE "._DB_PREFIX_.Quotation::TABLE_NAME." SET active = 0 WHERE ".Quotation::TABLE_PRIMARY." IN ($ids)");
+                $this->confirmations[] = "Les devis ont été désactivés";
+            }
+
+        }
     }
 
 }
