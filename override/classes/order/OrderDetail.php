@@ -19,6 +19,7 @@ class OrderDetail extends OrderDetailCore {
 
 	/** variables temporaires **/
 	private $supplier;
+    private $quotation_line;
 
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
@@ -190,11 +191,22 @@ class OrderDetail extends OrderDetailCore {
 		return $this->supplier;
 	}
 
+    /**
+    * Retourne la ligne de devis concernée
+    **/
+    public function getQuotationLine() {
+
+        if(!$this->quotation_line and $this->id_quotation_line)
+            $this->quotation_line = new QuotationLine($this->id_quotation_line);
+
+        return $this->quotation_line;
+    }
+
 	/**
 	* Retourne le prix d'achat total (achat + frais de ports)
 	**/
 	public function getTotalBuyingPrice() {
-		return $this->detail->purchase_supplier_price * $this->product_quantity + $this->total_shipping_price_tax_excl;
+		return $this->purchase_supplier_price * $this->product_quantity + $this->total_shipping_price_tax_excl;
 	}
 
 }

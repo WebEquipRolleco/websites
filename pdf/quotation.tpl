@@ -175,7 +175,7 @@
 						{l s='Fait à :' d='Shop.Pdf' pdf=true}
 					</td>
 					<td class="text-right" style="width:50%;">
-						{l s='Le : ...../...../2019' d='Shop.Pdf' pdf=true}
+						{l s='Le : ...../...../%s' sprintf=['now'|date_format:'Y'] d='Shop.Pdf' pdf=true}
 					</td>
 				</tr>
 			</table>

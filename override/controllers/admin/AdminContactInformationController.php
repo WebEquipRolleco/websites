@@ -31,6 +31,11 @@ class AdminContactInformationControllerCore extends AdminController {
 			array('label'=>'Pays', 'name'=>'PS_SHOP_COUNTRY')
 		);
 
+		$data[1]['Bon de préparation'] = array(
+			array('label'=>'Préfix commande M3', 'name'=>'PS_SHOP_PREFIX_M3'),
+			array('label'=>"Préfix numéro d'OA", 'name'=>'PS_SHOP_PREFIX_OA')
+		);
+
 		$data[2]['Information légales'] = array(
 			array('label'=>'Type société', 'name'=>'PS_SHOP_TYPE'),
 			array('label'=>'RIB', 'name'=>'PS_SHOP_RIB'),

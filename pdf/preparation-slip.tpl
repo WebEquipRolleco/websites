@@ -1,252 +1,130 @@
+{assign var=left_column value=50}
+{assign var=right_column value=49}
+{assign var=space_column value=(100 - $left_column - $right_column)}
+
 <div style="font-size: 9pt; color: #444">
 
 	<table>
-		<tr><td>&nbsp;</td></tr>
-	</table>
-
-	{* TITRE *}
-	<table width="100%" cellpadding="5px" style="border-collapse: collapse; border:1px solid #4D4D4D">
-		<thead>
-			<tr style="background-color:#4D4D4D; color:#FFF;">
-				<td style="text-align:center">
-					<span style="font-size:14pt; font-weight:bold;">{l s='BON DE PREPARATION' pdf='true'}</span>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align:center">
-					{$employee->firstname} <span style="text-transform:uppercase;">{$employee->lastname}</span>
-				</td>
-			</tr>
-		</thead>
+		<tr><td style="font-weight:bold; font-size:20px;">{l s='Commande : %s' sprintf=[$order->reference] d='Shop.Pdf' pdf=true}</td></tr>
 	</table>
 
 	<table>
 		<tr><td style="line-height: 6px">&nbsp;</td></tr>
 	</table>
 
-	{* COMMANDE *}
-	<table width="100%" cellpadding="5px" style="border-collapse: collapse; border:1px solid #4D4D4D">
-		<tr style="background-color:#4D4D4D; color:#FFF;">
-			<td colspan="2" style="text-align:center">
-				<span style="font-size:14pt; font-weight:bold;">{l s='Commande' pdf='true'} {$order->reference}</span>
-			</td>
-		</tr>
+	<table width="100%">
 		<tr>
-			<td colspan="2" style="text-align:center; background-color:{$order->getState()->color}; {if Tools::getBrightness($order->getState()->color) < 128}color:white;{/if}">
-				<b>{$order->getState()->name}</b>
+
+			{* COLONNE GAUCHE *}
+			<td width="{$left_column}%">
+				<table width="100%" border="1" cellpadding="4">
+					<tr style="background-color:cornsilk">
+						<td colspan="2" style="text-align:center; font-weight:bold; font-size:14px">
+							{l s="INFORMATION COMMANDE" d='Shop.Pdf' pdf=true}
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:center">{l s="Date de la commande" d='Shop.Pdf' pdf=true}</td>
+						<td style="text-align:center">{$order->date_add|date_format:'d/m/Y à H:i'}</td>
+					</tr>
+					<tr>
+						<td style="text-align:center">{l s="Type de paiement" d='Shop.Pdf' pdf=true}</td>
+						<td style="text-align:center">
+							{foreach from=$order->getOrderPayments() item='payment'}
+								{$payment->payment_method}
+							{/foreach}
+						</td>
+					</tr>
+					<tr style="background-color:lightblue;">
+						<td style="text-align:center; font-weight:bold;">
+							{l s="ADRESSE DE FACTURATION" d='Shop.Pdf' pdf=true}
+						</td>
+						<td style="text-align:center; font-weight:bold;">
+							{l s="ADRESSE DE LIVRAISON" d='Shop.Pdf' pdf=true}
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:center; font-size:8px">
+							{assign var='address' value=$order->getAddressInvoice()}
+							{if $address}
+								{if $address->company}{$address->company} <br />{/if}
+								{if $order->getCustomer()->siret}{l s="Siret :" d='Shop.Pdf' pdf=true} {$order->getCustomer()->siret} <br />{/if}
+								{if $order->getCustomer()->tva}{l s="TVA intra :" d='Shop.Pdf' pdf=true} {$order->getCustomer()->tva} <br />{/if}
+								{$address->lastname} {$address->firstname} <br />
+								{if $address->address1}{$address->address1} <br />{/if}
+								{if $address->address2}{$address->address2} <br />{/if}
+								{$address->postcode} {$address->city} <br />
+								{if $address->country}{$address->country} <br />{/if}
+								{if $address->phone}{l s="Tél :" d='Shop.Pdf' pdf=true} {$address->phone}{/if}
+							{/if}
+						</td>
+						<td style="text-align:center; font-size:8px">
+							{assign var='address' value=$order->getAddressDelivery()}
+							{if $address}
+								{if $address->company}{$address->company} <br />{/if}
+								{$address->lastname} {$address->firstname} <br />
+								{if $address->address1}{$address->address1} <br />{/if}
+								{if $address->address2}{$address->address2} <br />{/if}
+								{$address->postcode} {$address->city} <br />
+								{if $address->country}{$address->country} <br />{/if}
+								{if $address->phone}{l s="Tél :" d='Shop.Pdf' pdf=true} {$address->phone} <br />{/if}
+								{$order->delivery_information}
+							{/if}
+						</td>
+					</tr>
+				</table>
 			</td>
+
+			{* ESPACE *}
+			<td width="{$space_column}%"></td>
+
+			{* COLONNE DROITE *}
+			<td width="{$right_column}%">
+				<table width="100%" border="1" cellpadding="4">
+					<tr style="background-color:thistle">
+						<td colspan="2" style="text-align:center; font-weight:bold; font-size:14px">
+							{l s="ETAPES SAISIE" d='Shop.Pdf' pdf=true}
+						</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">
+							{l s="N° Edeal :" d='Shop.Pdf' pdf=true} 
+							{if {$order->getCustomer()->reference}}<b style="font-size:14px">{$order->getCustomer()->reference}</b>{/if}
+						</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="Vérif Prestashop" d='Shop.Pdf' pdf=true}</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="N° cmde M3 : %s............" sprintf=[Configuration::get('PS_SHOP_PREFIX_M3', null, $order->id_shop)] d='Shop.Pdf' pdf=true}</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="N° OA : %s............" sprintf=[Configuration::get('PS_SHOP_PREFIX_OA', null, $order->id_shop)] d='Shop.Pdf' pdf=true}</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="Envoi commande fournisseur" d='Shop.Pdf' pdf=true}</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="Date de paiement : ......./......./%s" sprintf=['now'|date_format:'Y'] d='Shop.Pdf' pdf=true}</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="Date de remboursement : ......./......./20......" d='Shop.Pdf' pdf=true}</td>
+					</tr>
+					<tr>
+						<td width="10%"></td>
+						<td width="90%">{l s="Montant remboursé : ......................" d='Shop.Pdf' pdf=true}</td>
+					</tr>
+				</table>
+			</td>
+
 		</tr>
-		<tr>
-			<td width="70%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center;">
-				{foreach from=$order->getOrderPayments() item='payment'}
-					{$payment->payment_method}
-				{/foreach}
-			</td>
-			<td width="30%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center;">
-				{$order->date_add|date_format:'d/m/Y à H:i:s'}
-			</td>
-		</tr>
-	</table>
-
-	<table>
-		<tr><td style="line-height: 6px">&nbsp;</td></tr>
-	</table>
-
-	{* LIGNE INFOS *}
-	<table>
-		<tbody>
-			<tr>
-
-				{* CLIENT *}
-				<td width="45%">
-					<table width="100%" cellpadding="5px" style="border-collapse: collapse; border:1px solid #4D4D4D">
-						<tr style="background-color:#4D4D4D; color:#FFF;">
-							<td colspan="2" style="text-align:center">
-								<span style="font-size:14pt; font-weight:bold;">{l s='Client' pdf='true'}</span>
-							</td>
-						</tr>
-						<tr>
-							<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								<b>{l s="E-mail"}</b>
-							</td>
-							<td style="padding-right:10px; border-bottom:1px solid #4D4D4D; text-align:right;">
-								{$order->getCustomer()->email|default:"-"}
-							</td>
-						</tr>
-						<tr>
-							<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								<b>{l s="Référence E-deal"}</b>
-							</td>
-							<td style="padding-right:10px; border-bottom:1px solid #4D4D4D; text-align:right;">
-								{$order->getCustomer()->reference|default:"-"}
-							</td>
-						</tr>
-						<tr>
-							<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								<b>{l s="Société"}</b>
-							</td>
-							<td style="padding-right:10px; border-bottom:1px solid #4D4D4D; text-align:right;">
-								{$order->getCustomer()->company|default:"-"}
-							</td>
-						</tr>
-						<tr>
-							<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								<b>{l s="SIRET"}</b>
-							</td>
-							<td style="padding-right:10px; border-bottom:1px solid #4D4D4D; text-align:right;">
-								{$order->getCustomer()->siret|default:"-"}
-							</td>
-						</tr>
-						<tr>
-							<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								<b>{l s="TVA interne"}</b>
-							</td>
-							<td style="padding-right:10px; border-bottom:1px solid #4D4D4D; text-align:right;">
-								{$order->getCustomer()->tva|default:"-"}
-							</td>
-						</tr>
-					</table>
-				</td>
-
-				<td width="10%"></td>
-
-				{* INFORMATIONS *}
-				<td width="45%">
-					<table width="100%" cellpadding="5px" style="border-collapse: collapse; border:1px solid #4D4D4D">
-						<tr style="background-color:#4D4D4D; color:#FFF;">
-							<td colspan="2" style="text-align:center">
-								<span style="font-size:14pt; font-weight:bold;">{l s='Informations' pdf='true'}</span>
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='WEB00______' pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='Saisie tableau CA' pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='Référence M3 = 000711_____' pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s="N° Ordre d'achat : 704_____" pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='Commande fournisseur' pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='Date de paiement : __ / __ / 20__' pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='Date remboursement : __ / __ / 20__' pdf='true'}
-							</td>
-						</tr>
-						<tr>
-							<td width="10%" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-								&nbsp;
-							</td>
-							<td width="90%" style="border-bottom:1px solid #4D4D4D;">
-								{l s='Montant Remboursement : _____________________ €' pdf='true'}
-							</td>
-						</tr>
-					</table>
-				</td>
-
-			</tr>
-		</tbody>
-	</table>
-
-	<table>
-		<tr><td style="line-height: 6px">&nbsp;</td></tr>
-	</table>
-
-	{* ADRESSES *}
-	<table width="100%" cellpadding="5px" style="border-collapse: collapse; border:1px solid #4D4D4D">
-		<thead>
-			<tr style="background-color:#4D4D4D; color:#FFF;">
-				<td style="text-align:center">
-					<span style="font-size:14pt; font-weight:bold;">{l s='Adresse de facturation' pdf='true'}</span>
-				</td>
-				<td style="text-align:center">
-					<span style="font-size:14pt; font-weight:bold;">{l s='Adresse de livraison' pdf='true'}</span>
-				</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td style="border-right:1px solid #4D4D4D; text-align:center">
-					{assign var='address' value=$order->getAddressInvoice()}
-					{if $address}
-						<b>{$address->alias|default:"-"}</b> <br /><br />
-						{$address->firstname} <span style="text-transform:uppercase;">{$address->lastname}</span> <br />
-						{$address->address1} <br />
-						{if $address->address2}
-							{$address->address2} <br />
-						{/if}
-						{$address->postcode} <span style="text-transform:uppercase;">{$address->city}</span> <br />
-						{$address->country}
-						{if $address->phone or $address->phone_mobile}
-							<br /><br />
-							{$address->phone} 
-							{if $address->phone and $address->phone_mobile} / {/if}
-							{$address->phone_mobile} 
-						{/if}
-					{/if}
-				</td>
-				<td style="text-align:center">
-					{assign var='address' value=$order->getAddressDelivery()}
-					{if $address}
-						<b>{$address->alias|default:"-"}</b> <br /><br />
-						{$address->firstname} <span style="text-transform:uppercase;">{$address->lastname}</span> <br />
-						{$address->address1} <br />
-						{if $address->address2}
-							{$address->address2} <br />
-						{/if}
-						{$address->postcode} <span style="text-transform:uppercase;">{$address->city}</span> <br />
-						{$address->country}
-						{if $address->phone or $address->phone_mobile}
-							<br /><br />
-							{$address->phone} 
-							{if $address->phone and $address->phone_mobile} / {/if}
-							{$address->phone_mobile} 
-						{/if}
-					{/if}
-				</td>
-			</tr>
-		</tbody>
 	</table>
 
 	<table>
@@ -254,96 +132,109 @@
 	</table>
 
 	{* PRODUITS *}
-	<table width="100%" cellpadding="5px" style="border-collapse: collapse; border:1px solid #4D4D4D">
+	<table width="100%" border="1" cellpadding="4">
 		<thead>
-			<tr style="background-color:#4D4D4D; color:#FFF;">
-				<td>
-					<span style="font-size:8pt; font-weight:bold;">{l s='Produit' pdf='true'}</span>
+			<tr style="background-color:cornsilk;">
+				<td style="text-align:center">
+					<span style="font-size:8pt; font-weight:bold;">{l s='Nom' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='Référence' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='Réf.' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='PA' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s="Prix d'achat" d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='PU (HT)' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='Prix unitaire (HT)' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='Quantité' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='Qté' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='Total (HT)' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='Total (HT)' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='Fournisseur' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='Fournisseur' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='Commentaire' pdf='true'}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='Commentaire' d='Shop.Pdf' pdf=true}</span>
 				</td>
 			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$order->getDetails() item='detail'}
 				<tr>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D;">
-						{$detail->product_name}
-					</td>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{$detail->product_reference}
-					</td>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{Tools::displayPrice($detail->getTotalBuyingPrice())}
-					</td>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{Tools::displayPrice($detail->unit_price_tax_excl)}
-					</td>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{$detail->product_quantity}
-					</td>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{Tools::displayPrice($detail->total_price_tax_excl)}
-					</td>
-					<td style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:center">
-						{if $detail->getSupplier()}
-							{$detail->getSupplier()->name}
+					<td>
+						<b>{$detail->product_name}</b>
+						{if $detail->comment}
+							<br /><br /> {$detail->comment}
 						{/if}
 					</td>
-					<td style="border-bottom:1px solid #4D4D4D; text-align:center">
-						{$detail->comment}
+					<td style="text-align:center">
+						{$detail->product_reference}
+					</td>
+					<td style="text-align:center">
+						{Tools::displayPrice($detail->getTotalBuyingPrice())}
+						<hr />
+						{l s="PA :" d='Shop.Pdf' pdf=true} {Tools::displayPrice($detail->purchase_supplier_price)} <br />
+						{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($detail->total_shipping_price_tax_excl / $detail->product_quantity)}
+					</td>
+					<td style="text-align:center">
+						{Tools::displayPrice($detail->unit_price_tax_excl)}
+						<br /><br />
+						<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax / $detail->product_quantity)}</i>
+					</td>
+					<td style="text-align:center">
+						{$detail->product_quantity}
+					</td>
+					<td style="text-align:center">
+						{Tools::displayPrice($detail->total_price_tax_excl)}
+						<br /><br />
+						<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax)}</i>
+					</td>
+					<td style="text-align:center">
+						{if $detail->getSupplier()}
+							{$detail->getSupplier()->reference} {$detail->getSupplier()->name} <br /><br />
+						{/if}
+						{$detail->product_supplier_reference}
+					</td>
+					<td style="text-align:center">
+						{if $detail->getQuotationLine()}
+							{$detail->getQuotationLine()->comment}
+						{/if}
 					</td>
 				</tr>
 			{/foreach}
 			<tr>
-				<td colspan="7" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td colspan="7" style="text-align:right;">
 					<span style="font-size:8pt; font-weight:bold;">{l s="Frais d'expédition" pdf='true'}</span>
 				</td>
-				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td style="text-align:center;">
 					{Tools::displayPrice($order->getDeliveryPrice())}
 				</td>
 			</tr>
 			<tr>
-				<td colspan="7" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td colspan="7" style="text-align:right;">
 					<span style="font-size:8pt; font-weight:bold;">{l s="Sous total HT" pdf='true'}</span>
 				</td>
-				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td style="text-align:center;">
 					{Tools::displayPrice($order->total_paid_tax_excl)}
 				</td>
 			</tr>
 			<tr>
-				<td colspan="7" style="border-right:1px solid #4D4D4D; border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td colspan="7" style="text-align:right;">
 					<span style="font-size:8pt; font-weight:bold;">{l s="TVA" pdf='true'}</span>
 				</td>
-				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td style="text-align:center;">
 					{Tools::displayPrice($order->total_paid_tax_incl - $order->total_paid_tax_excl)}
 				</td>
 			</tr>
 			<tr>
-				<td colspan="7" style="border-right:1px solid #4D4D4D; text-align:right; padding-right:10px">
+				<td colspan="7" style="text-align:right;">
 					<span style="font-size:8pt; font-weight:bold;">{l s="TOTAL TTC" pdf='true'}</span>
 				</td>
-				<td style="border-bottom:1px solid #4D4D4D; text-align:right; padding-right:10px">
-					{Tools::displayPrice($order->total_paid_tax_incl)}
+				<td style="text-align:center;">
+					<b>{Tools::displayPrice($order->total_paid_tax_incl)}</b>
 				</td>
 			</tr>
 		</tbody>
