@@ -543,7 +543,7 @@ class Webequip_recall extends Module {
 		$date = new DateTime('today');
 		$date->modify("-$nb_days days");
 
-		$sql = "SELECT DISTINCT(o.internal_reference as reference)
+		$sql = "SELECT DISTINCT(o.internal_reference) as reference
 				FROM ps_orders o, ps_order_history h
 				WHERE o.id_order = h.id_order 
 				AND h.date_add < '".$date->format('Y-m-d 23:59:59')."'
