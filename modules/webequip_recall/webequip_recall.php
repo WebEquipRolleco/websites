@@ -545,7 +545,7 @@ class Webequip_recall extends Module {
 
 		$sql = "SELECT DISTINCT(o.internal_reference as reference)
 				FROM ps_orders o, ps_order_history h
-				WHERE o.id_order_ =h.id_order 
+				WHERE o.id_order = h.id_order 
 				AND h.date_add < '".$date->format('Y-m-d 23:59:59')."'
 				AND h.id_order_state = $id_state_check
 				AND (o.invoice_number IS NULL OR o.invoice_number = '')
