@@ -10,6 +10,8 @@ class Webequip_Configuration extends Module {
 
     const CONFIG_DEFAULT_STATE_SUCCESS = 'DEFAULT_STATE_SUCCESS';
     const CONFIG_DEFAULT_STATE_FAILURE = 'DEFAULT_STATE_FAILURE';
+    const CONFIG_BLBC_HIDDEN_MAIL = "BLBC_HIDDEN_MAIL";
+    const CONFIG_BLBC_ORDER_STATE = "BLBC_ORDER_STATE";
 
 	public function __construct() {
         $this->name = 'webequip_configuration';
@@ -229,6 +231,10 @@ class Webequip_Configuration extends Module {
                 Configuration::updateValue($name, $id_state);
         }
 
+        foreach(array(self::CONFIG_BLBC_HIDDEN_MAIL, self::CONFIG_BLBC_ORDER_STATE) as $name)
+            if(Tools::getIsset($name))
+                Configuration::updateValue($name, Tools::getValue($name));
+
         $this->context->smarty->assign('tabs', $tabs);
         $this->context->smarty->assign('cms', CMS::getCMSPages(1));
         $this->context->smarty->assign('old_sav_id', $this->isTabInstalled(self::OLD_SAV_TAB));
@@ -236,6 +242,8 @@ class Webequip_Configuration extends Module {
         $this->context->smarty->assign('states', OrderState::getOrderStates(1));
         $this->context->smarty->assign(self::CONFIG_DEFAULT_STATE_SUCCESS, Configuration::get(self::CONFIG_DEFAULT_STATE_SUCCESS));
         $this->context->smarty->assign(self::CONFIG_DEFAULT_STATE_FAILURE, Configuration::get(self::CONFIG_DEFAULT_STATE_FAILURE));
+        $this->context->smarty->assign(self::CONFIG_BLBC_HIDDEN_MAIL, Configuration::get(self::CONFIG_BLBC_HIDDEN_MAIL));
+        $this->context->smarty->assign(self::CONFIG_BLBC_ORDER_STATE, Configuration::get(self::CONFIG_BLBC_ORDER_STATE));
 
         return $this->display(__FILE__, 'config.tpl');
     }

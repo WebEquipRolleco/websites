@@ -149,6 +149,36 @@
 <form method="post">
 	<div class="panel">
 		<div class="panel-heading">
+			<i class="icon-cogs"></i> Configuration envoi des BC / BL
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="form-group">
+					<label for="BLBC_ORDER_STATE">Mail en copie lors de l'envoi</label>
+					<input type="text" id="BLBC_ORDER_STATE" class="form-control" name="BLBC_HIDDEN_MAIL" value="{$BLBC_HIDDEN_MAIL}">
+				</div>
+				<div class="form-group">
+					<label>Changement d'état lors de l'envoi</label>
+					<select class="form-control" name="BLBC_ORDER_STATE">
+						<option value=""></option>
+						{foreach from=$states item=state}
+							<option value="{$state.id_order_state}" {if $BLBC_ORDER_STATE == $state.id_order_state}selected{/if}>{$state.name}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="submit" class="btn btn-success">
+				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
+			</button>
+		</div>
+	</div>
+</form>
+
+<form method="post">
+	<div class="panel">
+		<div class="panel-heading">
 			<i class="icon-cogs"></i> Forcer la police du menu principal	
 		</div>
 		<div class="row">
