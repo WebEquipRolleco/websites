@@ -105,3 +105,196 @@
     </tfoot>
   </table>
 </div>
+
+{* Modal envoi mails classiques *}
+<form method="post">
+  <div id="normal_send_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <b class="modal-title">{l s="Envoi des bons de préparation / livraison"}</b>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr class="bg-primary">
+                <th><b>{l s="Fournisseur"}</b></th>
+                <th class="text-center"><b>{l s="BC"}</b></th>
+                <th class="text-center"><b>{l s="BL"}</b></th>
+                <th class="text-center"><b>{l s="E-mails"}</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              {foreach from=OA::findByOrder($order->id) item='oa'}
+                {if $oa->getSupplier()->emails}
+                  <tr>
+                    <td><b>{$oa->getSupplier()->name}</b></td>
+                    <td class="text-center">
+                      {if $oa->getSupplier()->BC}
+                        <span class="icon-check text-success"></span>
+                      {else}
+                        <span class="icon-times text-danger"></span>
+                      {/if}
+                    </td>
+                    <td class="text-center">
+                      {if $oa->getSupplier()->BL}
+                        <span class="icon-check text-success"></span>
+                      {else}
+                        <span class="icon-times text-danger"></span>
+                      {/if}
+                    </td>
+                    <td class="text-center">
+                      {$oa->getSupplier()->emails}
+                    </td>
+                  </tr>
+                {/if}
+              {/foreach}
+            </tbody>
+          </table>
+          <table class="table" style="margin-top:20px">
+            <thead>
+              <tr>
+                <th class="bg-primary"><b>{l s="Message envoyé"}</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="text" class="form-control" name="object" value="{l s='Object.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Object'}" placeholder="{l s='Objet du mail'}">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <textarea class="form-control" rows="5" name="message" placeholder="{l s='Message personnalisé'}">{l s='Message.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Message'}</textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" name="send_documents">
+            <b>{l s="Envoyer"|upper}</b>
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            <b>{l s="Annuler"|upper}</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{* Modal envoi mails spécifiques *}
+<form method="post">
+  <div id="special_send_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <b class="modal-title">{l s="Envoi des bons de préparation / livraison"}</b>
+          </div>
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr class="bg-primary">
+                <th colspan="2" class="text-center">
+                  <b>{l s="Documents à envoyer"}</b>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center" style="padding:5px">
+                  <div class="label label-default">
+                    <input type="checkbox" id="doc_BC" class="specific_document" name="documents[]" value="BC" style="vertical-align:middle"> 
+                    <b>{l s="Bon de commande"}</b>
+                  </div>
+                </td>
+                <td class="text-center" style="padding:5px">
+                  <div class="label label-default">
+                    <input type="checkbox" id="doc_BL" class="specific_document" name="documents[]" value="BL" style="vertical-align:middle"> 
+                    <b>{l s="Bon de livraison"}</b>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table" style="margin-top:20px">
+            <thead>
+              <tr class="bg-primary">
+                <th></th>
+                <th><b>{l s="Fournisseur"}</b></th>
+                <th class="text-center"><b>{l s="E-mails"}</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              {foreach from=OA::findByOrder($order->id) item='oa'}
+                {if $oa->getSupplier()->emails}
+                  <tr>
+                    <td>
+                      <input type="checkbox" name="ids_supplier[]" value="{$oa->getSupplier()->id}">
+                    </td>
+                    <td>
+                      <b>{$oa->getSupplier()->name}</b>
+                    </td>
+                    <td class="text-center">
+                      {$oa->getSupplier()->emails}
+                    </td>
+                  </tr>
+                {/if}
+              {/foreach}
+            </tbody>
+          </table>
+          <input type="hidden" id="object_BL" value="{l s='Object.Fournisseur.envoi-BL'}" d='Admin.Orderscustomers.Object'>
+          <input type="hidden" id="object_BC" value="{l s='Object.Fournisseur.envoi-BC'}" d='Admin.Orderscustomers.Object'>
+          <input type="hidden" id="object_BLBC" value="{l s='Object.Fournisseur.envoi-BLBC'}" d='Admin.Orderscustomers.Object'>
+          <input type="hidden" id="message_BL" value="{l s='Message.Fournisseur.envoi-BL'}" d='Admin.Orderscustomers.Message'>
+          <input type="hidden" id="message_BC" value="{l s='Message.Fournisseur.envoi-BC'}" d='Admin.Orderscustomers.Message'>
+          <input type="hidden" id="message_BLBC" value="{l s='Message.Fournisseur.envoi-BLBC'}" d='Admin.Orderscustomers.Message'>
+          <table class="table" style="margin-top:20px">
+            <thead>
+              <tr>
+                <th class="bg-primary"><b>{l s="Message envoyé"}</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="text" id="specific_object" class="form-control" name="object" placeholder="{l s='Objet du mail'}">
+                </td>
+              </tr>
+              <tr>
+                <td><textarea id="specific_message" class="form-control" rows="5" name="message" placeholder="{l s='Message personnalisé'}"></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" name="send_documents">
+            <b>{l s="Envoyer"|upper}</b>
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            <b>{l s="Annuler"|upper}</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  $(document).ready(function() {
+
+    $('.specific_document').on('change', function() {
+
+        var doc = "";
+        if($('#doc_BL').is(':checked')) doc = doc + "BL";
+        if($('#doc_BC').is(':checked')) doc = doc + "BC";
+
+        if(doc) {
+          $('#specific_object').val($('#object_'+doc).val());
+          $('#specific_message').html($('#message_'+doc).val());
+        }
+    });
+
+  });
+</script>

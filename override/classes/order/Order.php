@@ -124,7 +124,7 @@ class Order extends OrderCore {
 	public function getDetails($id_supplier = null) {
 
 		$sql = "SELECT id_order_detail FROM ps_order_detail WHERE id_order = ".$this->id;
-		if($id_supplier) $sql .= " AND id_supplier = $id_supplier";
+		if($id_supplier) $sql .= " AND id_product_supplier = $id_supplier";
 		
 		$data = array();
 		foreach(Db::getInstance()->executeS($sql) as $row)

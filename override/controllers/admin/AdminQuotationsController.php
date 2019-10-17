@@ -310,16 +310,16 @@ class AdminQuotationsController extends AdminController {
             // Gestion pièces jointes : PDF
             if(Tools::getValue('pdf')) {
                 $pdf = new PDF(array('quotation'=>$quotation), PDF::TEMPLATE_QUOTATION, $this->context->smarty);
-                $attachment['pdf']['content'] = $pdf->render(false);
-                $attachment['pdf']['name'] = "devis.pdf";
-                $attachment['pdf']['mime'] = 'application/pdf';
+                $attachments['pdf']['content'] = $pdf->render(false);
+                $attachments['pdf']['name'] = "devis.pdf";
+                $attachments['pdf']['mime'] = 'application/pdf';
             }
 
             // Gestion pièces jointes : CGV
             if(Tools::getValue('cgv')) {
-                $attachment['cgv']['content'] = file_get_contents($quotation->getShop()->getConditionsFilePath(true));
-                $attachment['cgv']['name'] = "cgv.pdf";
-                $attachment['cgv']['mime'] = 'application/pdf';
+                $attachments['cgv']['content'] = file_get_contents($quotation->getShop()->getConditionsFilePath(true));
+                $attachments['cgv']['name'] = "cgv.pdf";
+                $attachments['cgv']['mime'] = 'application/pdf';
             }
 
             // Envoi des e-mails
