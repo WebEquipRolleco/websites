@@ -64,7 +64,11 @@ class AdminImportExportControllerCore extends AdminController {
 			// $header[] = "Désignation";
 			// $header[] = "Commentaire 1";
 			// $header[] = "Commentaire 2";
+
 			// Liste de toutes les caractéristiques
+			$sql = "SELECT DISTINCT(agl.name) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
+			foreach(Db::getInstance()->executeS($sql) as $group)
+				$header[] = $group['name'];
 
     		$csv = implode($this->separator, $header).self::END_OF_LINE;
 
@@ -101,9 +105,44 @@ class AdminImportExportControllerCore extends AdminController {
 				// $data[] = "URL images";
 				// $data[] = "Commentaire 1";
 				// $data[] = "Commentaire 2";
-				// Liste de toutes les caractéristiques
 
 				$csv .= implode($this->separator, $data).self::END_OF_LINE;
+
+				// Déclinaisons du produit
+				foreach(Combination::getCombinations($product->id) as $combination) {
+
+					$data = array();
+					$data[] = $combination->id;
+					$data[] = "Déclinaison";
+					$data[] = $combination->reference;
+    				$data[] = $row['id_categories'];
+    				$data[] = null;
+ 					$data[] = null;
+ 					$data[] = $combination->minimal_quantity;
+	 				$data[] = $combination->quantity;
+	 				$data[] = $combination->low_stock_threshold ?? 0;
+	 				$data[] = null;
+ 					$data[] = (float)$combination->rollcash;
+					//$data[] = "Rollplus";
+					$data[] = null;
+					$data[] = null;
+					$data[] = null;
+					$data[] = null;
+					$data[] = null;
+					$data[] = null;
+					$data[] = null;
+					// $data[] = "ID images";
+					// $data[] = "URL images";
+					// $data[] = "Commentaire 1";
+					// $data[] = "Commentaire 2";
+
+					// Liste de toutes les caractéristiques
+					$sql = "SELECT g.id_attribute_group, l.name FROM ps_attribute_group g LEFT JOIN ps_attribute a ON (a.id_attribute_group = g.id_attribute_group AND a.id_attribute IN (SELECT id_attribute FROM `ps_product_attribute_combination` WHERE id_product_attribute = ".$combination->id.")) LEFT JOIN ps_attribute_lang l ON (a.id_attribute = l.id_attribute AND l.id_lang = 1) ORDER BY g.id_attribute_group ASC";
+					foreach(Db::getInstance()->executeS($sql) as $row)
+						$data[] = $row['name'];
+
+					$csv .= implode($this->separator, $data).self::END_OF_LINE;
+				}
     		}
 
     		header('Content-Disposition: attachment; filename="produits.csv";');

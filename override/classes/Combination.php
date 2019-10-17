@@ -30,5 +30,17 @@ class Combination extends CombinationCore {
 		parent::__construct($id_product_attribute, $id_lang, $id_shop);
 		
 	}
+
+	/**
+	* Retourne la liste des déclinaisons d'un produit
+	**/
+	public function getCombinations($id_product) {
+
+		$data = array();
+		foreach(Db::getInstance()->executeS("SELECT id_product_attribute FROM ps_product_attribute WHERE id_product = ".$id_product) as $row)
+			$data[] = new Combination($row['id_product_attribute'], 1);
+
+		return $data;
+	}
 	
 }
