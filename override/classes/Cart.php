@@ -202,4 +202,22 @@ class Cart extends CartCore {
         return self::$_nbProducts[$id];
     }
 
+    /**
+    * Retourne le montant de la taxe écologique 
+    * @param Cart $cart
+    * @return float
+    **/
+    public static function getEcoTax($cart = null) {
+
+        if(!$cart)
+            $cart = Context::getContext()->cart;
+
+        $value = (float)Db::getInstance()->getValue("SELECT SUM(l.eco_tax) FROM ps_quotation_line l, ps_quotation_association a WHERE a.id_quotation = l.id_quotation AND a.id_cart = ".$cart->id);
+
+        foreach($cart->getProducts() as $product)
+            $value += $product['ecotax'] * $product['quantity'];
+
+        return $value;
+    }
+
 }

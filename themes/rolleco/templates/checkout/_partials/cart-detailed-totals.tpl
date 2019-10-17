@@ -53,6 +53,10 @@
               <td class="bg-blue">{l s='Total TTC' d='Shop.Theme.Actions'}</td>
               <td class="bg-blue value text-right" style="border-left: 0px">{$cart.totals.total_including_tax.value}</td>
             </tr>
+            <tr class="cart-summary-line">
+              <td class="text-muted" style="padding:5px;">{l s='Dont éco-particiation' d='Shop.Theme.Actions'}</td>
+              <td class="text-muted text-right" style="padding:5px; border-left:0px">{Tools::displayPrice(Cart::getEcoTax())}</td>
+            </tr>
             <tr>
               <td colspan="2" class="text-center">
                 <a href="{$urls.pages.order}" class="btn btn-success bold">

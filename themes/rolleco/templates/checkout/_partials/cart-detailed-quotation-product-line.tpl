@@ -14,9 +14,12 @@
 		{$line->reference}
 	</td>
 	<td class="price text-center">
-		<div class="product-line-info product-price h5 ">
-            <div class="current-price">
+		<div class="product-line-info product-price h5">
+            <div class="current-price h5">
         		<span class="price">{Tools::displayPrice($line->selling_price)}</span>
+            </div>
+            <div class="text-muted">
+            	<small>{l s="Dont %s d'écotaxe" sprintf=[Tools::displayPrice($line->eco_tax)] d='Shop.Theme.Checkout'}</small>
             </div>
     	</div>
 	</td>
@@ -24,9 +27,11 @@
 		{$line->quantity}
 	</td>
 	<td colspan="2" class="price text-center">
-		<span class="product-price">
+		<span class="product-price h5">
       		<strong>{Tools::displayPrice($line->getPrice())}</strong>
     	</span>
-		
+		<div class="text-muted">
+           	<small>{l s="Dont %s d'écotaxe" sprintf=[Tools::displayPrice($line->eco_tax * $line->quantity)] d='Shop.Theme.Checkout'}</small>
+        </div>
 	</td>
 </tr>
