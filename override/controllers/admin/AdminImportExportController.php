@@ -81,7 +81,7 @@ class AdminImportExportControllerCore extends AdminController {
     			$sql .= " AND id_supplier IN ($supplier_ids)";
 
     		foreach(Db::getInstance()->executeS($sql) as $row) {
-    			$product = new Product($row['id_product'], true, 1);
+    			$product = new Product($row['id_product'], true, 1, $this->context->shop->id);
 
     			$data = array();
     			$data[] = $product->id;
@@ -167,7 +167,7 @@ class AdminImportExportControllerCore extends AdminController {
 
     				// Produit
     				if($row[2] == self::TYPE_PRODUCT) {
-    					$product = new Product($row[0], true, 1);
+    					$product = new Product($row[0], true, 1, $this->context->shop->id);
 
     					$product->id = $row[0];
 		    			$product->reference = $row[3];

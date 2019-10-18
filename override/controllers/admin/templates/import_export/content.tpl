@@ -1,3 +1,8 @@
+<div class="panel">
+	{assign var=shop value=Context::getContext()->shop}
+	<strong>Boutique concernée :</strong> <span style="color:{$shop->color}">{$shop->name}</span>
+</div>
+
 <form method="post">
 	<div class="panel">
 		<div class="panel-heading">
