@@ -6,7 +6,8 @@ class AdminImportExportControllerCore extends AdminController {
 	const DELIMITER = "|";
 	const END_OF_LINE = "\n";
 
-	const TYPE_PRODUCT = "Product";
+	const TYPE_PRODUCT = "Produit";
+	const TYPE_COMBINATION = "Déclinaison";
 
 	private $separator;
 	private $delimiter;
@@ -36,7 +37,8 @@ class AdminImportExportControllerCore extends AdminController {
     	// Export
     	if(Tools::isSubmit('export')) {
 
-    		$header[] = "ID";
+    		$header[] = "ID produit";
+    		$header[] = "ID déclinaison";
     		$header[] = "Type";
     		//$header[] = "Référence du bundle";
     		$header[] = "Référence";
@@ -83,7 +85,8 @@ class AdminImportExportControllerCore extends AdminController {
 
     			$data = array();
     			$data[] = $product->id;
-    			$data[] = "Produit";
+    			$data[] = null;
+    			$data[] = self::TYPE_PRODUCT;
     			$data[] = $product->reference;
     			$data[] = $row['id_categories'];
     			$data[] = $product->id_category_default;
@@ -112,8 +115,9 @@ class AdminImportExportControllerCore extends AdminController {
 				foreach(Combination::getCombinations($product->id) as $combination) {
 
 					$data = array();
+					$data[] = $product->id;
 					$data[] = $combination->id;
-					$data[] = "Déclinaison";
+					$data[] = self::TYPE_COMBINATION;
 					$data[] = $combination->reference;
     				$data[] = $row['id_categories'];
     				$data[] = null;
@@ -162,30 +166,31 @@ class AdminImportExportControllerCore extends AdminController {
     			while($row = fgetcsv($handle, 0, $this->separator)) {
 
     				// Produit
-    				if($row[1] == self::TYPE_PRODUCT) {
+    				if($row[2] == self::TYPE_PRODUCT) {
     					$product = new Product($row[0], true, 1);
 
-		    			$product->reference = $row[2];
-		    			$product->id_category_default = (int)$row[3];
-		 				$product->name = $row[5];
-		 				$product->minimal_quantity = (int)$row[6];
-		 				$product->quantity = (int)$row[7];
-		 				$product->low_stock_threshold = (int)$row[8];
-		 				$product->active = (bool)$row[9];
-		 				$product->rollcash = (float)$row[10];
+    					$product->id = $row[0];
+		    			$product->reference = $row[3];
+		    			$product->id_category_default = (int)$row[4];
+		 				$product->name = $row[6];
+		 				$product->minimal_quantity = $row[7] ?? 1;
+		 				$product->quantity = (int)$row[8];
+		 				$product->low_stock_threshold = (int)$row[9];
+		 				$product->active = (bool)$row[10];
+		 				$product->rollcash = (float)$row[11];
 						//$data[] = "Rollplus";
-						$product->description_short = $row[11];
-						$product->description = $row[12];
-						$product->link_rewrite = $row[13];
-						$product->meta_title = $row[14];
-						$product->meta_description = $row[15];
-						$product->meta_keywords = $row[16];
-						$product->id_supplier = (int)$row[17];
+						$product->description_short = $row[12];
+						$product->description = $row[13];
+						$product->link_rewrite = $row[14];
+						$product->meta_title = $row[15];
+						$product->meta_description = $row[16];
+						$product->meta_keywords = $row[17];
+						$product->id_supplier = (int)$row[18];
 
 						$product->save();
 
 						// Catégories
-						$ids = explode($this->delimiter, $row[4]);
+						$ids = explode($this->delimiter, $row[5]);
 						if(!empty($ids)) {
 
 							$position = 1;
@@ -196,9 +201,38 @@ class AdminImportExportControllerCore extends AdminController {
 								$position++;
 							}
 						}
-
     				}
 
+    				// Déclinaison
+    				if($row[2] == self::TYPE_COMBINATION) {
+    					$combination = new Combination($row[1]);
+
+    					$combination->id = $row[1];
+    					$combination->id_product = $row[0];
+						$combination->reference = $row[3];
+    					$combination->minimal_quantity = $row[7] ?? 1;
+    					$combination->quantity = $row[8];
+    					$combination->low_stock_threshold = $row[9];
+
+    					$combination->save();
+
+    					// Suppression des ancien attributs
+    					Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination WHERE id_product_attribute = ".$combination->id);
+    					
+    					// Récupération des attributs à ajouter
+    					$values = array();
+    					for($x=17; $x<count($row); $x++)
+    						if($row[$x])
+    							$values[] = "'".pSql($row[$x])."'";
+    					$values = implode(',', $values);
+
+    					// Ajout des nouveaux attributs
+    					if($values) {
+    						$ids = Db::getInstance()->executeS("SELECT id_attribute FROM ps_attribute_lang WHERE id_lang = 1 AND name IN ($values)");
+    						foreach($ids as $id)
+    							Db::getInstance()->execute("INSERT INTO ps_product_attribute_combination VALUES ($id, ".$combination->id.")");
+    					}
+    				}
     			}
 
     			fclose($handle);
