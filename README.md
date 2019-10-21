@@ -50,6 +50,7 @@ ALTER TABLE `ps_orders` ADD `invoice_comment` TEXT NULL AFTER `invoice_number`;
 ALTER TABLE `ps_category_lang` ADD `bottom_description` TEXT NULL AFTER `description`;
 
 ALTER TABLE `ps_product` ADD `rollcash` FLOAT DEFAULT '0' AFTER `state`;
+ALTER TABLE `ps_product` ADD `destocking` TINYINT DEFAULT '0' AFTER `rollcash`;
 
 ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price`;
 ALTER TABLE `ps_product_attribute` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;

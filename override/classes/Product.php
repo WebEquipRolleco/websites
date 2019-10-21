@@ -5,9 +5,13 @@ class Product extends ProductCore {
 	/** @var float Rollcash */
 	public $rollcash;
 
+	/** @var bool Destocking */
+	public $destocking = false;
+
 	public function __construct($id_product = null, $id_lang = null, $id_shop = null) {
 
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
+		self::$definition['fields']['destocking'] = array('type' => self::TYPE_BOOL);
 		parent::__construct($id_product, $id_lang, $id_shop);
 	}
 	

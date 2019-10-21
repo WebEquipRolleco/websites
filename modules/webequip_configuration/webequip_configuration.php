@@ -31,6 +31,10 @@ class Webequip_Configuration extends Module {
 
         $check = parent::install();
 
+        $check .= $this->registerHook('displayAdminProductsPriceStepBottom');
+        $check .= $this->registerHook('displayAdminProductsPriceStepBottom');
+        $check .= $this->registerHook('displayAdminProductsMainStepRightColumnBottom');
+
         if(!isTabInstalled("WEBEQUIP"))
             $check .= $this->installTab("Web-équip", "WEBEQUIP", false, 0);
 
@@ -90,12 +94,18 @@ class Webequip_Configuration extends Module {
     **/
     public function getContent() {
 
+        // AJAX
+        $this->handleAjax();
+
         // Gestion des hooks
         if(!$this->isRegisteredInHook("displayAdminProductsPriceStepBottom"))
             $this->registerHook('displayAdminProductsPriceStepBottom');
 
         if(!$this->isRegisteredInHook("displayAdminProductsPriceStepBottom"))
             $this->registerHook('displayAdminProductsPriceStepBottom');
+
+        if(!$this->isRegisteredInHook("displayAdminProductsMainStepRightColumnBottom"))
+            $this->registerHook('displayAdminProductsMainStepRightColumnBottom');
 
         // Installation manuelle des menus
         switch (Tools::getValue('action')) {
@@ -279,7 +289,7 @@ class Webequip_Configuration extends Module {
     * Ajoute la gestion du rollcash dans le produit
     **/
     public function hookDisplayAdminProductsPriceStepBottom($params) { 
-        $this->context->smarty->assign('product', new Product($params['id_product']));
+        $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
         return $this->display(__FILE__, 'product_rollcash.tpl');
     }
 
@@ -291,4 +301,29 @@ class Webequip_Configuration extends Module {
        return $this->display(__FILE__, 'combination_rollcash.tpl');
     }
 
+    /**
+    * Ajoute l'option de destockage des produits
+    **/
+    public function hookDisplayAdminProductsMainStepRightColumnBottom($params) {
+        $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
+        return $this->display(__FILE__, 'product_destocking.tpl');
+    }
+
+    /**
+    * Gestion AJAX
+    **/
+    public function handleAjax() {
+        if(Tools::getValue('ajax')) {
+
+            // Destockage
+            if($id = Tools::getValue('toggle_destocking')) {
+                $product = new Product($id, true, 1, $this->context->shop->id);
+                $product->destocking = !$product->destocking;
+                $product->save();
+
+                die($product->destocking ? "1" : "0");
+            }
+
+        }
+    }
 }

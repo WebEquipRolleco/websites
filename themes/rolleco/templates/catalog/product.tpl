@@ -46,6 +46,9 @@
                   {foreach from=$product.flags item=flag}
                     <li class="product-flag {$flag.type}">{$flag.label}</li>
                   {/foreach}
+                  {if $product.destocking}
+                    <li class="product-flag destocking">{l s="Déstockage"}</li>
+                  {/if}
                 </ul>
               {/block}
 

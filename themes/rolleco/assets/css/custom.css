@@ -769,6 +769,12 @@ table .description-cell {
 .product-accessories .product-miniature .product-flags .new {
   background-color: purple !important;
 }
+li.product-flag.destocking {
+  background-color: #d5121d !important;
+}
+.product-accessories .product-miniature .product-flags .destocking {
+  background-color: #d5121d !important;
+}
 .awesome-star-rating .awesome-star {
   margin-left: -14px;
   color: lightgrey;
