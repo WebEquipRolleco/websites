@@ -160,7 +160,7 @@ class AdminImportExportControllerCore extends AdminController {
     			$handle = fopen($file['tmp_name'], 'r');
     			
     			// Lignes à ignorer
-    			for($x=0; $x<=Tools::getValue('skip'); $x++)
+    			for($x=0; $x<Tools::getValue('skip'); $x++)
     				fgetcsv($handle, 0, $this->separator);
 
     			while($row = fgetcsv($handle, 0, $this->separator)) {
@@ -171,11 +171,12 @@ class AdminImportExportControllerCore extends AdminController {
 
     					$product->id = $row[0];
 		    			$product->reference = $row[3];
-		    			$product->id_category_default = (int)$row[4];
+		    			$product->id_category_default = (int)$row[5];
 		 				$product->name = $row[6];
 		 				$product->minimal_quantity = $row[7] ?? 1;
 		 				$product->quantity = (int)$row[8];
 		 				$product->low_stock_threshold = (int)$row[9];
+		 				$product->low_stock_alert = false;
 		 				$product->active = (bool)$row[10];
 		 				$product->rollcash = (float)$row[11];
 						//$data[] = "Rollplus";
@@ -186,11 +187,11 @@ class AdminImportExportControllerCore extends AdminController {
 						$product->meta_description = $row[16];
 						$product->meta_keywords = $row[17];
 						$product->id_supplier = (int)$row[18];
-
+						$product->price = $product->price ?? 0;
 						$product->save();
 
 						// Catégories
-						$ids = explode($this->delimiter, $row[5]);
+						$ids = explode($this->delimiter, $row[4]);
 						if(!empty($ids)) {
 
 							$position = 1;
@@ -236,6 +237,7 @@ class AdminImportExportControllerCore extends AdminController {
     			}
 
     			fclose($handle);
+    			$this->confirmations[] = "Import terminé";
     		}
     	}
     }
