@@ -56,6 +56,41 @@ class AdminImportExportControllerCore extends AdminController {
     }
 
     /**
+    * Header des produits
+    **/
+    private function getProductsColumns() {
+
+        $data[] = "id_product";
+        $data[] = "id_product_attribute";
+        $data[] = "type";
+        $data[] = "reference";
+        $data[] = "ids_category";
+        $data[] = "id_main_category";
+        $data[] = "name";
+        $data[] = "min_quantity";
+        $data[] = "stock";
+        $data[] = "min_threshold";
+        $data[] = "state";
+        $data[] = "rollcash";
+        $data[] = "short_description";
+        $data[] = "description";
+        $data[] = "link_rewrite";
+        $data[] = "meta_title";
+        $data[] = "meta_description";
+        $data[] = "meta_keywords";
+        $data[] = "id_supplier";
+        $data[] = "comment_1";
+        $data[] = "comment_2";
+
+        // Liste de toutes les caractéristiques
+        $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
+        foreach(Db::getInstance()->executeS($sql) as $row)
+            $data[] = $row['id_attribute_group'];
+
+        return $data;
+    }
+
+    /**
     * Header des prix
     **/
     private function getPricesColumns() {
@@ -84,19 +119,15 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "ID produit";
         $header[] = "ID déclinaison";
         $header[] = "Type";
-        //$header[] = "Référence du bundle";
         $header[] = "Référence";
         $header[] = "Ids catégories";
         $header[] = "ID catégorie principale";
-        //$header[] = "Catégories (noms)";
-        //$header[] = "Catégorie Principale (nom)";
         $header[] = "Désignation";
         $header[] = "Quantité minimale";
         $header[] = "Stock";
         $header[] = "Seuil d'alerte";
         $header[] = "Etat";
         $header[] = "Rollcash";
-        //$header[] = "Rollplus";
         $header[] = "Description courte";
         $header[] = "Description longue";
         $header[] = "Lien";
@@ -104,12 +135,8 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "META : description";
         $header[] = "META : mots clés";
         $header[] = "Fournisseur";
-        // $header[] = "Référence Fournisseur";
-        // $header[] = "ID images";
-        // $header[] = "URL images";
-        // $header[] = "Désignation";
-        // $header[] = "Commentaire 1";
-        // $header[] = "Commentaire 2";
+        $header[] = "Commentaire 1";
+        $header[] = "Commentaire 2";
 
         // Liste de toutes les caractéristiques
         $sql = "SELECT DISTINCT(agl.name) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
@@ -140,7 +167,6 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->low_stock_threshold ?? 0;
             $data[] = (int)$product->active;
             $data[] = (float)$product->rollcash;
-            //$data[] = "Rollplus";
             $data[] = $product->description_short;
             $data[] = $product->description;
             $data[] = $product->link_rewrite;
@@ -148,10 +174,8 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->meta_description;
             $data[] = $product->meta_keywords;
             $data[] = $product->id_supplier;
-            // $data[] = "ID images";
-            // $data[] = "URL images";
-            // $data[] = "Commentaire 1";
-            // $data[] = "Commentaire 2";
+            $data[] = $product->comment_1;
+            $data[] = $product->comment_2;
 
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
 
@@ -181,8 +205,8 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = null;
                 // $data[] = "ID images";
                 // $data[] = "URL images";
-                // $data[] = "Commentaire 1";
-                // $data[] = "Commentaire 2";
+                $data[] = null;
+                $data[] = null;
 
                 // Liste de toutes les caractéristiques
                 $sql = "SELECT g.id_attribute_group, l.name FROM ps_attribute_group g LEFT JOIN ps_attribute a ON (a.id_attribute_group = g.id_attribute_group AND a.id_attribute IN (SELECT id_attribute FROM `ps_product_attribute_combination` WHERE id_product_attribute = ".$combination->id.")) LEFT JOIN ps_attribute_lang l ON (a.id_attribute = l.id_attribute AND l.id_lang = 1) ORDER BY g.id_attribute_group ASC";
@@ -212,33 +236,43 @@ class AdminImportExportControllerCore extends AdminController {
 
             while($row = fgetcsv($handle, 0, $this->separator)) {
 
+                $nb_columns = count($this->getProductsColumns());
+                $nb_values = count($row);
+
+                if($nb_columns != $nb_values)
+                    for($x=0; $x<($nb_columns - $nb_values); $x++)
+                        $row[] = null;
+           
+                $row = array_combine($this->getProductsColumns(), $row);
+
                 // Produit
-                if($row[2] == self::TYPE_PRODUCT) {
-                    $product = new Product($row[0], true, 1, $this->context->shop->id);
+                if($row["type"] == self::TYPE_PRODUCT) {
+                    $product = new Product($row["id_product"], true, 1, $this->context->shop->id);
                     $update = (bool)$product->id;
 
-                    if($row[0]) {
+                    if($row["id_product"]) {
                         $product->force_id = true;
-                        $product->id = $row[0];
+                        $product->id = $row["id_product"];
                     }
 
-                    $product->reference = $row[3];
-                    $product->id_category_default = (int)$row[5];
-                    $product->name = $row[6];
-                    $product->minimal_quantity = $row[7] ?? 1;
-                    $product->quantity = (int)$row[8];
-                    $product->low_stock_threshold = (int)$row[9];
+                    $product->reference = $row["reference"];
+                    $product->id_category_default = (int)$row["id_main_category"];
+                    $product->name = $row["name"];
+                    $product->minimal_quantity = $row["min_quantity"] ?? 1;
+                    $product->quantity = (int)$row["stock"];
+                    $product->low_stock_threshold = (int)$row["min_threshold"];
                     $product->low_stock_alert = false;
-                    $product->active = (bool)$row[10];
-                    $product->rollcash = (float)$row[11];
-                    //$data[] = "Rollplus";
-                    $product->description_short = $row[12];
-                    $product->description = $row[13];
-                    $product->link_rewrite = $row[14];
-                    $product->meta_title = $row[15];
-                    $product->meta_description = $row[16];
-                    $product->meta_keywords = $row[17];
-                    $product->id_supplier = (int)$row[18];
+                    $product->active = (bool)$row["state"];
+                    $product->rollcash = (float)$row["rollcash"];
+                    $product->description_short = $row["short_description"];
+                    $product->description = $row["description"];
+                    $product->link_rewrite = $row["link_rewrite"];
+                    $product->meta_title = $row["meta_title"];
+                    $product->meta_description = $row["meta_description"];
+                    $product->meta_keywords = $row["meta_keywords"];
+                    $product->id_supplier = (int)$row["id_supplier"];
+                    $product->comment_1 = $row["comment_1"];
+                    $product->comment_2 = $row["comment_2"];
                     $product->price = $product->price ?? 0;
 
                     if($update)
@@ -247,7 +281,7 @@ class AdminImportExportControllerCore extends AdminController {
                         $product->add();
 
                     // Catégories
-                    $ids = explode($this->delimiter, $row[4]);
+                    $ids = explode($this->delimiter, $row["ids_category"]);
                     if(!empty($ids)) {
 
                         $position = 1;
@@ -261,20 +295,20 @@ class AdminImportExportControllerCore extends AdminController {
                 }
 
                 // Déclinaison
-                if($row[2] == self::TYPE_COMBINATION) {
-                    $combination = new Combination($row[1]);
+                if($row["type"] == self::TYPE_COMBINATION) {
+                    $combination = new Combination($row["id_product_attribute"]);
                     $update = (bool)$combination->id;
 
-                    if($row[1]) {
+                    if($row["id_product_attribute"]) {
                         $combination->force_id = true;
-                        $combination->id = $row[1];
+                        $combination->id = $row["id_product_attribute"];
                     }
 
-                    $combination->id_product = $row[0];
-                    $combination->reference = $row[3];
-                    $combination->minimal_quantity = $row[7] ?? 1;
-                    $combination->quantity = $row[8];
-                    $combination->low_stock_threshold = $row[9];
+                    $combination->id_product = $row["id_product"];
+                    $combination->reference = $row["reference"];
+                    $combination->minimal_quantity = $row["min_quantity"] ?? 1;
+                    $combination->quantity = $row["stock"];
+                    $combination->low_stock_threshold = $row["min_threshold"];
 
                     if($update)
                         $combination->save();
@@ -283,7 +317,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                     // Récupération des attributs à ajouter
                     $values = array();
-                    for($x=17; $x<count($row); $x++)
+                    for($x=count($this->$this->getProductsColumns()); $x<count($row); $x++)
                         if($row[$x])
                             $values[] = "'".pSql($row[$x])."'";
                     $values = implode(',', $values);
@@ -293,13 +327,13 @@ class AdminImportExportControllerCore extends AdminController {
                         $ids = Db::getInstance()->executeS("SELECT DISTINCT(id_attribute) FROM ps_attribute_lang WHERE id_lang = 1 AND name IN ($values)");
                         $ids = array_map(function($e) { return $e['id_attribute']; }, $ids);
                         $combination->setAttributes($ids);
-                    }
-                    
+                    }  
                 }
-
-                fclose($handle);
-                $this->confirmations[] = "Import terminé";
+                
             }
+
+            fclose($handle);
+            $this->confirmations[] = "Import terminé";
         }
     }
 
