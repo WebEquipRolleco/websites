@@ -168,8 +168,12 @@ class AdminImportExportControllerCore extends AdminController {
     				// Produit
     				if($row[2] == self::TYPE_PRODUCT) {
     					$product = new Product($row[0], true, 1, $this->context->shop->id);
+    					$update = (bool)$product->id;
 
-    					$product->id = $row[0];
+    					if($row[0]) {
+    						$product->force_id = true;
+    						$product->id = $row[0];
+    					}
 		    			$product->reference = $row[3];
 		    			$product->id_category_default = (int)$row[5];
 		 				$product->name = $row[6];
@@ -188,7 +192,11 @@ class AdminImportExportControllerCore extends AdminController {
 						$product->meta_keywords = $row[17];
 						$product->id_supplier = (int)$row[18];
 						$product->price = $product->price ?? 0;
-						$product->save();
+
+						if($update)
+    						$product->save();
+    					else
+    						$product->add();
 
 						// Catégories
 						$ids = explode($this->delimiter, $row[4]);
@@ -207,18 +215,26 @@ class AdminImportExportControllerCore extends AdminController {
     				// Déclinaison
     				if($row[2] == self::TYPE_COMBINATION) {
     					$combination = new Combination($row[1]);
+    					$update = (bool)$combination->id;
 
-    					$combination->id = $row[1];
+    					if($row[1]) {
+    						$combination->force_id = true;
+    						$combination->id = $row[1];
+    					}
+
     					$combination->id_product = $row[0];
 						$combination->reference = $row[3];
     					$combination->minimal_quantity = $row[7] ?? 1;
     					$combination->quantity = $row[8];
     					$combination->low_stock_threshold = $row[9];
 
-    					$combination->save();
+    					if($update)
+    						$combination->save();
+    					else
+    						$combination->add();
 
     					// Suppression des ancien attributs
-    					Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination WHERE id_product_attribute = ".$combination->id);
+    					//Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination WHERE id_product_attribute = ".$combination->id);
     					
     					// Récupération des attributs à ajouter
     					$values = array();
@@ -229,9 +245,9 @@ class AdminImportExportControllerCore extends AdminController {
 
     					// Ajout des nouveaux attributs
     					if($values) {
-    						$ids = Db::getInstance()->executeS("SELECT id_attribute FROM ps_attribute_lang WHERE id_lang = 1 AND name IN ($values)");
-    						foreach($ids as $id)
-    							Db::getInstance()->execute("INSERT INTO ps_product_attribute_combination VALUES ($id, ".$combination->id.")");
+    						$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_attribute) FROM ps_attribute_lang WHERE id_lang = 1 AND name IN ($values)");
+    						$ids = array_map(function($e) { return $e['id_attribute']; }, $ids);
+    						$combination->setAttributes($ids);
     					}
     				}
     			}
