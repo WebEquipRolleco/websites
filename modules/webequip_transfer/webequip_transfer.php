@@ -225,7 +225,7 @@ class webequip_transfer extends Module {
 
 		$result = $this->old_db->query("SELECT * FROM ps_manufacturer");
 		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_manufacturer VALUES(".$row['id_manufacturer'].", '".$row['name']."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].")");
+			Db::getInstance()->execute("INSERT INTO ps_manufacturer VALUES(".$row['id_manufacturer'].", '".pSql($row['name'])."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].")");
 
 		$result = $this->old_db->query("SELECT * FROM ps_manufacturer_lang");
 		while($row = $result->fetch_assoc())
