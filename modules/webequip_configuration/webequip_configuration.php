@@ -286,11 +286,12 @@ class Webequip_Configuration extends Module {
     }
 
     /**
-    * Ajoute la gestion du rollcash dans le produit
+    * Ajoute la gestion du rollcash et du prix d'achat dans le produit
     **/
     public function hookDisplayAdminProductsPriceStepBottom($params) { 
         $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
-        return $this->display(__FILE__, 'product_rollcash.tpl');
+        $this->context->smarty->assign('display_buying_price', true);
+        return $this->display(__FILE__, 'product_prices.tpl');
     }
 
     /**
@@ -298,7 +299,8 @@ class Webequip_Configuration extends Module {
     **/
     public function hookDisplayAdminProductsCombinationBottom($params) {
         $this->context->smarty->assign('combination', new Combination($params['id_product_attribute']));
-       return $this->display(__FILE__, 'combination_rollcash.tpl');
+        $this->context->smarty->assign('display_buying_price', true);
+       return $this->display(__FILE__, 'combination_prices.tpl');
     }
 
     /**

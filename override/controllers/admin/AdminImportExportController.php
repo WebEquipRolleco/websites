@@ -64,6 +64,8 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = "id_product_attribute";
         $data[] = "type";
         $data[] = "reference";
+        $data[] = "supplier_reference";
+        $data[] = "buying_price";
         $data[] = "ids_category";
         $data[] = "id_main_category";
         $data[] = "name";
@@ -120,6 +122,8 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "ID déclinaison";
         $header[] = "Type";
         $header[] = "Référence";
+        $header[] = "Référence fournisseur";
+        $header[] = "Prix d'achat fournisseur";
         $header[] = "Ids catégories";
         $header[] = "ID catégorie principale";
         $header[] = "Désignation";
@@ -134,7 +138,7 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "META : titre";
         $header[] = "META : description";
         $header[] = "META : mots clés";
-        $header[] = "Fournisseur";
+        $header[] = "ID Fournisseur";
         $header[] = "Commentaire 1";
         $header[] = "Commentaire 2";
 
@@ -159,6 +163,8 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = self::TYPE_PRODUCT;
             $data[] = $product->reference;
+            $data[] = $product->supplier_reference;
+            $data[] = null;
             $data[] = $row['id_categories'];
             $data[] = $product->id_category_default;
             $data[] = $product->name;
@@ -187,6 +193,8 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->id;
                 $data[] = self::TYPE_COMBINATION;
                 $data[] = $combination->reference;
+                $data[] = ProductSupplier::getProductSupplierReference($product->id, $combination->id, $product->id_supplier);
+                $data[] = ProductSupplier::getProductSupplierPrice($product->id, $combination->id, $product->id_supplier);
                 $data[] = $row['id_categories'];
                 $data[] = null;
                 $data[] = null;
@@ -256,6 +264,7 @@ class AdminImportExportControllerCore extends AdminController {
                     }
 
                     $product->reference = $row["reference"];
+                    $product->supplier_reference = $row["supplier_reference"];
                     $product->id_category_default = (int)$row["id_main_category"];
                     $product->name = $row["name"];
                     $product->minimal_quantity = $row["min_quantity"] ?? 1;
@@ -273,6 +282,7 @@ class AdminImportExportControllerCore extends AdminController {
                     $product->id_supplier = (int)$row["id_supplier"];
                     $product->comment_1 = $row["comment_1"];
                     $product->comment_2 = $row["comment_2"];
+                    $product->buying_price = $row["buying_price"];
                     $product->price = $product->price ?? 0;
 
                     if($update)
@@ -306,20 +316,38 @@ class AdminImportExportControllerCore extends AdminController {
 
                     $combination->id_product = $row["id_product"];
                     $combination->reference = $row["reference"];
-                    $combination->minimal_quantity = $row["min_quantity"] ?? 1;
+                    $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
                     $combination->quantity = $row["stock"];
                     $combination->low_stock_threshold = $row["min_threshold"];
+                    $combination->low_stock_alert = false;
 
                     if($update)
                         $combination->save();
                     else
                         $combination->add();
 
+                    // Gestion des fournisseurs
+                    ProductSupplier::removeCombination($combination->id);
+                    if($row['id_supplier'] and ($row["supplier_reference"] or $row['buying_price'])) {
+
+                        $supplier = new ProductSupplier();
+                        $supplier->id_product = $row['id_product'];
+                        $supplier->id_product_attribute = $row['id_product_attribute'];
+                        $supplier->id_supplier = $row['id_supplier'];
+                        $supplier->product_supplier_reference = $row["supplier_reference"];
+                        $supplier->id_currency = 1;
+                        $supplier->product_supplier_price_te = (float)$row['buying_price'] ?? 0;
+
+                        $supplier->save();
+                    }
+
                     // Récupération des attributs à ajouter
                     $values = array();
-                    for($x=count($this->$this->getProductsColumns()); $x<count($row); $x++)
-                        if($row[$x])
-                            $values[] = "'".pSql($row[$x])."'";
+
+                    $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
+                    foreach(Db::getInstance()->executeS($sql) as $id)
+                        if(isset($row[$id['id_attribute_group']]) and !empty($row[$id['id_attribute_group']]))
+                            $values[] = "'".pSql($row[$id['id_attribute_group']])."'";
                     $values = implode(',', $values);
 
                     // Ajout des nouveaux attributs
