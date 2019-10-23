@@ -176,8 +176,8 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->low_stock_threshold ?? 0;
             $data[] = (int)$product->active;
             $data[] = (float)$product->rollcash;
-            $data[] = $product->description_short;
-            $data[] = $product->description;
+            $data[] = pSql($product->description_short);
+            $data[] = pSql($product->description);
             $data[] = $product->link_rewrite;
             $data[] = $product->meta_title;
             $data[] = $product->meta_description;
@@ -226,6 +226,7 @@ class AdminImportExportControllerCore extends AdminController {
             }
         }
 
+        header('Content-Type: application/csv; charset=UTF-8');
         header('Content-Disposition: attachment; filename="produits.csv";');
         die($csv);
     }
@@ -415,6 +416,7 @@ class AdminImportExportControllerCore extends AdminController {
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }
 
+        header('Content-Type: application/csv; charset=UTF-8');
         header('Content-Disposition: attachment; filename="prix.csv";');
         die($csv);
     }
