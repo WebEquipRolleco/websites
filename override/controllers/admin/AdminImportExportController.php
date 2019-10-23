@@ -198,7 +198,7 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->reference;
                 $data[] = ProductSupplier::getProductSupplierReference($product->id, $combination->id, $product->id_supplier);
                 $data[] = ProductSupplier::getProductSupplierPrice($product->id, $combination->id, $product->id_supplier);
-                $data[] = null;
+                $data[] = $combination->delivery_fees;
                 $data[] = $row['id_categories'];
                 $data[] = null;
                 $data[] = null;
@@ -321,6 +321,7 @@ class AdminImportExportControllerCore extends AdminController {
                     $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
                     $combination->quantity = $row["stock"];
                     $combination->low_stock_threshold = $row["min_threshold"];
+                    $combination->delivery_fees = $row["delivery_fees"];
                     $combination->low_stock_alert = false;
 
                     if($update)

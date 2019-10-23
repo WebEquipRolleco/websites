@@ -286,20 +286,18 @@ class Webequip_Configuration extends Module {
     }
 
     /**
-    * Ajoute la gestion du rollcash et du prix d'achat dans le produit
+    * Ajoute la gestion du rollcash et des frais de port dans le produit
     **/
     public function hookDisplayAdminProductsPriceStepBottom($params) { 
         $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
-        $this->context->smarty->assign('display_delivery_fees', true);
         return $this->display(__FILE__, 'product_prices.tpl');
     }
 
     /**
-    * Ajoute la gestion du rollcash dans les déclinaisons
+    * Ajoute la gestion du rollcash et des frais de port dans les déclinaisons
     **/
     public function hookDisplayAdminProductsCombinationBottom($params) {
         $this->context->smarty->assign('combination', new Combination($params['id_product_attribute']));
-        $this->context->smarty->assign('display_delivery_fees', true);
        return $this->display(__FILE__, 'combination_prices.tpl');
     }
 

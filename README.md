@@ -59,10 +59,12 @@ ALTER TABLE `ps_product_shop` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `pack_
 ALTER TABLE `ps_product_shop` ADD `comment_1` TEXT DEFAULT NULL AFTER `delivery_fees`;
 ALTER TABLE `ps_product_shop` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
-ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price`;
+ALTER TABLE `ps_product_attribute` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `price`;
+ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
 ALTER TABLE `ps_product_attribute` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
 
-ALTER TABLE `ps_product_attribute_shop` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price`;
+ALTER TABLE `ps_product_attribute_shop` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `price`;
+ALTER TABLE `ps_product_attribute_shop` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
 ALTER TABLE `ps_product_attribute_shop` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
 
 ALTER TABLE `ps_employee` ADD `sav` TINYINT DEFAULT '0' AFTER `active`;

@@ -2,6 +2,9 @@
 
 class Combination extends CombinationCore {
 
+	/** @var float Delivery fees */
+	public $delivery_fees;
+
 	/** @var float Rollcash */
 	public $rollcash;
 
@@ -11,7 +14,7 @@ class Combination extends CombinationCore {
 	public function __construct($id_product_attribute = null, $id_lang = null, $id_shop = null) {
 
 		// C'est pas beau mais ça marche...
-		foreach(array('rollcash', 'position') as $name) {
+		foreach(array('rollcash', 'position', 'delivery_fees') as $name) {
 			if($id_shop) {
 				if(Tools::getIsset($name."_".$id_product_attribute))
 					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET $name = ".Tools::getValue($name."_".$id_product_attribute)." WHERE id_product_attribute = $id_product_attribute AND id_shop = $id_shop");
@@ -25,7 +28,8 @@ class Combination extends CombinationCore {
 			}
 		}
 
-		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
+		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
+		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
 		self::$definition['fields']['position'] = array('type' => self::TYPE_FLOAT);
 		parent::__construct($id_product_attribute, $id_lang, $id_shop);
 		
