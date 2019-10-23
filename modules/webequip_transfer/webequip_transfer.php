@@ -197,14 +197,14 @@ class webequip_transfer extends Module {
 
 			$split = explode('-', $row['name']);
 			if(count($split) == 2)
-				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", '".trim($split[0])."', '".trim($split[1])."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
+				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", '".trim($split[0])."', '".trim(pSql(utf8_encode($split[1])))."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
 			else
-				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", NULL, '".$row['name']."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
+				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", NULL, '".pSql(utf8_encode($row['name']))."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
 		}
 
 		$result = $this->old_db->query("SELECT * FROM ps_supplier_lang");
 		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_supplier_lang VALUES(".$row['id_supplier'].", ".$row['id_lang'].", '".pSql($row['description'])."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
+			Db::getInstance()->execute("INSERT INTO ps_supplier_lang VALUES(".$row['id_supplier'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
 
 		$result = $this->old_db->query("SELECT * FROM ps_supplier_shop");
 		while($row = $result->fetch_assoc()) {
@@ -225,11 +225,11 @@ class webequip_transfer extends Module {
 
 		$result = $this->old_db->query("SELECT * FROM ps_manufacturer");
 		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_manufacturer VALUES(".$row['id_manufacturer'].", '".pSql($row['name'])."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].")");
+			Db::getInstance()->execute("INSERT INTO ps_manufacturer VALUES(".$row['id_manufacturer'].", '".pSql(utf8_encode($row['name']))."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].")");
 
 		$result = $this->old_db->query("SELECT * FROM ps_manufacturer_lang");
 		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_manufacturer_lang VALUES(".$row['id_manufacturer'].", ".$row['id_lang'].", '".pSql($row['description'])."', '".pSql($row['short_description'])."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
+			Db::getInstance()->execute("INSERT INTO ps_manufacturer_lang VALUES(".$row['id_manufacturer'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".pSql($row['short_description'])."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
 
 		$result = $this->old_db->query("SELECT * FROM ps_manufacturer_shop");
 		while($row = $result->fetch_assoc())
@@ -246,7 +246,7 @@ class webequip_transfer extends Module {
 		Db::getInstance()->execute("DELETE FROM ps_address");
 		$result = $this->old_db->query("SELECT * FROM ps_address");
 		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_address VALUES(".$row['id_address'].", ".$row['id_country'].", ".$row['id_state'].", ".$row['id_customer'].", ".$row['id_manufacturer'].", ".$row['id_supplier'].", ".$row['id_warehouse'].", '".pSql($row['alias'])."', '".pSql($row['company'])."', '".pSql($row['lastname'])."', '".pSql($row['firstname'])."', '".pSql($row['address1'])."', '".pSql($row['address2'])."', '".$row['postcode']."', '".pSql($row['city'])."', '".pSql($row['other'])."', '".$row['phone']."', '".$row['phone_mobile']."', '".$row['vat_number']."', '".$row['dni']."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['deleted'].")");
+			Db::getInstance()->execute("INSERT INTO ps_address VALUES(".$row['id_address'].", ".$row['id_country'].", ".$row['id_state'].", ".$row['id_customer'].", ".$row['id_manufacturer'].", ".$row['id_supplier'].", ".$row['id_warehouse'].", '".pSql(utf8_encode($row['alias']))."', '".pSql(utf8_encode($row['company']))."', '".pSql(utf8_encode($row['lastname']))."', '".pSql(utf8_encode($row['firstname']))."', '".pSql(utf8_encode($row['address1']))."', '".pSql(utf8_encode($row['address2']))."', '".$row['postcode']."', '".pSql(utf8_encode($row['city']))."', '".pSql(utf8_encode($row['other']))."', '".$row['phone']."', '".$row['phone_mobile']."', '".$row['vat_number']."', '".$row['dni']."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['deleted'].")");
 	}
 
 	/**
@@ -269,20 +269,20 @@ class webequip_transfer extends Module {
 				".$row['id_default_group'].",
 				".$row['id_lang'].",
 				".$row['id_risk'].",
-				'".pSql($row['reference_m3'])."',
-				'".pSql($row['reference_chorus'])."',
+				'".pSql(utf8_encode($row['reference_m3']))."',
+				'".pSql(utf8_encode($row['reference_chorus']))."',
 				'".$row['tva']."',
 				".$row['funding'].",
 				'".$row['date_funding']."',
 				1,
 				NULL,
 				NULL,
-				'".pSql($row['company'])."',
-				'".pSql($row['siret'])."',
+				'".pSql(utf8_encode($row['company']))."',
+				'".pSql(utf8_encode($row['siret'])."',
 				'".$row['ape']."',
-				'".pSql($row['firstname'])."',
-				'".pSql($row['lastname'])."',
-				'".pSql($row['email'])."',
+				'".pSql(utf8_encode($row['firstname'])."',
+				'".pSql(utf8_encode($row['lastname']))."',
+				'".pSql(utf8_encode($row['email']))."',
 				'".$row['email_invoice']."',
 				'".$row['email_tracking']."',
 				".($row['rollcash'] ?? 0).",
@@ -299,7 +299,7 @@ class webequip_transfer extends Module {
 				".($row['shop_public_prices'] ?? 0).",
 				".$row['max_payment_days'].",
 				'".$row['secure_key']."',
-				'".pSql($row['note'])."',
+				'".pSql(utf8_encode($row['note']))."',
 				".$row['active'].",
 				".$row['is_guest'].",
 				".$row['deleted'].",
@@ -329,7 +329,7 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("INSERT INTO ps_orders VALUES(
 				".$row['id_order'].",
 				'".$row['reference']."',
-				'".pSql($row['internal_reference'])."', 
+				'".pSql(utf8_encode($row['internal_reference']))."', 
 				NULL,
 				NULL,
 				".$row['id_shop_group'].",
@@ -403,7 +403,7 @@ class webequip_transfer extends Module {
 				NULL,
 				NULL,
 				0,
-				'".pSql($row['product_name'])."',
+				'".pSql(utf8_encode($row['product_name']))."',
 				".$row['product_quantity'].",
 				".$row['product_quantity_in_stock'].",
 				".$row['product_quantity_refunded'].",
@@ -443,7 +443,7 @@ class webequip_transfer extends Module {
 				0,
 				NULL,
 				NULL,
-				'".trim(pSql($row['commentaire1']).' '.pSql($row['commentaire2']))."'
+				'".trim(pSql(utf8_encode($row['commentaire1'])).' '.pSql(utf8_encode($row['commentaire2'])))."'
 			)");
 	}
 
