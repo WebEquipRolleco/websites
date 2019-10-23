@@ -119,8 +119,8 @@ class AdminImportExportControllerCore extends AdminController {
     **/
     private function exportProducts() {
 
-        $header[] = "ID produit";
-        $header[] = "ID déclinaison";
+        $header[] = "Produit ID";
+        $header[] = "Déclinaison ID";
         $header[] = "Type";
         $header[] = "Référence";
         $header[] = "Référence fournisseur";
@@ -373,12 +373,12 @@ class AdminImportExportControllerCore extends AdminController {
     **/
     private function exportPrices() {
 
-        $header[] = 'ID prix';
-        $header[] = 'ID produit';
-        $header[] = 'ID déclinaison';
-        $header[] = 'ID boutique';
-        $header[] = 'ID groupe client';
-        $header[] = 'ID client';
+        $header[] = 'prix ID';
+        $header[] = 'Produit ID';
+        $header[] = 'Déclinaison ID';
+        $header[] = 'Boutique ID';
+        $header[] = 'Groupe client ID';
+        $header[] = 'Client ID';
         $header[] = 'Prix';
         $header[] = 'Quantité de départ';
         $header[] = 'Réduction';
