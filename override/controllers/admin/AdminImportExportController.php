@@ -66,6 +66,7 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = "reference";
         $data[] = "supplier_reference";
         $data[] = "buying_price";
+        $data[] = "delivery_fees";
         $data[] = "ids_category";
         $data[] = "id_main_category";
         $data[] = "name";
@@ -123,7 +124,8 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "Type";
         $header[] = "Référence";
         $header[] = "Référence fournisseur";
-        $header[] = "Prix d'achat fournisseur";
+        $header[] = "Prix d'achat HT";
+        $header[] = "Frais de port HT";
         $header[] = "Ids catégories";
         $header[] = "ID catégorie principale";
         $header[] = "Désignation";
@@ -164,7 +166,8 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = self::TYPE_PRODUCT;
             $data[] = $product->reference;
             $data[] = $product->supplier_reference;
-            $data[] = null;
+            $data[] = $product->wholesale_price;
+            $data[] = $product->delivery_fees;
             $data[] = $row['id_categories'];
             $data[] = $product->id_category_default;
             $data[] = $product->name;
@@ -195,6 +198,7 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->reference;
                 $data[] = ProductSupplier::getProductSupplierReference($product->id, $combination->id, $product->id_supplier);
                 $data[] = ProductSupplier::getProductSupplierPrice($product->id, $combination->id, $product->id_supplier);
+                $data[] = null;
                 $data[] = $row['id_categories'];
                 $data[] = null;
                 $data[] = null;
@@ -203,16 +207,13 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->low_stock_threshold ?? 0;
                 $data[] = null;
                 $data[] = (float)$combination->rollcash;
-                //$data[] = "Rollplus";
                 $data[] = null;
                 $data[] = null;
                 $data[] = null;
                 $data[] = null;
                 $data[] = null;
                 $data[] = null;
-                $data[] = null;
-                // $data[] = "ID images";
-                // $data[] = "URL images";
+                $data[] = $product->id_supplier;
                 $data[] = null;
                 $data[] = null;
 
@@ -282,7 +283,8 @@ class AdminImportExportControllerCore extends AdminController {
                     $product->id_supplier = (int)$row["id_supplier"];
                     $product->comment_1 = $row["comment_1"];
                     $product->comment_2 = $row["comment_2"];
-                    $product->buying_price = $row["buying_price"];
+                    $product->wholesale_price = $row["buying_price"];
+                    $product->delivery_fees = $row["delivery_fees"];
                     $product->price = $product->price ?? 0;
 
                     if($update)
