@@ -65,8 +65,6 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = "type";
         $data[] = "reference";
         $data[] = "supplier_reference";
-        $data[] = "buying_price";
-        $data[] = "delivery_fees";
         $data[] = "ids_category";
         $data[] = "id_main_category";
         $data[] = "name";
@@ -124,8 +122,6 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "Type";
         $header[] = "Référence";
         $header[] = "Référence fournisseur";
-        $header[] = "Prix d'achat HT";
-        $header[] = "Frais de port HT";
         $header[] = "Ids catégories";
         $header[] = "ID catégorie principale";
         $header[] = "Désignation";
@@ -166,8 +162,6 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = self::TYPE_PRODUCT;
             $data[] = $product->reference;
             $data[] = $product->supplier_reference;
-            $data[] = $product->wholesale_price;
-            $data[] = $product->delivery_fees;
             $data[] = $row['id_categories'];
             $data[] = $product->id_category_default;
             $data[] = $product->name;
@@ -197,8 +191,6 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = self::TYPE_COMBINATION;
                 $data[] = $combination->reference;
                 $data[] = ProductSupplier::getProductSupplierReference($product->id, $combination->id, $product->id_supplier);
-                $data[] = ProductSupplier::getProductSupplierPrice($product->id, $combination->id, $product->id_supplier);
-                $data[] = $combination->delivery_fees;
                 $data[] = $row['id_categories'];
                 $data[] = null;
                 $data[] = null;
@@ -284,8 +276,6 @@ class AdminImportExportControllerCore extends AdminController {
                     $product->id_supplier = (int)$row["id_supplier"];
                     $product->comment_1 = $row["comment_1"];
                     $product->comment_2 = $row["comment_2"];
-                    $product->wholesale_price = $row["buying_price"];
-                    $product->delivery_fees = $row["delivery_fees"];
                     $product->price = $product->price ?? 0;
 
                     if($update)
@@ -322,7 +312,6 @@ class AdminImportExportControllerCore extends AdminController {
                     $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
                     $combination->quantity = $row["stock"];
                     $combination->low_stock_threshold = $row["min_threshold"];
-                    $combination->delivery_fees = $row["delivery_fees"];
                     $combination->low_stock_alert = false;
 
                     if($update)
@@ -332,7 +321,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                     // Gestion des fournisseurs
                     ProductSupplier::removeCombination($combination->id);
-                    if($row['id_supplier'] and ($row["supplier_reference"] or $row['buying_price'])) {
+                    if($row['id_supplier'] and $row["supplier_reference"]) {
 
                         $supplier = new ProductSupplier();
                         $supplier->id_product = $row['id_product'];
@@ -340,7 +329,6 @@ class AdminImportExportControllerCore extends AdminController {
                         $supplier->id_supplier = $row['id_supplier'];
                         $supplier->product_supplier_reference = $row["supplier_reference"];
                         $supplier->id_currency = 1;
-                        $supplier->product_supplier_price_te = (float)$row['buying_price'] ?? 0;
 
                         $supplier->save();
                     }
