@@ -72,7 +72,6 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = "stock";
         $data[] = "min_threshold";
         $data[] = "state";
-        $data[] = "rollcash";
         $data[] = "short_description";
         $data[] = "description";
         $data[] = "link_rewrite";
@@ -129,7 +128,6 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "Stock";
         $header[] = "Seuil d'alerte";
         $header[] = "Etat";
-        $header[] = "Rollcash";
         $header[] = "Description courte";
         $header[] = "Description longue";
         $header[] = "Lien";
@@ -169,7 +167,6 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->quantity;
             $data[] = $product->low_stock_threshold ?? 0;
             $data[] = (int)$product->active;
-            $data[] = (float)$product->rollcash;
             $data[] = pSql($product->description_short);
             $data[] = pSql($product->description);
             $data[] = $product->link_rewrite;
@@ -198,7 +195,6 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->quantity;
                 $data[] = $combination->low_stock_threshold ?? 0;
                 $data[] = null;
-                $data[] = (float)$combination->rollcash;
                 $data[] = null;
                 $data[] = null;
                 $data[] = null;
@@ -266,7 +262,6 @@ class AdminImportExportControllerCore extends AdminController {
                     $product->low_stock_threshold = (int)$row["min_threshold"];
                     $product->low_stock_alert = false;
                     $product->active = (bool)$row["state"];
-                    $product->rollcash = (float)$row["rollcash"];
                     $product->description_short = $row["short_description"];
                     $product->description = $row["description"];
                     $product->link_rewrite = $row["link_rewrite"];
