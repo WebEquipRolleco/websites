@@ -1,6 +1,10 @@
 <div class="panel">
 	{assign var=shop value=Context::getContext()->shop}
 	<strong>Boutique concernée :</strong> <span style="color:{$shop->color}">{$shop->name}</span>
+	<br /><br />
+	<div class="alert alert-info">
+		Les colonnes marquées d'un <b>*</b> sont à des titre d'indications et ne changeront aucune valeur lors des imports
+	</div>
 </div>
 
 <div class="row">

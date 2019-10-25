@@ -97,16 +97,29 @@ class AdminImportExportControllerCore extends AdminController {
 
         $data[] = 'id_specific_price';
         $data[] = 'id_product';
-        $data[] = 'id_product_attribute';
-        $data[] = 'id_shop';
-        $data[] = 'id_group';
-        $data[] = 'id_customer';
-        $data[] = 'price';
-        $data[] = 'from_quantity';
-        $data[] = 'reduction';
-        $data[] = 'reduction_type';
+        $data[] = 'id_combination';
+        $data[] = '_product_reference';
+        $data[] = '_combination_reference';
+        $data[] = '_name';
+        $data[] = 'min_quantity';
+        $data[] = "price";
+        $data[] = "reduced_price";
+        $data[] = "buying_price";
+        $data[] = 'delivery_fees';
+        $data[] = '_margin';
+        $data[] = 'rollcash';
+        $data[] = 'comment_1';
+        $data[] = 'comment_2';
+        $data[] = 'id_supplier';
+        $data[] = '_supplier_reference';
+        $data[] = "batch";
+        $data[] = "ecotax";
+        $data[] = '_active';
         $data[] = 'from';
         $data[] = 'to';
+        $data[] = 'id_group';
+        $data[] = 'id_customer';
+        $data[] = 'id_shop';
 
         return $data;
     }
@@ -360,15 +373,28 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = 'prix ID';
         $header[] = 'Produit ID';
         $header[] = 'Déclinaison ID';
-        $header[] = 'Boutique ID';
-        $header[] = 'Groupe client ID';
-        $header[] = 'Client ID';
-        $header[] = 'Prix';
+        $header[] = 'Référence produit *';
+        $header[] = 'Référence déclinaison *';
+        $header[] = 'Désignation';
         $header[] = 'Quantité de départ';
-        $header[] = 'Réduction';
-        $header[] = 'Type de réduction';
+        $header[] = "Prix de vente / barré";
+        $header[] = "Prix dégressif / remisé";
+        $header[] = "Prix d'achat unitaire HT";
+        $header[] = 'Frais de port unitaire HT';
+        $header[] = 'Marge *';
+        $header[] = 'Rollcash';
+        $header[] = 'Commentaire 1';
+        $header[] = 'Commentaire 2';
+        $header[] = 'ID fournisseur';
+        $header[] = 'Référence fournisseur *';
+        $header[] = "Lot";
+        $header[] = "Ecotaxe";
+        $header[] = 'Actif *';
         $header[] = 'Date de départ';
         $header[] = 'Date de fin';
+        $header[] = 'Groupe client ID';
+        $header[] = 'Client ID';
+        $header[] = 'Boutique ID';
 
         $csv = implode($this->separator, $header).self::END_OF_LINE;
 
@@ -386,15 +412,28 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->id;
             $data[] = $price->id_product ?? 0;
             $data[] = $price->id_product_attribute;
-            $data[] = $price->id_shop ?? 0;
-            $data[] = $price->id_group;
-            $data[] = $price->id_customer;
-            $data[] = $price->price;
+            $data[] = $price->getTarget() ? $price->getTarget()->reference : null;
+            $data[] = $price->getCombination() ? $price->getCombination()->reference : null;
+            $data[] = $price->getProduct() ? $price->getProduct()->name : null;
             $data[] = $price->from_quantity;
-            $data[] = $price->reduction;
-            $data[] = $price->reduction_type;
+            $data[] = $price->getTarget() ? $price->getTarget()->price : 0;
+            $data[] = (float)$price->price;
+            $data[] = $price->buying_price;
+            $data[] = $price->delivery_fees;
+            $data[] = Tools::getMarginRate($price->buying_price + $price->delivery_fees, $price->price)."%";
+            $data[] = $price->getTarget() ? $price->getTarget()->rollcash : null;
+            $data[] = $price->comment_1;
+            $data[] = $price->comment_2;
+            $data[] = $price->getProduct() ? $price->getProduct()->id_supplier : null;
+            $data[] = $price->getTarget() ? $price->getTarget()->supplier_reference : null;
+            $data[] = $price->getTarget() ? $price->getTarget()->batch : null;
+            $data[] = $price->getTarget() ? $price->getTarget()->ecotax : 0;
+            $data[] = ($price->getProduct() and $price->getProduct()->active) ? 'oui' : 'non';
             $data[] = $price->from;
             $data[] = $price->to;
+            $data[] = $price->id_group;
+            $data[] = $price->id_customer;
+            $data[] = $price->id_shop ?? 0;
 
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }
@@ -420,26 +459,55 @@ class AdminImportExportControllerCore extends AdminController {
             while($row = fgetcsv($handle, 0, $this->separator)) {
                 $row = array_combine($this->getPricesColumns(), $row);
 
+                // Mise à jour du prix spécifique
                 $price = new SpecificPrice($row['id_specific_price']);
                 $update = (bool)$price->id;
 
-                $price->id = $row['id_specific_price'];
+                if($row['id_specific_price']) {
+                    $price->id = $row['id_specific_price'];
+                    $price->force_id = true;
+                }
+
                 $price->id_product = $row['id_product'];
-                $price->id_product_attribute = $row['id_product_attribute'];
-                $price->id_shop = $row['id_shop'];
-                $price->id_group = $row['id_group'];
-                $price->id_customer = $row['id_customer'];
-                $price->price = $row['price'];
-                $price->from_quantity = $row['from_quantity'];
-                $price->reduction = $row['reduction'];
-                $price->reduction_type = $row['reduction_type'];
+                $price->id_product_attribute = $row['id_combination'];
+                $price->from_quantity = $row['min_quantity'];
+                $price->comment_1 = $row['comment_1'];
+                $price->comment_2 = $row['comment_2'];
                 $price->from = $row['from'];
                 $price->to = $row['to'];
+                $price->id_shop = $row['id_shop'] ?? 0;
+                $price->id_group = $row['id_group'];
+                $price->id_customer = $row['id_customer'];
+                $price->price = $row['reduced_price'];
+                $price->buying_price = $row['buying_price'];
+                $price->delivery_fees = $row['delivery_fees'];
+                $price->id_currency = 0;
+                $price->id_country = 0;
+                $price->reduction = 0;
+                $price->reduction_type = "amount";
 
                 if($update)
                     $price->save();
                 else
                     $price->add();
+
+                // Mise à jour du produit ou de la déclinaison
+                if($price->getTarget()) {
+
+                    $price->getTarget()->price = $row['price'];
+                    $price->getTarget()->rollcash = $row['rollcash'];
+                    $price->getTarget()->batch = $row['batch'];
+                    $price->getTarget()->ecotax = $row['ecotax'];
+
+                    $price->save();
+                }
+
+                // Mise à jour du produit
+                if($price->getProduct()) {
+
+                    $price->getProduct()->id_supplier = $row['id_supplier'];
+                    $price->getProduct()->save();
+                }
             }
 
             fclose($handle);

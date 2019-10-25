@@ -14,6 +14,9 @@ class Product extends ProductCore {
     /** @var string Commentaire 2 **/
     public $comment_2;
 
+    /** @var int Batch **/
+    public $batch;
+
 	/** @var bool Destocking **/
 	public $destocking = false;
 
@@ -23,6 +26,7 @@ class Product extends ProductCore {
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
 		self::$definition['fields']['comment_1'] = array('type' => self::TYPE_STRING, 'shop'=>true);
 		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);
+		self::$definition['fields']['batch'] = array('type' => self::TYPE_INT, 'shop'=>true);
 		self::$definition['fields']['destocking'] = array('type' => self::TYPE_BOOL);
 		parent::__construct($id_product, $id_lang, $id_shop);
 	}

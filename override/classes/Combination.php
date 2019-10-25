@@ -8,6 +8,9 @@ class Combination extends CombinationCore {
 	/** @var float Rollcash */
 	public $rollcash;
 
+	/** @var int Batch **/
+    public $batch;
+
 	/** @var float Position */
 	public $position = 1;
 
@@ -30,6 +33,7 @@ class Combination extends CombinationCore {
 
 		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
+		self::$definition['fields']['batch'] = array('type' => self::TYPE_INT, 'shop'=>true);
 		self::$definition['fields']['position'] = array('type' => self::TYPE_FLOAT);
 		parent::__construct($id_product_attribute, $id_lang, $id_shop);
 		
