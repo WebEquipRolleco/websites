@@ -183,8 +183,8 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->quantity;
             $data[] = $product->low_stock_threshold ?? 0;
             $data[] = (int)$product->active;
-            $data[] = pSql($product->description_short);
-            $data[] = pSql($product->description);
+            $data[] = pSql($product->description_short, true);
+            $data[] = pSql($product->description, true);
             $data[] = $product->link_rewrite;
             $data[] = $product->meta_title;
             $data[] = $product->meta_description;
@@ -375,13 +375,13 @@ class AdminImportExportControllerCore extends AdminController {
 
         $header[] = 'prix ID';
         $header[] = 'Produit ID';
-        $header[] = 'Déclinaison ID';
-        $header[] = 'Référence produit *';
-        $header[] = 'Référence déclinaison *';
-        $header[] = 'Désignation';
-        $header[] = 'Quantité de départ';
-        $header[] = "Prix de vente / barré";
-        $header[] = "Prix dégressif / remisé";
+        $header[] = 'Declinaison ID';
+        $header[] = 'Reference produit *';
+        $header[] = 'Reference declinaison *';
+        $header[] = 'Designation';
+        $header[] = 'Quantite de depart';
+        $header[] = "Prix de vente / barre";
+        $header[] = "Prix degressif / remise";
         $header[] = "Prix d'achat unitaire HT";
         $header[] = 'Frais de port unitaire HT';
         $header[] = 'Marge *';
@@ -389,11 +389,11 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = 'Commentaire 1';
         $header[] = 'Commentaire 2';
         $header[] = 'ID fournisseur';
-        $header[] = 'Référence fournisseur *';
+        $header[] = 'Reference fournisseur *';
         $header[] = "Lot";
         $header[] = "Ecotaxe";
         $header[] = 'Actif *';
-        $header[] = 'Date de départ';
+        $header[] = 'Date de depart';
         $header[] = 'Date de fin';
         $header[] = 'Groupe client ID';
         $header[] = 'Client ID';
@@ -406,7 +406,7 @@ class AdminImportExportControllerCore extends AdminController {
         $status_type = Tools::getValue('status_type');
         if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sub_sql .= " AND p.active = 1";
         if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sub_sql .= " AND p.active = 0";
-        
+
         if($category_ids = implode(',', Tools::getValue('categories', array())))
             $sub_sql .= " AND id_category_default IN ($category_ids)";
         if($supplier_ids = implode(',', Tools::getValue('suppliers', array())))
