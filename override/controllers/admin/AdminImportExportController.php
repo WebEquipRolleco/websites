@@ -9,6 +9,9 @@ class AdminImportExportControllerCore extends AdminController {
 	const TYPE_PRODUCT = "Produit";
 	const TYPE_COMBINATION = "Déclinaison";
 
+    const ACTIVE_PRODUCTS_ONLY = 1;
+    const INACTIVE_PRODUCTS_ONLY = 2;
+
 	private $separator;
 	private $delimiter;
 
@@ -399,6 +402,11 @@ class AdminImportExportControllerCore extends AdminController {
         $csv = implode($this->separator, $header).self::END_OF_LINE;
 
         $sub_sql = "SELECT p.id_product FROM ps_product p WHERE 1";
+
+        $status_type = Tools::getValue('status_type');
+        if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sub_sql .= " AND p.active = 1";
+        if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sub_sql .= " AND p.active = 0";
+        
         if($category_ids = implode(',', Tools::getValue('categories', array())))
             $sub_sql .= " AND id_category_default IN ($category_ids)";
         if($supplier_ids = implode(',', Tools::getValue('suppliers', array())))

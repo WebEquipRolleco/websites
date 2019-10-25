@@ -48,6 +48,16 @@
 							<input type="text" class="form-control" name="delimiter" value="{$delimiter}" required>
 						</div>
 					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label>Statut des produits concernés</label>
+							<select class="form-control" name="status_type">
+								<option value="0">Tous</option>
+								<option value="1">Produits activés uniquement</option>
+								<option value="2">Produits désactivés uniquement</option>
+							</select>
+						</div>
+					</div>
 				</div>
 				<div class="panel-footer text-right">
 					<button type="submit" class="btn btn-success" name="action" value="export_products" style="width:69px">
