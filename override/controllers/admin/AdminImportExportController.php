@@ -249,122 +249,127 @@ class AdminImportExportControllerCore extends AdminController {
                 fgetcsv($handle, 0, $this->separator);
 
             while($row = fgetcsv($handle, 0, $this->separator)) {
+                if(is_array($row)) {
 
-                $nb_columns = count($this->getProductsColumns());
-                $nb_values = count($row);
+                    $nb_columns = count($this->getProductsColumns());
+                    $nb_values = count($row);
 
-                if($nb_columns != $nb_values)
-                    for($x=0; $x<($nb_columns - $nb_values); $x++)
-                        $row[] = null;
+                    if($nb_columns != $nb_values)
+                        for($x=0; $x<($nb_columns - $nb_values); $x++)
+                            $row[] = null;
            
-                $row = array_combine($this->getProductsColumns(), $row);
+                    $row = array_combine($this->getProductsColumns(), $row);
 
-                // Produit
-                if($row["type"] == self::TYPE_PRODUCT) {
-                    $product = new Product($row["id_product"], true, 1, $this->context->shop->id);
-                    $update = (bool)$product->id;
+                    // Produit
+                    if($row["type"] == self::TYPE_PRODUCT) {
+                        $product = new Product($row["id_product"], true, 1, $this->context->shop->id);
+                        $update = (bool)$product->id;
 
-                    if($row["id_product"]) {
-                        $product->force_id = true;
-                        $product->id = $row["id_product"];
-                    }
+                        if($row["id_product"]) {
+                            $product->force_id = true;
+                            $product->id = $row["id_product"];
+                        }
 
-                    $product->reference = $row["reference"];
-                    $product->supplier_reference = $row["supplier_reference"];
-                    $product->id_category_default = (int)$row["id_main_category"];
-                    $product->name = $row["name"];
-                    $product->minimal_quantity = $row["min_quantity"] ?? 1;
-                    $product->quantity = (int)$row["stock"];
-                    $product->low_stock_threshold = (int)$row["min_threshold"];
-                    $product->low_stock_alert = false;
-                    $product->active = (bool)$row["state"];
-                    $product->description_short = $row["short_description"];
-                    $product->description = $row["description"];
-                    $product->link_rewrite = $row["link_rewrite"];
-                    $product->meta_title = $row["meta_title"];
-                    $product->meta_description = $row["meta_description"];
-                    $product->meta_keywords = $row["meta_keywords"];
-                    $product->id_supplier = (int)$row["id_supplier"];
-                    $product->comment_1 = $row["comment_1"];
-                    $product->comment_2 = $row["comment_2"];
-                    $product->price = $product->price ?? 0;
+                        $product->reference = $row["reference"];
+                        $product->supplier_reference = $row["supplier_reference"];
+                        $product->id_category_default = (int)$row["id_main_category"];
+                        $product->name = $row["name"];
+                        $product->minimal_quantity = $row["min_quantity"] ?? 1;
+                        $product->quantity = (int)$row["stock"];
+                        $product->low_stock_threshold = (int)$row["min_threshold"];
+                        $product->low_stock_alert = false;
+                        $product->active = (bool)$row["state"];
+                        $product->description_short = $row["short_description"];
+                        $product->description = $row["description"];
+                        $product->link_rewrite = $row["link_rewrite"];
+                        $product->meta_title = $row["meta_title"];
+                        $product->meta_description = $row["meta_description"];
+                        $product->meta_keywords = $row["meta_keywords"];
+                        $product->id_supplier = (int)$row["id_supplier"];
+                        $product->comment_1 = $row["comment_1"];
+                        $product->comment_2 = $row["comment_2"];
+                        $product->price = $product->price ?? 0;
 
-                    if($update)
-                        $product->save();
-                    else
-                        $product->add();
+                        if($update)
+                            $product->save();
+                        else
+                            $product->add();
 
-                    // Catégories
-                    $ids = explode($this->delimiter, $row["ids_category"]);
-                    if(!empty($ids)) {
+                        // Catégories
+                        $ids = explode($this->delimiter, $row["ids_category"]);
+                        if(!empty($ids)) {
 
-                        $position = 1;
-                        Db::getInstance()->execute("DELETE FROM ps_category_product WHERE id_product = ".$product->id);
+                            $position = 1;
+                            Db::getInstance()->execute("DELETE FROM ps_category_product WHERE id_product = ".$product->id);
 
-                        foreach($ids as $id) {
-                            Db::getInstance()->execute("INSERT INTO ps_category_product VALUES (".$id.", ".$product->id.", ".$position.")");
-                            $position++;
+                            foreach($ids as $id) {
+                                Db::getInstance()->execute("INSERT INTO ps_category_product VALUES (".$id.", ".$product->id.", ".$position.")");
+                                $position++;
+                            }
                         }
                     }
-                }
 
-                // Déclinaison
-                if($row["type"] == self::TYPE_COMBINATION) {
-                    $combination = new Combination($row["id_product_attribute"]);
-                    $update = (bool)$combination->id;
+                    // Déclinaison
+                    if($row["type"] == self::TYPE_COMBINATION) {
+                        $combination = new Combination($row["id_product_attribute"]);
+                        $update = (bool)$combination->id;
 
-                    if($row["id_product_attribute"]) {
-                        $combination->force_id = true;
-                        $combination->id = $row["id_product_attribute"];
+                        if($row["id_product_attribute"]) {
+                            $combination->force_id = true;
+                            $combination->id = $row["id_product_attribute"];
+                        }
+
+                        $combination->id_product = $row["id_product"];
+                        $combination->reference = $row["reference"];
+                        $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
+                        $combination->quantity = $row["stock"];
+                        $combination->low_stock_threshold = $row["min_threshold"];
+                        $combination->low_stock_alert = false;
+
+                        if($update)
+                            $combination->save();
+                        else
+                            $combination->add();
+
+                        // Gestion des fournisseurs
+                        ProductSupplier::removeCombination($combination->id);
+                        if($row['id_supplier'] and $row["supplier_reference"]) {
+
+                            $supplier = new ProductSupplier();
+                            $supplier->id_product = $row['id_product'];
+                            $supplier->id_product_attribute = $row['id_product_attribute'];
+                            $supplier->id_supplier = $row['id_supplier'];
+                            $supplier->product_supplier_reference = $row["supplier_reference"];
+                            $supplier->id_currency = 1;
+
+                            $supplier->save();
+                        }
+
+                        // Récupération des attributs à ajouter
+                        $values = array();
+
+                        $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
+                        foreach(Db::getInstance()->executeS($sql) as $id)
+                            if(isset($row[$id['id_attribute_group']]) and !empty($row[$id['id_attribute_group']]))
+                                $values[] = "'".pSql($row[$id['id_attribute_group']])."'";
+                        $values = implode(',', $values);
+
+                        // Ajout des nouveaux attributs
+                        if($values) {
+                            $ids = Db::getInstance()->executeS("SELECT DISTINCT(id_attribute) FROM ps_attribute_lang WHERE id_lang = 1 AND name IN ($values)");
+                            $ids = array_map(function($e) { return $e['id_attribute']; }, $ids);
+                            $combination->setAttributes($ids);
+                        }  
                     }
 
-                    $combination->id_product = $row["id_product"];
-                    $combination->reference = $row["reference"];
-                    $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
-                    $combination->quantity = $row["stock"];
-                    $combination->low_stock_threshold = $row["min_threshold"];
-                    $combination->low_stock_alert = false;
-
-                    if($update)
-                        $combination->save();
-                    else
-                        $combination->add();
-
-                    // Gestion des fournisseurs
-                    ProductSupplier::removeCombination($combination->id);
-                    if($row['id_supplier'] and $row["supplier_reference"]) {
-
-                        $supplier = new ProductSupplier();
-                        $supplier->id_product = $row['id_product'];
-                        $supplier->id_product_attribute = $row['id_product_attribute'];
-                        $supplier->id_supplier = $row['id_supplier'];
-                        $supplier->product_supplier_reference = $row["supplier_reference"];
-                        $supplier->id_currency = 1;
-
-                        $supplier->save();
-                    }
-
-                    // Récupération des attributs à ajouter
-                    $values = array();
-
-                    $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
-                    foreach(Db::getInstance()->executeS($sql) as $id)
-                        if(isset($row[$id['id_attribute_group']]) and !empty($row[$id['id_attribute_group']]))
-                            $values[] = "'".pSql($row[$id['id_attribute_group']])."'";
-                    $values = implode(',', $values);
-
-                    // Ajout des nouveaux attributs
-                    if($values) {
-                        $ids = Db::getInstance()->executeS("SELECT DISTINCT(id_attribute) FROM ps_attribute_lang WHERE id_lang = 1 AND name IN ($values)");
-                        $ids = array_map(function($e) { return $e['id_attribute']; }, $ids);
-                        $combination->setAttributes($ids);
-                    }  
+                    $this->confirmations[] = "Import terminé";
                 }
-                
+                else
+                   $this->errors = "Erreur lors de l'import du fichier. Merci de vérifier le type de fichier, l'encodage et les séparateurs utilisés"; 
             }
 
             fclose($handle);
-            $this->confirmations[] = "Import terminé";
+            
         }
     }
 
@@ -465,61 +470,67 @@ class AdminImportExportControllerCore extends AdminController {
                 fgetcsv($handle, 0, $this->separator);
 
             while($row = fgetcsv($handle, 0, $this->separator)) {
-                $row = array_combine($this->getPricesColumns(), $row);
+                if(is_array($row) and count($row) == count($this->getPricesColumns())) {
 
-                // Mise à jour du prix spécifique
-                $price = new SpecificPrice($row['id_specific_price']);
-                $update = (bool)$price->id;
+                    $row = array_combine($this->getPricesColumns(), $row);
 
-                if($row['id_specific_price']) {
-                    $price->id = $row['id_specific_price'];
-                    $price->force_id = true;
+                    // Mise à jour du prix spécifique
+                    $price = new SpecificPrice($row['id_specific_price']);
+                    $update = (bool)$price->id;
+
+                    if($row['id_specific_price']) {
+                        $price->id = $row['id_specific_price'];
+                        $price->force_id = true;
+                    }
+
+                    $price->id_product = $row['id_product'];
+                    $price->id_product_attribute = $row['id_combination'];
+                    $price->from_quantity = $row['min_quantity'];
+                    $price->comment_1 = $row['comment_1'];
+                    $price->comment_2 = $row['comment_2'];
+                    $price->from = $row['from'];
+                    $price->to = $row['to'];
+                    $price->id_shop = $row['id_shop'] ?? 0;
+                    $price->id_group = $row['id_group'];
+                    $price->id_customer = $row['id_customer'];
+                    $price->price = $row['reduced_price'];
+                    $price->buying_price = $row['buying_price'];
+                    $price->delivery_fees = $row['delivery_fees'];
+                    $price->id_currency = 0;
+                    $price->id_country = 0;
+                    $price->reduction = 0;
+                    $price->reduction_type = "amount";
+
+                    if($update)
+                        $price->save();
+                    else
+                        $price->add();
+
+                    // Mise à jour du produit ou de la déclinaison
+                    if($price->getTarget()) {
+
+                        $price->getTarget()->price = $row['price'];
+                        $price->getTarget()->rollcash = $row['rollcash'];
+                        $price->getTarget()->batch = $row['batch'];
+                        $price->getTarget()->ecotax = $row['ecotax'];
+
+                        $price->save();
+                    }
+
+                    // Mise à jour du produit
+                    if($price->getProduct()) {
+
+                        $price->getProduct()->id_supplier = $row['id_supplier'];
+                        $price->getProduct()->save();
+                    }
+
+                    $this->confirmations[] = "Import terminé";
                 }
-
-                $price->id_product = $row['id_product'];
-                $price->id_product_attribute = $row['id_combination'];
-                $price->from_quantity = $row['min_quantity'];
-                $price->comment_1 = $row['comment_1'];
-                $price->comment_2 = $row['comment_2'];
-                $price->from = $row['from'];
-                $price->to = $row['to'];
-                $price->id_shop = $row['id_shop'] ?? 0;
-                $price->id_group = $row['id_group'];
-                $price->id_customer = $row['id_customer'];
-                $price->price = $row['reduced_price'];
-                $price->buying_price = $row['buying_price'];
-                $price->delivery_fees = $row['delivery_fees'];
-                $price->id_currency = 0;
-                $price->id_country = 0;
-                $price->reduction = 0;
-                $price->reduction_type = "amount";
-
-                if($update)
-                    $price->save();
                 else
-                    $price->add();
-
-                // Mise à jour du produit ou de la déclinaison
-                if($price->getTarget()) {
-
-                    $price->getTarget()->price = $row['price'];
-                    $price->getTarget()->rollcash = $row['rollcash'];
-                    $price->getTarget()->batch = $row['batch'];
-                    $price->getTarget()->ecotax = $row['ecotax'];
-
-                    $price->save();
-                }
-
-                // Mise à jour du produit
-                if($price->getProduct()) {
-
-                    $price->getProduct()->id_supplier = $row['id_supplier'];
-                    $price->getProduct()->save();
-                }
+                    $this->errors = "Erreur lors de l'import du fichier. Merci de vérifier le type de fichier, l'encodage et les séparateurs utilisés";
             }
 
             fclose($handle);
-            $this->confirmations[] = "Import terminé";
         }
     }
 
