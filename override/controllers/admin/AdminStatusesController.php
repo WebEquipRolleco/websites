@@ -45,10 +45,10 @@ class AdminStatusesController extends AdminStatusesControllerCore {
                 'class' => 'fixed-width-sm'
             )
             ,
-            'invoice' => array(
+            'pdf_invoice' => array(
                 'title' => $this->trans('Invoice', array(), 'Admin.Global'),
                 'align' => 'text-center',
-                'active' => 'invoice',
+                'active' => 'pdf_invoice',
                 'type' => 'bool',
                 'ajax' => true,
                 'orderby' => false,
