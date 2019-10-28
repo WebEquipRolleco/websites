@@ -52,6 +52,10 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Client', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
+            'email' => array(
+                'title' => $this->trans('E-mails', array(), 'Admin.Global'),
+                'align' => 'text-center',
+            ),
             'employee' => array(
                 'title' => $this->trans('Créateur', array(), 'Admin.Global'),
                 'align' => 'text-center',
@@ -93,6 +97,7 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Actions', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatActions',
+                'class' => 'fixed-width-lg',
                 'remove_onclick' => true,
                 'search' => false
             ),
