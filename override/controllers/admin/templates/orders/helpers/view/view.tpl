@@ -1338,6 +1338,14 @@
                       </td>
                       <td class="partial_refund_fields current-edit" style="display:none;"></td>
                     </tr>
+                    <tr id="margin">
+                      <td class="text-right" style="background-color:seashell"><strong>{l s="Marge" d="Admin.global"}</strong></td>
+                      <td class="amount text-right nowrap" style="background-color:seashell">
+                        {assign var=margin value=$order->total_paid_tax_incl - Order::sumBuyingPrice([$order->id], true)}
+                        {displayPrice price=$margin currency=$currency->id}
+                        | <strong>{Tools::getMarginRate($margin, $order->total_paid_tax_incl)} %</strong>
+                      </td>
+                    </tr>
                   </table>
                 </div>
               </div>

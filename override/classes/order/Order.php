@@ -323,7 +323,7 @@ class Order extends OrderCore {
 
 	/**
 	* Calcule le coût d'achat total en fonction d'une liste d'ID commande
-	* UTILISATION : page de résultats
+	* UTILISATION : page de résultats, page commande
 	* @param array $ids
 	* @param bool $use_taxes
 	* @param bool $quotation
