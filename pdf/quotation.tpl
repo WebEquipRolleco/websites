@@ -35,19 +35,27 @@
 				{$product->reference}
 			</td>
 			<td class="text-center">
-				<div>{Tools::displayPrice($product->getPrice(false, false, false, 1))}</div>
-				<i style="font-size:7px; color:{$quotation->getShop()->color}">
-					{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax(1))] d='Shop.Pdf' pdf=true}
-				</i>
+				{assign var=price value=$product->getPrice(false, false, false, 1)}
+				{if $price}<div>{Tools::displayPrice($price)}</div>{/if}
+				{if $product->getEcoTax(1)}
+					<i style="font-size:7px; color:{$quotation->getShop()->color}">
+						{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax(1))] d='Shop.Pdf' pdf=true}
+					</i>
+				{/if}
 			</td>
 			<td class="text-center" style="font-size:10px; font-weight:bold;">
-				{$product->quantity}
+				{if $product->quantity}
+					{$product->quantity}
+				{/if}
 			</td>
 			<td class="text-center bold">
-				<div>{Tools::displayPrice($product->getPrice())}</div>
-				<i style="font-size:7px; color:{$quotation->getShop()->color}">
-					{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax())] d='Shop.Pdf' pdf=true}
-				</i>
+				{assign var=price value=$product->getPrice()}
+				{if $price}<div>{Tools::displayPrice($price)}</div>{/if}
+				{if $product->getEcoTax()}
+					<i style="font-size:7px; color:{$quotation->getShop()->color}">
+						{l s="Dont %s" sprintf=[Tools::displayPrice($product->getEcoTax())] d='Shop.Pdf' pdf=true}
+					</i>
+				{/if}
 			</td>
 		</tr>
 	{/foreach}
