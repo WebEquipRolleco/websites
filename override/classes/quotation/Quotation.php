@@ -21,7 +21,7 @@ class Quotation extends ObjectModel {
     public $status = self::STATUS_WAITING;
     public $id_customer;
     public $origin;
-    public $source;
+    public $source = 1;
     public $email;
     public $hidden_emails;
     public $date_begin;
@@ -161,6 +161,7 @@ class Quotation extends ObjectModel {
 
     /**
     * Retourne la liste des labels des états devis
+    * @return array
     **/
     public static function getStates() {
 
@@ -174,6 +175,7 @@ class Quotation extends ObjectModel {
 
     /**
     * Retourne la l iste des labels des sources du devis
+    * @return array
     **/
     public static function getSources() {
 
@@ -187,6 +189,7 @@ class Quotation extends ObjectModel {
 
     /**
     * Retourne le label de la source du devis
+    * @return string
     **/
     public function getSourceLabel() {
         if(isset(self::getSources()[$this->source]))
