@@ -201,7 +201,7 @@ class QuotationLine extends ObjectModel {
 		if(is_file($this->getDirectory(true).$this->getFileName()))
 			return $this->getDirectory().$this->getFileName();
 		else
-			return "/img/quotations/default.jpg";
+			return null;
 	}
 
 	/**

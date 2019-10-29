@@ -20,7 +20,9 @@
 	{foreach from=$quotation->getProducts() item=product}
 		<tr class="odd">
 			<td class="text-center" style="vertical-align:middle;">
-				<img src="{$product->getImageLink()}" width="30" height="30">
+				{if $product->getImageLink()}
+					<img src="{$product->getImageLink()}" width="30" height="30">
+				{/if}
 			</td>
 			<td>
 				<b>{$product->getProductName()}</b>

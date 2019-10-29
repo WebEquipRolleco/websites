@@ -61,7 +61,9 @@
 			{foreach from=$quotation->getProducts() item=line}
 				<tr>
 					<td>
-						<img src="{$line->getImageLink()}" style="height:75px; width:75px; border:1px solid lightgrey; margin-bottom:2px">
+						{if $line->getImageLink()}
+							<img src="{$line->getImageLink()}" style="height:75px; width:75px; border:1px solid lightgrey; margin-bottom:2px">
+						{/if}
 					</td>
 					<td>
 						{if $line->reference}<b>{$line->reference}</b> -{/if} {$line->name}
@@ -69,9 +71,9 @@
 							<div class="text-muted">{$line->information}</div>
 						{/if}
 					</td>
-					<td class="text-center">{Tools::displayPrice($line->selling_price)}</td>
-					<td class="text-center">{$line->quantity}</td>
-					<td class="text-center">{Tools::displayPrice($line->getPrice())}</td>
+					<td class="text-center">{if $line->selling_price}{Tools::displayPrice($line->selling_price)}{/if}</td>
+					<td class="text-center">{if $line->quantity}{$line->quantity}{/if}</td>
+					<td class="text-center">{if $line->selling_price}{Tools::displayPrice($line->getPrice())}{/if}</td>
 				</tr>
 			{/foreach}
 		</tbody>
