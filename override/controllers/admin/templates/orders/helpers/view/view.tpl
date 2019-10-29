@@ -179,7 +179,7 @@
           {if !$order->getCustomer()->checkTVA()}
             <span class="label label-danger">
               <i class="icon-warning"></i>
-              <b>&nbsp; {l s="Le numéro de TVA interne du client n'a pas été renseignée."}</b>
+              <b>&nbsp; {l s="TVA interne du client manquant."}</b>
             </span>
           {else}
             <span class="label label-success">
@@ -721,6 +721,10 @@
                 <dl class="well list-detail">
                   <dt>{l s='Email' d='Admin.Global'}</dt>
                     <dd><a href="mailto:{$customer->email}"><i class="icon-envelope-o"></i> {$customer->email}</a></dd>
+                  <dt>{l s='Type de compte' d='Admin.Orderscustomers.Feature'}</dt>
+                    <dd class="text-muted">{if $customer->getAccountType()}{$customer->getAccountType()->name|default:'-'}{else}-{/if}</dd>
+                  <dt>{l s='Référence E-deal' d='Admin.Orderscustomers.Feature'}</dt>
+                    <dd class="text-muted">{$customer->reference|default:'-'}</dd>
                   <dt>{l s='Account registered' d='Admin.Orderscustomers.Feature'}</dt>
                     <dd class="text-muted"><i class="icon-calendar-o"></i> {dateFormat date=$customer->date_add full=true}</dd>
                   <dt>{l s='Valid orders placed' d='Admin.Orderscustomers.Feature'}</dt>
@@ -728,10 +732,12 @@
                   <dt>{l s='Total spent since registration' d='Admin.Orderscustomers.Feature'}</dt>
                     <dd><span class="badge badge-success">{displayPrice price=Tools::ps_round(Tools::convertPrice($customerStats['total_orders'], $currency), 2) currency=$currency->id}</span></dd>
                   {if Configuration::get('PS_B2B_ENABLE')}
+                    <dt>{l s='Société' d='Admin.Orderscustomers.Feature'}</dt>
+                      <dd class="text-muted">{$customer->company|default:'-'}</dd>
                     <dt>{l s='SIRET' d='Admin.Orderscustomers.Feature'}</dt>
-                      <dd>{$customer->siret}</dd>
+                      <dd class="text-muted">{$customer->siret|default:'-'}</dd>
                     <dt>{l s='APE' d='Admin.Orderscustomers.Feature'}</dt>
-                      <dd>{$customer->ape}</dd>
+                      <dd class="text-muted">{$customer->ape|default:'-'}</dd>
                   {/if}
                 </dl>
               {/if}
