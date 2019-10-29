@@ -49,6 +49,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $this->statuses_array[$status['id_order_state']] = $status['name'];
         }
 
+        $payments = array_column(Order::getPaymentList(), 'payment');
+        $payments = array_combine($payments, $payments);
+
         $this->fields_list = array(
             'id_order' => array(
                 'title' => $this->trans('ID', array(), 'Admin.Global'),
@@ -88,7 +91,10 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                 'badge_success' => true
             ),
             'payment' => array(
-                'title' => $this->trans('Payment', array(), 'Admin.Global')
+                'title' => $this->trans('Payment', array(), 'Admin.Global'),
+                'type' => 'select',
+                'list' => $payments,
+                'filter_key' => 'a!payment'
             ),
             'osname' => array(
                 'title' => $this->trans('Status', array(), 'Admin.Global'),

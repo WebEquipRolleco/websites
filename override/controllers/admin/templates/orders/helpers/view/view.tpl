@@ -213,11 +213,11 @@
         </div>
         <!-- Orders Actions -->
         <div class="well hidden-print">
-          <a class="btn btn-default" href="javascript:window.print()">
+          {*<a class="btn btn-default" href="javascript:window.print()">
             <i class="icon-print"></i>
             {l s='Print order' d='Admin.Orderscustomers.Feature'}
           </a>
-          &nbsp;
+          &nbsp;*}
             <a href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&submitAction=generatePreparationSlipPDF&id_order={$order->id|intval}" class="btn btn-default _blank">
               <i class="icon-file"></i> {l s="Bon de préparation"}
             </a>

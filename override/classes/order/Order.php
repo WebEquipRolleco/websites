@@ -350,4 +350,12 @@ class Order extends OrderCore {
 			return $value;
 	}
 
+	/**
+	* Retourne la liste des types de paiement utilisés
+	* @return array
+	**/
+	public function getPaymentList() {
+		return Db::getInstance()->executeS("SELECT DISTINCT(payment) FROM ps_orders");
+	}
+	
 }
