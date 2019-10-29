@@ -42,7 +42,8 @@ class AdminQuotationsController extends AdminController {
 
         $this->_orderBy = 'reference';
         $this->_orderWay = 'desc';
-        
+        $this->_use_found_rows = true;
+
         $this->fields_list = array(
             'reference' => array(
                 'title' => $this->trans('Référence', array(), 'Admin.Global'),
@@ -79,6 +80,9 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Etat', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatStatus',
+                'type' => 'select',
+                'list' => Quotation::getStates(),
+                'filter_key' => 'a!status'
             ),
             'active' => array(
                 'title' => $this->trans('Actif', array(), 'Admin.Global'),
@@ -169,7 +173,8 @@ class AdminQuotationsController extends AdminController {
     }
 
     public function postProcess() {
-        
+        parent::postProcess();
+
         // Export des devis
         $this->export();
 
