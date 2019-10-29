@@ -59,12 +59,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                 'title' => $this->trans('Reference', array(), 'Admin.Global'),
                 'filter_key' => 'a!reference'
             ),
-            'new' => array(
-                'title' => $this->trans('New client', array(), 'Admin.Orderscustomers.Feature'),
-                'align' => 'text-center',
-                'type' => 'bool',
-                'tmpTableFilter' => true,
-                'orderby' => false,
+            'reference_edeal' => array(
+                'title' => $this->trans('Code E-deal', array(), 'Admin.Global'),
+                'filter_key' => 'c!reference'
             ),
             'customer' => array(
                 'title' => $this->trans('Customer', array(), 'Admin.Global'),
@@ -117,34 +114,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                 'remove_onclick' => true
             )
         ));
-
-        if (Country::isCurrentlyUsed('country', true)) {
-            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->ExecuteS('
-            SELECT DISTINCT c.id_country, cl.`name`
-            FROM `'._DB_PREFIX_.'orders` o
-            '.Shop::addSqlAssociation('orders', 'o').'
-            INNER JOIN `'._DB_PREFIX_.'address` a ON a.id_address = o.id_address_delivery
-            INNER JOIN `'._DB_PREFIX_.'country` c ON a.id_country = c.id_country
-            INNER JOIN `'._DB_PREFIX_.'country_lang` cl ON (c.`id_country` = cl.`id_country` AND cl.`id_lang` = '.(int)$this->context->language->id.')
-            ORDER BY cl.name ASC');
-
-            $country_array = array();
-            foreach ($result as $row) {
-                $country_array[$row['id_country']] = $row['name'];
-            }
-
-            $part1 = array_slice($this->fields_list, 0, 3);
-            $part2 = array_slice($this->fields_list, 3);
-            $part1['cname'] = array(
-                'title' => $this->trans('Delivery', array(), 'Admin.Global'),
-                'type' => 'select',
-                'list' => $country_array,
-                'filter_key' => 'country!id_country',
-                'filter_type' => 'int',
-                'order_key' => 'cname'
-            );
-            $this->fields_list = array_merge($part1, $part2);
-        }
 
         $this->shopLinkType = 'shop';
         $this->shopShareDatas = Shop::SHARE_ORDER;
