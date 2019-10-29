@@ -72,8 +72,6 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = "id_main_category";
         $data[] = "name";
         $data[] = "min_quantity";
-        $data[] = "stock";
-        $data[] = "min_threshold";
         $data[] = "state";
         $data[] = "short_description";
         $data[] = "description";
@@ -141,8 +139,6 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "ID catégorie principale";
         $header[] = "Désignation";
         $header[] = "Quantité minimale";
-        $header[] = "Stock";
-        $header[] = "Seuil d'alerte";
         $header[] = "Etat";
         $header[] = "Description courte";
         $header[] = "Description longue";
@@ -180,8 +176,6 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->id_category_default;
             $data[] = $product->name;
             $data[] = $product->minimal_quantity;
-            $data[] = $product->quantity;
-            $data[] = $product->low_stock_threshold ?? 0;
             $data[] = (int)$product->active;
             $data[] = pSql($product->description_short, true);
             $data[] = pSql($product->description, true);
@@ -208,8 +202,6 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = null;
                 $data[] = null;
                 $data[] = $combination->minimal_quantity;
-                $data[] = $combination->quantity;
-                $data[] = $combination->low_stock_threshold ?? 0;
                 $data[] = null;
                 $data[] = null;
                 $data[] = null;
@@ -275,8 +267,8 @@ class AdminImportExportControllerCore extends AdminController {
                         $product->id_category_default = (int)$row["id_main_category"];
                         $product->name = $row["name"];
                         $product->minimal_quantity = $row["min_quantity"] ?? 1;
-                        $product->quantity = (int)$row["stock"];
-                        $product->low_stock_threshold = (int)$row["min_threshold"];
+                        $product->quantity = 99999;
+                        $product->low_stock_threshold = 0;
                         $product->low_stock_alert = false;
                         $product->active = (bool)$row["state"];
                         $product->description_short = $row["short_description"];
@@ -322,8 +314,8 @@ class AdminImportExportControllerCore extends AdminController {
                         $combination->id_product = $row["id_product"];
                         $combination->reference = $row["reference"];
                         $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
-                        $combination->quantity = $row["stock"];
-                        $combination->low_stock_threshold = $row["min_threshold"];
+                        $combination->quantity = 99999;
+                        $combination->low_stock_threshold = 0;
                         $combination->low_stock_alert = false;
 
                         if($update)
