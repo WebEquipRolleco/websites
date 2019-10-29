@@ -14,13 +14,6 @@
 						<th colspan="{if $quotation->date_end}5{else}4{/if}">{$quotation->reference}</th>
 				</thead>
 				<tbody>
-					{if $quotation->comment}
-						<tr>
-							<td colspan="{if $quotation->date_end}5{else}4{/if}" class="text-center">
-								{$quotation->comment}
-							</td>
-						</tr>
-					{/if}
 					<tr>
 						<td>
 							<span class="label bg-{$quotation->getStatusClass()} btn-block text-center">
