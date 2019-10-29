@@ -235,22 +235,22 @@
 						<div class="form-group">
 							<label for="email">{l s="E-mails"}</label>
 							<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
-							<input type="text" name="quotation[email]" id="email" class="form-control" value="{$quotation->email}">
+							<input type="text" name="quotation[email]" id="email" class="form-control" value="{$quotation->email}" tabindex="1">
 						</div>
 						<div class="form-group">
 							<label for="phone">{l s="Téléphone"}</label>
-							<input type="text" name="quotation[phone]" id="phone" class="form-control" value="{$quotation->phone}">
+							<input type="text" name="quotation[phone]" id="phone" class="form-control" value="{$quotation->phone}" tabindex="3">
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label for="hidden_emails">{l s="E-mails (CC)"}</label>
 							<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
-							<input type="text" name="quotation[hidden_emails]" id="hidden_emails" class="form-control" value="{$quotation->hidden_emails}">
+							<input type="text" name="quotation[hidden_emails]" id="hidden_emails" class="form-control" value="{$quotation->hidden_emails}" tabindex="2">
 						</div>
 						<div class="form-group">
 							<label for="fax">{l s="Fax"}</label>
-							<input type="text" name="quotation[fax]" id="fax" class="form-control" value="{$quotation->fax}">
+							<input type="text" name="quotation[fax]" id="fax" class="form-control" value="{$quotation->fax}" tabindex="4">
 						</div>
 					</div>
 				</div>
