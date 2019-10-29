@@ -464,7 +464,7 @@ class Quotation extends ObjectModel {
     public function getLink() {
 
         $link = new Link();
-        return $link->getPageLink('QuotationRegistration&accept='.$this->reference.'&key='.$this->secure_key, null, 1, null, false, $this->id_shop);
+        return $link->getPageLink('QuotationRegistration&accept='.$this->reference.'&key='.$this->secure_key, null, 1, null, false, $this->id_shop)."&utm_source=devis&utm_medium=devis";
     }
 
     /**
