@@ -5,11 +5,12 @@
 		{/if}
 	</td>
 	<td>
+		<div class="bold">{$line->getProductName()}</div>
+		{foreach from=$line->getProductProperties() item=property}
+			<div>{$property}</div>
+		{/foreach}
 		{if $line->information}
-			<div class="bold">{$line->name}</div>
-			<em class="text-muted">{$line->information}</em>
-		{else}
-			{$line->name}
+			<em class="text-muted">{$line->information|replace:"|":'<br />' nofilter}</em>
 		{/if}
 	</td>
 	<td class="cart_reference text-center">

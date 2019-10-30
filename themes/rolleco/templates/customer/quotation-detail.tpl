@@ -66,9 +66,12 @@
 						{/if}
 					</td>
 					<td>
-						{if $line->reference}<b>{$line->reference}</b> -{/if} {$line->name}
+						<b>{if $line->reference}{$line->reference} -{/if} {$line->getProductName()}</b>
+						{foreach from=$line->getProductProperties() item=property}
+							<div>{$property}</div>
+						{/foreach}
 						{if $line->information}
-							<div class="text-muted">{$line->information}</div>
+							<div class="text-muted">{$line->information|replace:"|":'<br />' nofilter}</div>
 						{/if}
 					</td>
 					<td class="text-center">{if $line->selling_price}{Tools::displayPrice($line->selling_price)}{/if}</td>
