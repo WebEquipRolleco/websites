@@ -571,6 +571,7 @@ table .description-cell {
   padding-top: 20px;
   margin-bottom: 20px;
   color: #1e4688;
+  vertical-align: top;
 }
 .megamenu_level_2 li img {
   height: 175px;
@@ -770,9 +771,6 @@ table .description-cell {
   background-color: purple !important;
 }
 li.product-flag.destocking {
-  background-color: #d5121d !important;
-}
-.product-accessories .product-miniature .product-flags .destocking {
   background-color: #d5121d !important;
 }
 .awesome-star-rating .awesome-star {
