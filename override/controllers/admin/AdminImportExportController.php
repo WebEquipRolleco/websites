@@ -151,8 +151,9 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "Commentaire 2";
 
         // Liste de toutes les caractéristiques
-        $sql = "SELECT DISTINCT(agl.name) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
-        foreach(Db::getInstance()->executeS($sql) as $group)
+        $sql = "SELECT agl.id_attribute_group, agl.name FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
+        $attributes = Db::getInstance()->executeS($sql);
+        foreach($attributes as $group)
             $header[] = $group['name'];
 
         $csv = implode($this->separator, $header).self::END_OF_LINE;
@@ -214,9 +215,8 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = null;
 
                 // Liste de toutes les caractéristiques
-                $sql = "SELECT g.id_attribute_group, l.name FROM ps_attribute_group g LEFT JOIN ps_attribute a ON (a.id_attribute_group = g.id_attribute_group AND a.id_attribute IN (SELECT id_attribute FROM `ps_product_attribute_combination` WHERE id_product_attribute = ".$combination->id.")) LEFT JOIN ps_attribute_lang l ON (a.id_attribute = l.id_attribute AND l.id_lang = 1) ORDER BY g.id_attribute_group ASC";
-                foreach(Db::getInstance()->executeS($sql) as $row)
-                    $data[] = $row['name'];
+                foreach($attributes as $group)
+                    $data[] = Db::getInstance()->getValue("SELECT al.name FROM ps_attribute a, ps_attribute_lang al, ps_attribute_group ag, ps_product_attribute_combination pac WHERE a.id_attribute = al.id_attribute AND al.id_attribute = pac.id_product_attribute AND a.id_attribute_group = ".$group['id_attribute_group']." AND pac.id_product_attribute = ".$combination->id);
 
                 $csv .= implode($this->separator, $data).self::END_OF_LINE;
             }
