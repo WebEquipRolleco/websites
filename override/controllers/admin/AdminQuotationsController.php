@@ -404,7 +404,7 @@ class AdminQuotationsController extends AdminController {
     private function copyQuotation() {
         if(Tools::getIsset('dupplicate') and $this->id_quotation) {
 
-            $quotation = new Quotation($id);
+            $quotation = new Quotation($this->id_quotation);
             if($quotation->id) {
 
                 $products = $quotation->getProducts();
