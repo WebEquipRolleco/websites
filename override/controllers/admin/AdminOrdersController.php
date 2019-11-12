@@ -217,12 +217,20 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         
         // Supprimer un historique
         if($id = Tools::getValue('remove_history')) {
+
             $history = new OrderHistory($id);
             if($history->id) $history->delete();
+
+            $order = new Order((int)Tools::getValue('id_order'));
+            if($order->current_state == $history->id_order_state) {
+                $order->current_state = Db::getInstance()->getValue("SELECT id_order_state FROM ps_order_history WHERE id_order = ".$order->id." ORDER BY date_add DESC");
+                $order->save();
+            }
         }
 
         // Supprimer un paiement 
         if($id = Tools::getValue('remove_payment')) {
+
             $payment = new OrderPayment($id);
             if($payment->id) $payment->delete();
         }
