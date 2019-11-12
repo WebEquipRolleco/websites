@@ -12,5 +12,5 @@
 <div style="text-align:center;">
 	{$name} - {$address}, {$zipcode} {$city} <br />
 	{l s="Pour toute assistance, merci de nous contacter par mail %s ou par téléphone au %s" sprintf=[$email, $phone] d='Shop.Pdf' pdf='true'} <br />
-	{$title} - {$type} - {$RCS} - {$SIRET} - {l s="Tél. : %s" sprintf=[$phone] d='Shop.Pdf' pdf='true'}
+	{$title} - {$type} - {$RCS} - {$SIRET}
 </div>
