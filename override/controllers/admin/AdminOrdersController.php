@@ -2,6 +2,8 @@
 
 class AdminOrdersController extends AdminOrdersControllerCore {
 
+    private $current_id;
+
     /**
     * Override : filtre sur la référence commande (conflit SQL)
     **/
@@ -16,6 +18,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $this->allow_export = true;
         $this->deleted = false;
 
+        $this->current_id = (int)Tools::getValue('id_order');
         AdminController::__construct();
 
         $this->toolbar_btn['import'] = array(
@@ -126,7 +129,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         if (Tools::isSubmit('id_order')) {
             // Save context (in order to apply cart rule)
-            $order = new Order((int)Tools::getValue('id_order'));
+            $order = new Order($this->current_id);
             $this->context->cart = new Cart($order->id_cart);
             $this->context->customer = new Customer($order->id_customer);
         }
@@ -186,7 +189,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         // Modification référence interne
         if(Tools::getIsset('new_internal_reference')) {
 
-            $order = new Order((int)Tools::getValue('id_order'));
+            $order = new Order($this->current_id);
             $order->internal_reference = Tools::getValue('new_internal_reference');
             $order->save();
         }
@@ -201,7 +204,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         if(Tools::isSubmit('save_new_oa')) {
             $form = Tools::getValue('new_oa');
 
-            $oa = OA::find(Tools::getValue('id_order'), $form['id_supplier']);
+            $oa = OA::find($this->current_id, $form['id_supplier']);
             $oa->code = $form['code'];
             $oa->save();
         }
@@ -215,13 +218,22 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $oa->save();
         }
         
+        // Vérification des OA
+        $rows = Db::getInstance()->executeS("SELECT id_product_supplier FROM ps_order_detail WHERE id_order = ".$this->current_id);
+        foreach($rows as $row) {
+
+            $oa = OA::find($this->current_id, $row['id_product_supplier']);
+            if(!$oa->id)
+                $oa->save();
+        }
+        
         // Supprimer un historique
         if($id = Tools::getValue('remove_history')) {
 
             $history = new OrderHistory($id);
             if($history->id) $history->delete();
 
-            $order = new Order((int)Tools::getValue('id_order'));
+            $order = new Order($this->current_id);
             if($order->current_state == $history->id_order_state) {
                 $order->current_state = Db::getInstance()->getValue("SELECT id_order_state FROM ps_order_history WHERE id_order = ".$order->id." ORDER BY date_add DESC");
                 $order->save();
@@ -237,7 +249,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Enregistrement facturation 
         if(Tools::isSubmit('save_invoice')) {
-            $order = new Order((int)Tools::getValue('id_order'));
+            $order = new Order($this->current_id);
             $order->invoice_date = Tools::getValue('invoice_date');
             $order->invoice_number = Tools::getValue('invoice_number');
             $order->no_recall = Tools::getValue('no_recall');
@@ -248,7 +260,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         // Enregistrement des infomations complémentaires
         foreach(array('supplier_information', 'delivery_information') as $name) {
             if(Tools::isSubmit("save_$name")) {
-                $order = new Order((int)Tools::getValue('id_order'));
+                $order = new Order($this->current_id);
                 $order->{$name} = Tools::getValue($name);
                 $order->save();
             }
@@ -281,7 +293,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $object = Tools::getValue('object');
             $message = Tools::getValue('message');
 
-            foreach(OA::findByOrder(Tools::getValue('id_order')) as $OA) {
+            foreach(OA::findByOrder($this->current_id) as $OA) {
                 if(!$ids_supplier or in_array($OA->id_supplier, $ids_supplier)) {
                     if(!empty($OA->getSupplier()->getEmails())) {
 
@@ -322,7 +334,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                         if($id_state = Configuration::get('BLBC_ORDER_STATE', null, $OA->getOrder()->id_shop)) {
 
                             $history = new OrderHistory();
-                            $history->changeIdOrderState($id_state, Tools::getValue('id_order'));
+                            $history->changeIdOrderState($id_state, $this->current_id);
                         }
 
                         $OA->save();
@@ -355,7 +367,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         // Return value
         $res = true;
 
-        $order = new Order((int)Tools::getValue('id_order'));
+        $order = new Order($this->current_id);
         $order_detail = new OrderDetail((int)Tools::getValue('product_id_order_detail'));
         if (Tools::isSubmit('product_invoice')) {
             $order_invoice = new OrderInvoice((int)Tools::getValue('product_invoice'));
