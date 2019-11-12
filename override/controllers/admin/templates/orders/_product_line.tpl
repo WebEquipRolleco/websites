@@ -115,7 +115,14 @@
 			{/if}
 		</td>
 	{else}
-	 	<td class="productQuantity text-center">{$product['product_quantity']}</td>
+	 	<td class="productQuantity text-center">
+	 		<span class="product_price_show">
+	 			{$product['product_quantity']}
+	 		</span>
+	 		<div class="product_price_edit" style="display:none;">
+	 			<input type="text" class="text-center" name="product_quantity" value="1" readonly="readonly">
+	 		</div>
+	 	</td>
 	{/if}
 	{if $stock_management}<td class="productQuantity product_stock text-center">{$product['current_stock']}</td>{/if}
 	<td class="total_product">
