@@ -458,6 +458,7 @@ class AdminQuotationsController extends AdminController {
 
             $line->buying_price = $product->wholesale_price;
             $line->eco_tax = $product->ecotax;
+            if($product->delivery_fees) $line->buying_fees = $product->delivery_fees;
 
             $line->min_quantity = $product->minimal_quantity;
             if($line->min_quantity) $line->quantity = $line->min_quantity;
@@ -472,7 +473,8 @@ class AdminQuotationsController extends AdminController {
                 $line->reference = $combination->reference;
                 $line->buying_price = round($combination->wholesale_price, 2);
                 $line->eco_tax = $combination->ecotax;
-
+                if($combination->delivery_fees) $line->buying_fees = $combination->delivery_fees;
+                
                 $line->min_quantity = $combination->minimal_quantity;
                 if($line->min_quantity) $line->quantity = $line->min_quantity;
             }
