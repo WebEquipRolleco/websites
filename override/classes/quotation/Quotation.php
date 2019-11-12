@@ -483,4 +483,17 @@ class Quotation extends ObjectModel {
         return self::find($options);
     }
     
+    /**
+    * Retourne la commande associée au devis (si existe)
+    * @return Order
+    **/
+    public function getOrder() {
+
+        $id = Db::getInstance()->getValue("SELECT o.id_order FROM "._DB_PREFIX_."orders o, "._DB_PREFIX_.QuotationAssociation::TABLE_NAME." qa WHERE o.id_cart = qa.id_cart AND qa.id_quotation = ".$this->id);
+        if($id)
+            return new Order($id);
+
+        return false;
+    }
+
 }

@@ -18,9 +18,16 @@
 				<strong>{$quotation->reference}</strong>
 			</span>
 			&nbsp;
-			<span class="label label-{$quotation->getStatusClass()} border-secondary">
+			<span class="label label-{$quotation->getStatusClass()}">
 				<b>{l s='Devis' d='Admin.Labels'} {$quotation->getStatusLabel()}</b>
 			</span>
+			{assign var=order value=$quotation->getOrder()}
+			{if $order}
+				&nbsp;
+				<span class="label label-success">
+					<b>{l s="Commande" d='Admin.Labels'} {$order->reference}</b>
+				</span>
+			{/if}
 		</div>
 		<div class="col-lg-6 text-right">
 			<a href="{$link->getAdminLink('AdminQuotations')}">{l s='Retour' d='Admin.Labels'}</a>

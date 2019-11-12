@@ -549,9 +549,8 @@
                   {else}
                   {/if}
                   </td>
-                  <td class="actions">
+                  <td style="min-width:103px">
                     <button class="btn btn-default open_payment_information">
-                      <i class="icon-search"></i>
                       {l s='Details' d='Admin.Global'}
                     </button>
                     {if $nb_payments > 1}
