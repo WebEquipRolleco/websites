@@ -39,6 +39,7 @@ class Quotation extends ObjectModel {
     public $option_ids;
     public $id_shop;
     public $secure_key;
+    public $mail_sent = false;
 
     // Variables temporaires
     private $options = array();
@@ -71,7 +72,8 @@ class Quotation extends ObjectModel {
             'highlight' => array('type' => self::TYPE_BOOL),
             'option_ids' => array('type' => self::TYPE_STRING),
             'id_shop' => array('type' => self::TYPE_INT),
-            'secure_key' => array('type' => self::TYPE_STRING)
+            'secure_key' => array('type' => self::TYPE_STRING),
+            'mail_sent' => array('type' => self::TYPE_BOOL)
         ),
     );
 

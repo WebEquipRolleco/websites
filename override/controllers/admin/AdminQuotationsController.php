@@ -84,6 +84,11 @@ class AdminQuotationsController extends AdminController {
                 'list' => Quotation::getStates(),
                 'filter_key' => 'a!status'
             ),
+            'mail_sent' => array(
+                'title' => $this->trans('E-mail', array(), 'Admin.Global'),
+                'align' => 'text-center',
+                'callback' => 'formatMail',
+            ),
             'active' => array(
                 'title' => $this->trans('Actif', array(), 'Admin.Global'),
                 'align' => 'text-center',
@@ -131,6 +136,14 @@ class AdminQuotationsController extends AdminController {
 
     public function formatPrice($value) {
         return Tools::displayPrice($value);
+    }
+
+    public function formatMail($value) {
+        
+        if($value)
+            return "<span class='label label-success' title='E-mail envoyé'><i class='icon-envelope'></i></span>";
+        else
+           return "<span class='label label-danger' title='E-mail non envoyé'><i class='icon-envelope'></i></span>"; 
     }
 
     public function formatStatus($value) {
@@ -336,6 +349,9 @@ class AdminQuotationsController extends AdminController {
             foreach($emails as $email)
                 Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop), $attachments);
 
+            $quotation->mail_sent = true;
+            $quotation->save();
+            
             $this->confirmations[] = "Le devis a été envoyé au client";
         }
     }
