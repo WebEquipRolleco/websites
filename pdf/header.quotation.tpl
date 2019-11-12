@@ -11,7 +11,7 @@
 				<img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" />
 			{/if}
 		</td>
-		<td style="width:33%; text-align:center;">
+		<td style="width:33%; text-align:center; font-size:8px">
 			{if $quotation->details}
 				<div style="font-weight:bold">{l s="Informations client" d='Shop.Pdf' pdf='true'}</div>
 				{$quotation->details|replace:'|':'<br />'}
