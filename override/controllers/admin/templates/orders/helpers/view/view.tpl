@@ -114,12 +114,12 @@
           <i class="icon-cogs"></i>
           {l s='Etat client' d='Admin.Global'}
           <span class="panel-heading-action">
-            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}">
+            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}" target="_blank">
                 <i class="process-icon-edit"></i>
             </a>
           </span>
         </div>
-        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" style="text-decoration:none">
+        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" target="_blank" style="text-decoration:none">
           {assign var='state' value=$order->getCustomer()->getState()}
           {if $state}
             <span class="label" style="background-color:{$state->color};{if $state->light_text}color:white;{/if}"><b>{$state->name}</b></span>
@@ -141,12 +141,12 @@
           <i class="icon-cogs"></i>
           {l s='Solvabilité client' d='Admin.Global'}
           <span class="panel-heading-action">
-            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}">
+            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}" target="_blank">
                 <i class="process-icon-edit"></i>
             </a>
           </span>
         </div>
-        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" style="text-decoration:none">
+        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" target="_blank" style="text-decoration:none">
           {if !$order->getCustomer()->funding}
             <span class="label label-danger text-center">
               <i class="icon-warning"></i>
@@ -170,12 +170,12 @@
           <i class="icon-cogs"></i>
           {l s='TVA client' d='Admin.Global'}
           <span class="panel-heading-action">
-            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}">
+            <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="list-toolbar-btn" title="{l s='Edit' d='Admin.Actions'}" target="_blank">
                 <i class="process-icon-edit"></i>
             </a>
           </span>
         </div>
-        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" style="text-decoration:none">
+        <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" title="{l s='Edit' d='Admin.Actions'}" target="_blank" style="text-decoration:none">
           {if !$order->getCustomer()->checkTVA()}
             <span class="label label-danger">
               <i class="icon-warning"></i>
@@ -686,7 +686,7 @@
             <i class="icon-user"></i>
             {l s='Customer' d='Admin.Global'}
             <span class="badge">
-              <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}">
+              <a href="?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" target="_blank">
                 <i class="icon-edit"></i>
               </a>
             </span>

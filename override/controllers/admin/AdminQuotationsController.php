@@ -85,7 +85,7 @@ class AdminQuotationsController extends AdminController {
                 'filter_key' => 'a!status'
             ),
             'mail_sent' => array(
-                'title' => $this->trans('E-mail', array(), 'Admin.Global'),
+                'title' => $this->trans('Mail', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatMail',
             ),
@@ -351,7 +351,7 @@ class AdminQuotationsController extends AdminController {
 
             $quotation->mail_sent = true;
             $quotation->save();
-            
+
             $this->confirmations[] = "Le devis a été envoyé au client";
         }
     }
