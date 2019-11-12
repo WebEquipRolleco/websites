@@ -40,15 +40,15 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price|round:2}">
+				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price|string_format:"%.2f"}">
 			</div>
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="Ports" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees|round:2}">
+				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees|string_format:"%.2f"}">
 			</div>
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price|round:2}">
+				<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price|string_format:"%.2f"}">
 			</div>
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
@@ -76,7 +76,7 @@
 	<td class="text-center">
 		<b>{displayPrice price=$line->getMargin()}</b>
 		<br />
-		{$line->getMarginRate()|round:2}%
+		{$line->getMarginRate()|string_format:"%.2f"}%
 	</td>
 	<td>
 		<textarea rows="4" class="form-control" name="lines[{$line->id}][comment]" style="resize:vertical">{$line->comment}</textarea>
