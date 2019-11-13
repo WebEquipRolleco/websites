@@ -33,9 +33,9 @@
 	        	<br />
 	        	<ul>
 	                <li><b>0</b> - Référence commande</li>
-	                <li><b>2</b> - ID nouveau statut de la commande</li>
-	                <li><b>4</b> - Nouveau numéro de facturation</li>
-	                <li><b>5</b> - Nouvelle date de facturation</li>
+	                <li><b>1</b> - ID nouveau statut de la commande</li>
+	                <li><b>2</b> - Nouveau numéro de facturation</li>
+	                <li><b>3</b> - Nouvelle date de facturation (format DD/MM/YYYY)</li>
             	</ul>
 	        </div>
 	      </div>

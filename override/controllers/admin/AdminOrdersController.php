@@ -158,19 +158,30 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                 $handle = fopen($_FILES['file']['tmp_name'], 'r');
                 $not_found = array();
 
-                if(Tools::getValue('skip'));
+                if(Tools::getValue('skip'))
                     fgetcsv($handle, 0, ";");
 
                 while($row = fgetcsv($handle, 0, ";")) {
 
-                    if($order = Order::getIdByReference($row[0])) {
+                    if($id = Order::getIdByReference($row[0])) {
+                        $date = DateTime::createFromFormat('d/m/Y', $row[3]);
 
-                        if($row[4]) $order->invoice_number = $row[4];
-                        if($row[5]) $order->invoice_date = DateTime::createFromFormat('d/m/Y', $row[5]);
+                        $order = new Order($id);
+                        if($row[2]) $order->invoice_number = $row[2];
+                        if($row[3]) $order->invoice_date = $date->format('Y-m-d 00:00:00');
                         $order->save();
 
-                        if($row[2])
-                            OrderHistory::changeIdOrderState($row[2], $order->id);
+                        if($row[1]) {
+
+                            $history = new OrderHistory();
+                            $history->changeIdOrderState($row[1], $order->id);
+
+                            $history->id_order = $order->id;
+                            $history->id_order_state = $row[1];
+                            $history->id_employee = $this->context->employee->id;
+                            $history->date_add = date('Y-m-d H:i:s');
+                            $history->save();
+                        }
                     }
                     else
                         $not_found[] = $row[0];
