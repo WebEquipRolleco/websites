@@ -62,10 +62,10 @@
 							{$address->phone} 
 							{if $address->hasBothPhones()} / {/if}
 							{$address->phone_mobile}
-						{elseif $order->getInvoiceAddress()->hasPhone()}
-							{$order->getInvoiceAddress()->phone} 
-							{if $order->getInvoiceAddress()->hasBothPhones()} / {/if}
-							{$order->getInvoiceAddress()->phone_mobile}
+						{elseif $order->getAddressInvoice()->hasPhone()}
+							{$order->getAddressInvoice()->phone} 
+							{if $order->getAddressInvoice()->hasBothPhones()} / {/if}
+							{$order->getAddressInvoice()->phone_mobile}
 						{/if}
 					</td>
 				</tr>
