@@ -14,8 +14,14 @@ class OrderDetail extends OrderDetailCore {
 	/** @var string Week **/
 	public $week;
 
-	/** @var string Week **/
+	/** @var string comment **/
 	public $comment;
+
+    /** @var string Comment Product 1 **/
+    public $comment_product_1;
+
+    /** @var string Comment Product 2 **/
+    public $comment_product_2;
 
 	/** variables temporaires **/
 	private $supplier;
@@ -27,7 +33,9 @@ class OrderDetail extends OrderDetailCore {
 		self::$definition['fields']['id_product_supplier'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['day'] = array('type' => self::TYPE_DATE);
 		self::$definition['fields']['week'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['comment'] = array('type' => self::TYPE_HTML);
+        self::$definition['fields']['comment'] = array('type' => self::TYPE_TEXT);
+        self::$definition['fields']['comment_product_1'] = array('type' => self::TYPE_TEXT);
+		self::$definition['fields']['comment_product_2'] = array('type' => self::TYPE_TEXT);
 
 		parent::__construct($id_order, $id_lang, $id_shop);
 	}
@@ -67,7 +75,7 @@ class OrderDetail extends OrderDetailCore {
 
     /**
     * Create an order detail liable to an id_order
-    * OVERRIDE : Ajout ID supplier
+    * OVERRIDE : Ajout ID supplier, commentaire produit 1 & 2
     * @param object $order
     * @param object $cart
     * @param array $product
@@ -95,6 +103,9 @@ class OrderDetail extends OrderDetailCore {
         $this->product_weight = $product['id_product_attribute'] ? (float)$product['weight_attribute'] : (float)$product['weight'];
         $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
+
+        $this->comment_product_1 = $product['comment_1'];
+        $this->comment_product_2 = $product['comment_2'];
 
         $product_quantity = (int)Product::getQuantity($this->product_id, $this->product_attribute_id, null, $cart);
         $this->product_quantity_in_stock = ($product_quantity - (int)$product['cart_quantity'] < 0) ? $product_quantity : (int)$product['cart_quantity'];

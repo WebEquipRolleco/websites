@@ -28,11 +28,11 @@
 			<a href="{$link->getAdminLink('AdminProducts', true, ['id_product' => $product['product_id']|intval, 'updateproduct' => '1'])|escape:'html':'UTF-8'}">
 		{/if}
 			<span class="productName">{$product['product_name']}</span><br />
-			{if $product.product_reference}{l s='Reference number:' d='Admin.Orderscustomers.Feature'} {$product.product_reference}<br />{/if}
-			{if $product.product_supplier_reference}{l s='Supplier reference:' d='Admin.Orderscustomers.Feature'} {$product.product_supplier_reference}{/if}
 		{if $product.product_id}
 			</a>
 		{/if}
+		{if $product['comment_product_1']}<div>{$product['comment_product_1']}</div>{/if}
+		{if $product['comment_product_2']}<div>{$product['comment_product_2']}</div>{/if}
         {if isset($product.pack_items) && $product.pack_items|@count > 0}<br>
             <button name="package" class="btn btn-default" type="button" onclick="TogglePackage('{$product['id_order_detail']}'); return false;" value="{$product['id_order_detail']}">{l s='Package content' d='Admin.Orderscustomers.Feature'}</button>
         {/if}
