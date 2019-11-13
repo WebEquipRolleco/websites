@@ -343,8 +343,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                 }
             }
         }
-
+        
         $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
+        $this->context->smarty->assign('BLBC_state', new OrderState(Configuration::getForOrder('BLBC_ORDER_STATE', new Order(Tools::getValue('id_order'))), 1));
         AdminController::initContent();
     }
 

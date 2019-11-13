@@ -170,6 +170,24 @@
               </tr>
             </tbody>
           </table>
+          <table class="table" style="margin-top:20px">
+            <thead>
+              <tr>
+                <th class="bg-primary"><b>{l s="Changement de statut"}</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {if $BLBC_state->id}
+                    <span class="label" style="background-color:{$BLBC_state->color}">{$BLBC_state->name}</span>
+                  {else}
+                    <span class="label label-danger"><i class="icon-exclamation-triangle"></i> <b>{l s="Le changement d'état n'est pas configuré"}</b></span>
+                  {/if}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success" name="send_documents">
@@ -264,6 +282,24 @@
               </tr>
               <tr>
                 <td><textarea id="specific_message" class="form-control" rows="5" name="message" placeholder="{l s='Message personnalisé'}"></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table" style="margin-top:20px">
+            <thead>
+              <tr>
+                <th class="bg-primary"><b>{l s="Changement de statut"}</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {if $BLBC_state->id}
+                    <span class="label" style="background-color:{$BLBC_state->color}">{$BLBC_state->name}</span>
+                  {else}
+                    <span class="label label-danger"><i class="icon-exclamation-triangle"></i> <b>{l s="Le changement d'état n'est pas configuré"}</b></span>
+                  {/if}
+                </td>
               </tr>
             </tbody>
           </table>
