@@ -63,7 +63,7 @@
 							{$address->lastname|upper} {$address->firstname|upper}<br />
 						{/if}
 						{if $address->address1}
-							{$address|upper}<br />
+							{$address->address1|upper}<br />
 						{/if}
 						{if $address->address2}
 							{$address->address2|upper}<br />
