@@ -1007,7 +1007,7 @@
             <textarea class="form-control" name="delivery_information">{$order->delivery_information}</textarea>
           </div>
           <div class="panel-footer text-right">
-            <button type="submit" class="btn btn-success" name="save_supplier_information">
+            <button type="submit" class="btn btn-success" name="save_delivery_information">
               <i class="process-icon-save"></i>
               {l s='Save' d='Admin.Actions'}
             </button>
