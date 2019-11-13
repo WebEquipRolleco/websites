@@ -33,9 +33,9 @@ class OrderDetail extends OrderDetailCore {
 		self::$definition['fields']['id_product_supplier'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['day'] = array('type' => self::TYPE_DATE);
 		self::$definition['fields']['week'] = array('type' => self::TYPE_STRING);
-        self::$definition['fields']['comment'] = array('type' => self::TYPE_TEXT);
-        self::$definition['fields']['comment_product_1'] = array('type' => self::TYPE_TEXT);
-		self::$definition['fields']['comment_product_2'] = array('type' => self::TYPE_TEXT);
+        self::$definition['fields']['comment'] = array('type' => self::TYPE_STRING);
+        self::$definition['fields']['comment_product_1'] = array('type' => self::TYPE_STRING);
+		self::$definition['fields']['comment_product_2'] = array('type' => self::TYPE_STRING);
 
 		parent::__construct($id_order, $id_lang, $id_shop);
 	}
