@@ -1131,7 +1131,11 @@
                 <tr>
                   <th></th>
                   <th>{l s='Référence' d='Admin.Orderscustomers.Feature'}</th>
-                  <th><span class="title_box ">{l s='Product' d='Admin.Global'}</span></th>
+                  <th><span class="title_box">{l s='Product' d='Admin.Global'}</span></th>
+                  <th>
+                    <span class="title_box ">{l s='Achat' d='Admin.Advparameters.Feature'}</span>
+                    <small class="text-muted">{l s="HT"}</small>
+                  </th>
                   <th>
                     <span class="title_box ">{l s='Price per unit' d='Admin.Advparameters.Feature'}</span>
                     <small class="text-muted">{$smarty.capture.TaxMethod}</small>
