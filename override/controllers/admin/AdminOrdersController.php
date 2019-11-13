@@ -283,8 +283,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
                 $detail = new OrderDetail($id);
                 if($detail->id) {
-                    
-                    $detail->id_supplier = $row['id_supplier'];
+                    die(var_dump($row));
+                    $detail->id_product_supplier = $row['id_supplier'];
                     $detail->product_reference = $row['product_reference'];
                     $detail->product_supplier_reference = $row['product_supplier_reference'];
                     $detail->purchase_supplier_price = $row['purchase_supplier_price'];
