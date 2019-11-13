@@ -14,6 +14,9 @@ class Combination extends CombinationCore {
 	/** @var float Position */
 	public $position = 1;
 
+	// Variables temporaires
+	private $product;
+
 	public function __construct($id_product_attribute = null, $id_lang = null, $id_shop = null) {
 
 		// C'est pas beau mais ça marche...
@@ -49,6 +52,19 @@ class Combination extends CombinationCore {
 			$data[] = new Combination($row['id_product_attribute'], 1);
 
 		return $data;
+	}
+
+	/**
+	* Retourne le produit associé
+	* @param int $id_shop
+	* @return Product
+	**/
+	public function getProduct($id_shop = null) {
+
+		if($this->id_product and !$this->product)
+			$this->product = new Product($this->id_product, true, 1, $id_shop);
+
+		return $this->product;
 	}
 	
 }

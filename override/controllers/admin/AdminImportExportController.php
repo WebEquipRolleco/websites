@@ -370,12 +370,15 @@ class AdminImportExportControllerCore extends AdminController {
     **/
     private function exportPrices() {
 
+        $ids_product = array();
+        $ids_combination = array();
+
         $header[] = 'prix ID';
         $header[] = 'Produit ID';
         $header[] = 'Declinaison ID';
         $header[] = 'Reference produit *';
         $header[] = 'Reference declinaison *';
-        $header[] = 'Designation';
+        $header[] = 'Designation *';
         $header[] = 'Quantite de depart';
         $header[] = "Prix de vente / barre";
         $header[] = "Prix degressif / remise";
@@ -410,14 +413,18 @@ class AdminImportExportControllerCore extends AdminController {
             $sub_sql .= " AND id_supplier IN ($supplier_ids)";
         $sql = "SELECT id_specific_price FROM ps_specific_price WHERE id_product IN ($sub_sql)";
 
+        // Prix déjà existants
         foreach(Db::getInstance()->executeS($sql) as $row) {
             $price = new SpecificPrice($row['id_specific_price']);
+
+            if($price->id_product) $ids_product[$price->id_product] = $price->id_product;
+            if($price->id_product_attribute) $ids_combination[$price->id_product_attribute] = $price->id_product_attribute;
 
             $data = array();
             $data[] = $price->id;
             $data[] = $price->id_product ?? 0;
             $data[] = $price->id_product_attribute;
-            $data[] = $price->getTarget() ? $price->getTarget()->reference : null;
+            $data[] = $price->getProduct() ? $price->getProduct()->reference : null;
             $data[] = $price->getCombination() ? $price->getCombination()->reference : null;
             $data[] = $price->getProduct() ? $price->getProduct()->name : null;
             $data[] = $price->from_quantity;
@@ -439,6 +446,89 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->id_group;
             $data[] = $price->id_customer;
             $data[] = $price->id_shop ?? 0;
+
+            $csv .= implode($this->separator, $data).self::END_OF_LINE;
+        }
+
+        // Déclinaisons sans prix
+        $sql = "SELECT pa.id_product_attribute FROM ps_product_attribute pa, ps_product p WHERE pa.id_product = p.id_product AND p.id_product";
+        if(!empty($ids_combination)) $sql .= "AND pa.id_product_attribute NOT IN (".implode(',', $ids_combination).")";
+        if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 1";
+        if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 0";
+
+        foreach(Db::getInstance()->executeS($sql) as $row) {
+
+            $combination = new Combination($row['id_product_attribute']);
+            if($combination->id_product) {
+                $combination->getProduct($this->context->shop->id);
+                $ids_product[$combination->id_product] = $combination->id_product;
+            }
+
+            $data = array();
+            $data[] = null;
+            $data[] = $combination->id_product ?? 0;
+            $data[] = $combination->id;
+            $data[] = $combination->getProduct()->reference;
+            $data[] = $combination->reference;
+            $data[] = $combination->getProduct()->name;
+            $data[] = 1;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = null;
+            $data[] = $combination->rollcash;
+            $data[] = null;
+            $data[] = null;
+            $data[] = $combination->getProduct()->id_supplier;
+            $data[] = $combination->supplier_reference;
+            $data[] = $combination->batch;
+            $data[] = $combination->ecotax;
+            $data[] = $combination->getProduct()->active ? 'oui' : 'non';
+            $data[] = null;
+            $data[] = null;
+            $data[] = null;
+            $data[] = null;
+            $data[] = 0;
+
+            $csv .= implode($this->separator, $data).self::END_OF_LINE;
+        }
+
+        // Produits sans prix
+        $sql = "SELECT p.id_product FROM ps_product p WHERE 1";
+        if(!empty($ids_product)) $sql .= " AND p.id_product NOT IN (".implode(',', $ids_product).")";
+        if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 1";
+        if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 0";
+
+        foreach(Db::getInstance()->executeS($sql) as $row) {
+            $product = new Product($row['id_product'], true, 1, $this->context->shop->id);
+
+            $data = array();
+            $data[] = null;
+            $data[] = $product->id;
+            $data[] = 0;
+            $data[] = $product->reference;
+            $data[] = null;
+            $data[] = $product->name;
+            $data[] = 1;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = null;
+            $data[] = $product->rollcash;
+            $data[] = null;
+            $data[] = null;
+            $data[] = $product->id_supplier;
+            $data[] = $product->supplier_reference;
+            $data[] = $product->batch;
+            $data[] = $product->ecotax;
+            $data[] = $product->active ? 'oui' : 'non';
+            $data[] = null;
+            $data[] = null;
+            $data[] = null;
+            $data[] = null;
+            $data[] = 0;
 
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }

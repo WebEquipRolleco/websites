@@ -20,7 +20,7 @@ class Product extends ProductCore {
 	/** @var bool Destocking **/
 	public $destocking = false;
 
-	public function __construct($id_product = null, $id_lang = null, $id_shop = null) {
+	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
 		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
@@ -28,7 +28,7 @@ class Product extends ProductCore {
 		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);
 		self::$definition['fields']['batch'] = array('type' => self::TYPE_INT, 'shop'=>true);
 		self::$definition['fields']['destocking'] = array('type' => self::TYPE_BOOL);
-		parent::__construct($id_product, $id_lang, $id_shop);
+		parent::__construct($id_product, $full, $id_lang, $id_shop, $context);
 	}
 	
 	/**

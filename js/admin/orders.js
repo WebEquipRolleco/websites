@@ -749,7 +749,7 @@ function init()
 						$('.partial_refund_fields').hide();
 						$('.add_product_fields').hide();
 						$('.row-editing-warning').hide();
-						$('td.product_action').attr('colspan', 3);
+						$('td.product_action').attr('colspan', 2);
 					}
 					else
 						jAlert(data.error);
