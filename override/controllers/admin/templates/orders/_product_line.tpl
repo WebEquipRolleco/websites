@@ -128,6 +128,7 @@
 	 	</td>
 	{/if}
 	{if $stock_management}<td class="productQuantity product_stock text-center">{$product['current_stock']}</td>{/if}
+	<td class="text-center">{$product.product_quantity_return}</td>
 	<td class="total_product">
 		{displayPrice price=(Tools::ps_round($product_price, 2) * ($product['product_quantity'] - $product['customizationQuantityTotal'])) currency=$currency->id}
 	</td>
@@ -209,6 +210,7 @@
 		&nbsp;
 		{/if}
 	</td>
+	{/if}
 	<td class="text-center">
 		<div class="product-supplier-delivery">
 			{if $product.day && $product.day != '0000-00-00'}
@@ -234,6 +236,7 @@
 			<input type="text" class="form-control" name="comment" value="{$product.comment}">
 		</div>
 	</td>
+	{if ($can_edit && !$order->hasBeenDelivered())}
 	<td class="product_action text-right">
 		{* edit/delete controls *}
 		<div class="btn-group" id="btn_group_action">
