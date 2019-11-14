@@ -82,7 +82,7 @@
 			{/if}
 		</td>
 	{/if}
-	{if ($order->hasBeenPaid())}
+	{*if ($order->hasBeenPaid())*}
 		<td class="productQuantity text-center">
 			<span class="product_price_show">
 	 			{$product['product_quantity']}
@@ -107,7 +107,7 @@
 				</span>
 			{/if}
 		</td>
-	{/if}
+	{*/if*}
 	{if $order->hasBeenDelivered() || $order->hasProductReturned()}
 		<td class="productQuantity text-center">
 			{$product['product_quantity_return']}
@@ -125,7 +125,6 @@
 		</td>
 	{/if}
 	{if $stock_management}<td class="productQuantity product_stock text-center">{$product['current_stock']}</td>{/if}
-	<td class="text-center">{$product.product_quantity_return}</td>
 	<td class="total_product">
 		{displayPrice price=(Tools::ps_round($product_price, 2) * ($product['product_quantity'] - $product['customizationQuantityTotal'])) currency=$currency->id}
 	</td>
@@ -231,7 +230,7 @@
 		</div>
 		<div class="product-supplier-delivery-edit" style="display:none">
 			<input type="date" class="form-control" name="day" value="{$product.day}">
-			<input type="text" class="form-control" name="week" value="{$product.week}">
+			<input type="number" min="0" max="52" step="1" class="form-control" name="week" value="{$product.week}">
 			<div style="margin-top:5px">
 				<input type="checkbox" id="notification_sent" name="notification_sent" value="1" {if $product.notification_sent}checked{/if}> 
 				<label for="notification_sent">{l s='Notification envoyée' d='Admin.Global'}</label>
