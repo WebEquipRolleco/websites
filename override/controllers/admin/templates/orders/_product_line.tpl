@@ -233,9 +233,11 @@
 			<input type="date" class="form-control" name="day" value="{$product.day}">
 			<input type="text" class="form-control" name="week" value="{$product.week}">
 			<div style="margin-top:5px">
-				<input type="checkbox" name="notification_sent" value="1" {if $product.notification_sent}checked{/if}> {l s='Notification envoyée' d='Admin.Global'}
+				<input type="checkbox" id="notification_sent" name="notification_sent" value="1" {if $product.notification_sent}checked{/if}> 
+				<label for="notification_sent">{l s='Notification envoyée' d='Admin.Global'}</label>
 				<br />
-				<input type="checkbox" name="prevent_notification" value="1" {if $product.prevent_notification}checked{/if}> {l s='Bloquer la notification' d='Admin.Global'}
+				<input type="checkbox" id="prevent_notification" name="prevent_notification" value="1" {if $product.prevent_notification}checked{/if}> 
+				<label for="prevent_notification">{l s='Bloquer la notification' d='Admin.Global'}</label>
 			</div>
 		</div>
 	</td>
