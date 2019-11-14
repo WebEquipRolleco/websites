@@ -279,20 +279,41 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Enregistrement des modifications produits
         if($rows = Tools::getValue('update')) {
+
+            $update_order = false;
             foreach($rows as $id => $row) {
 
                 $detail = new OrderDetail($id);
+                $update = false;
+
                 if($detail->id) {
+                    $update = ($detail->product_quantity != $row['product_quantity']);
 
                     $detail->id_product_supplier = $row['id_supplier'];
                     $detail->product_reference = $row['product_reference'];
                     $detail->product_supplier_reference = $row['product_supplier_reference'];
                     $detail->purchase_supplier_price = $row['purchase_supplier_price'];
                     $detail->total_shipping_price_tax_excl = $row['total_shipping_price_tax_excl'];
-                    
+
+                    if($update) {
+                        $update_order = true;
+                        $detail->product_quantity = $row['product_quantity'];
+                        $detail->total_price_tax_incl = $detail->unit_price_tax_incl * $detail->product_quantity;
+                        $detail->total_price_tax_excl = $detail->unit_price_tax_excl * $detail->product_quantity;
+                    }
+
                     $detail->save();
                 }
             }
+
+            if($update_order) {
+
+                $order = new Order($this->current_id);
+                $order->updateCosts();
+
+                OrderInvoice::synchronizeOrder($order);
+            }
+
         }
 
         // Envoi des documents
@@ -494,7 +515,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $order_detail->comment = Tools::getValue('comment');
         $order_detail->notification_sent = Tools::getValue('notification_sent');
         $order_detail->prevent_notification = Tools::getValue('prevent_notification');
-        
+
         // Save order detail
         $res &= $order_detail->update();
 

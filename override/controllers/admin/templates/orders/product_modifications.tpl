@@ -17,6 +17,7 @@
               <th><b>{l s="Produit"}</b></th>
               <th class="text-center"><b>{l s="Fournisseur"}</b></th>
               <th class="text-center"><b>{l s="Références"}</b></th>
+              <th class="text-center"><b>{l s="Quantités"}</b></th>
               <th class="text-center"><b>{l s="Prix"}</b></th>
             </tr>
           </thead>
@@ -39,6 +40,9 @@
                   <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_reference]" value="{$product.product_reference}">
                   <em class="text-muted">{l s="Fournisseur"}</em>
                   <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_supplier_reference]" value="{$product.product_supplier_reference}">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_quantity]" value="{$product.product_quantity}">
                 </td>
                 <td>
                   <em class="text-muted">{l s='PA Unitaire'}</em>

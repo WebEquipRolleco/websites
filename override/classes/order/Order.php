@@ -358,4 +358,42 @@ class Order extends OrderCore {
 		return Db::getInstance()->executeS("SELECT DISTINCT(payment) FROM ps_orders");
 	}
 	
+	/**
+	* Retrouve la ligne d'option de commande par pourcentage de la commande
+	* @return OrderDetail
+	**/
+	public function getPercentOption() {
+
+		$id = Db::getInstance()->getValue("SELECT od.id_order_detail FROM "._DB_PREFIX_."order_detail od, "._DB_PREFIX_.OrderOption::TABLE_NAME." oo WHERE od.product_reference = oo.reference AND oo.type = ".OrderOption::TYPE_PERCENT." AND od.id_order = ".$this->id);
+		return new OrderDetail($id);
+	}
+
+	/**
+	* Met à jour les coûts de la commande (suite à une modification)
+	**/
+	public function updateCosts() {
+
+		$ids = array($this->id);
+
+		$roll = $this->getPercentOption();
+		if($roll->id) {
+
+			$roll->unit_price_tax_excl = ((self::sumProducts($ids, false, self::ALL_PRODUCTS) - $roll->total_price_tax_excl) * 2.5) / 100;
+			$roll->unit_price_tax_incl = ((self::sumProducts($ids, true, self::ALL_PRODUCTS) - $roll->total_price_tax_incl) * 2.5) / 100;
+
+			$roll->total_price_tax_excl = $roll->unit_price_tax_excl;
+			$roll->total_price_tax_incl = $roll->unit_price_tax_incl;
+
+			$roll->save();
+		}
+
+		$this->total_products = self::sumProducts($ids, false, self::ALL_PRODUCTS);
+		$this->total_products_wt = self::sumProducts($ids, true, self::ALL_PRODUCTS);
+
+		$this->total_paid_tax_excl = $this->total_products + $this->total_shipping_tax_excl - $this->total_discounts_tax_excl;
+		$this->total_paid_tax_incl = $this->total_products_wt + $this->total_shipping_tax_incl - $this->total_discounts_tax_incl;
+
+		$this->save();
+	}
+
 }

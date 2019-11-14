@@ -160,7 +160,7 @@
             <tbody>
               <tr>
                 <td>
-                  <input type="text" class="form-control" name="object" value="{l s='Object.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Object'}" placeholder="{l s='Objet du mail'}">
+                  <input type="text" class="form-control" name="object" value="{l s='Admin.Object.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Object'}" placeholder="{l s='Objet du mail'}">
                 </td>
               </tr>
               <tr>
