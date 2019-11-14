@@ -84,6 +84,12 @@
 	{/if}
 	{if ($order->hasBeenPaid())}
 		<td class="productQuantity text-center">
+			<span class="product_price_show">
+	 			{$product['product_quantity']}
+	 		</span>
+	 		<div class="product_price_edit" style="display:none;">
+	 			<input type="text" class="text-center" name="product_quantity" value="1" readonly="readonly">
+	 		</div>
 			{if !empty($product['amount_refund'])}
 				{l s='%quantity_refunded% (%amount_refunded% refund)' sprintf=['%quantity_refunded%' => $product['product_quantity_refunded'], '%amount_refunded%' => $product['amount_refund']] d='Admin.Orderscustomers.Feature'}
 			{/if}
@@ -117,15 +123,6 @@
 				</span>
 			{/if}
 		</td>
-	{else}
-	 	<td class="productQuantity text-center">
-	 		<span class="product_price_show">
-	 			{$product['product_quantity']}
-	 		</span>
-	 		<div class="product_price_edit" style="display:none;">
-	 			<input type="text" class="text-center" name="product_quantity" value="1" readonly="readonly">
-	 		</div>
-	 	</td>
 	{/if}
 	{if $stock_management}<td class="productQuantity product_stock text-center">{$product['current_stock']}</td>{/if}
 	<td class="text-center">{$product.product_quantity_return}</td>
@@ -211,21 +208,35 @@
 		{/if}
 	</td>
 	{/if}
-	<td class="text-center">
-		<div class="product-supplier-delivery">
+	<td>
+		<div class="product-supplier-delivery text-center">
+			{if ($product.day && $product.day != '0000-00-00') || $product.week}
+				{if $product.notification_sent}
+					<span class="label label-success" title="{l s='Notification envoyée au client' d='Admin.Global'}"><i class="icon-envelope"></i></span>
+				{elseif $product.prevent_notification}
+					<span class="label label-danger" title="{l s='Notification au client bloquée' d='Admin.Global'}"><i class="icon-envelope"></i></span>
+				{else}
+					<span class="label label-warning" title="{l s='Notification en attente d\'envoi au client' d='Admin.Global'}"><i class="icon-envelope"></i></span>
+				{/if}
+			{/if}
 			{if $product.day && $product.day != '0000-00-00'}
 				{$product.day|date_format:'d/m/Y'}
-				{if $product.week}<br />{/if}
+				{if $product.week} - {/if}
 			{elseif $product.week}
 				{l s='semaine' d='Admin.Global'} {$product.week}
 			{else}
-				{l s='Livraison non programmée' d='Admin.Global'}
+				<span class="label label-default">{l s='Livraison non programmée' d='Admin.Global'}</span>
 			{/if}
+				
 		</div>
 		<div class="product-supplier-delivery-edit" style="display:none">
 			<input type="date" class="form-control" name="day" value="{$product.day}">
-			<br />
 			<input type="text" class="form-control" name="week" value="{$product.week}">
+			<div style="margin-top:5px">
+				<input type="checkbox" name="notification_sent" value="1" {if $product.notification_sent}checked{/if}> {l s='Notification envoyée' d='Admin.Global'}
+				<br />
+				<input type="checkbox" name="prevent_notification" value="1" {if $product.prevent_notification}checked{/if}> {l s='Bloquer la notification' d='Admin.Global'}
+			</div>
 		</div>
 	</td>
 	<td class="text-center">

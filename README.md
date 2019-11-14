@@ -10,6 +10,8 @@ ALTER TABLE `ps_order_detail` ADD `day` DATE NULL AFTER `week`;
 ALTER TABLE `ps_order_detail` ADD `comment` TEXT NULL AFTER `day`;
 ALTER TABLE `ps_order_detail` ADD `comment_product_1` TEXT NULL AFTER `comment`;
 ALTER TABLE `ps_order_detail` ADD `comment_product_2` TEXT NULL AFTER `comment_product_1`;
+ALTER TABLE `ps_order_detail` ADD `notification_sent` TINYINT DEFAULT '0' AFTER `comment_product_2`;
+ALTER TABLE `ps_order_detail` ADD `prevent_notification` TINYINT DEFAULT '0' AFTER `notification_sent`;
 ALTER TABLE `ps_order_detail` ADD `id_quotation_line` TEXT NULL AFTER `product_attribute_id`;
 ALTER TABLE `ps_order_detail` ADD `id_product_supplier` INT NULL AFTER `id_quotation_line`;
 

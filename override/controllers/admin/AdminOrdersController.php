@@ -492,6 +492,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $order_detail->day = Tools::getValue('day');
         $order_detail->week = Tools::getValue('week');
         $order_detail->comment = Tools::getValue('comment');
+        $order_detail->notification_sent = Tools::getValue('notification_sent');
+        $order_detail->prevent_notification = Tools::getValue('prevent_notification');
         
         // Save order detail
         $res &= $order_detail->update();

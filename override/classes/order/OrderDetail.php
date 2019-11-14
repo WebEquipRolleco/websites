@@ -23,6 +23,12 @@ class OrderDetail extends OrderDetailCore {
     /** @var string Comment Product 2 **/
     public $comment_product_2;
 
+    /** @var bool Notification Sent **/
+    public $notification_sent = false;
+
+    /** @var bool Prevent Notification **/
+    public $prevent_notification = false;
+
 	/** variables temporaires **/
 	private $supplier;
     private $quotation_line;
@@ -35,7 +41,9 @@ class OrderDetail extends OrderDetailCore {
 		self::$definition['fields']['week'] = array('type' => self::TYPE_STRING);
         self::$definition['fields']['comment'] = array('type' => self::TYPE_STRING);
         self::$definition['fields']['comment_product_1'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['comment_product_2'] = array('type' => self::TYPE_STRING);
+        self::$definition['fields']['comment_product_2'] = array('type' => self::TYPE_STRING);
+        self::$definition['fields']['notification_sent'] = array('type' => self::TYPE_BOOL);
+		self::$definition['fields']['prevent_notification'] = array('type' => self::TYPE_BOOL);
 
 		parent::__construct($id_order, $id_lang, $id_shop);
 	}
