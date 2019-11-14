@@ -160,12 +160,12 @@
             <tbody>
               <tr>
                 <td>
-                  <input type="text" class="form-control" name="object" value="{l s='Admin.Object.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Object'}" placeholder="{l s='Objet du mail'}">
+                  <input type="text" class="form-control" name="object" value="{l s='Object.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Feature'}" placeholder="{l s='Objet du mail'}">
                 </td>
               </tr>
               <tr>
                 <td>
-                  <textarea class="form-control" rows="5" name="message" placeholder="{l s='Message personnalisé'}">{l s='Message.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Message'}</textarea>
+                  <textarea class="form-control" rows="5" name="message" placeholder="{l s='Message personnalisé'}">{l s='Message.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Feature'}</textarea>
                 </td>
               </tr>
             </tbody>
@@ -262,12 +262,12 @@
               {/foreach}
             </tbody>
           </table>
-          <input type="hidden" id="object_BL" value="{l s='Object.Fournisseur.envoi-BL'}" d='Admin.Orderscustomers.Object'>
-          <input type="hidden" id="object_BC" value="{l s='Object.Fournisseur.envoi-BC'}" d='Admin.Orderscustomers.Object'>
-          <input type="hidden" id="object_BLBC" value="{l s='Object.Fournisseur.envoi-BLBC'}" d='Admin.Orderscustomers.Object'>
-          <input type="hidden" id="message_BL" value="{l s='Message.Fournisseur.envoi-BL'}" d='Admin.Orderscustomers.Message'>
-          <input type="hidden" id="message_BC" value="{l s='Message.Fournisseur.envoi-BC'}" d='Admin.Orderscustomers.Message'>
-          <input type="hidden" id="message_BLBC" value="{l s='Message.Fournisseur.envoi-BLBC'}" d='Admin.Orderscustomers.Message'>
+          <input type="hidden" id="object_BL" value="{l s='Object.Fournisseur.envoi-BL' d='Admin.Orderscustomers.Feature'}">
+          <input type="hidden" id="object_BC" value="{l s='Object.Fournisseur.envoi-BC' d='Admin.Orderscustomers.Feature'}">
+          <input type="hidden" id="object_BLBC" value="{l s='Object.Fournisseur.envoi-BLBC' d='Admin.Orderscustomers.Feature'}">
+          <input type="hidden" id="message_BL" value="{l s='Message.Fournisseur.envoi-BL' d='Admin.Orderscustomers.Feature'}">
+          <input type="hidden" id="message_BC" value="{l s='Message.Fournisseur.envoi-BC' d='Admin.Orderscustomers.Feature'}">
+          <input type="hidden" id="message_BLBC" value="{l s='Message.Fournisseur.envoi-BLBC' d='Admin.Orderscustomers.Feature'}">
           <table class="table" style="margin-top:20px">
             <thead>
               <tr>
