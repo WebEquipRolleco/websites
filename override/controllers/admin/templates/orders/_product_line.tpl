@@ -44,8 +44,8 @@
 	</td>
 	<td>
 		<div><b>{l s="PA : "}</b> {displayPrice price=$product.purchase_supplier_price currency=$currency->id}</div>
-		<div><b>{l s="Ports : "}</b> {displayPrice price=$product.total_shipping_price_tax_excl currency=$currency->id}</div>
-		<div><b>{l s="Total : "}</b> {displayPrice price=$product.purchase_supplier_price + $product.total_shipping_price_tax_excl currency=$currency->id}</div>
+		<div><b>{l s="Ports : "}</b> {displayPrice price=($product.total_shipping_price_tax_excl / $product.product_quantity) currency=$currency->id}</div>
+		<div><b>{l s="Total : "}</b> {displayPrice price=$product.purchase_supplier_price + ($product.total_shipping_price_tax_excl / $product.product_quantity) currency=$currency->id}</div>
 	</td>
 	<td>
 		<span class="product_price_show">

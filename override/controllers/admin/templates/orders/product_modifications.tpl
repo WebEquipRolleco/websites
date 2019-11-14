@@ -42,13 +42,14 @@
                   <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_supplier_reference]" value="{$product.product_supplier_reference}">
                 </td>
                 <td>
-                  <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_quantity]" value="{$product.product_quantity}">
+                  <input type="number" min="1" step="1" id="quantity_{$product.id_order_detail}" class="form-control update-shipping-cost" name="update[{$product.id_order_detail}][product_quantity]" value="{$product.product_quantity}" data-target="{$product.id_order_detail}">
                 </td>
                 <td>
                   <em class="text-muted">{l s='PA Unitaire'}</em>
-                  <input type="text" class="form-control" name="update[{$product.id_order_detail}][purchase_supplier_price]" value="{$product.purchase_supplier_price}">
-                  <em class="text-muted">{l s='Ports Total'}</em>
-                  <input type="text" class="form-control" name="update[{$product.id_order_detail}][total_shipping_price_tax_excl]" value="{$product.total_shipping_price_tax_excl}">
+                  <input type="number" min="0" step="0.01" class="form-control" name="update[{$product.id_order_detail}][purchase_supplier_price]" value="{$product.purchase_supplier_price}">
+                  <em class="text-muted">{l s='Ports Unitaire'}</em>
+                  <input type="number" min="0" step="0.01" id="shipping_{$product.id_order_detail}" class="form-control update-shipping-cost" value="{($product.total_shipping_price_tax_excl / $product.product_quantity)|string_format:"%.2f"}" data-target="{$product.id_order_detail}">
+                  <input type="hidden" id="total_shipping_{$product.id_order_detail}" name="update[{$product.id_order_detail}][total_shipping_price_tax_excl]" value="{$product.total_shipping_price_tax_excl}">
                 </td>
               </tr>
             {/foreach}
@@ -68,3 +69,17 @@
     </form>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+
+    $('.update-shipping-cost').on('change', function() { 
+      var id_reference = $(this).data('target');
+      var shipping_value = $('#shipping_'+id_reference).val();
+      var quantity = $('#quantity_'+id_reference).val();
+
+      $('#total_shipping_'+id_reference).val(shipping_value * quantity);
+    });
+
+  });
+</script>
