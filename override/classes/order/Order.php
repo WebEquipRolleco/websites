@@ -392,7 +392,8 @@ class Order extends OrderCore {
 
 		$this->total_paid_tax_excl = $this->total_products + $this->total_shipping_tax_excl - $this->total_discounts_tax_excl;
 		$this->total_paid_tax_incl = $this->total_products_wt + $this->total_shipping_tax_incl - $this->total_discounts_tax_incl;
-
+		$this->total_paid = $this->total_paid_tax_incl;
+		
 		$this->save();
 	}
 
