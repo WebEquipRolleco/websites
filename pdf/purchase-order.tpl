@@ -20,6 +20,12 @@
 				<div style="font-weight:bold; font-size:14pt; color:#1e4688">
 					{$order->reference} - {$oa->code}
 				</div>
+				{if $order->internal_reference}
+					<b>Numéro de commande du client</b> / Customer's order number :
+					<div style="font-weight:bold; font-size:14pt; color:#1e4688">
+						{$order->internal_reference}
+					</div>
+				{/if}
 				<br />
 				<b>Date de la commande</b> / order date :
 				<div style="font-weight:bold">{'now'|date_format:'d/m/Y'}</div>
