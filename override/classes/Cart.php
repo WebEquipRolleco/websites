@@ -16,6 +16,21 @@ class Cart extends CartCore {
     /** Variables temporaires **/
     private $customer;
 
+    /**
+    * OVERRIDE : Correction bug avec les lignes sans produits
+    * Update Product quantity
+    *
+    * @param int    $quantity             Quantity to add (or substract)
+    * @param int    $id_product           Product ID
+    * @param int    $id_product_attribute Attribute ID if needed
+    * @param string $operator             Indicate if quantity must be increased or decreased
+    * @return bool Whether the quantity has been succesfully updated
+    **/
+    public function updateQty($quantity, $id_product, $id_product_attribute = null, $id_customization = false, $operator = 'up', $id_address_delivery = 0, Shop $shop = null, $auto_add_cart_rule = true, $skipAvailabilityCheckOutOfStock = false) {
+        if($id_product)
+            parent::updateQty($quantity, $id_product, $id_product_attribute, $id_customization, $operator, $id_address_delivery, $shop, $auto_add_cart_rule, $skipAvailabilityCheckOutOfStock);
+    }
+
     public function getCustomer() {
 
         if(!$this->customer)
