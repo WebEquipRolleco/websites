@@ -17,7 +17,7 @@
 		{/if}
 	</td>
 	<td>
-		<strong>{$product.reference}</strong>
+		<strong>{$product.product_reference}</strong>
 		{if $product.product_supplier_reference}
 			<br />{$product.product_supplier_reference}
 			{if $product.id_product_supplier} - {Supplier::getNameById($product.id_product_supplier)}{/if}
