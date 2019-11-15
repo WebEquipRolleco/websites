@@ -90,9 +90,6 @@
 	 		<div class="product_price_edit" style="display:none;">
 	 			<input type="text" class="text-center" name="product_quantity" value="1" readonly="readonly">
 	 		</div>
-			{if !empty($product['amount_refund'])}
-				{l s='%quantity_refunded% (%amount_refunded% refund)' sprintf=['%quantity_refunded%' => $product['product_quantity_refunded'], '%amount_refunded%' => $product['amount_refund']] d='Admin.Orderscustomers.Feature'}
-			{/if}
 			<input type="hidden" value="{$product['quantity_refundable']}" class="partialRefundProductQuantity" />
 			<input type="hidden" value="{(Tools::ps_round($product_price, 2) * ($product['product_quantity'] - $product['customizationQuantityTotal']))}" class="partialRefundProductAmount" />
 			{if count($product['refund_history'])}
@@ -107,6 +104,11 @@
 				</span>
 			{/if}
 		</td>
+		{if !empty($product['amount_refund'])}
+			<td class="text-center">
+				{l s='%quantity_refunded% (%amount_refunded% refund)' sprintf=['%quantity_refunded%' => $product['product_quantity_refunded'], '%amount_refunded%' => $product['amount_refund']] d='Admin.Orderscustomers.Feature'}
+			</td>
+		{/if}
 	{*/if*}
 	{if $order->hasBeenDelivered() || $order->hasProductReturned()}
 		<td class="productQuantity text-center">
