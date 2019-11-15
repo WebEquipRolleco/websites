@@ -163,28 +163,30 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
                 while($row = fgetcsv($handle, 0, ";")) {
 
-                    if($id = Order::getIdByReference($row[0])) {
-                        $date = DateTime::createFromFormat('d/m/Y', $row[3]);
+                    if($row[0]) {
+                        if($id = Order::getIdByReference($row[0])) {
+                            $date = DateTime::createFromFormat('d/m/Y', $row[3]);
 
-                        $order = new Order($id);
-                        if($row[2]) $order->invoice_number = $row[2];
-                        if($row[3]) $order->invoice_date = $date->format('Y-m-d 00:00:00');
-                        $order->save();
+                            $order = new Order($id);
+                            if($row[2]) $order->invoice_number = $row[2];
+                            if($row[3]) $order->invoice_date = $date->format('Y-m-d 00:00:00');
+                            $order->save();
 
-                        if($row[1]) {
+                            if($row[1]) {
 
-                            $history = new OrderHistory();
-                            $history->changeIdOrderState($row[1], $order->id);
+                                $history = new OrderHistory();
+                                $history->changeIdOrderState($row[1], $order->id);
 
-                            $history->id_order = $order->id;
-                            $history->id_order_state = $row[1];
-                            $history->id_employee = $this->context->employee->id;
-                            $history->date_add = date('Y-m-d H:i:s');
-                            $history->save();
+                                $history->id_order = $order->id;
+                                $history->id_order_state = $row[1];
+                                $history->id_employee = $this->context->employee->id;
+                                $history->date_add = date('Y-m-d H:i:s');
+                                $history->save();
+                            }
                         }
+                        else
+                            $not_found[] = $row[0];
                     }
-                    else
-                        $not_found[] = $row[0];
                 }
 
                 fclose($handle);
