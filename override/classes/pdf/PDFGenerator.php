@@ -5,7 +5,7 @@ class PDFGenerator extends PDFGeneratorCore {
 	public function writePage() {
 
 		$this->SetHeaderMargin(5);
-		$this->SetFooterMargin(18);
+		$this->SetFooterMargin(30);
 		// [/Activis] Modified
 		$this->setMargins(10, 30, 10);
 		// [/Activis]

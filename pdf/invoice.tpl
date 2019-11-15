@@ -3,6 +3,7 @@
 	{$summary_tab}
 	{$addresses_tab}
 	{$product_tab}
+	{$total_tab}
 
 </div>
 

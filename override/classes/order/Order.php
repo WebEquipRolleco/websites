@@ -47,6 +47,22 @@ class Order extends OrderCore {
 	}
 
 	/**
+	* Retourne l'information PROFORMA
+	* @return bool
+	**/
+	public function isProforma() {
+		return $this->getState()->proforma;
+	}
+
+	/**
+	* Retourne l'information ACQUITTEE
+	* @return bool
+	**/
+	public function isAcquitted() {
+		return ($this->getState()->shipped and $this->getState()->paid);
+	}
+
+	/**
 	* OVERRIDE : modification de la référence
 	**/
 	public static function generateReference() {
@@ -61,10 +77,10 @@ class Order extends OrderCore {
     * Retourne la date limite de paiement
     **/
     public function getPaymentDeadline() {
-    	
-    	if(!$this->payment_deadline and $this->invoice_date and $this->invoice_date == '0000-00-00') {
 
-    		$this->payment_deadline = DateTime::createFromFormat('Y-m-d', $this->invoice_date);
+    	if(!$this->payment_deadline and $this->invoice_date and $this->invoice_date != '0000-00-00') {
+
+    		$this->payment_deadline = DateTime::createFromFormat('Y-m-d H:i:s', $this->invoice_date);
 
     		$delay = Configuration::get('PAYMENT_TIME_LIMIT');
     		if($delay) $this->payment_deadline->modify("+$delay days");
@@ -101,7 +117,7 @@ class Order extends OrderCore {
 	public function getState() {
 
 		if(!$this->state)
-			$this->state = new OrderState($this->current_state, 1);
+			$this->state = new OrderState($this->current_state, 1, $this->id_shop);
 
 		return $this->state;
 	}
