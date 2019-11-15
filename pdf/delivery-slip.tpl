@@ -47,7 +47,7 @@
 							{$address->company|upper}<br />
 						{/if}
 						{if $address->firstname || $address->lastname}
-							{$address->lastname|upper} {$address->firstname|upper}<br />
+							{$address->firstname|upper} {$address->lastname|upper}<br />
 						{/if}
 						{if $address->address1}
 							{$address->address1|upper}<br />
