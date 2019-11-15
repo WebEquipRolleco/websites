@@ -5,8 +5,8 @@ class HTMLTemplateDeliverySlip extends HTMLTemplateDeliverySlipCore {
 	public $oa;
 	public $order;
 
-	public function __construct(OA $oa, $smarty)
-	{
+	public function __construct(OA $oa, $smarty) {
+		
 		$this->oa = $oa;
 		$this->order = $oa->getOrder();
 		$this->smarty = $smarty;
@@ -42,4 +42,11 @@ class HTMLTemplateDeliverySlip extends HTMLTemplateDeliverySlipCore {
 		return $this->smarty->fetch($this->getTemplate('delivery-slip'));
 	}
 
+	/**
+	* Returns the template filename
+	* @return string filename
+	**/
+	public function getFilename() {
+		return 'BL '.$this->order->reference.' '.$this->oa->getSupplier()->name.".pdf";
+	}
 }

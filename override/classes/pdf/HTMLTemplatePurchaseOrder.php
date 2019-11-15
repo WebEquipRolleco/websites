@@ -5,8 +5,8 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 	public $oa;
 	public $order;
 
-	public function __construct(OA $oa, $smarty)
-	{
+	public function __construct(OA $oa, $smarty) {
+		
 		$this->oa = $oa;
 		$this->order = $oa->getOrder();
 		$this->smarty = $smarty;
@@ -19,9 +19,9 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 	}
 
 	/**
-	 * Returns the template's HTML content
-	 * @return string HTML content
-	 */
+	* Returns the template's HTML content
+	* @return string HTML content
+	**/
 	public function getContent() {
 
 		$this->smarty->assign('oa', $this->oa);
@@ -30,19 +30,19 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 	}
 
 	/**
-	 * Returns the template filename when using bulk rendering
-	 * @return string filename
-	 */
+	* Returns the template filename when using bulk rendering
+	* @return string filename
+	**/
 	public function getBulkFilename() {
 		return 'bon_de_commande.pdf';
 	}
 
 	/**
-	 * Returns the template filename
-	 * @return string filename
-	 */
+	* Returns the template filename
+	* @return string filename
+	**/
 	public function getFilename() {
-		return Configuration::get('PS_DELIVERY_PREFIX', Context::getContext()->language->id, null, $this->order->id_shop).sprintf('%06d', $this->order->reference).'.pdf';
+		return 'BC '.$this->order->reference.' '.$this->oa->getSupplier()->name.".pdf";
 	}
 }
 
