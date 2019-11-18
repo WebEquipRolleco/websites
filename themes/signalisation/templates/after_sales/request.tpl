@@ -144,7 +144,7 @@
 			else
 				$('#check_step_2').hide();
 
-			var min_char = 100;
+			var min_char = 20;
 			var length = $('#message').val().trim().length;
 
 			var step_3 = length >= min_char;
