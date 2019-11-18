@@ -217,9 +217,9 @@
 					<div class="form-group">
 						<label>{l s="Visibilité pour le client"}</label>
 						<span class="switch prestashop-switch fixed-width-lg" style="margin-bottom:20px">
-							<input type="radio" name="display" id="display_on" value="1" checked>
+							<input type="radio" name="display" id="display_on" value="1">
 							<label for="display_on">{l s='Affiché' d='Shop.Theme.Labels'}</label>
-							<input type="radio" name="display" id="display_off" value="0">
+							<input type="radio" name="display" id="display_off" value="0" checked>
 							<label for="display_off">{l s='Caché' d='Shop.Theme.Labels'}</label>
 							<a class="slide-button btn"></a>
 						</span>
