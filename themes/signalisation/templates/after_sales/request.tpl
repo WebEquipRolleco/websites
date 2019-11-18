@@ -85,6 +85,10 @@
 					<input type="file" multiple="multiple" name="attachments[]" class="form-control">
 				</div>
 			</div>
+			<div class="col-xs-12 margin-top-10">
+				<input type="checkbox" id="notice_on_delivery" name="form[notice_on_delivery]" value="1">
+				<label for="notice_on_delivery">{l s="J'ai déclaré le SAV sur le bon du transporteur"}</label>
+			</div>
 		</div>
 
 		<div class="well top-space text-center">

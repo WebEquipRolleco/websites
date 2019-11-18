@@ -263,6 +263,7 @@ CREATE TABLE IF NOT EXISTS `ps_after_sale` (
     `ids_detail` VARCHAR(255) DEFAULT NULL,
     `status` INTEGER(1) DEFAULT NULL, 
     `condition` VARCHAR(255) DEFAULT NULL,
+    `notice_on_delivery` TINYINT(1) DEFAULT '0',
     `date_add` DATETIME NULL DEFAULT NULL, 
     `date_upd` DATETIME NULL DEFAULT NULL, 
     PRIMARY KEY (`id_after_sale`)

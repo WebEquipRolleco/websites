@@ -40,6 +40,19 @@
 					{/foreach}
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2" class="text-center">
+					{if $sav->notice_on_delivery}
+						<span class='text-success'>
+							<i class="fa fa-check-square"></i> {l s="J'ai déclaré le SAV sur le bon du transporteur"}
+						</span>
+					{else}
+						<span class='text-danger'>
+							<i class="fa fa-times"></i> {l s="Je n'ai pas déclaré le SAV sur le bon du transporteur"}
+						</span>
+					{/if}
+				</td>
+			</tr>
 		</tbody>
 	</table>
 

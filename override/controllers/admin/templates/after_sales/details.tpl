@@ -169,6 +169,21 @@
 			</form>
 		{/if}
 
+		<div class="panel">
+			<div class="panel-heading">
+				<i class="icon-truck"></i> &nbsp; {l s="Livraison"}
+			</div>
+			{if $sav->notice_on_delivery}
+				<span class="label label-success">
+					<i class="icon-check-square"></i> {l s="SAV déclaré sur le bon du transporteur"}
+				</span>
+			{else}
+				<span class="label label-danger">
+					<i class="icon-times"></i> {l s="SAV non déclaré sur le bon du transporteur"}
+				</span>
+			{/if}
+		</div>
+
 	</div>
 
 	<div class="col-lg-6">

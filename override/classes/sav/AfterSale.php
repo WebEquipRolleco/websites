@@ -19,6 +19,7 @@ class AfterSale extends ObjectModel {
     public $id_customer;
     public $id_order;
     public $ids_detail;
+    public $notice_on_delivery = false;
     public $date_add;
     public $date_upd;
 
@@ -37,6 +38,7 @@ class AfterSale extends ObjectModel {
             'condition' => array('type' => self::TYPE_STRING),
             'id_customer' => array('type' => self::TYPE_INT),
             'id_order' => array('type' => self::TYPE_INT),
+            'notice_on_delivery' => array('type' => self::TYPE_BOOL),
             'date_add' => array('type' => self::TYPE_DATE),
             'date_upd' => array('type' => self::TYPE_DATE)
         )
