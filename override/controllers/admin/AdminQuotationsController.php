@@ -32,12 +32,12 @@ class AdminQuotationsController extends AdminController {
                 'icon' => 'icon-trash'
             )
         );
-        
-        //$this->processResetFilters();
 
-        $this->_select = "a.*, a.id_quotation AS id, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price";
+        $this->_select = "a.*, a.id_quotation AS id, o.reference AS order_reference, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.QuotationAssociation::TABLE_NAME.' qa ON (a.id_quotation = qa.id_quotation)';
+        $this->_join .= ' LEFT JOIN ps_orders o ON (o.id_cart = qa.id_cart)';
         $this->_where = " AND a.id_shop = ".$this->context->shop->id;
 
         $this->_orderBy = 'reference';
@@ -48,6 +48,9 @@ class AdminQuotationsController extends AdminController {
             'reference' => array(
                 'title' => $this->trans('Référence', array(), 'Admin.Global'),
                 'filter_key' => 'a!reference'
+            ),
+            'order_reference' => array(
+                'title' => $this->trans('Commande', array(), 'Admin.Global'),
             ),
             'customer' => array(
                 'title' => $this->trans('Client', array(), 'Admin.Global'),
@@ -61,7 +64,7 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Créateur', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
-            'origin' => array(
+            /*'origin' => array(
                 'title' => $this->trans('Origine', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatOrigin',
@@ -70,7 +73,7 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Source', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatSource',
-            ),
+            ),*/
             'price' => array(
                 'title' => $this->trans('Montant HT', array(), 'Admin.Global'),
                 'align' => 'text-center',
@@ -186,8 +189,7 @@ class AdminQuotationsController extends AdminController {
     }
 
     public function postProcess() {
-        parent::postProcess();
-
+        
         // Export des devis
         $this->export();
 
@@ -211,6 +213,9 @@ class AdminQuotationsController extends AdminController {
 
         // Actions groupées
         $this->handleBulkActions();
+
+        // Fonctionnement normal
+        parent::postProcess();
     }
 
     public function initContent() {
@@ -360,7 +365,7 @@ class AdminQuotationsController extends AdminController {
     * Export des devis
     **/
     public function export() {
-        if(Tools::isSubmit('export')) {
+        if(Tools::getIsset('exportquotation')) {
 
             $header = array("Numéro de devis", "Boutique", "Créateur", "Date de création", "Statut", "Référence commande", "Date commande", "Montant HT", "Montant marge", "taux de marge", "Type client", "Méthode de contact", "Source");
 
