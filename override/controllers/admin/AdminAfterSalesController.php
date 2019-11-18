@@ -27,6 +27,10 @@ class AdminAfterSalesControllerCore extends AdminController {
             )
         );
 
+        $this->_orderBy = 'date_add';
+        $this->_orderWay = 'desc';
+        $this->_use_found_rows = true;
+
         $this->_select = "a.*, o.reference AS order_reference, c.reference AS edeal, c.company, CONCAT(c.firstname, ' ', c.lastname) AS customer, c.email";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'orders o ON (a.id_order = o.id_order)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
