@@ -55,11 +55,11 @@ class AfterSaleRequestControllerCore extends FrontController {
         	$data['{shop_name}'] = $from_name;
         	$data['{message}'] = $message->message;
 
-        	foreach($request->getMails() as $mail)
-        		Mail::send(1, "sav_confirmation", $this->l("Votre demande de SAV"), $data, $email, null, $from_mail);
+        	foreach($request->getMails() as $email)
+        		Mail::send(1, "sav_confirmation", $this->trans("Votre demande de SAV", array(), 'Shop.Notifications.Success'), $data, $email, null, $from_mail);
 
         	// Notification équipe
-        	Mail::send(1, "sav_notification", $this->l("Nouvelle demande de SAV", $data, $notification_mail));
+        	Mail::send(1, "sav_notification", $this->trans("Nouvelle demande de SAV", array(), 'Shop.Notifications.Success'), $data, $notification_mail);
 
 			// Redirection
 			Tools::redirect($link->getPageLink('afterSales'));
