@@ -39,6 +39,7 @@ class AdminAfterSalesControllerCore extends AdminController {
             ),
             'reference' => array(
                 'title' => $this->trans('Référence', array(), 'Admin.Global'),
+                'filter_key' => 'a.reference'
             ),
             'order_reference' => array(
                 'title' => $this->trans('Numéro de commande', array(), 'Admin.Global'),
