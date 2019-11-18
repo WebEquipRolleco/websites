@@ -425,6 +425,7 @@ class AdminQuotationsController extends AdminController {
 
                 $products = $quotation->getProducts();
                 $quotation->id = null;
+                $quotation->generateReference(true);
                 $quotation->save();
 
                 foreach($products as $product) {
