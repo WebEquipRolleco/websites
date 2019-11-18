@@ -122,6 +122,14 @@ class AfterSale extends ObjectModel {
         if(isset($options['id_order']))
             $sql .= " AND id_order = ".$options['id_order'];
 
+        if(isset($options['search']))
+            $sql .= " AND reference LIKE '%".$options['search']."%'";
+
+        if(isset($options['orderBy'])) {
+            $sql .= " ORDER BY ".$options['orderBy'];
+            if(isset($options['orderWay']))
+                $sql .= " ".$options['orderWay'];
+        }
         $data = array();
         foreach(Db::getInstance()->executeS($sql) as $row)
             $data[] = new self($row[self::TABLE_PRIMARY]);
