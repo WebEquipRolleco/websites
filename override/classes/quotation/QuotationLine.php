@@ -10,6 +10,7 @@ class QuotationLine extends ObjectModel {
 	public $reference;
 	public $reference_supplier;
 	public $name;
+	public $properties;
 	public $information;
 	public $comment;
 
@@ -36,6 +37,7 @@ class QuotationLine extends ObjectModel {
             'reference' => array('type' => self::TYPE_STRING),
             'reference_supplier' => array('type' => self::TYPE_STRING),
             'name' => array('type' => self::TYPE_STRING),
+            'properties' => array('type' => self::TYPE_STRING),
             'information' => array('type' => self::TYPE_STRING),
             'comment' => array('type' => self::TYPE_STRING),
             'buying_price' => array('type' => self::TYPE_FLOAT),

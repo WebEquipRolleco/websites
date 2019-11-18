@@ -233,6 +233,7 @@ CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
     `reference` VARCHAR(255) DEFAULT NULL, 
     `reference_supplier` VARCHAR(255) DEFAULT NULL, 
     `name` VARCHAR(255) DEFAULT NULL, 
+    `properties` TEXT DEFAULT NULL, 
     `information` TEXT DEFAULT NULL, 
     `comment` TEXT DEFAULT NULL, 
     `buying_price` FLOAT(11) DEFAULT NULL, 

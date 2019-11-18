@@ -476,12 +476,15 @@ class AdminQuotationsController extends AdminController {
             $line->min_quantity = $product->minimal_quantity;
             if($line->min_quantity) $line->quantity = $line->min_quantity;
 
+            if($product->comment_1) $line->name .= " | ".$product->comment_1;
+            if($product->comment_2) $line->name .= " | ".$product->comment_2;
+
             // Gestion déclinaison
             $product->id_product_attribute = $infos[1] ?? null;
             if($product->id_product_attribute and $combination = new Combination($product->id_product_attribute)) {
 
                 $information = Product::getCombinationName($product->id_product_attribute);
-                if($information) $line->name = implode(" | ", array($line->name, $information));
+                if($information) $line->properties = $information;
 
                 $line->reference = $combination->reference;
                 $line->buying_price = round($combination->wholesale_price, 2);
@@ -525,7 +528,8 @@ class AdminQuotationsController extends AdminController {
     			$line = new QuotationLine($form['id']);
     			$line->reference = $form['reference'];
                 $line->reference_supplier = $form['reference_supplier'];
-    			$line->name = $form['name'];
+                $line->name = $form['name'];
+    			$line->properties = $form['properties'];
     			$line->information = $form['information'];
                 $line->buying_price = $form['buying_price'];
     			$line->buying_fees = $form['buying_fees'];

@@ -12,6 +12,8 @@
 	<td>
 		<div class="text-muted"><em>{l s="Désignation" d="Admin.Labels"}</em></div>
 		<textarea rows="1" class="form-control" name="lines[{$line->id}][name]" style="resize:vertical">{$line->name}</textarea>
+		<div class="text-muted"><em>{l s="Propriétés" d="Admin.Labels"}</em></div>
+		<textarea rows="1" class="form-control" name="lines[{$line->id}][properties]" style="resize:vertical">{$line->properties}</textarea>
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
@@ -52,7 +54,7 @@
 			</div>
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
-				<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}" {if $line->min_quantity}title="Quantité minimum : {$line->min_quantity}" min="{$line->min_quantity}"{/if}>
+				<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}" min="0">
 			</div>
 		</div>
 	</td>
