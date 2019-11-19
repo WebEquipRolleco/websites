@@ -9,7 +9,7 @@
 {assign var=RCS value=Configuration::getForShop('PS_SHOP_RCS', $shop)}
 {assign var=SIRET value=Configuration::getForShop('PS_SHOP_SIRET', $shop)}
 
-<div style="text-align:center;">
+<div style="text-align:center; font-size:6px;">
 	{$name} - {$address}, {$zipcode} {$city} <br />
 	{l s="Pour toute assistance, merci de nous contacter par mail %s ou par téléphone au %s" sprintf=[$email, $phone] d='Shop.Pdf' pdf='true'} <br />
 	{$title} - {$type} - {$RCS} - {$SIRET}
