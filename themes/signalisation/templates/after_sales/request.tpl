@@ -80,14 +80,25 @@
 				</div>
 			</div>
 			<div class="col-xs-12 col-lg-6">
-				<div class="form-group">
-					<label>{l s="Ajouter des pièces jointes à votre demande"} - <em class="text-muted">{l s="facultatif"}</label>
+				<div class="well">
+					<b>{l s="Ajouter des pièces jointes à votre demande"} - <em class="text-muted">{l s="facultatif"}</em></b>
+				</div>
+				<div class="form-group margin-top-15">
 					<input type="file" multiple="multiple" name="attachments[]" class="form-control">
 				</div>
 			</div>
-			<div class="col-xs-12 margin-top-10">
-				<input type="checkbox" id="notice_on_delivery" name="form[notice_on_delivery]" value="1">
-				<label for="notice_on_delivery">{l s="J'ai déclaré le SAV sur le bon du transporteur"}</label>
+			<div class="col-xs-12 col-lg-6">
+				<div class="well">
+					<i id="check_step_4" class="fa fa-check-square text-success" style="display:none"></i>
+					<b>{l s="Etape 4 - J'ai déclaré le SAV sur le bon du transporteur"}</b>
+				</div>
+				<div class="form-group margin-top-15">
+					<select id="notice_on_delivery" class="form-control" name="form[notice_on_delivery]" required>
+						<option value="">{l s="Veuillez choisir une réponse"}</option>
+						<option value="0">{l s="Non"}</option>
+						<option value="1">{l s="Oui"}</option>
+					</select>
+				</div>
 			</div>
 		</div>
 
@@ -130,6 +141,10 @@
 			checkSteps();
 		});
 
+		$('#notice_on_delivery').on('change', function() {
+			checkSteps();
+		});
+
 		function checkSteps() {
 
 			var step_1 = $('.selected_details:checked').size();
@@ -157,7 +172,14 @@
 				$('#lenght_help').html(length + " / " + min_char + " minimum");
 			}
 
-			if(step_1 && step_2 && step_3)
+			var notice_on_delivery = $('#notice_on_delivery').val();
+			var step_4 = (notice_on_delivery == "0" || notice_on_delivery == "1");
+			if(step_4)
+				$('#check_step_4').show();
+			else
+				$('#check_step_4').hide();
+
+			if(step_1 && step_2 && step_3 && step_4)
 				$('#submit_request').prop('disabled', false);
 			else
 				$('#submit_request').prop('disabled', true);
