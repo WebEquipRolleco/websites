@@ -496,4 +496,21 @@ class Quotation extends ObjectModel {
         return false;
     }
 
+    /**
+    * Retourne le dossier des images du devis
+    * @param bool $absolute Chemin relatif ou absolu 
+    * @return string
+    **/
+    public function getDirectory($absolute = false) {
+
+        $path = '/img/quotations/'.$this->id."/";
+
+        if(!is_dir(_PS_ROOT_DIR_.$path))
+            mkdir(_PS_ROOT_DIR_.$path, 0777, true);
+
+        if($absolute)
+            $path = _PS_ROOT_DIR_.$path;
+
+        return $path;
+    }
 }

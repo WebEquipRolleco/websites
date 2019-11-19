@@ -170,20 +170,12 @@ class QuotationLine extends ObjectModel {
 	}
 
 	/**
-	* Retourne le chemin du dossier image
+	* Retourne le chemin du dossier image (shortcut devis)
+	* @param bool $absolute Chemin relatif ou absolu 
 	* @return string
 	**/
 	public function getDirectory($absolute = false) {
-
-		$path = '/img/quotations/'.$this->getQuotation()->id."/";
-
-		if(!is_dir(_PS_ROOT_DIR_.$path))
-        	mkdir(_PS_ROOT_DIR_.$path, 0777, true);
-
-		if($absolute)
-            $path = _PS_ROOT_DIR_.$path;
-
-        return $path;
+		return $this->getQuotation()->getDirectory($absolute);
 	}
 
 	/**
@@ -196,12 +188,13 @@ class QuotationLine extends ObjectModel {
 
 	/**
 	* Retourne le lien de l'image
+	* @param bool $absolute Chemin relatif ou absolu 
 	* @return string
 	**/
-	public function getImageLink() {
+	public function getImageLink($absolute = false) {
 
 		if(is_file($this->getDirectory(true).$this->getFileName()))
-			return $this->getDirectory().$this->getFileName();
+			return $this->getDirectory($absolute).$this->getFileName();
 		else
 			return null;
 	}

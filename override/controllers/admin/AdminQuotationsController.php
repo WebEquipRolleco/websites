@@ -441,9 +441,15 @@ class AdminQuotationsController extends AdminController {
                 $quotation->save();
 
                 foreach($products as $product) {
+                    $img_path = $product->getImageLink(true);
+
                     $product->id = null;
                     $product->id_quotation = $quotation->id;
                     $product->save();
+
+                    // Copie de l'image
+                    if($img_path)
+                        copy($img_path, $quotation->getDirectory(true).$product->getFileName());
                 }
 
                 $this->confirmations[] = 'Une copie du devis a été créée.';
