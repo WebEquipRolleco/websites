@@ -61,11 +61,11 @@ class AfterSalesControllerCore extends FrontController {
         	$data['{message}'] = $message->message;
 
     		// Notification équipe
-    		Mail::send(1, "sav_message_notification", $this->l("Nouvelle message du SAV : ".$sav->reference, $data, Configuration::get('PS_SHOP_EMAIL_SAV_TO')));
+    		Mail::send(1, "sav_message_notification", $this->trans("Nouvelle message du SAV : ").$sav->reference, $data, Configuration::get('PS_SHOP_EMAIL_SAV_TO'));
 
     		// Notification client
-        	foreach($sav->getMails() as $mail)
-        		Mail::send(1, "sav_message_confirmation", $this->l("Votre message du SAV : ".$sav->reference), $data, $email, null, Configuration::get('PS_SHOP_EMAIL_SAV_FROM'));
+        	foreach($sav->getMails() as $email)
+        		Mail::send(1, "sav_message_confirmation", $this->trans("Votre message du SAV : ").$sav->reference, $data, $email, null, Configuration::get('PS_SHOP_EMAIL_SAV_FROM'));
         }
 
         // Nouvelle image
