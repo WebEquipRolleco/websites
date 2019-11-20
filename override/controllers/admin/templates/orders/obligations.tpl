@@ -3,11 +3,8 @@
     <i class="icon-star"></i>
     {l s="Gestion des OA" d='Admin.Global'}
     <div class="panel-heading-action">
-      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#normal_send_modal">
-        {l s="Envoi BC/BL"}
-      </button>
-      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#special_send_modal">
-        {l s="Envoi spécifique"}
+      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#send_modal">
+        {l s="Envoi des bons de préparation / livraison"}
       </button>
       &nbsp;
     </div>
@@ -106,105 +103,9 @@
   </table>
 </div>
 
-{* Modal envoi mails classiques *}
-<form method="post">
-  <div id="normal_send_modal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <b class="modal-title">{l s="Envoi des bons de préparation / livraison"}</b>
-        </div>
-        <div class="modal-body">
-          <table class="table">
-            <thead>
-              <tr class="bg-primary">
-                <th><b>{l s="Fournisseur"}</b></th>
-                <th class="text-center"><b>{l s="BC"}</b></th>
-                <th class="text-center"><b>{l s="BL"}</b></th>
-                <th class="text-center"><b>{l s="E-mails"}</b></th>
-              </tr>
-            </thead>
-            <tbody>
-              {foreach from=OA::findByOrder($order->id) item='oa'}
-                {if $oa->getSupplier()->emails}
-                  <tr>
-                    <td><b>{$oa->getSupplier()->name}</b></td>
-                    <td class="text-center">
-                      {if $oa->getSupplier()->BC}
-                        <span class="icon-check text-success"></span>
-                      {else}
-                        <span class="icon-times text-danger"></span>
-                      {/if}
-                    </td>
-                    <td class="text-center">
-                      {if $oa->getSupplier()->BL}
-                        <span class="icon-check text-success"></span>
-                      {else}
-                        <span class="icon-times text-danger"></span>
-                      {/if}
-                    </td>
-                    <td class="text-center">
-                      {$oa->getSupplier()->emails}
-                    </td>
-                  </tr>
-                {/if}
-              {/foreach}
-            </tbody>
-          </table>
-          <table class="table" style="margin-top:20px">
-            <thead>
-              <tr>
-                <th class="bg-primary"><b>{l s="Message envoyé"}</b></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <input type="text" class="form-control" name="object" value="{l s='Object.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Feature'}" placeholder="{l s='Objet du mail'}">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <textarea class="form-control" rows="5" name="message" placeholder="{l s='Message personnalisé'}">{l s='Message.Fournisseur.envoi-normal' d='Admin.Orderscustomers.Feature'}</textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table" style="margin-top:20px">
-            <thead>
-              <tr>
-                <th class="bg-primary"><b>{l s="Changement de statut"}</b></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {if $BLBC_state->id}
-                    <span class="label" style="background-color:{$BLBC_state->color}">{$BLBC_state->name}</span>
-                  {else}
-                    <span class="label label-danger"><i class="icon-exclamation-triangle"></i> <b>{l s="Le changement d'état n'est pas configuré"}</b></span>
-                  {/if}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success" name="send_documents">
-            <b>{l s="Envoyer"|upper}</b>
-          </button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">
-            <b>{l s="Annuler"|upper}</b>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-
 {* Modal envoi mails spécifiques *}
 <form method="post">
-  <div id="special_send_modal" class="modal" tabindex="-1" role="dialog">
+  <div id="send_modal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -214,33 +115,8 @@
           <table class="table">
             <thead>
               <tr class="bg-primary">
-                <th colspan="2" class="text-center">
-                  <b>{l s="Documents à envoyer"}</b>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-center" style="padding:5px">
-                  <div class="label label-default">
-                    <input type="checkbox" id="doc_BC" class="specific_document" name="documents[]" value="BC" style="vertical-align:middle"> 
-                    <b>{l s="Bon de commande"}</b>
-                  </div>
-                </td>
-                <td class="text-center" style="padding:5px">
-                  <div class="label label-default">
-                    <input type="checkbox" id="doc_BL" class="specific_document" name="documents[]" value="BL" style="vertical-align:middle"> 
-                    <b>{l s="Bon de livraison"}</b>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <table class="table" style="margin-top:20px">
-            <thead>
-              <tr class="bg-primary">
-                <th></th>
-                <th><b>{l s="Fournisseur"}</b></th>
+                <th colspan="2"><b>{l s="Fournisseur"}</b></th>
+                <th colspan="2" class="text-center"><b>{l s="Documents à envoyer"}</b></th>
                 <th class="text-center"><b>{l s="E-mails"}</b></th>
               </tr>
             </thead>
@@ -249,10 +125,22 @@
                 {if $oa->getSupplier()->emails}
                   <tr>
                     <td>
-                      <input type="checkbox" name="ids_supplier[]" value="{$oa->getSupplier()->id}">
+                      <input type="checkbox" class="send_supplier" name="ids_supplier[]" value="{$oa->getSupplier()->id}" checked>
                     </td>
                     <td>
                       <b>{$oa->getSupplier()->name}</b>
+                    </td>
+                    <td class="text-center" style="padding:5px">
+                      <div class="label label-default">
+                        <input type="checkbox" id="doc_BC_{$oa->getSupplier()->id}" class="specific_document" name="documents[{$oa->getSupplier()->id}][BC]" value="1" style="vertical-align:middle" {if $oa->getSupplier()->BC}checked{/if}> 
+                        <b>{l s="Bon de commande"}</b>
+                      </div>
+                    </td>
+                    <td class="text-center" style="padding:5px">
+                      <div class="label label-default">
+                        <input type="checkbox" id="doc_BL_{$oa->getSupplier()->id}" class="specific_document" name="documents[{$oa->getSupplier()->id}][BL]" value="1" style="vertical-align:middle" {if $oa->getSupplier()->BL}checked{/if}> 
+                        <b>{l s="Bon de livraison"}</b>
+                      </div>
                     </td>
                     <td class="text-center">
                       {$oa->getSupplier()->emails}
@@ -262,19 +150,20 @@
               {/foreach}
             </tbody>
           </table>
-          <input type="hidden" id="object_BL" value="{l s='Object.Fournisseur.envoi-BL' d='Admin.Orderscustomers.Feature'}">
-          <input type="hidden" id="object_BC" value="{l s='Object.Fournisseur.envoi-BC' d='Admin.Orderscustomers.Feature'}">
-          <input type="hidden" id="object_BLBC" value="{l s='Object.Fournisseur.envoi-BLBC' d='Admin.Orderscustomers.Feature'}">
-          <input type="hidden" id="message_BL" value="{l s='Message.Fournisseur.envoi-BL' d='Admin.Orderscustomers.Feature'}">
-          <input type="hidden" id="message_BC" value="{l s='Message.Fournisseur.envoi-BC' d='Admin.Orderscustomers.Feature'}">
-          <input type="hidden" id="message_BLBC" value="{l s='Message.Fournisseur.envoi-BLBC' d='Admin.Orderscustomers.Feature'}">
           <table class="table" style="margin-top:20px">
             <thead>
               <tr>
-                <th class="bg-primary"><b>{l s="Message envoyé"}</b></th>
+                <th class="bg-primary">
+                  <input type="checkbox" id="custom_send" name="custom_send" value="1" style="vertical-align:middle;"> 
+                  <b>{l s="Personnaliser le message envoyé"}</b></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="normal_content">
+              <tr>
+                <td>{l s="Les e-mails classiques seront envoyés en fonction des documents sélectionnés"}</td>
+              </tr>
+            </tbody>
+            <tbody id="custom_centent" style="display:none;">
               <tr>
                 <td>
                   <input type="text" id="specific_object" class="form-control" name="object" placeholder="{l s='Objet du mail'}">
@@ -294,18 +183,19 @@
             <tbody>
               <tr>
                 <td>
-                  {if $BLBC_state->id}
-                    <span class="label" style="background-color:{$BLBC_state->color}">{$BLBC_state->name}</span>
-                  {else}
-                    <span class="label label-danger"><i class="icon-exclamation-triangle"></i> <b>{l s="Le changement d'état n'est pas configuré"}</b></span>
-                  {/if}
+                  <select class="form-control" name="id_change_state">
+                    <option value="">{l s="Pas de changement de statut"}</option>
+                    {foreach from=OrderState::getOrderStates(1) item=state}
+                      <option value="{$state.id_order_state}" {if $state.id_order_state == $BLBC_state_id}selected{/if}>{$state.name}</option>
+                    {/foreach}
+                  </select>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" name="send_documents">
+          <button type="submit" id="send_documents" class="btn btn-success" name="send_documents" disabled>
             <b>{l s="Envoyer"|upper}</b>
           </button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">
@@ -319,18 +209,58 @@
 
 <script>
   $(document).ready(function() {
+    checkForDocuments();
+
+    $('#custom_send').on('change', function() {
+      if($(this).is(':checked')) {
+        $('#custom_centent').show();
+        $('#normal_content').hide();
+
+        $('#specific_object').prop('required', true);
+      }
+      else {
+        $('#specific_object').prop('required', false);
+
+        $('#custom_centent').hide();
+        $('#normal_content').show(); 
+      }
+    });
+
+    $('.send_supplier').on('change', function() {
+      checkForDocuments();
+    });
 
     $('.specific_document').on('change', function() {
-
-        var doc = "";
-        if($('#doc_BL').is(':checked')) doc = doc + "BL";
-        if($('#doc_BC').is(':checked')) doc = doc + "BC";
-
-        if(doc) {
-          $('#specific_object').val($('#object_'+doc).val());
-          $('#specific_message').html($('#message_'+doc).val());
-        }
+      checkForDocuments();
     });
+
+    /**
+    * Valide ou empêche la validation de l'envoi des documents
+    **/
+    function checkForDocuments() {
+
+      var has_supplier = false;
+      var allow = true;
+
+      $('.send_supplier').each(function() {
+        var element = $(this);
+
+        if(element.is(':checked')) {
+          has_supplier = true;
+          var BL = $('#doc_BL_'+element.val()).is(':checked');
+          var BC = $('#doc_BC_'+element.val()).is(':checked');
+
+          if(!BL && !BC)
+            allow = false;
+        }
+
+      });
+
+      if(!has_supplier)
+        allow = false;
+
+      $('#send_documents').prop('disabled', !allow);
+    }
 
   });
 </script>

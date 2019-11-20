@@ -320,85 +320,112 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Envoi des documents
         if(Tools::isSubmit('send_documents')) {
-            
-            $documents = Tools::getValue('documents');
-            $ids_supplier = Tools::getValue('ids_supplier');
-            
-            $object = Tools::getValue('object');
-            $message = Tools::getValue('message');
+            $this->sendDocuments();
+        }
 
-            $update = false;
-            foreach(OA::findByOrder($this->current_id) as $OA) {
-                if(!$ids_supplier or in_array($OA->id_supplier, $ids_supplier)) {
-                    if(!empty($OA->getSupplier()->getEmails())) {
+        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
+        $this->context->smarty->assign('BLBC_state_id', Configuration::getForOrder('BLBC_ORDER_STATE', new Order($this->current_id)));
+        AdminController::initContent();
+    }
 
-                        $attachments = array();
+    /**
+    * Gestion de l'envoi des documents aux fournisseurs
+    **/
+    private function sendDocuments() {
 
-                        // Bon de livraison
-                        if((!$documents and $OA->getSupplier()->BL) or ($documents and in_array('BL', $documents))) {
-                            $pdf = new PDF($OA, PDF::TEMPLATE_DELIVERY_SLIP, $this->context->smarty);
-                            $attachments['BL']['content'] = $pdf->render(false);
-                            $attachments['BL']['name'] = "bon_de_livraison.pdf";
-                            $attachments['BL']['mime'] = 'application/pdf';
+        $ids_supplier = Tools::getValue('ids_supplier');
+        $documents = Tools::getValue('documents');
+        $custom_send = Tools::getValue('custom_send');
+        $id_change_state = Tools::getValue('id_change_state');
 
-                            $OA->date_BL = date('Y-m-d H:i:s');
-                            $update = true;
-                        }
+        $default["send_supplier_BL"] = $this->trans('Nouveau bon de livraison Web Equip pour commande {order_reference} à {supplier_reference} - {supplier_name}', array(), 'Admin.Orderscustomers.Feature');
+        $default["send_supplier_BC"] = $this->trans('Nouveau bon de commande Web Equip {order_reference} pour {supplier_reference} - {supplier_name}', array(), 'Admin.Orderscustomers.Feature');
+        $default["send_supplier_BLBC"] = $this->trans('Nouvelle commande {order_reference} de Web Equip à {supplier_reference} - {supplier_name}', array(), 'Admin.Orderscustomers.Feature');
 
-                        // Bon de commande
-                        if((!$documents and $OA->getSupplier()->BC) or ($documents and in_array('BC', $documents))) {
-                            $pdf = new PDF($OA, PDF::TEMPLATE_PURCHASE_ORDER, $this->context->smarty);
-                            $attachments['BL']['content'] = $pdf->render(false);
-                            $attachments['BL']['name'] = "bon_de_commande.pdf";
-                            $attachments['BL']['mime'] = 'application/pdf';
+        foreach(OA::findByOrder($this->current_id) as $OA) { 
+            if(!$ids_supplier or in_array($OA->id_supplier, $ids_supplier)) { 
+                if(!empty($OA->getSupplier()->getEmails())) {
 
-                            $OA->date_BC = date('Y-m-d H:i:s');
-                            $update = true;
-                        }
+                    // Gestion du template
+                    $template = 'send_supplier_';
 
-                        // Envoi des e-mails
-                        if(!empty($attachments)) {
+                    // Bon de livraison
+                    if($documents[$OA->id_supplier]['BL']) {
+                        $pdf = new PDF($OA, PDF::TEMPLATE_DELIVERY_SLIP, $this->context->smarty);
+                        $attachments['BL']['content'] = $pdf->render(false);
+                        $attachments['BL']['name'] = "bon_de_livraison.pdf";
+                        $attachments['BL']['mime'] = 'application/pdf';
 
-                            $emails = $OA->getSupplier()->getEmails();
-                            if($email = Configuration::get('BLBC_HIDDEN_MAIL', null, $OA->getOrder()->id_shop)) $emails[] = $email;
-
-                            foreach($emails as $email) {
-
-                                $data['{message}'] = $message;
-
-                                Mail::send(1, 'send_supplier', $object, $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $OA->getOrder()->id_shop), $attachments);
-                            }
-
-                            $OA->save();
-                            $this->confirmations[] = "Les documents ont été envoyés";
-                        }
-                        else
-                            $this->errors[] = "Aucun document à envoyer";
+                        $OA->date_BL = date('Y-m-d H:i:s');
+                        $template .= "BL";
                     }
-                }
-            }
 
-            // Mise à jour de la commande
-            if($update and $id_state = Configuration::get('BLBC_ORDER_STATE', null, $OA->getOrder()->id_shop)) {
-                $order = new Order($this->current_id);
+                    // Bon de commande
+                    if($documents[$OA->id_supplier]['BC']) {
+                        $pdf = new PDF($OA, PDF::TEMPLATE_PURCHASE_ORDER, $this->context->smarty);
+                        $attachments['BL']['content'] = $pdf->render(false);
+                        $attachments['BL']['name'] = "bon_de_commande.pdf";
+                        $attachments['BL']['mime'] = 'application/pdf';
 
-                if($order->current_state != $id_state) {
-                    
-                    $history = new OrderHistory();
-                    $history->changeIdOrderState($id_state, $this->current_id);
+                        $OA->date_BC = date('Y-m-d H:i:s');
+                        $template .= "BC";
+                    }
 
-                    $history->id_order = $this->current_id;
-                    $history->id_order_state = $id_state;
-                    $history->id_employee = $this->context->employee->id;
-                    $history->date_add = date('Y-m-d H:i:s');
-                    $history->save();
+                    // Envoi des e-mails
+                    $emails = $OA->getSupplier()->getEmails();
+                    if($email = Configuration::get('BLBC_HIDDEN_MAIL', null, $OA->getOrder()->id_shop)) $emails[] = $email;
+
+                    foreach($emails as $email) {
+
+                        $message = Tools::getValue('message');
+                        if($custom_send)
+                            $object = Tools::getValue('object');
+                        else
+                            $object = $default[$template];
+
+                        str_replace('{order_reference}', $OA->getOrder()->reference, $object);
+                        str_replace('{order_reference}', $OA->getOrder()->reference, $message);
+
+                        str_replace('{supplier_reference}', $OA->getSupplier()->reference, $object);
+                        str_replace('{supplier_reference}', $OA->getSupplier()->reference, $message);
+
+                        str_replace('{supplier_name}', $OA->getSupplier()->name, $object);
+                        str_replace('{supplier_name}', $OA->getSupplier()->name, $message);
+
+                        $data['{message}'] = $message;
+                        $data['{reference}'] = $OA->getOrder()->reference;
+                        $data['{shop_name}'] = Configuration::getForOrder('PS_SHOP_TITLE', $OA->getOrder());
+                        $data['{shop_phone}'] = Configuration::getForOrder('PS_SHOP_PHONE', $OA->getOrder());
+                        $data['{shop_addr1}'] = Configuration::getForOrder('PS_SHOP_ADDR1', $OA->getOrder());
+                        $data['{shop_addr2}'] = Configuration::getForOrder('PS_SHOP_ADDR2', $OA->getOrder());
+                        $data['{shop_code}'] = Configuration::getForOrder('PS_SHOP_CODE', $OA->getOrder());
+                        $data['{shop_city}'] = Configuration::getForOrder('PS_SHOP_CITY', $OA->getOrder());
+
+                        Mail::send(1, $template, $object, $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $OA->getOrder()->id_shop), $attachments, null, _PS_MAIL_DIR_, false, $OA->getOrder()->getShop()->id);
+                    }
+
+                    // Mise à jour de la commande
+                    if($id_change_state) {
+
+                        $order = new Order($this->current_id);
+                        if($order->current_state != $id_change_state) {
+                            
+                            $history = new OrderHistory();
+                            $history->changeIdOrderState($id_change_state, $this->current_id);
+
+                            $history->id_order = $this->current_id;
+                            $history->id_order_state = $id_change_state;
+                            $history->id_employee = $this->context->employee->id;
+                            $history->date_add = date('Y-m-d H:i:s');
+                            $history->save();
+                        }
+                    }
+
+                    $OA->save();
+                    $this->confirmations[] = "Les documents ont été envoyés";
                 }
             }
         }
-        
-        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
-        $this->context->smarty->assign('BLBC_state', new OrderState(Configuration::getForOrder('BLBC_ORDER_STATE', new Order($this->current_id)), 1));
-        AdminController::initContent();
     }
 
     public function processBulkDownloadPreparationSlips() {
