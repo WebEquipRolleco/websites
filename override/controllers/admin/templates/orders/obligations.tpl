@@ -166,7 +166,7 @@
             <tbody id="custom_centent" style="display:none;">
               <tr>
                 <td>
-                  <input type="text" id="specific_object" class="form-control" name="object" placeholder="{l s='Objet du mail'}">
+                  <input type="text" id="specific_object" class="form-control" name="object" value="{l s='Nouvelle commande {order_reference} de Web Equip'}" placeholder="{l s='Objet du mail'}">
                 </td>
               </tr>
               <tr>
