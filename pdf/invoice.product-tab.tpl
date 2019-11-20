@@ -5,18 +5,18 @@
 		</td>
 	</tr>
 	<tr>
-		<td style="text-align:center; font-size:8px;">{l s="Référence" pdf=true}</td>
-		<td style="text-align:center; font-size:8px;">{l s="Désignation" pdf=true}</td>
-		<td style="text-align:center; font-size:8px;">{l s="Quantité" pdf=true}</td>
-		<td style="text-align:center; font-size:8px;">{l s="Prix unitaire [1] (HT)" tags=["<br />"] pdf=true}</td>
-		<td style="text-align:center; font-size:8px;">{l s="Remise" pdf=true}</td>
-		<td style="text-align:center; font-size:8px;">{l s="Prix final unitaire [1] (HT)" tags=["<br />"] pdf=true}</td>
-		<td style="text-align:center; font-size:8px;">{l s="Montant [1] (HT)" tags=["<br />"] pdf=true}</td>
+		<td width="8%" style="text-align:center; font-size:8px;">{l s="Référence" pdf=true}</td>
+		<td width="34%" style="text-align:center; font-size:8px;">{l s="Désignation" pdf=true}</td>
+		<td width="6%" style="text-align:center; font-size:8px;">{l s="Qté" pdf=true}</td>
+		<td width="15%" style="text-align:center; font-size:8px;">{l s="Prix unitaire [1] (HT)" tags=["<br />"] pdf=true}</td>
+		<td width="7%" style="text-align:center; font-size:8px;">{l s="Remise" pdf=true}</td>
+		<td width="15%" style="text-align:center; font-size:8px;">{l s="Prix final unitaire [1] (HT)" tags=["<br />"] pdf=true}</td>
+		<td width="15%" style="text-align:center; font-size:8px;">{l s="Montant [1] (HT)" tags=["<br />"] pdf=true}</td>
 	</tr>
 	{foreach $order_details as $details}
 		<tr>
-			<td style="text-align:center; font-size:8px;">{$details.product_reference|default:'-'}</td>
-			<td style="text-align:center; font-size:8px;">
+			<td width="8%" style="text-align:center; font-size:8px;">{$details.product_reference|default:'-'}</td>
+			<td width="34%" style="text-align:center; font-size:8px;">
 				{$details.product_name|replace:'|':'<br />'} 
 				{if $details.comment_product_1}
 					<br /> {$details.comment_product_1|replace:'|':'<br />'}
@@ -25,16 +25,16 @@
 					<br /> {$details.comment_product_2|replace:'|':'<br />'}
 				{/if}
 			</td>
-			<td style="text-align:center; font-size:8px;">{$details.product_quantity}</td>
-			<td style="text-align:center; font-size:8px;">
+			<td width="6%" style="text-align:center; font-size:8px;">{$details.product_quantity}</td>
+			<td width="15%" style="text-align:center; font-size:8px;">
 				{Tools::displayPrice($details.unit_price_tax_excl_including_ecotax + $details.reduction_amount)}
 				{if $details.ecotax > 0}
 					<br /> {l s="dont @eco@ d'ecotaxe"|replace:"@eco@":Tools::displayPrice($details.ecotax) pdf=true}
 				{/if}
 			</td>
-			<td style="text-align:center; font-size:8px;">{Tools::displayPrice($details.reduction_amount)}</td>
-			<td style="text-align:center; font-size:8px;">{Tools::displayPrice($details.unit_price_tax_excl_including_ecotax)}</td>
-			<td style="text-align:center; font-size:8px;">{Tools::displayPrice($details.total_price_tax_excl_including_ecotax)}</td>
+			<td width="7%" style="text-align:center; font-size:8px;">{Tools::displayPrice($details.reduction_amount)}</td>
+			<td width="15%" style="text-align:center; font-size:8px;">{Tools::displayPrice($details.unit_price_tax_excl_including_ecotax)}</td>
+			<td width="15%" style="text-align:center; font-size:8px;">{Tools::displayPrice($details.total_price_tax_excl_including_ecotax)}</td>
 		</tr>
 	{/foreach}
 </table>

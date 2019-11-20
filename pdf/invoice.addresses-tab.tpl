@@ -51,16 +51,20 @@
 					<td width="55%">
 						{l s="Facture réglée :" pdf=true}
 						<br /> {l s="Date de réglement :" pdf=true}
-						<br /> {l s="[1]RIB[/1] vendeur :" tags=["<b>"] pdf=true}
-						<br /> {l s="[1]IBAN[/1] vendeur :" tags=["<b>"] pdf=true}
-						<br /> {l s="[1]SWIFT/BIC[/1] vendeur :" tags=["<b>"] pdf=true}
 					</td>
 					<td width="45%" style="text-align:center">
 						{if $order->getState()->paid}Oui{else}Non{/if}
 						<br /> {foreach from=$order->getPaymentList() item=payment}{$payment.date_add|date_format:'d/m/Y'}{break}{foreachelse}-{/foreach}
-						<br /> {Configuration::getForOrder('PS_SHOP_RIB', $order, '-')}
-						<br /> {Configuration::getForOrder('PS_SHOP_IBAN', $order, '-')}
-						<br /> {Configuration::getForOrder('PS_SHOP_BIC', $order, '-')}
+					</td>
+				</tr>
+				<tr style="font-size:8px">
+					<td colspan="2" style="text-align:center;">
+						{l s="[1]RIB[/1] vendeur :" tags=["<b>"] pdf=true} <br />
+						{Configuration::getForOrder('PS_SHOP_RIB', $order)|default:'-'} <br /> 
+						{l s="[1]IBAN[/1] vendeur :" tags=["<b>"] pdf=true} <br />
+						{Configuration::getForOrder('PS_SHOP_IBAN', $order)|default:'-'} <br />
+						{l s="[1]SWIFT/BIC[/1] vendeur :" tags=["<b>"] pdf=true} <br />
+						{Configuration::getForOrder('PS_SHOP_BIC', $order)|default:'-'}
 					</td>
 				</tr>
 			</table>
