@@ -3,6 +3,19 @@
 class AdminOrdersController extends AdminOrdersControllerCore {
 
     private $current_id;
+    private $order;
+
+    /**
+    * Récupère la commande en cours
+    * @return Order
+    **/
+    private function getCurrentOrder() {
+
+        if($this->current_id and !$this->order)
+            $this->order = new Order($this->current_id);
+
+        return $this->order;
+    }
 
     /**
     * Override : filtre sur la référence commande (conflit SQL)
@@ -129,9 +142,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         if (Tools::isSubmit('id_order')) {
             // Save context (in order to apply cart rule)
-            $order = new Order($this->current_id);
-            $this->context->cart = new Cart($order->id_cart);
-            $this->context->customer = new Customer($order->id_customer);
+            $this->context->cart = new Cart($this->getCurrentOrder()->id_cart);
+            $this->context->customer = new Customer($this->getCurrentOrder()->id_customer);
         }
 
         $this->bulk_actions = array(
@@ -202,9 +214,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         // Modification référence interne
         if(Tools::getIsset('new_internal_reference')) {
 
-            $order = new Order($this->current_id);
-            $order->internal_reference = Tools::getValue('new_internal_reference');
-            $order->save();
+            $this->getCurrentOrder()->internal_reference = Tools::getValue('new_internal_reference');
+            $this->getCurrentOrder()->save();
         }
 
         // Supprimer un OA
@@ -246,10 +257,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $history = new OrderHistory($id);
             if($history->id) $history->delete();
 
-            $order = new Order($this->current_id);
-            if($order->current_state == $history->id_order_state) {
-                $order->current_state = Db::getInstance()->getValue("SELECT id_order_state FROM ps_order_history WHERE id_order = ".$order->id." ORDER BY date_add DESC");
-                $order->save();
+            if($this->getCurrentOrder()->current_state == $history->id_order_state) {
+                $this->getCurrentOrder()->current_state = Db::getInstance()->getValue("SELECT id_order_state FROM ps_order_history WHERE id_order = ".$order->id." ORDER BY date_add DESC");
+                $this->getCurrentOrder()->save();
             }
         }
 
@@ -262,20 +272,18 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Enregistrement facturation 
         if(Tools::isSubmit('save_invoice')) {
-            $order = new Order($this->current_id);
-            $order->invoice_date = Tools::getValue('invoice_date');
-            $order->invoice_number = Tools::getValue('invoice_number');
-            $order->no_recall = Tools::getValue('no_recall');
-            $order->display_with_taxes = Tools::getValue('display_with_taxes');
-            $order->invoice_comment = Tools::getValue('invoice_comment');
-            $order->save();
+            $this->getCurrentOrder()->invoice_date = Tools::getValue('invoice_date');
+            $this->getCurrentOrder()->invoice_number = Tools::getValue('invoice_number');
+            $this->getCurrentOrder()->no_recall = Tools::getValue('no_recall');
+            $this->getCurrentOrder()->display_with_taxes = Tools::getValue('display_with_taxes');
+            $this->getCurrentOrder()->invoice_comment = Tools::getValue('invoice_comment');
+            $this->getCurrentOrder()->save();
         }
         // Enregistrement des infomations complémentaires
         foreach(array('supplier_information', 'delivery_information') as $name) {
             if(Tools::isSubmit("save_$name")) {
-                $order = new Order($this->current_id);
-                $order->{$name} = Tools::getValue($name);
-                $order->save();
+                $this->getCurrentOrder()->{$name} = Tools::getValue($name);
+                $this->getCurrentOrder()->save();
             }
         }
 
@@ -310,12 +318,15 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
             if($update_order) {
 
-                $order = new Order($this->current_id);
-                $order->updateCosts();
-
-                OrderInvoice::synchronizeOrder($order);
+                $this->getCurrentOrder()->updateCosts();
+                OrderInvoice::synchronizeOrder($this->getCurrentOrder());
             }
 
+        }
+
+        // Envoi de la facture
+        if(Tools::isSubmit('send_invoice')) {
+            $this->sendInvoice();
         }
 
         // Envoi des documents
@@ -323,11 +334,64 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $this->sendDocuments();
         }
 
-        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
-        $this->context->smarty->assign('BLBC_state_id', Configuration::getForOrder('BLBC_ORDER_STATE', new Order($this->current_id)));
+        if($this->getCurrentOrder()) {
+            $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
+            $this->context->smarty->assign('BLBC_state_id', Configuration::getForOrder('BLBC_ORDER_STATE', $this->getCurrentOrder()));
+        }
+        
         AdminController::initContent();
     }
 
+    private function sendInvoice() {
+        
+        // PDF
+        foreach($this->getCurrentOrder()->getInvoicesCollection() as $invoice) {
+            $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
+        }
+        
+        $attachments['invoice']['content'] = $pdf->render(false);
+        $attachments['invoice']['name'] = "facture.pdf";
+        $attachments['invoice']['mime'] = 'application/pdf';
+
+        $shop_name = $this->getCurrentOrder()->getShop()->name;
+        $date = new DateTime($this->getCurrentOrder()->date_add);
+
+        $data['{order_reference}'] = $this->getCurrentOrder()->reference;
+        $data['{order_date}'] = $date->format('d/m/Y');
+        $data['{firstname}'] = $this->getCurrentOrder()->getCustomer()->firstname;
+        $data['{lastname}'] = $this->getCurrentOrder()->getCustomer()->lastname;
+        $data['{shop_phone'] = Configuration::getForOrder('PS_SHOP_PHONE', $this->getCurrentOrder());
+
+        // Proforma
+        if($this->getCurrentOrder()->isProforma()) {
+
+            $object = $this->trans("%shop% :  Proforma de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
+            
+            foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
+                Mail::send(1, 'invoice_proforma', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
+        }
+        // Acquittée
+        elseif($this->getCurrentOrder()->isAcquitted()) {
+
+            $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
+            foreach($this->getCurrentOrder()->getOrderPayments() as $payment) {
+                $date = new DateTime($payment->date_add); 
+                $data['{date_payment}'] = $date->format('d/m/Y');  
+            }
+            
+            foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
+                Mail::send(1, 'invoice_acquitted', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
+        }
+        // Classique
+        else {
+
+            $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
+            $data['{deadline}'] = $this->getCurrentOrder()->getPaymentDeadline()->format('d/m/Y');
+            
+            foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
+                Mail::send(1, 'invoice', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
+        }
+    }
     /**
     * Gestion de l'envoi des documents aux fournisseurs
     **/
@@ -406,9 +470,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
                     // Mise à jour de la commande
                     if($id_change_state) {
-
-                        $order = new Order($this->current_id);
-                        if($order->current_state != $id_change_state) {
+                        if($this->getCurrentOrder()->current_state != $id_change_state) {
                             
                             $history = new OrderHistory();
                             $history->changeIdOrderState($id_change_state, $this->current_id);
@@ -442,19 +504,18 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
     }
 
-    public function ajaxProcessEditProductOnOrder()
-    {
+    public function ajaxProcessEditProductOnOrder() {
+
         // Return value
         $res = true;
 
-        $order = new Order($this->current_id);
         $order_detail = new OrderDetail((int)Tools::getValue('product_id_order_detail'));
         if (Tools::isSubmit('product_invoice')) {
             $order_invoice = new OrderInvoice((int)Tools::getValue('product_invoice'));
         }
 
         // Check fields validity
-        $this->doEditProductValidation($order_detail, $order, isset($order_invoice) ? $order_invoice : null);
+        $this->doEditProductValidation($order_detail, $this->getCurrentOrder(), isset($order_invoice) ? $order_invoice : null);
 
         // If multiple product_quantity, the order details concern a product customized
         $product_quantity = 0;

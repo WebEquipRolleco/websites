@@ -265,6 +265,11 @@
               {l s='Partial refund' d='Admin.Orderscustomers.Feature'}
             </a>
           {/if}
+          <form method="post" style="display:inline-block;">
+            <button type="submit" id="send_invoice" class="btn btn-default" name="send_invoice">
+              <i class="icon-envelope"></i> {l s="Envoyer la facture"}
+            </button>
+          </form>
           {hook h='displayBackOfficeOrderActions' id_order=$order->id|intval}
         </div>
         <!-- Tab nav -->
@@ -1496,6 +1501,12 @@
     $(document).ready(function()
     {
       $(".textarea-autosize").autosize();
+
+      // Confirmation envoi de la facture
+      $('#send_invoice').on('click', function(e) {
+        if(!confirm('Etes-vous sûr de vouloir envoyer la facture au client ?'))
+          e.preventDefault();
+      });
 
       // Gestion modifications produits
       $('.toggle-products-edit').on('click', function(e) {

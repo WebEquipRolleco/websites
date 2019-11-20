@@ -54,7 +54,7 @@
 					</td>
 					<td width="45%" style="text-align:center">
 						{if $order->getState()->paid}Oui{else}Non{/if}
-						<br /> {foreach from=$order->getPaymentList() item=payment}{$payment.date_add|date_format:'d/m/Y'}{break}{foreachelse}-{/foreach}
+						<br /> {foreach from=$order->getOrderPayments() item=payment}{$payment->date_add|date_format:'d/m/Y'}{break}{foreachelse}-{/foreach}
 					</td>
 				</tr>
 				<tr style="font-size:8px">

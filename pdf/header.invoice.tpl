@@ -1,5 +1,6 @@
 {assign var=name value=Configuration::getForOrder('PS_SHOP_NAME', $order)}
 {assign var=title value=Configuration::getForOrder('PS_SHOP_TITLE', $order)}
+{assign var=type value=Configuration::getForOrder('PS_SHOP_TYPE', $order)}
 {assign var=addr_1 value=Configuration::getForOrder('PS_SHOP_ADDR1', $order)}
 {assign var=code value=Configuration::getForOrder('PS_SHOP_CODE', $order)}
 {assign var=city value=Configuration::getForOrder('PS_SHOP_CITY', $order)}
