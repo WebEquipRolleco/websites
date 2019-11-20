@@ -30,14 +30,23 @@
       {block name='page_header'}
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="product-title" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
+            <h1 class="product-title" itemprop="name">
+              {block name='page_title'}{$product.name}{/block}
+              {if isset($product_manufacturer->id) and isset($manufacturer_image_url)}
+                <span class="pull-right" style="margin-top:-25px; margin-bottom:10px">
+                    {*<a href="{$product_brand_url}">*}
+                    <img src="{$manufacturer_image_url}" class="img img-thumbnail manufacturer-logo" alt="{$product_manufacturer->name}">
+                    {*</a>*}
+                </span>
+              {/if}
+            </h1>
           </div>
         </div>
       {/block}     
     {/block}
 
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-5">
         {block name='page_content_container'}
           <section class="page-content" id="content">
             {block name='page_content'}
@@ -64,6 +73,13 @@
           </section>
         {/block}
         </div>
+
+        <div class="col-xs-12 col-md-1">
+          {block name='product_icons'}
+            {include file='catalog/_partials/product-icons.tpl'}
+          {/block}
+        </div>
+
         <div class="col-xs-12 col-md-6">
 
           {hook h='displayProductAfterTitle' product=$product}
@@ -118,10 +134,6 @@
                     {include file='catalog/_partials/product-add-to-cart.tpl'}
                   {/block}
 
-                  {block name='product_icons'}
-                    {include file='catalog/_partials/product-icons.tpl'}
-                  {/block}
-
                   {block name='product_additional_info'}
                     {include file='catalog/_partials/product-additional-info.tpl'}
                   {/block}
@@ -133,16 +145,16 @@
 
               <div class="text-center">
                 <a href="{$link->getProductLink($product.id_product)}?dl_pdf=1" class="btn btn-light bold hidden-lg-down" target="_blank">
-                  <i class="fas fa-file-invoice-dollar"></i> &nbsp; Fiche produit
+                  <i class="fas fa-file-invoice-dollar"></i> &nbsp; {l s="Fiche produit"}
                 </a>
                 <a href="{$link->getProductLink($product.id_product)}?dl_demo=1" class="btn btn-light bold hidden-lg-down" title="{l s='PDF sans prix'}" target="_blank">
-                  <i class="fa fa-file-pdf"></i>
+                  <i class="fa fa-file-pdf"></i> &nbsp; {l s="Fiche produit sans prix"}
                 </a>
               </div>
 
-              {block name='product_details'}
+              {*block name='product_details'}
                 {include file='catalog/_partials/product-details.tpl'}
-              {/block}
+              {/block*}
 
             </div>
 

@@ -15,7 +15,7 @@
     </dl>
   </section>
 
-  {block name='product_reference'}
+  {*block name='product_reference'}
     {if isset($product_manufacturer->id)}
       <div class="product-manufacturer">
         {if isset($manufacturer_image_url)}
@@ -30,7 +30,7 @@
         {/if}
       </div>
     {/if}
-  {/block}
+  {/block*}
 
   {block name='product_availability_date'}
     {if $product.availability_date}
