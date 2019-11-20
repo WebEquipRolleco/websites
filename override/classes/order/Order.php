@@ -22,7 +22,7 @@ class Order extends OrderCore {
 	public $no_recall = false;
 
 	/** @var bool display with taxes **/
-	public $display_with_taxes = false;
+	public $display_with_taxes = true;
 
 	/** variables temporaires **/
 	private $payment_deadline = false;
