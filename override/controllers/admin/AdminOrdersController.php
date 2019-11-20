@@ -383,14 +383,14 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                         else
                             $object = $default[$template];
 
-                        str_replace('{order_reference}', $OA->getOrder()->reference, $object);
-                        str_replace('{order_reference}', $OA->getOrder()->reference, $message);
+                        $object = str_replace('{order_reference}', $OA->getOrder()->reference, $object);
+                        $message = str_replace('{order_reference}', $OA->getOrder()->reference, $message);
 
-                        str_replace('{supplier_reference}', $OA->getSupplier()->reference, $object);
-                        str_replace('{supplier_reference}', $OA->getSupplier()->reference, $message);
+                        $object = str_replace('{supplier_reference}', $OA->getSupplier()->reference, $object);
+                        $message = str_replace('{supplier_reference}', $OA->getSupplier()->reference, $message);
 
-                        str_replace('{supplier_name}', $OA->getSupplier()->name, $object);
-                        str_replace('{supplier_name}', $OA->getSupplier()->name, $message);
+                        $object = str_replace('{supplier_name}', $OA->getSupplier()->name, $object);
+                        $message  = str_replace('{supplier_name}', $OA->getSupplier()->name, $message);
 
                         $data['{message}'] = $message;
                         $data['{reference}'] = $OA->getOrder()->reference;
