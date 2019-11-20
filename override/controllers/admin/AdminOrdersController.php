@@ -394,7 +394,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
                         $data['{message}'] = $message;
                         $data['{reference}'] = $OA->getOrder()->reference;
-                        $data['{shop_name}'] = Configuration::getForOrder('PS_SHOP_TITLE', $OA->getOrder());
+                        $data['{shop_title}'] = Configuration::getForOrder('PS_SHOP_TITLE', $OA->getOrder());
                         $data['{shop_phone}'] = Configuration::getForOrder('PS_SHOP_PHONE', $OA->getOrder());
                         $data['{shop_addr1}'] = Configuration::getForOrder('PS_SHOP_ADDR1', $OA->getOrder());
                         $data['{shop_addr2}'] = Configuration::getForOrder('PS_SHOP_ADDR2', $OA->getOrder());
