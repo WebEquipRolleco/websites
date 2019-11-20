@@ -164,13 +164,13 @@
 				<td width="10%" style="text-align:center">
 					<span style="font-size:8pt; font-weight:bold;">{l s='Prix unitaire (HT)' d='Shop.Pdf' pdf=true}</span>
 				</td>
-				<td width="10%" style="text-align:center">
+				<td width="5%" style="text-align:center">
 					<span style="font-size:8pt; font-weight:bold;">{l s='Qté' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td width="10%" style="text-align:center">
 					<span style="font-size:8pt; font-weight:bold;">{l s='Total (HT)' d='Shop.Pdf' pdf=true}</span>
 				</td>
-				<td width="15%" style="text-align:center">
+				<td width="20%" style="text-align:center">
 					<span style="font-size:8pt; font-weight:bold;">{l s='Fournisseur' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td width="15%" style="text-align:center">
@@ -192,16 +192,18 @@
 					</td>
 					<td width="10%" style="text-align:center">
 						{Tools::displayPrice($detail->getTotalBuyingPrice())}
-						<hr />
-						{l s="PA :" d='Shop.Pdf' pdf=true} {Tools::displayPrice($detail->purchase_supplier_price)} <br />
-						{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($detail->total_shipping_price_tax_excl / $detail->product_quantity)}
+						<br />
+						<div style="font-size:8px">
+							{l s="PA :" d='Shop.Pdf' pdf=true} {Tools::displayPrice($detail->purchase_supplier_price)} <br />
+							{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($detail->total_shipping_price_tax_excl / $detail->product_quantity)}
+						</div>
 					</td>
 					<td width="10%" style="text-align:center">
 						{Tools::displayPrice($detail->unit_price_tax_excl)}
 						<br /><br />
 						<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax / $detail->product_quantity)}</i>
 					</td>
-					<td width="10%" style="text-align:center">
+					<td width="5%" style="text-align:center">
 						{$detail->product_quantity}
 					</td>
 					<td width="10%" style="text-align:center">
@@ -209,9 +211,11 @@
 						<br /><br />
 						<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax)}</i>
 					</td>
-					<td width="15%" style="text-align:center">
+					<td width="20%" style="text-align:center">
 						{if $detail->getSupplier()}
-							{$detail->getSupplier()->reference} {$detail->getSupplier()->name} <br /><br />
+							<div style="font-size:8px">
+								{$detail->getSupplier()->reference} {$detail->getSupplier()->name} 
+							</div><br />
 						{/if}
 						{$detail->product_supplier_reference}
 						{if $detail->comment_product_1 || $detail->comment_product_2}
