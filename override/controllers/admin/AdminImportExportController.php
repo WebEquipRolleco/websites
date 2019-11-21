@@ -172,7 +172,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = self::TYPE_PRODUCT;
             $data[] = $product->reference;
-            $data[] = $product->supplier_reference;
+            $data[] = ProductSupplier::getProductSupplierReference($product->id, 0, $product->id_supplier);
             $data[] = $row['id_categories'];
             $data[] = $product->id_category_default;
             $data[] = $product->name;
@@ -286,6 +286,20 @@ class AdminImportExportControllerCore extends AdminController {
                             $product->save();
                         else
                             $product->add();
+
+                        // Gestion des fournisseurs
+                        ProductSupplier::removeProduct($product->id);
+                        if($row['id_supplier'] and $row["supplier_reference"]) {
+
+                            $supplier = new ProductSupplier();
+                            $supplier->id_product = $row['id_product'];
+                            $supplier->id_product_attribute = 0;
+                            $supplier->id_supplier = $row['id_supplier'];
+                            $supplier->product_supplier_reference = $row["supplier_reference"];
+                            $supplier->id_currency = 1;
+
+                            $supplier->save();
+                        }
 
                         // Catégories
                         $ids = explode($this->delimiter, $row["ids_category"]);
