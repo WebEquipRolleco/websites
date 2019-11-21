@@ -29,11 +29,7 @@
             <td class="text-center">{$order.details.order_date}</td>
             <td class="text-center">{$order.totals.total.value}</td>
             <td class="text-center hidden-md-down">{$order.details.payment}</td>
-            <td class="text-center">
-              <span class="label label-pill btn-block text-center {$order.history.current.contrast}" style="background-color:{$order.history.current.color}">
-                {$order.history.current.ostate_name}
-              </span>
-            </td>
+            <td class="text-center">{$order.history.current.ostate_name}</td>
             <td class="text-center hidden-md-down">
               {if $order.details.invoice_url}
                 <a href="{$order.details.invoice_url}" class="btn btn-default">

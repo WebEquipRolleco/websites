@@ -109,11 +109,7 @@
           {foreach from=$order.history item=state}
             <tr>
               <td>{$state.history_date}</td>
-              <td>
-                <span class="label label-pill btn-block text-center {$state.contrast}" style="background-color:{$state.color}">
-                  {$state.ostate_name}
-                </span>
-              </td>
+              <td class="text-center">{$state.ostate_name}</td>
             </tr>
           {/foreach}
         </tbody>
