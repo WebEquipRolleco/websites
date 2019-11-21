@@ -2,7 +2,7 @@
 
 class AfterSaleRequestControllerCore extends FrontController {
 
-	private $link;
+	private $page_link; 
 
 	/**
     * @see FrontController::initContent()
@@ -10,15 +10,15 @@ class AfterSaleRequestControllerCore extends FrontController {
 	public function initContent() {
 		
 		parent::initContent();
-		$this->link = new Link();
-
+		$this->page_link = new Link();
+		
 		if($form = Tools::getValue('form')) {
 			$this->createAfterSale($form);
 		}
 
 		$data['count'] = 3;
         $data['links'][] = array('url'=>'/', 'title'=>'Accueil');
-        $data['links'][] = array('url'=>$this->link->getPageLink('afterSales'), 'title'=>'Mon SAV');
+        $data['links'][] = array('url'=>$this->page_link->getPageLink('afterSales'), 'title'=>'Mon SAV');
         $data['links'][] = array('title'=>'Demande de SAV');
 
 		$this->context->smarty->assign('breadcrumb', $data);
@@ -86,7 +86,7 @@ class AfterSaleRequestControllerCore extends FrontController {
         Mail::send(1, "sav_notification", $this->trans("Nouvelle demande de SAV", array(), 'Shop.Notifications.Success'), $data, $notification_mail);
 
 		// Redirection
-		Tools::redirect($this->link->getPageLink('afterSales'));
+		Tools::redirect($this->page_link->getPageLink('afterSales'));
 	}
 
 }
