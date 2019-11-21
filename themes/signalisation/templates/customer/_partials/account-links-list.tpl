@@ -6,7 +6,7 @@
     {/if}
 
     {include file='customer/_partials/account-link.tpl' url=$urls.pages.identity icon='edit' text='Mes information personnelles'}
-    {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('Adresses') icon='address-card' text='Mes addresses'}
+    {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('Addresses') icon='address-card' text='Mes addresses'}
 
     {if !$configuration.is_catalog}
       {include file='customer/_partials/account-link.tpl' url=$urls.pages.order_slip icon='file-alt' text='Mes avoirs'}
