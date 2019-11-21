@@ -37,6 +37,7 @@ class AfterSale extends ObjectModel {
             'status' => array('type' => self::TYPE_INT),
             'condition' => array('type' => self::TYPE_STRING),
             'id_customer' => array('type' => self::TYPE_INT),
+            'ids_detail' => array('type' => self::TYPE_STRING),
             'id_order' => array('type' => self::TYPE_INT),
             'notice_on_delivery' => array('type' => self::TYPE_BOOL),
             'date_add' => array('type' => self::TYPE_DATE),
