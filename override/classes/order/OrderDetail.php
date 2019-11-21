@@ -112,6 +112,10 @@ class OrderDetail extends OrderDetailCore {
         $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
 
+        $this->total_shipping_price_tax_excl = $product['delivery_fees'] * $this->product_quantity;
+        $this->total_shipping_price_tax_incl = $this->total_shipping_price_tax_excl * 1.2;
+        $this->ecotax = $product['ecotax'];
+
         $this->comment_product_1 = $product['comment_1'];
         $this->comment_product_2 = $product['comment_2'];
 
@@ -158,7 +162,7 @@ class OrderDetail extends OrderDetailCore {
         $details->product_quantity = $line->quantity;
         $details->id_quotation_line = $line->id;
         $details->id_product_supplier = $line->id_supplier;
-        
+
         $details->product_price = $price_ttc;
         $details->unit_price_tax_incl = $price_ttc;
         $details->unit_price_tax_excl = $price_ht;

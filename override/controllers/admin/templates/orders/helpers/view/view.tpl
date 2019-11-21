@@ -1224,7 +1224,7 @@
                       {assign var=order_shipping_price value=$order->total_shipping_tax_excl}
                       {assign var=shipping_refundable value=$shipping_refundable_tax_excl}
                     {else}
-                      {assign var=order_product_price value=$order->total_products_wt}
+                      {assign var=order_product_price value=$order->total_products}
                       {assign var=order_discount_price value=$order->total_discounts_tax_incl}
                       {assign var=order_wrapping_price value=$order->total_wrapping_tax_incl}
                       {assign var=order_shipping_price value=$order->total_shipping_tax_incl}
