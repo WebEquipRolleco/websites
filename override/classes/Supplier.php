@@ -58,6 +58,15 @@ class Supplier extends SupplierCore {
     }
 
     /**
+    * Retourne une liste des noms de fournisseurs
+    * @return array
+    **/
+    public function findNames() {
+        $rows = Db::getInstance()->executeS("SELECT DISTINCT(name) FROM ps_supplier");
+        return array_map(function($e) { return $e['name']; }, $rows);
+    }
+
+    /**
     * Retourne le sous traitant assigné à un produit
     * @param int $id_product
     * @param int $id_product_attribute

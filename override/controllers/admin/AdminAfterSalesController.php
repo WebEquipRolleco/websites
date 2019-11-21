@@ -31,7 +31,7 @@ class AdminAfterSalesControllerCore extends AdminController {
         $this->_orderWay = 'desc';
         $this->_use_found_rows = true;
 
-        $this->_select = "a.*, o.reference AS order_reference, c.reference AS edeal, c.company, CONCAT(c.firstname, ' ', c.lastname) AS customer, c.email";
+        $this->_select = "a.*, o.reference AS order_reference, c.reference AS edeal, c.company, CONCAT(c.firstname, ' ', c.lastname) AS customer, (SELECT GROUP_CONCAT(s.name) FROM ps_supplier s, ps_order_detail od WHERE s.id_supplier = od.id_product_supplier AND FIND_IN_SET(id_order_detail, a.ids_detail)) as name";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'orders o ON (a.id_order = o.id_order)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
 
@@ -48,10 +48,12 @@ class AdminAfterSalesControllerCore extends AdminController {
             'order_reference' => array(
                 'title' => $this->trans('Numéro de commande', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'o.reference'
             ),
             'edeal' => array(
                 'title' => $this->trans('Numéro E-deal', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'c.reference'
             ),
             'company' => array(
                 'title' => $this->trans('Société', array(), 'Admin.Global'),
@@ -60,10 +62,11 @@ class AdminAfterSalesControllerCore extends AdminController {
             'customer' => array(
                 'title' => $this->trans('Client', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'c.lastname'
             ),
-            'email' => array(
-                'title' => $this->trans('E-mail', array(), 'Admin.Global'),
-                'align' => 'text-center',
+            'name' => array(
+                'title' => $this->trans('Fournisseurs', array(), 'Admin.Global'),
+                'align' => 'text-center'
             ),
             'status' => array(
                 'title' => $this->trans('Statut', array(), 'Admin.Global'),
