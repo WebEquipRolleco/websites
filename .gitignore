@@ -38,3 +38,4 @@ var/cache/
 var/logs/
 var/sessions/
 documents/*
+administration/import/*
