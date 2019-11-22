@@ -475,16 +475,10 @@ class AdminQuotationsController extends AdminController {
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
     		$line->name = $product->name;
-
-            $line->buying_price = $product->wholesale_price;
             $line->eco_tax = $product->ecotax;
-            $line->buying_fees = $product->delivery_fees;
 
             $line->min_quantity = $product->minimal_quantity;
             if($line->min_quantity) $line->quantity = $line->min_quantity;
-
-            if($product->comment_1) $line->name .= " | ".$product->comment_1;
-            if($product->comment_2) $line->name .= " | ".$product->comment_2;
 
             // Gestion déclinaison
             $product->id_product_attribute = $infos[1] ?? null;
@@ -495,18 +489,27 @@ class AdminQuotationsController extends AdminController {
 
                 $line->id_combination = $combination->id;
                 $line->reference = $combination->reference;
-                $line->buying_price = round($combination->wholesale_price, 2);
                 $line->eco_tax = $combination->ecotax;
-                if($combination->delivery_fees) $line->buying_fees = $combination->delivery_fees;
                 
                 $line->min_quantity = $combination->minimal_quantity;
                 $line->quantity = $line->min_quantity;
             }
     		
+            // Référence du fournisseur
             $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
-            $line->selling_price = $product->getPrice(false, $product->id_product_attribute, 2) - $line->eco_tax;
     	}
 
+        // Gestion des prix
+        $prices = SpecificPrice::getDefaultPrices($line->id_product, $line->id_combination);
+        if(empty($prices)) $prices = SpecificPrice::getDefaultPrices($line->id_product, 0);
+
+        if($prices['comment_1']) $line->name .= " | ".$prices['comment_1'];
+        if($prices['comment_2']) $line->name .= " | ".$prices['comment_2'];
+        $line->buying_price = round($prices['buying_price'], 2);
+        $line->delivery_fees = round($prices['delivery_fees'], 2);
+        $line->selling_price = round($prices['price'], 2);
+
+        // Enregistrement
         $line->save();
 
         // Gestion de l'image

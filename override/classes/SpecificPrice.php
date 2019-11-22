@@ -62,4 +62,25 @@ class SpecificPrice extends SpecificPriceCore {
 		return $this->getProduct();
 	}
 	
+	/**
+	* OVERRIDE : forcer l'ordre en fonction du nombre de produits
+	**/
+	public static function getByProductId($id_product, $id_product_attribute = false, $id_cart = false)
+    {
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+			SELECT *
+			FROM `'._DB_PREFIX_.'specific_price`
+			WHERE `id_product` = '.(int)$id_product.
+            ($id_product_attribute ? ' AND id_product_attribute = '.(int)$id_product_attribute : '').'
+			AND id_cart = '.(int)$id_cart.
+        	' ORDER BY from_quantity');
+    }
+
+    /**
+    * Retourne le prix spécifique par défaut d'une ligne produit (quantité = 1)
+    * @return array
+    **/
+    public static function getDefaultPrices($id_product, $id_product_attribute = false) {
+    	return Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow('SELECT * FROM `'._DB_PREFIX_.'specific_price` WHERE `id_product` = '.(int)$id_product.($id_product_attribute ? ' AND id_product_attribute = '.(int)$id_product_attribute : ''));
+    }
 }

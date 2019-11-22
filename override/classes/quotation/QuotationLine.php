@@ -149,8 +149,10 @@ class QuotationLine extends ObjectModel {
 	public function getSpecificPrices() {
 
 		if(!$this->specific_prices) {
-			if($this->id_product or $this->id_combination)
+			if($this->id_product or $this->id_combination) {
 				$this->specific_prices = SpecificPrice::getByProductId($this->id_product, $this->id_combination);
+				if(empty($this->specific_prices)) $this->specific_prices = SpecificPrice::getByProductId($this->id_product, 0);
+			}
 			else
 				$this->specific_prices = array();
 		}
