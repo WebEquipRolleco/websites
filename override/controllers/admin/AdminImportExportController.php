@@ -610,7 +610,7 @@ class AdminImportExportControllerCore extends AdminController {
                         $price->getTarget()->batch = $row['batch'];
                         $price->getTarget()->ecotax = $row['ecotax'];
 
-                        $price->save();
+                        $price->getTarget()->save();
                     }
 
                     // Mise à jour du produit
