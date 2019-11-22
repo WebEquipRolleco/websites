@@ -468,16 +468,17 @@ class AdminQuotationsController extends AdminController {
         $infos = Tools::getValue('product_infos');
         $infos = explode('_', $infos);
 
-    	$product = new Product(($infos[0] ?? null), false, 1);
+    	$product = new Product(($infos[0] ?? null), true, 1, $line->getQuotation()->id_shop);
     	if($product->id) {
 
+            $line->id_product = $product->id;
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
     		$line->name = $product->name;
 
             $line->buying_price = $product->wholesale_price;
             $line->eco_tax = $product->ecotax;
-            if($product->delivery_fees) $line->buying_fees = $product->delivery_fees;
+            $line->buying_fees = $product->delivery_fees;
 
             $line->min_quantity = $product->minimal_quantity;
             if($line->min_quantity) $line->quantity = $line->min_quantity;
@@ -492,13 +493,14 @@ class AdminQuotationsController extends AdminController {
                 $information = Product::getCombinationName($product->id_product_attribute);
                 if($information) $line->properties = $information;
 
+                $line->id_combination = $combination->id;
                 $line->reference = $combination->reference;
                 $line->buying_price = round($combination->wholesale_price, 2);
                 $line->eco_tax = $combination->ecotax;
                 if($combination->delivery_fees) $line->buying_fees = $combination->delivery_fees;
                 
                 $line->min_quantity = $combination->minimal_quantity;
-                if($line->min_quantity) $line->quantity = $line->min_quantity;
+                $line->quantity = $line->min_quantity;
             }
     		
             $line->reference_supplier = Product::getSupplierReference($product->id, $product->id_product_attribute);
@@ -538,7 +540,7 @@ class AdminQuotationsController extends AdminController {
     			$line->properties = $form['properties'];
     			$line->information = $form['information'];
                 $line->buying_price = $form['buying_price'];
-    			$line->buying_fees = $form['buying_fees'];
+    			$line->eco_tax = $form['eco_tax'];
     			$line->selling_price = $form['selling_price'];
                 $line->id_supplier = $form['id_supplier'];
     			$line->quantity = $form['quantity'];

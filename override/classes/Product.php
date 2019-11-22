@@ -15,7 +15,7 @@ class Product extends ProductCore {
     public $comment_2;
 
     /** @var int Batch **/
-    public $batch;
+    public $batch = 1;
 
 	/** @var bool Destocking **/
 	public $destocking = false;

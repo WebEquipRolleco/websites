@@ -13,14 +13,16 @@ class QuotationLine extends ObjectModel {
 	public $properties;
 	public $information;
 	public $comment;
-
+	public $id_product;
+	public $id_combination;
+	
 	public $buying_price = 0;
 	public $buying_fees = 0;
 	public $selling_price = 0;
 	public $eco_tax = 0;
 	
 	public $quantity = 1;
-	public $min_quantity = 1;
+	public $min_quantity = 0;
 
 	public $position;
 	public $id_quotation;
@@ -29,6 +31,9 @@ class QuotationLine extends ObjectModel {
 	// Variables temporaires
 	private $quotation;
 	private $supplier;
+	private $product;
+	private $combination;
+	private $specific_prices;
 
 	public static $definition = array(
         'table' => self::TABLE_NAME,
@@ -49,6 +54,7 @@ class QuotationLine extends ObjectModel {
             'position' => array('type' => self::TYPE_INT),
             'id_supplier' => array('type' => self::TYPE_INT),
             'id_quotation' => array('type' => self::TYPE_INT),
+            'id_combination' => array('type' => self::TYPE_INT),
         )
     );
 
@@ -109,6 +115,46 @@ class QuotationLine extends ObjectModel {
 	**/
 	public static function find($id) {
 		return new self($id);
+	}
+
+	/**
+	* Retourne le produit lié
+	* @return Product|null
+	**/
+	public function getProduct() {
+
+		if($this->id_product and !$this->product)
+			$this->product = new Product($this->id_product, true, 1, $this->getQuotation()->id_shop);
+
+		return $this->product;
+	}
+
+	/**
+	* Retourne la déclinaison associée
+	* @return Combination|null
+	**/
+	public function getCombination() {
+
+		if($this->id_combination and !$this->combination)
+			$this->combination = new Combination($this->id_combination, 1);
+
+		return $this->combination;
+	}
+
+	/**
+	* Retourne les prix spécifiques
+	* @return array|null
+	**/
+	public function getSpecificPrices() {
+
+		if(!$this->specific_prices) {
+			if($this->id_product or $this->id_combination)
+				$this->specific_prices = SpecificPrice::getByProductId($this->id_product, $this->id_combination);
+			else
+				$this->specific_prices = array();
+		}
+
+		return $this->specific_prices;
 	}
 
 	/**

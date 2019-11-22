@@ -371,7 +371,7 @@
 </form>
 
 {if $quotation->id}
-	<form enctype="multipart/form-data" method="post" id="save_products_form">
+	<form action="#save_products_form" enctype="multipart/form-data" method="post" id="save_products_form">
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel">
@@ -406,13 +406,17 @@
 					</div>
 					<table class="table">
 						<thead>
-							<th width="85px"></th>
-							<th class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
+							<th colspan="3" class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="PA" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="Port" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="Total" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="PV" d="Admin.Labels"}</b></th>
+							<th width="10%" class="text-center"><b>{l s="PU final" d="Admin.Labels"}</b></th>
+							<th width="5%" class="text-center"><b>{l s="Qté" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="Total" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="Marge" d="Admin.Labels"}</b></th>
 							<th width="10%" class="text-center"><b>{l s="Fournisseur" d="Admin.Labels"}</b></th>
-							<th width="10%" class="text-center"><b>{l s="Prix" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Total" d="Admin.Labels"}</b></th>
-							<th width="5%" class="text-center"><b>{l s="Marge" d="Admin.Labels"}</b></th>
-							<th class="text-center"><b>{l s="Commentaire" d="Admin.Labels"}</b></th>
+							<th class="text-center"><b>{l s="commentaire" d="Admin.Labels"}</b></th>
 							<th width="5%" class="text-center"><b>{l s="Position" d="Admin.Labels"}</b></th>
 							<th></th>
 						</thead>
@@ -509,8 +513,17 @@
 <script>
 	$(document).ready(function() {
 		
+		/** SELECT 2 **/
 		$('.select2').select2({
 			width: 'auto'
+		});
+
+		/** Calcul initial des prix **/
+		updateAllPrices();
+
+		/** Re-calcul des prix **/
+		$(document).on('change keyup', '.update-price', function() {
+			updatePrices($(this).data('id'));
 		});
 
 		$('.quotation-link').on('click', function(e) {
@@ -584,6 +597,7 @@
 
 					$('#quotation_products').append(response.view);
 					$('#new_product_modal').modal('hide');
+					updateAllPrices();
 				}
 			});
 		});
@@ -595,6 +609,26 @@
 		$('#new_firstname').prop('required', bool);
 		$('#new_lastname').prop('required', bool);
 		$('#new_type').prop('required', bool);
+	}
+
+	function updateAllPrices() {
+		$(document).find('.line').each(function() {
+			updatePrices($(this).val());
+		});
+	}
+
+	function updatePrices(line_id) {
+		var quantity = parseInt($('#quantity_'+line_id).val());
+		var pv = parseFloat($('#pv_'+line_id).val());
+		var ecotax = parseFloat($('#ecotax_'+line_id).val());
+
+		var unit = pv + ecotax;
+		var total_without_ec = pv * quantity;
+		var total_with_ec = unit * quantity;
+
+		$('#unit_'+line_id).html(unit.toFixed(2)+" €");
+		$('#total_without_ec_'+line_id).html(total_without_ec.toFixed(2)+" €");
+		$('#total_with_ec_'+line_id).html(total_with_ec.toFixed(2)+" €");
 	}
 
 </script>

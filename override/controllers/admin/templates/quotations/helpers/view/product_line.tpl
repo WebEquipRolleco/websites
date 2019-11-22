@@ -1,7 +1,13 @@
 <tr>
-	<input type="hidden" name="lines[{$line->id}][id]" value="{$line->id}">
+	<input type="hidden" class="line" name="lines[{$line->id}][id]" value="{$line->id}">
 	<input type="file" id="new_file_{$line->id}" name="lines[{$line->id}]" style="height:0px; width:0px; overflow:hidden;">
-	<td class="text-center">
+	
+	{* REFERENCE / IMAGE *}
+	<td width="5%" class="text-center">
+		<div class="form-group">
+			<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
+			<input type="text" class="form-control" name="lines[{$line->id}][reference]" value="{$line->reference}">
+		</div>
 		{if $line->getImageLink()}
 			<img src="{$line->getImageLink()}" style="height:75px; width:75px; border: 1px solid lightgrey; margin-bottom: 2px">
 		{/if}
@@ -9,23 +15,104 @@
 			Changer
 		</button>
 	</td>
-	<td>
-		<div class="text-muted"><em>{l s="Désignation" d="Admin.Labels"}</em></div>
-		<textarea rows="1" class="form-control" name="lines[{$line->id}][name]" style="resize:vertical">{$line->name}</textarea>
-		<div class="text-muted"><em>{l s="Propriétés" d="Admin.Labels"}</em></div>
+
+	{* DESIGNATION / DIMENSIONS / INFORMATIONS COMPLEMENTAIRES *}
+	<td width="20%">
+		<div class="form-group">
+			<div class="text-muted"><em>{l s="Désignation" d="Admin.Labels"}</em></div>
+			<textarea rows="1" class="form-control" name="lines[{$line->id}][name]" style="resize:vertical">{$line->name}</textarea>
+		</div>
+		<div class="text-muted"><em>{l s="Dimensions" d="Admin.Labels"}</em></div>
 		<textarea rows="1" class="form-control" name="lines[{$line->id}][properties]" style="resize:vertical">{$line->properties}</textarea>
-		<div class="row">
-			<div class="col-lg-3">
-				<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control" name="lines[{$line->id}][reference]" value="{$line->reference}">
+		<div class="text-muted"><em>{l s="Informations complémentaires" d="Admin.Labels"}</em></div>
+		<textarea rows="1" class="form-control" name="lines[{$line->id}][information]" style="resize:vertical">{$line->information}</textarea>
+	</td>
+
+	{* LOT *}
+	<td class="text-center">
+		{if $line->getProduct()}
+			<div class="text-muted"><em>{l s="LOT" d="Admin.Labels"}</em></div>
+			<b>{$line->getProduct()->batch}</b>
+		{/if}
+	</td>
+
+	{* PRIX D'ACHAT *}
+	<td class="text-center">
+		{foreach from=$line->getSpecificPrices() item=specific_price}
+			<div class="form-group">
+				<div class="text-muted"><b>{l s="Par %s" sprintf=[$specific_price.from_quantity] d="Admin.Labels"}</b></div>
+				<b>{Tools::displayPrice($specific_price.buying_price)}</b>
 			</div>
-			<div class="col-lg-9">
-				<div class="text-center text-muted"><em>{l s="Informations complémentaires" d="Admin.Labels"}</em></div>
-				<textarea rows="1" class="form-control" name="lines[{$line->id}][information]" style="resize:vertical">{$line->information}</textarea>
+		{/foreach}
+	</td>
+
+	{* FRAIS DE PORT *}
+	<td class="text-center">
+		{foreach from=$line->getSpecificPrices() item=specific_price}
+			<div class="form-group">
+				<div class="text-muted"><b>{l s="Par %s" sprintf=[$specific_price.from_quantity] d="Admin.Labels"}</b></div>
+				<b>{Tools::displayPrice($specific_price.delivery_fees)}</b>
 			</div>
+		{/foreach}
+	</td>
+
+	{* TOTAL D'ACHAT *}
+	<td class="text-center">
+		{foreach from=$line->getSpecificPrices() item=specific_price}
+			<div class="form-group">
+				<div class="text-muted"><b>{l s="Par %s" sprintf=[$specific_price.from_quantity] d="Admin.Labels"}</b></div>
+				<b>{Tools::displayPrice($specific_price.buying_price + $specific_price.delivery_fees)}</b>
+			</div>
+		{/foreach}
+	</td>
+
+	{* PRIX DE VENTE PRODUIT *}
+	<td class="text-center">
+		{foreach from=$line->getSpecificPrices() item=specific_price}
+			<div class="form-group">
+				<div class="text-muted"><b>{l s="Par %s" sprintf=[$specific_price.from_quantity] d="Admin.Labels"}</b></div>
+				<b>{Tools::displayPrice($specific_price.price)}</b>
+			</div>
+		{/foreach}
+	</td>
+
+	{* PRIX DEVIS *}
+	<td class="text-center">
+		<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
+		<input type="number" min="0" step="0.01" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price|string_format:"%.2f"}">
+		<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
+		<input type="number" min="0" step="0.01" id="pv_{$line->id}" class="form-control text-center update-price" data-id="{$line->id}" name="lines[{$line->id}][selling_price]" value="{($line->selling_price - $line->eco_tax)|string_format:"%.2f"}">
+		<div class="text-center text-success"><em><b>{l s="Ecotaxe" d="Admin.Labels"}</b></em></div>
+		<input type="number" min="0" step="0.01" id="ecotax_{$line->id}" class="form-control text-center update-price" data-id="{$line->id}" name="lines[{$line->id}][eco_tax]" value="{$line->eco_tax|string_format:"%.2f"}">
+		<div class="text-center text-muted"><em>{l s="PV Total" d="Admin.Labels"}</em></div>
+		<span class="label label-success"><b id="unit_{$line->id}"></b></span>
+	</td>
+
+	{* QUANTITE *}
+	<td class="text-center">
+		<input type="number"  min="{if $line->getProduct()}{$line->getProduct()->minimal_quantity}{else}0{/if}" {if $line->getProduct() and $line->getProduct()->batch > 0}step="{$line->getProduct()->batch}"{/if} id="quantity_{$line->id}" class="form-control text-center update-price" data-id="{$line->id}" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
+	</td>
+
+	{* TOTAL DE VENTE *}
+	<td class="text-center">
+		<span class="label label-default" title="{l s='Sans Ecotaxe' d="Admin.Labels"}">
+			<b id="total_without_ec_{$line->id}"></b>
+		</span>
+		<div style="margin-top:10px">
+			<span class="label label-success" title="{l s='Avec Ecotaxe' d="Admin.Labels"}">
+				<b id="total_with_ec_{$line->id}"></b>
+			</span>
 		</div>
 	</td>
-	<td>
+
+	{* MARGE *}
+	<td class="text-center">
+		<b>{displayPrice price=$line->getMargin()}</b>
+		<div>{$line->getMarginRate()|string_format:"%.2f"}%</div>
+	</td>
+
+	{* FOURNISSEUR *}
+	<td class="text-center">
 		<div class="text-center text-muted"><em>{l s="Sous-traitant" d="Admin.Labels"}</em></div>
 		<select class="form-control" name="lines[{$line->id}][id_supplier]">
 			<option value="0">-</option>
@@ -36,56 +123,20 @@
 			{/foreach}
 		</select>
 		<div class="text-center text-muted"><em>{l s="Référence" d="Admin.Labels"}</em></div>
-		<input type="text" class="form-control" name="lines[{$line->id}][reference_supplier]" value="{$line->reference_supplier}">
+		<input type="text" class="form-control" name="lines[{$line->id}][reference_supplier]" value="{$line->reference_supplier}">	
 	</td>
+
+	{* COMMENTAIRE *}
 	<td>
-		<div class="row">
-			<div class="col-lg-6">
-				<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price|string_format:"%.2f"}">
-			</div>
-			<div class="col-lg-6">
-				<div class="text-center text-muted"><em>{l s="Ports" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees|string_format:"%.2f"}">
-			</div>
-			<div class="col-lg-6">
-				<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
-				<input type="text" class="form-control text-center" name="lines[{$line->id}][selling_price]" value="{$line->selling_price|string_format:"%.2f"}">
-			</div>
-			<div class="col-lg-6">
-				<div class="text-center text-muted"><em>{l s="Quantité" d="Admin.Labels"}</em></div>
-				<input type="number" class="form-control text-center" name="lines[{$line->id}][quantity]" value="{$line->quantity}" min="0">
-			</div>
-		</div>
+		<textarea rows="6" class="form-control" name="lines[{$line->id}][comment]" style="resize:vertical">{$line->comment}</textarea>
 	</td>
-	<td class="text-center">
-		<span class="label label-default" title="{l s='PV sans frais de port ni éco-tax' d="Admin.Labels"}">
-			<em>{l s='HT' d="Admin.Labels"}</em> &nbsp; <b>{Tools::displayPrice($line->getPrice())}</b>
-		</span>
-		<div style="margin-top:10px">
-			<span class="label label-primary" title="{l s='Frais de port HT' d="Admin.Labels"}">
-				<i class="icon-truck"></i> &nbsp; <b>{Tools::displayPrice($line->getFees())}</b>
-			</span>
-		</div>
-		{if $line->eco_tax > 0}
-			<div style="margin-top:10px">
-				<span class="label label-success" title="{l s="Eco-participation" d="Admin.Labels"}">
-					<i class="icon-leaf"></i> &nbsp;<b>{Tools::displayPrice($line->eco_tax)}</b>
-				</span>
-			</div>
-		{/if}
-	</td>
-	<td class="text-center">
-		<b>{displayPrice price=$line->getMargin()}</b>
-		<br />
-		{$line->getMarginRate()|string_format:"%.2f"}%
-	</td>
-	<td>
-		<textarea rows="4" class="form-control" name="lines[{$line->id}][comment]" style="resize:vertical">{$line->comment}</textarea>
-	</td>
+
+	{* POSITION *}
 	<td>
 		<input type="text" class="form-control text-center" name="lines[{$line->id}][position]" value="{$line->position}">
 	</td>
+
+	{* ACTIONS *}
 	<td class="text-right">
 		<div class="btn-group">
 			<button type="submit" class="btn btn-xs btn-danger remove_product" name="remove_product" value="{$line->id}" title="{l s='Remove' d='Admin.Actions'}">
@@ -93,4 +144,5 @@
 			</button>
 		</div>
 	</td>
+
 </tr>

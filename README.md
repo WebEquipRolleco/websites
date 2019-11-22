@@ -245,6 +245,8 @@ CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
     `position` INTEGER(11) DEFAULT NULL,
     `id_quotation` INTEGER(11) DEFAULT NULL,
     `id_supplier` INTEGER(11) DEFAULT NULL,
+    `id_product` INTEGER(11) DEFAULT NULL,
+    `id_combination` INTEGER(11) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
