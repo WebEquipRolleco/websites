@@ -70,8 +70,11 @@
 						<tr>
 							<td>
 								<div class="bold">
-									<i class="fa fa-user"></i> &nbsp; 
-									{$message->getSender()->firstname} {$message->getSender()->lastname}
+									{if $message->id_customer}
+										<i class="fa fa-user"></i> {l s="Vous"}
+									{else}
+										<i class="fa fa-comment"></i> <i>{$message->getSender()->firstname}</i>
+									{/if} 
 									- <em class="text-muted">{$message->date_add|date_format:'d/m/Y à H:i'}</em>
 								</div>
 								<div class="text-muted inner-space" style="padding:10px">{$message->message}</div>

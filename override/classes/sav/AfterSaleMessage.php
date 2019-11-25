@@ -39,7 +39,7 @@ class AfterSaleMessage extends ObjectModel {
     **/
     public function getCustomer() {
 
-    	if(!$this->sender and $this->id_customer)
+    	if($this->id_customer and !$this->sender)
     		$this->sender = new Customer($this->id_customer);
 
     	return $this->sender;
@@ -51,7 +51,7 @@ class AfterSaleMessage extends ObjectModel {
     **/
     public function getEmployee() {
 
-    	if(!$this->sender and $this->id_employee)
+    	if($this->id_employee and !$this->sender)
     		$this->sender = new Employee($this->id_employee);
 
     	return $this->sender;
