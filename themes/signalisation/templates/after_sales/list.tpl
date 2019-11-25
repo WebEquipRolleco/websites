@@ -17,11 +17,7 @@
 			{foreach from=$requests item=request}
 				<tr>
 					<td class="text-center bold {if $request->hasNewMessageForCustomer()}bg-warning{/if}">{$request->reference}</td>
-					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">
-						<span class="label-{$request->getStatusClass()} bold">
-							{$request->getStatusLabel()}
-						</span>
-					</td>
+					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if} bold">{$request->getStatusLabel()}</td>
 					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">{$request->getMessages(true)|@count}</td>
 					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">{$request->date_add|date_format:'d/m/Y'}</td>
 					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">
