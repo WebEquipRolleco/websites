@@ -22,13 +22,13 @@ class CustomerPersister extends CustomerPersisterCore {
             $data,
             $customer->email,
             $customer->firstname.' '.$customer->lastname,
-            Configuration::get('PS_SHOP_EMAIL', 1, null, $customer->id_shop),
-            Configuration::get('PS_SHOP_NAME', 1, null, $customer->id_shop),
+            Configuration::get('PS_SHOP_EMAIL', 1, null, $this->context->shop->id),
+            Configuration::get('PS_SHOP_NAME', 1, null, $this->context->shop->id),
             null,
             null,
             _PS_MAIL_DIR_,
             false,
-            $customer->id_shop
+            $this->context->shop->id
         );
     }
 
