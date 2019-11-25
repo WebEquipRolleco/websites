@@ -63,7 +63,7 @@ class AfterSale extends ObjectModel {
     **/
     public function getOrder() {
 
-        if(!$this->order)
+        if($this->id_order and !$this->order)
             $this->order = new Order($this->id_order);
 
         return $this->order;

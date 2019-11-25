@@ -193,9 +193,16 @@
 			<div class="panel">
 				<div class="panel-heading">
 					<i class="icon-envelope"></i> &nbsp; {l s="Messages"}
+					<span class="pull-right">
+						<a id="show-all-msg" class="label label-default" title="{l s='Afficher tous les messages'}"><i class="icon-expand"></i></a>
+						<a id="hide-all-msg" class="label label-default" title="{l s='Cacher tous les messages'}"><i class="icon-compress"></i></a>
+					</span>
 				</div>
 				{foreach from=$messages item=message}
 					<div class="well" {if $message->isNewToMe()}style="background-color:lightyellow"{/if}>
+						<a class="label label-default display-msg" data-id="{$message->id}" title="{l s='Afficher/cacher le message'}">
+							<i class="icon-angle-double-down"></i>
+						</a> &nbsp;
 						<b>{$message->getSender()->firstname} {$message->getSender()->lastname}</b>
 						{if $message->getSupplier()} <em class="text-muted">{l s="à l'intention de"}</em> <b class="text-info">{$message->getSupplier()->name}</b>{/if}
 						- <em class="text-muted">{$message->date_add|date_format:'d/m/Y à H:i'}</em>
@@ -211,8 +218,9 @@
 								</span>
 							{/if}
 						</span>
-						<hr />
-						{$message->message}
+						<div id="msg_{$message->id}" class="msg" style="display:none;">
+							<hr /> {$message->message}
+						</div>
 					</div>
 				{/foreach}
 			</div>
@@ -416,6 +424,25 @@
 			$('#id_supplier').val($(this).data('id'));
 			$('#email_supplier').val($(this).data('email'));
 		});
+
+		$('.display-msg').on('click', function(e) {
+			
+			e.preventDefault();
+			$('#msg_'+$(this).data('id')).slideToggle('fast');
+		});
+
+		$('#show-all-msg').on('click', function(e) {
+
+			e.preventDefault();
+			$('.msg').slideDown('fast');
+		});
+
+		$('#hide-all-msg').on('click', function(e) {
+
+			e.preventDefault();
+			$('.msg').slideUp('fast');
+		});
+
 	});
 
 	function updateMessage() {
