@@ -44,6 +44,7 @@ class Customer extends CustomerCore {
 	// Variables temporaires
 	private $type = null;
 	private $state = null;
+	private $shop = null;
 
 	public function __construct($id_category = null, $id_lang = null, $id_shop = null) {
 
@@ -112,6 +113,17 @@ class Customer extends CustomerCore {
 		return $this->state;
 	}
 
+	/**
+	* Retourne la boutique associée au client
+	**/
+	public function getShop() {
+
+		if(!$this->shop)
+			$this->shop = new Shop($this->id_shop);
+
+		return $this->shop;
+	}
+	
 	/**
 	* Vérifie la TVA interne 
 	**/
