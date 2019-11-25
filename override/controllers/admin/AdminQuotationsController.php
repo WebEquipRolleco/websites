@@ -506,7 +506,7 @@ class AdminQuotationsController extends AdminController {
         if($prices['comment_1']) $line->name .= " | ".$prices['comment_1'];
         if($prices['comment_2']) $line->name .= " | ".$prices['comment_2'];
         $line->buying_price = round($prices['buying_price'], 2);
-        $line->delivery_fees = round($prices['delivery_fees'], 2);
+        $line->buying_fees = round($prices['delivery_fees'], 2);
         $line->selling_price = round($prices['price'], 2);
 
         // Enregistrement
@@ -543,6 +543,7 @@ class AdminQuotationsController extends AdminController {
     			$line->properties = $form['properties'];
     			$line->information = $form['information'];
                 $line->buying_price = $form['buying_price'];
+                $line->buying_fees = $form['buying_fees'];
     			$line->eco_tax = $form['eco_tax'];
     			$line->selling_price = $form['selling_price'];
                 $line->id_supplier = $form['id_supplier'];
