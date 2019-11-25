@@ -15,11 +15,7 @@
 		<tbody>
 			<tr>
 				<td class="bold">{l s="Statut"}</td>
-				<td class="text-center">
-					<span class="label-{$sav->getStatusClass()} bold">
-						{$sav->getStatusLabel()}
-					</span>
-				</td>
+				<td class="text-center bold">{$sav->getStatusLabel()}</td>
 			</tr>
 			<tr>
 				<td class="bold">{l s="Date de création"}</td> 
