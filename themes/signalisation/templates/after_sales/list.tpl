@@ -33,7 +33,7 @@
 			{/foreach}
 			<tr>
 				<td colspan="5" class="text-center">
-					<a href="{$link->getPageLink('AfterSaleRequest')}" class="btn btn-success bold">
+					<a href="{$link->getPageLink('AfterSaleRequest')}" class="btn btn-alt bold">
 						{l s="Déclarer un nouveau SAV"}
 					</a>
 				</td>

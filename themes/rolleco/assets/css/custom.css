@@ -98,6 +98,16 @@
   background-color: #ad0c1c;
   border-color: inherit !important;
 }
+.btn-alt {
+  color: white !important;
+  background-color: #BB7CE8;
+  border-color: inherit !important;
+  transition: all 0.5s ease;
+}
+.btn-alt:hover {
+  background-color: #9B59CA;
+  border-color: inherit !important;
+}
 body {
   background-image: url('/img/bg-square.png');
   font-family: Arial, Tahoma, sans-serif;
