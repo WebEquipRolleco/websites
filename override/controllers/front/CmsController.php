@@ -39,7 +39,7 @@ class CmsController extends CmsControllerCore {
             $this->redirect();
         }
 
-        if($this->cms->display_raw)
+        if($this->cms and $this->cms->display_raw)
         	die($this->cms->content);
     }
 

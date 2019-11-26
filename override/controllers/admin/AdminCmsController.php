@@ -22,6 +22,7 @@ class AdminCmsController extends AdminCmsControllerCore {
                 'icon' => 'icon-trash'
             )
         );
+
         $this->fields_list = array(
             'id_cms' => array('title' => $this->trans('ID', array(), 'Admin.Global'), 'align' => 'center', 'class' => 'fixed-width-xs'),
             'link_rewrite' => array('title' => $this->trans('URL', array(), 'Admin.Global')),
@@ -47,9 +48,22 @@ class AdminCmsController extends AdminCmsControllerCore {
         $this->_where = ' AND c.id_cms_category = '.(int)$this->_category->id;
     }
 
+    public function postProcess() {
+
+        if(isset($_FILES['logo']) and $id = Tools::getValue('id_cms')) {
+
+            if(!is_dir(_PS_IMG_DIR_.CMS::DIR))
+                mkdir(_PS_IMG_DIR_.CMS::DIR);
+
+            move_uploaded_file($_FILES['logo']['tmp_name'], _PS_IMG_DIR_.CMS::DIR.$id.".png");
+        }
+        
+        parent::postProcess();
+    }
+
 	public function renderForm() {
 
-        if (!$this->loadObject(true)) {
+        if (!($cms = $this->loadObject(true))) {
             return;
         }
 
@@ -64,6 +78,11 @@ class AdminCmsController extends AdminCmsControllerCore {
 
         $categories = CMSCategory::getCategories($this->context->language->id, false);
         $html_categories = CMSCategory::recurseCMSCategory($categories, $categories[0][1], 1, $this->getFieldValue($this->object, 'id_cms_category'), 1);
+
+        $image = _PS_IMG_DIR_.CMS::DIR.$cms->id.'.png';
+        $image_url = ImageManager::thumbnail($image, $this->table.'_'.(int)$cms->id.'.png', 350,
+            $this->imageType, true, true);
+        $image_size = file_exists($image) ? filesize($image) / 1000 : false;
 
 		$this->fields_form = array(
             'tinymce' => true,
@@ -115,6 +134,25 @@ class AdminCmsController extends AdminCmsControllerCore {
                     'required' => true,
                     'lang' => true,
                     'hint' => $this->trans('Only letters and the hyphen (-) character are allowed.', array(), 'Admin.Design.Feature')
+                ),
+                array(
+                    'type' => 'file',
+                    'label' => $this->trans('Logo', array(), 'Admin.Global'),
+                    'name' => 'logo',
+                    'image' => $image_url ? $image_url : false,
+                    'size' => $image_size,
+                    'display_image' => true,
+                    'col' => 6,
+                    'hint' => $this->trans('Upload a brand logo from your computer.', array(), 'Admin.Catalog.Help')
+                ),
+                array(
+                    'type' => 'textarea',
+                    'label' => $this->trans('Description', array(), 'Admin.Design.Feature'),
+                    'name' => 'description',
+                    'lang' => true,
+                    'rows' => 2,
+                    'cols' => 40,
+                    'hint' => $this->trans('"|" pour retour à la ligne', array(), 'Admin.Notifications.Info')
                 ),
                 array(
                     'type' => 'textarea',

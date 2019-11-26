@@ -42,12 +42,19 @@
 
   {block name='cms_sub_pages'}
     {if $cms_pages}
-      <p>{l s='List of pages in %category_name%:' d='Shop.Theme.Global' sprintf=['%category_name%' => $cms_category.name]}</p>
-      <ul>
+      {*<p>{l s='List of pages in %category_name%:' d='Shop.Theme.Global' sprintf=['%category_name%' => $cms_category.name]}</p>*}
+      <div class="row">
         {foreach from=$cms_pages item=cms_page}
-          <li><a href="{$cms_page.link}">{$cms_page.meta_title}</a></li>
+          <div class="col-lg-2">
+              <a href="{$cms_page.link}">
+                <img src="{$urls.img_ps_url}{CMS::DIR}{$cms_page.id_cms}.png" style="max-width: 100%">
+              </a>
+          </div>
+          <div class="col-lg-4">
+              <a href="{$cms_page.link}">{$cms_page.description|replace:'|':'<br />' nofilter}</a>
+          </div>
         {/foreach}
-      </ul>
+      </div>
     {/if}
   {/block}
 {/block}

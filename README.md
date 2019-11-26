@@ -86,6 +86,8 @@ ALTER TABLE `ps_attribute_group` ADD `quotation` TINYINT DEFAULT '1' AFTER `is_c
 
 ALTER TABLE `ps_cms` ADD `display_raw` TINYINT DEFAULT '0' AFTER `active`;
 
+ALTER TABLE `ps_cms_lang` ADD `description` TEXT DEFAULT NULL AFTER `meta_keywords`;
+
 CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `id_product_icon` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) DEFAULT NULL, 
