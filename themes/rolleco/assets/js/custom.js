@@ -6,6 +6,16 @@ $(document).ready(function() {
   		return $(document).width() - (this.offset().left + this.outerWidth());
 	}*/
 
+	$(document).on('click', '.discount-code', function(e) {
+		e.preventDefault();
+
+		var code = $(this).data('code');
+		var input = $('input[name=discount_name]');
+		
+		input.val(code);
+		input.closest('form').submit();
+	});
+
 	$('.add-to-cart').on('click', function() {
 		$(document).find('#modal_product_added').remove();
 	});

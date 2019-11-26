@@ -16,6 +16,8 @@
         <span class="value">{$value}</span>
       </div>
     {/foreach}
+    {if $product.comment_1}<div>{$product.comment_1|replace:'|':"<br />" nofilter}{/if}
+      {if $product.comment_2}<div>{$product.comment_2|replace:'|':"<br />" nofilter}{/if}
     {foreach from=OrderOptionCart::findByCart() item=option}
       {if !$option->isValid($product.id_product)}
         <div class="text-danger"><i class="fa fa-exclamation-triangle"></i> {$option->warning}</div>
@@ -46,7 +48,9 @@
         </div>
       {/if}
       <div class="current-price">
-        <span class="price">{$product.price}</span>
+        <span class="price">
+          {Tools::displayPrice($product.price_with_reduction_without_tax)}
+        </span>
         {*if $product.unit_price_full}
           <div class="unit-price-cart">{$product.unit_price_full}</div>
         {/if*}
@@ -75,7 +79,7 @@
         {if isset($product.is_gift) && $product.is_gift}
           <span class="gift">{l s='Gift' d='Shop.Theme.Checkout'}</span>
         {else}
-          {$product.total}
+          {Tools::displayPrice($product.price_with_reduction_without_tax * $product.quantity)}
         {/if}
       </strong>
     </span>

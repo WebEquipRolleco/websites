@@ -3,35 +3,23 @@
   {if $nb_products}
     <div class="cart-detailed-totals">
       
-
         <table class="table combinations-table">
+          <thead>
+            <tr>
+              <th class="text-center">{l s="Total PRODUITS ET OPTIONS HT"}</th>
+              <th class="text-center">{$cart.totals.total_excluding_tax.value}</th>
+          </thead>
           <tbody>
-            {foreach from=$cart.subtotals item="subtotal"}
-              {if $subtotal.value && $subtotal.type !== 'tax'}
-                <tr class="cart-summary-line" id="cart-subtotal-{$subtotal.type}">
-                  <td class="label{if 'products' === $subtotal.type} js-subtotal{/if}">
-                    {if 'products' == $subtotal.type}
-                      {$nb_products} {l s="Article(s)"}
-                    {else}
-                      {$subtotal.label}
-                    {/if}
-                  </td>
-                  <td class="text-center {if $subtotal.type === 'shipping'}shipping-fee{/if}">
-                    {$subtotal.value}
-                    {if $subtotal.type === 'shipping'}
-                     <small>{hook h='displayCheckoutSubtotalDetails' subtotal=$subtotal}</small>
-                    {/if}
-                  </td>
-                </tr>
-              {/if}
-            {/foreach}
-            {assign var=options value=OrderOptionCart::findByCart()}
-            {if $options|@count}
-              <tr class="cart-summary-line">
-                <td class="label">{$options|@count} option(s)</td>
-                <td class="text-center">{Tools::displayPrice(OrderOptionCart::getCartTotal())}</td>
-              </tr>
-            {/if}
+            <tr>
+              <td>
+                <div class="bold">{l s="Frais de port"}</div>
+                <em class="text-muted">{l s="Hors îles non accessibles par un pont gratuit"}</em>
+              </td>
+              <td class="text-center">
+                <span {if $cart.subtotals.shipping.amount == 0}class="bold text-danger"{/if}>
+                  {$cart.subtotals.shipping.value}
+                </span>
+              </td>
           </tbody>
         </table>
 

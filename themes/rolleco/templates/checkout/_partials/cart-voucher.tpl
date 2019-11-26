@@ -28,7 +28,9 @@
     <table class="table combinations-table block-promo">
       <thead>
         <tr>
-          <th colspan="3">{l s='Have a promo code?' d='Shop.Theme.Checkout'}</th>
+          <th colspan="2" class="bg-light" style="border-top:0px; color:black">
+            {l s='Programme de fidélité rollcash' d='Shop.Theme.Checkout'}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -36,13 +38,13 @@
           {block name='cart_voucher_list'}
             {foreach from=$cart.vouchers.added item=voucher}
               <tr>
-                <td class="text-center">{$voucher.name}</td>
-                <td class="text-center">{$voucher.reduction_formatted}</td>
-                <td class="text-center">
+                <td class="bold">
                   <a href="{$voucher.delete_url}" class="remove-link" data-link-action="remove-voucher">
-                    <i class="material-icons fa fa-trash-alt"></i>
+                    <i class="far fa-check-square"></i> &nbsp;
+                    {l s="Utiliser mon %s" sprintf=[$voucher.name] d='Shop.Theme.Checkout'}
                   </a>
                 </td>
+                <td class="text-right bold">{$voucher.reduction_formatted}</td>
               </tr>
             {/foreach}
           {/block}
@@ -50,32 +52,32 @@
         {if $cart.discounts|count > 0}
           {foreach from=$cart.discounts item=discount}
             <tr>
-              <td class="text-center">
-                {$discount.name}
+              <td class="bold">
+                <a href="#" class="discount-code" data-code="{$discount.code}" style="color:black">
+                  <i class="far fa-square"></i> &nbsp;
+                  {l s="Utiliser mon %s" sprintf=[$discount.name] d='Shop.Theme.Checkout'}
+                </a> 
               </td>
-              <td class="text-center">
+              <td class="text-right bold">
                 {if $discount.reduction_amount > 0}
                   - {Tools::displayPrice($discount.reduction_amount)}
                 {elseif $discount.reduction_percent}
                   - {$discount.reduction_percent} %
                 {/if}
               </td>
-              <td class="js-discount text-center">
-                <a href="#" class="code">
-                  {$discount.code}
-                </a>
-              </td>
             </tr>
           {/foreach}
         {/if}
         {block name='cart_voucher_form'}
           <tr class="promo-code">
-            <td colspan="3" class="text-center">
+            <td colspan="2" class="bg-light text-center uppercase bold text-muted">
+              
               <form  method="post" action="{$urls.pages.cart}" data-link-action="add-voucher" class="form-inline">
+                {l s='Promo code' d='Shop.Theme.Checkout'} &nbsp; 
                 <input type="hidden" name="token" value="{$static_token}">
                 <input type="hidden" name="addDiscount" value="1">
-                <input type="text" class="form-control" name="discount_name" placeholder="{l s='Promo code' d='Shop.Theme.Checkout'}">
-                <button type="submit" class="btn btn-success bold"><span>{l s='Ok' d='Shop.Theme.Actions'}</span></button>
+                <input type="text" class="form-control" name="discount_name" required>
+                <button type="submit" class="btn btn-info bold"><span>{l s='Ok' d='Shop.Theme.Actions'}</span></button>
               </form>
               {block name='cart_voucher_notifications'}
                 <div class="alert alert-danger js-error" role="alert">
