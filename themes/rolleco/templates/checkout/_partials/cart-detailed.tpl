@@ -3,7 +3,7 @@
 {assign var=option_lines value=OrderOption::getOrderOptions(true, $context->shop->id)}
 
 {block name='cart_detailed_product'}
-  <div class="cart-overview js-cart" data-refresh-url="{url entity='cart' params=['ajax' => true, 'action' => 'refresh']}">
+  <div class="cart-overview js-cart" data-refresh-url="{url entity='cart' params=['ajax'=>true, 'action'=>'refresh']}">
     {if $cart.products or !empty($quotations)}
       <table class="table combinations-table">
         <thead>
