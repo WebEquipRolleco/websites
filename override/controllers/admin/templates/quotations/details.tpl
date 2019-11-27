@@ -525,6 +525,9 @@
 		$(document).on('change keyup', '.update-price', function() {
 			updatePrices($(this).data('id'));
 		});
+		$(document).on('change keyup', '.update-pa', function() {
+			updateBuyingPrices($(this).data('id'));
+		});
 
 		$('.quotation-link').on('click', function(e) {
 			if(!confirm('Etes-vous sûr de vouloir ajouter le devis a votre panier ?'))
@@ -613,8 +616,19 @@
 
 	function updateAllPrices() {
 		$(document).find('.line').each(function() {
-			updatePrices($(this).val());
+			var id = $(this).val();
+
+			updatePrices(id);
+			updateBuyingPrices(id);
 		});
+	}
+
+	function updateBuyingPrices(line_id) {
+		var pa = parseFloat($('#pa_'+line_id).val());
+		var fees = parseFloat($('#fees_'+line_id).val());
+		var total = pa + fees;
+
+		$('#pa_with_fees_'+line_id).html(total.toFixed(2)+" €");
 	}
 
 	function updatePrices(line_id) {

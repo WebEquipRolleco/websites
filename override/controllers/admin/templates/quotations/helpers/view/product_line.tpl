@@ -78,16 +78,17 @@
 
 	{* PRIX DEVIS *}
 	<td class="text-center">
-		<div class="row">
+		<div class="row" style="margin-bottom:5px">
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="PA" d="Admin.Labels"}</em></div>
-				<input type="number" min="0" step="0.01" class="form-control text-center" name="lines[{$line->id}][buying_price]" value="{$line->buying_price|string_format:"%.2f"}">
+				<input type="number" min="0" step="0.01" id="pa_{$line->id}" class="form-control text-center update-pa" data-id="{$line->id}" name="lines[{$line->id}][buying_price]" value="{$line->buying_price|string_format:"%.2f"}">
 			</div>
 			<div class="col-lg-6">
 				<div class="text-center text-muted"><em>{l s="Ports" d="Admin.Labels"}</em></div>
-				<input type="number" min="0" step="0.01" class="form-control text-center" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees|string_format:"%.2f"}">
+				<input type="number" min="0" step="0.01" id="fees_{$line->id}" class="form-control text-center update-pa" data-id="{$line->id}" name="lines[{$line->id}][buying_fees]" value="{$line->buying_fees|string_format:"%.2f"}">
 			</div>
 		</div>
+		<span class="label label-default"><b id="pa_with_fees_{$line->id}"></b></span>
 		<div class="text-center text-muted"><em>{l s="PV" d="Admin.Labels"}</em></div>
 		<input type="number" min="0" step="0.01" id="pv_{$line->id}" class="form-control text-center update-price" data-id="{$line->id}" name="lines[{$line->id}][selling_price]" value="{($line->selling_price - $line->eco_tax)|string_format:"%.2f"}">
 		<div class="text-center text-success"><em><b>{l s="Ecotaxe" d="Admin.Labels"}</b></em></div>
