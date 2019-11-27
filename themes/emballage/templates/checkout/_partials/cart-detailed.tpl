@@ -34,11 +34,27 @@
                 <b>{l s="Options disponibles" d='Shop.Theme.Checkout'}</b>
               </td>
           {/if}
-          {foreach from=$option_lines item=option}
-            {include file='checkout/_partials/cart-detailed-option-line.tpl'}
-          {/foreach}
-        </tbody>
-      </table>
+        </tr>
+      </tbody>
+    </table>
+
+      {if !empty($option_lines)}
+        <table class="table combinations-table margin-top-15">
+          <thead>
+            <tr>
+              <td colspan="7" class="bg-darkgrey">
+                <b>{l s="Options disponibles" d='Shop.Theme.Checkout'}</b>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            {foreach from=$option_lines item=option}
+              {include file='checkout/_partials/cart-detailed-option-line.tpl'}
+            {/foreach}
+          </tbody>
+        </table>
+      {/if}
+
     {else}
       <div class="alert alert-danger">
         <i class="fa fa-exclamation-circle"></i> 
