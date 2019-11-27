@@ -46,14 +46,6 @@
 				<div class="panel-heading">
 					{l s="Gestion"}
 				</div>
-				{*<div class="form-group">
-					<label for="id_shop">{l s="Boutique"}</label>
-					<select name="quotation[id_shop]" class="form-control" disabled>
-						{foreach $shops as $shop}
-							<option value="{$shop.id_shop}" {if $quotation->id_shop == $shop.id_shop}selected{/if}>{$shop.name}</option>
-						{/foreach}
-					</select>
-				</div>*}
 				<div class="form-group">
 					<label for="status">{l s="Etat"}</label>
 					<select name="quotation[status]" class="form-control">
@@ -527,11 +519,6 @@
 		});
 		$(document).on('change keyup', '.update-pa', function() {
 			updateBuyingPrices($(this).data('id'));
-		});
-
-		$('.quotation-link').on('click', function(e) {
-			if(!confirm('Etes-vous sûr de vouloir ajouter le devis a votre panier ?'))
-				e.preventDefault();
 		});
 
 		$('.remove_product').on('click', function(e) {
