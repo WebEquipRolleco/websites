@@ -195,7 +195,8 @@
 						<br />
 						<div style="font-size:8px">
 							{l s="PA :" d='Shop.Pdf' pdf=true} {Tools::displayPrice($detail->purchase_supplier_price)} <br />
-							{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($detail->total_shipping_price_tax_excl / $detail->product_quantity)}
+							{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($detail->total_shipping_price_tax_excl / $detail->product_quantity)} <br />
+							<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax)}</i>
 						</div>
 					</td>
 					<td width="10%" style="text-align:center">

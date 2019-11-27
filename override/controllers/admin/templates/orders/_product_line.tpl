@@ -45,6 +45,7 @@
 	<td>
 		<div><b>{l s="PA : "}</b> {displayPrice price=$product.purchase_supplier_price currency=$currency->id}</div>
 		<div><b>{l s="Ports : "}</b> {displayPrice price=($product.total_shipping_price_tax_excl / $product.product_quantity) currency=$currency->id}</div>
+		<div><b>{l s="Ecotaxe : "}</b> {displayPrice price=$product.ecotax currency=$currency->id}</div>
 		<div><b>{l s="Total : "}</b> {displayPrice price=$product.purchase_supplier_price + ($product.total_shipping_price_tax_excl / $product.product_quantity) currency=$currency->id}</div>
 	</td>
 	<td>
