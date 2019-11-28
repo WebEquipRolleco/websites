@@ -35,9 +35,9 @@
               </td>
               <td class="text-right bold">
                 {if $discount.reduction_amount > 0}
-                  - {Tools::displayPrice($discount.reduction_amount)}
+                  -{Tools::displayPrice($discount.reduction_amount * 1.2)}
                 {elseif $discount.reduction_percent}
-                  - {$discount.reduction_percent} %
+                  -{$discount.reduction_percent} %
                 {/if}
               </td>
             </tr>

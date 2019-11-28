@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th class="text-center">{l s="Total PRODUITS ET OPTIONS HT" d='Shop.Theme.Checkout'}</th>
-              <th class="text-center">{$cart.totals.total_excluding_tax.value}</th>
+              <th class="text-center">{Tools::displayPrice(Context::getContext()->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS))}</th>
           </thead>
           <tbody>
             <tr>
