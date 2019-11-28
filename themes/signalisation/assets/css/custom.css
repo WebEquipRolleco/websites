@@ -98,6 +98,16 @@
   background-color: #e0001b;
   border-color: inherit !important;
 }
+.btn-alt {
+  color: white !important;
+  background-color: #BB7CE8;
+  border-color: inherit !important;
+  transition: all 0.5s ease;
+}
+.btn-alt:hover {
+  background-color: #9B59CA;
+  border-color: inherit !important;
+}
 #wrapper {
   background-image: url('/img/bg-blue.jpg');
   background-attachment: fixed;
@@ -250,6 +260,9 @@ table .icon-cell {
 }
 .pull-right {
   float: right;
+}
+.bg-light {
+  background-color: white !important;
 }
 .bg-grey {
   background-color: #999 !important;
@@ -577,6 +590,7 @@ table .icon-cell {
   padding-top: 20px;
   margin-bottom: 20px;
   color: #e0001b;
+  vertical-align: top;
 }
 .megamenu_level_2 li img {
   height: 175px;

@@ -2,36 +2,24 @@
   {assign var=nb_products value=Context::getContext()->cart->nbProducts()}
   {if $nb_products}
     <div class="cart-detailed-totals">
-      
 
         <table class="table combinations-table">
+          <thead>
+            <tr>
+              <th class="text-center">{l s="Total PRODUITS ET OPTIONS HT" d='Shop.Theme.Checkout'}</th>
+              <th class="text-center">{$cart.totals.total_excluding_tax.value}</th>
+          </thead>
           <tbody>
-            {foreach from=$cart.subtotals item="subtotal"}
-              {if $subtotal.value && $subtotal.type !== 'tax'}
-                <tr class="cart-summary-line" id="cart-subtotal-{$subtotal.type}">
-                  <td class="label{if 'products' === $subtotal.type} js-subtotal{/if}">
-                    {if 'products' == $subtotal.type}
-                      {$nb_products} {l s="Article(s)"}
-                    {else}
-                      {$subtotal.label}
-                    {/if}
-                  </td>
-                  <td class="text-center {if $subtotal.type === 'shipping'}shipping-fee{/if}">
-                    {$subtotal.value}
-                    {if $subtotal.type === 'shipping'}
-                     <small>{hook h='displayCheckoutSubtotalDetails' subtotal=$subtotal}</small>
-                    {/if}
-                  </td>
-                </tr>
-              {/if}
-            {/foreach}
-            {assign var=options value=OrderOptionCart::findByCart()}
-            {if $options|@count}
-              <tr class="cart-summary-line">
-                <td class="label">{$options|@count} option(s)</td>
-                <td class="text-center">{Tools::displayPrice(OrderOptionCart::getCartTotal())}</td>
-              </tr>
-            {/if}
+            <tr>
+              <td>
+                <div class="bold">{l s="Frais de port"}</div>
+                <em class="text-muted">{l s="Hors îles non accessibles par un pont gratuit" d='Shop.Theme.Checkout'}</em>
+              </td>
+              <td class="text-center">
+                <span {if $cart.subtotals.shipping.amount == 0}class="bold text-danger"{/if}>
+                  {$cart.subtotals.shipping.value}
+                </span>
+              </td>
           </tbody>
         </table>
 
@@ -39,23 +27,30 @@
           {include file='checkout/_partials/cart-voucher.tpl'}
         {/block}
 
-        <table class="table combinations-table no-bottom">
+        <table class="table combinations-table">
           <tbody>
             <tr class="cart-summary-line">
-              <td class="bold">{l s='Total HT' d='Shop.Theme.Actions'}</td>
+              <td class="bold">{l s='Total HT' d='Shop.Theme.Checkout'}</td>
               <td class="bold text-right" style="border-left: 0px">{$cart.totals.total_excluding_tax.value}</td>
             </tr>
             <tr class="cart-summary-line">
-              <td class="bold">{l s='TVA' d='Shop.Theme.Actions'}</td>
+              <td class="bold">{l s='TVA' d='Shop.Theme.Checkout'}</td>
               <td class="bold text-right" style="border-left: 0px">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
             </tr>
             <tr class="cart-total">
-              <td class="bg-red">{l s='Total TTC' d='Shop.Theme.Actions'}</td>
+              <td class="bg-red">{l s='Total TTC' d='Shop.Theme.Checkout'}</td>
               <td class="bg-red value text-right" style="border-left: 0px">{$cart.totals.total_including_tax.value}</td>
+            </tr>
+            <tr class="cart-summary-line">
+              <td class="text-muted" style="padding:5px;">{l s='Dont éco-particiation' d='Shop.Theme.Checkout'}</td>
+              <td class="text-muted text-right" style="padding:5px; border-left:0px">{Tools::displayPrice(Cart::getEcoTax())}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center">
-                <a href="{$urls.pages.order}" class="btn btn-success bold">
+                <a href="" class="btn btn-default bold" onclick="window.print();return false;">
+                  <i class="fa fa-print"></i> {l s="Imprimer" d='Shop.Theme.Actions'}
+                </a>
+                <a href="{$urls.pages.order}" class="btn btn-danger bold">
                   {l s='Proceed to checkout' d='Shop.Theme.Actions'}
                 </a>
                 {*hook h='displayExpressCheckout'*}

@@ -7,9 +7,9 @@ $(document).ready(function() {
         var email = $(this).find('input[name=email]').val();
 
         $('#ajax_modal_newsletter').iziModal({
-            headerColor: "#1e4688",
+            headerColor: "#999",
             icon: 'fa fa-envelope-open-text',
-            title: "Newsletter Rolléco",
+            title: "Newsletter Pro-signalisation",
             subtitle: "Votre inscription est en cours",
             padding: "15px",
             closeButton: false,

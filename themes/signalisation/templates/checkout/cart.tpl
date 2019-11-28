@@ -57,9 +57,16 @@
     <div class="row">
 
       <div class="col-xs-12 col-lg-6">
+        {assign var=context value=Context::getContext()}
+
         {block name='cart_rollcash'}
-          {include file='checkout/_partials/cart-rollcash.tpl' cart=Context::getContext()->cart}
+          {include file='checkout/_partials/cart-rollcash.tpl' cart=$context->cart}
         {/block}
+
+        {block name='cart_rollcash'}
+          {include file='checkout/_partials/cart-trust.tpl'}
+        {/block}
+        
       </div>
 
       <div class="col-xs-12 col-lg-6">

@@ -26,9 +26,9 @@
 <script>
   $(document).ready(function() {
     $('#modal_product_added').iziModal({
-      headerColor: "#1e4688",
+      headerColor: "#999",
       icon: 'fas fa-cart-arrow-down',
-      title: "Rolléco",
+      title: "Pro-Signation",
       subtitle: "{l s='Produit(s) ajouté(s) au panier' d='Shop.Theme.Checkout'}",
       padding: "15px",
       closeButton: true,
