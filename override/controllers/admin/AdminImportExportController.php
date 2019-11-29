@@ -223,7 +223,7 @@ class AdminImportExportControllerCore extends AdminController {
         }
 
         header('Content-Type: application/csv; charset=UTF-16LE');
-        header('Content-Disposition: attachment; filename="produits.csv";');
+        header('Content-Disposition: attachment; filename="produits_'.date('d-m_h-i').'.csv";');
         die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));
     }
 
@@ -548,7 +548,7 @@ class AdminImportExportControllerCore extends AdminController {
         }
 
         header('Content-Type: application/csv; charset=UTF-16LE');
-        header('Content-Disposition: attachment; filename="produits.csv";');
+        header('Content-Disposition: attachment; filename="prix_'.date('d-m_h-i').'.csv";');
         die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));
     }
 
