@@ -1158,9 +1158,9 @@
                   ]
                   d='Admin.Orderscustomers.Notification'
                 }
-                {if !Configuration::get('PS_ORDER_RETURN')}
+                {*if !Configuration::get('PS_ORDER_RETURN')}
                   <br/><strong>{l s='Merchandise returns are disabled' d='Admin.Orderscustomers.Notification'}</strong>
-                {/if}
+                {/if*}
               </div>
             </div>
             <div class="col-xs-6">
