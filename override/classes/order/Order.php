@@ -359,13 +359,13 @@ class Order extends OrderCore {
 
 		
 			foreach(Db::getInstance()->executeS($sql) as $row)
-				$value = $row['purchase_supplier_price'] * $row['product_quantity'];
+				$value += $row['purchase_supplier_price'] * $row['product_quantity'];
 		}
-		
-		if($use_taxes)
-			return $value * 1.2;
+
+		if($use_taxes) 
+			return (($value * 1.2) + $row['total_shipping_price_tax_incl']);
 		else
-			return $value;
+			return ($value + $row['total_shipping_price_tax_excl']);
 	}
 
 	/**
