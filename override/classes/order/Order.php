@@ -441,4 +441,90 @@ class Order extends OrderCore {
 		$this->save();
 	}
 
+	/**
+	* Création du JSON envoyé vers M3
+	* UTILISATION : CRON module export vers M3
+	* @return string
+	**/
+	public function getJson() {
+		
+		$customer = $this->getCustomer();
+
+		$addresses[1] = $this->getAddressDelivery();
+		$addresses[3] = $this->getAddressInvoice();
+
+		$date = explode(' ', $this->date_add);
+		$date = str_replace("-", "", $date[0]);
+
+		/**
+		* En tête
+		**/
+		$data = array();
+
+    	$data['numClient'] = $customer->reference;
+    	$data['payeur'] = $customer->reference;
+    	$data['langue'] = "FR";
+    	$data['numCommandeClient'] = $this->reference;
+    	$data['numCotation'] = $this->reference;
+    	$data['remiseCom'] = $this->total_discounts_tax_incl;
+    	$data['adrLivraison'] = $addresses[1]->reference;
+    	$data['devise'] = "EUR";
+    	$data['dateCommande'] = $date;
+    	//$data['OTDP'] = "Pourcentage de remise total";
+    	$json['entete'] = $data;
+
+    	/**
+    	* Adresses livraison et facturation
+    	**/
+    	$data = array();
+
+    	$names[1] = "livraison";
+    	$names[3] = "facturation";
+
+    	foreach($addresses as $key => $address) {
+    		$row = array();
+
+	    	//$row['ORNO'] = "Numéro de commande temporaire retournée par l'API d'entete";
+	    	$row['typeAdresse'] = $key;
+	    	if($address->reference) $row['idAdresse'] = $address->reference;
+	    	$row['nomClient'] = trim($address->firstname." ".$address->lastname);
+	    	$row['adresse'] = $address->address1;
+	    	if($address->address2) $row['adresseComp'] = $address->address2;
+	    	$row['adresseLigne3'] = trim($address->postcode." ".$address->city);
+	    	if($address->postcode) $row['cp'] = $address->postcode;
+	    	$row['ville'] = $address->city;
+	    	$row['adresseLigne4'] = $address->country;
+	    	if($address->phone) $row['numTel'] = $address->phone;
+	    	if($address->phone_mobile) $row['numTel2'] = $address->phone_mobile;
+	    	$row['pays'] = "FR";
+	    	//$row['VRNO'] = "Code TVA intracommunautaire";
+	    	$row['votreReference1'] = $this->reference;
+
+	    	$json[$names[$key]] = $row;
+	    }
+
+    	/**
+    	* Lignes produits
+    	**/
+    	$data = array();
+
+    	foreach($this->getProducts() as $product) {
+    		$row = array();
+
+    		//$row['ORNO'] = "Numéro de commande temporaire retournée par l'API d'entete";
+    		$row['numArticle'] = $product['product_supplier_reference'];
+    		$row['qteCommande'] = $product['product_quantity'];
+    		$row['NumCommandeClient'] = $this->reference;
+    		$row['pdvente'] = $product['total_price_tax_incl'];
+    		//$row['DIP1'] = "Promo en %";
+    		//$row['CUOR'] = $this->reference;
+
+    		$data[] = $row;
+    	}
+
+    	$json['lignesArticle'] = $data;
+
+    	return json_encode($json);
+	}
+
 }

@@ -228,8 +228,7 @@ class Webequip_Configuration extends Module {
         if(Tools::getIsset(self::CONFIG_DEFAULT_STATE_SUCCESS)) {
             $id_state = Tools::getValue(self::CONFIG_DEFAULT_STATE_SUCCESS);
 
-            $names = array(self::CONFIG_DEFAULT_STATE_SUCCESS, 'DEFAULT_ID_STATE_OK', 'PS_OS_CHEQUE', 'PS_OS_PAYMENT', 'PS_OS_PREPARATION', 'PS_OS_WS_PAYMENT', 'PS_OS_BANKWIRE', 'PS_OS_BANKWIRE_45J', 'PS_OS_PAYPAL', 'PS_OS_BANKWIRE_ADMIN');
-            foreach($names as $name)
+            foreach(OrderState::getDefaultStateNames() as $name)
                 Configuration::updateValue($name, $id_state);
         }
 
