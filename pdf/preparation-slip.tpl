@@ -180,6 +180,7 @@
 		</thead>
 		<tbody>
 			{foreach from=$order->getDetails() item='detail'}
+				{assign var=unit_port value=($detail->total_shipping_price_tax_excl / $detail->product_quantity)}
 				<tr>
 					<td width="20%">
 						<b>{$detail->product_name}</b>
@@ -191,18 +192,18 @@
 						{$detail->product_reference}
 					</td>
 					<td width="10%" style="text-align:center">
-						{Tools::displayPrice($detail->getTotalBuyingPrice())}
+						{Tools::displayPrice($detail->purchase_supplier_price + $unit_port)}
 						<br />
 						<div style="font-size:8px">
 							{l s="PA :" d='Shop.Pdf' pdf=true} {Tools::displayPrice($detail->purchase_supplier_price)} <br />
-							{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($detail->total_shipping_price_tax_excl / $detail->product_quantity)} <br />
+							{l s="Port :" d="Shop.Pdf" pdf=true} {Tools::displayPrice($unit_port)} <br />
 							<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax)}</i>
 						</div>
 					</td>
 					<td width="10%" style="text-align:center">
 						{Tools::displayPrice($detail->unit_price_tax_excl)}
 						<br /><br />
-						<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax / $detail->product_quantity)}</i>
+						<i style="font-size:7px; color:green">{Tools::displayPrice($detail->ecotax)}</i>
 					</td>
 					<td width="5%" style="text-align:center">
 						{$detail->product_quantity}
