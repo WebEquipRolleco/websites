@@ -33,27 +33,20 @@
           </span>
           <span class="address-alias h4">
             {$address.alias}
-            {if $smarty.foreach.addresses.first}
-              <small class="text-muted">{l s="(Facturation)"}</small>
-            {/if}
           </span>
-          <div class="address">{$address.formatted nofilter}</div>
+          <div class="address" style="min-height:75px;">{$address.formatted nofilter}</div>
         </label>
       </header>
       <hr>
       <footer class="address-footer bg-grey">
         {if $interactive}
-          {if $smarty.foreach.addresses.first}
-            <small class="text-muted">{l s="Non modifiable"}</small>
-          {else}
-            <a href="{url entity='order' params=['id_address' => $address.id, 'editAddress' => $type, 'token' => $token]}" class="btn btn-warning edit-address" data-link-action="edit-address" title="{l s='Edit' d='Shop.Theme.Actions'}">
-              <i class="fa fa-edit edit"></i>
-            </a>
-            <a href="{url entity='order' params=['id_address' => $address.id, 'deleteAddress' => true, 'token' => $token]}" class="btn btn-danger delete-address"
+          <a href="{url entity='order' params=['id_address' => $address.id, 'editAddress' => $type, 'token' => $token]}" class="btn btn-warning edit-address" data-link-action="edit-address" title="{l s='Edit' d='Shop.Theme.Actions'}">
+            <i class="fa fa-edit edit"></i>
+          </a>
+          <a href="{url entity='order' params=['id_address' => $address.id, 'deleteAddress' => true, 'token' => $token]}" class="btn btn-danger delete-address"
             data-link-action="delete-address" title="{l s='Delete' d='Shop.Theme.Actions'}">
-              <i class="fa fa-trash-alt delete"></i>
-            </a>
-          {/if}
+            <i class="fa fa-trash-alt delete"></i>
+          </a>
         {/if}
       </footer>
     </article>

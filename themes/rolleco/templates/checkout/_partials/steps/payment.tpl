@@ -4,10 +4,122 @@
 
   {hook h='displayPaymentTop'}
 
+  <div class="row">
+    {assign var=context value=Context::getContext()}
+
+    <div class="col-xs-12 col-lg-12">
+      <h4 class="text-center bold uppercase">
+        {l s="Récapitulatif de la commande" d='Shop.Theme.Checkout'}
+      </h4>
+    </div>
+
+    <div class="col-xs-12 col-lg-6">
+      <table class="table combinations-table">
+        <tr class="cart-total">
+          <td class="bg-blue text-center uppercase">{l s="Adresse de facturation" d='Shop.Theme.Checkout'}</td>
+        </tr>
+        <tr>
+          <td class="bg-grey text-muted">
+            {assign var=address value=$context->cart->getAddressInvoice()}
+            <div class="bold">{$address->alias}</div>
+            <br />
+            {$address->address1} <br />
+            {if $address->address2}{$address->address2} <br />{/if}
+            {$address->postcode} {$address->city} <br />
+            {$address->country} <br />
+            {$address->phone}
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-xs-12 col-lg-6">
+      <table class="table combinations-table">
+        <tr class="cart-total">
+          <td class="bg-blue text-center uppercase">{l s="Adresse de livraison" d='Shop.Theme.Checkout'}</td>
+        </tr>
+        <tr>
+          <td class="bg-grey text-muted">
+            {assign var=address value=$context->cart->getAddressDelivery()}
+            <div class="bold">{$address->alias}</div>
+            <br />
+            {$address->address1} <br />
+            {if $address->address2}{$address->address2} <br />{/if}
+            {$address->postcode} {$address->city} <br />
+            {$address->country} <br />
+            {$address->phone}
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-xs-12 margin-top-15">
+      <table class="table combinations-table">
+        <tr class="cart-total">
+          <td class="bg-blue text-center uppercase">{l s="Produit" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-blue text-center uppercase">{l s="Quantité" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-blue text-center uppercase">{l s="Prix unitaire HT" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-blue text-center uppercase">{l s="Prix total HT" d='Shop.Theme.Checkout'}</td>
+        </tr>
+        {foreach from=$cart.products item=product}
+          <tr class="text-muted">
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              <div class="bold">{$product.name}</div>
+              {l s="Référence : %s" sprintf=[$product.reference_to_display]}
+            </td>
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              {$product.cart_quantity}
+            </td>
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              {Tools::displayPrice($product.price_with_reduction_without_tax)}
+            </td>
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              {Tools::displayPrice($product.price_with_reduction_without_tax * $product.cart_quantity)}
+            </td>
+          </tr>
+        {/foreach}
+        {foreach from=OrderOptionCart::findByCart($context->cart->id) item=option}
+          <tr class="text-muted">
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              <div class="bold">{$option->name}</div>
+              {$option->description}
+            </td>
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+
+            </td>
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              {Tools::displayPrice($option->getPrice())}
+            </td>
+            <td class="bg-grey text-center" style="vertical-align:middle;">
+              {Tools::displayPrice($option->getPrice())}
+            </td>
+          </tr>
+        {/foreach}
+        <tr class="text-muted">
+          <td colspan="3" class="bg-grey text-right bold">{l s="Sous-total HT" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-grey text-center">{$cart.totals.total_excluding_tax.value}</td>
+        </tr>
+        <tr class="text-muted">
+          <td colspan="3" class="bg-grey text-right bold">{l s="Frais de livraison" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-grey text-center">{$cart.subtotals.shipping.value}</td>
+        </tr>
+        <tr class="text-muted">
+          <td colspan="3" class="bg-grey text-right bold">{l s="Taxes" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-grey text-center">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
+        </tr>
+        <tr class="text-muted">
+          <td colspan="3" class="bg-grey text-right bold">{l s="Total TTC" d='Shop.Theme.Checkout'}</td>
+          <td class="bg-grey text-center">{$cart.totals.total_including_tax.value}</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
   {if $is_free}
     <p>{l s='No payment needed for this order' d='Shop.Theme.Checkout'}</p>
   {/if}
-  <div class="payment-options {if $is_free}hidden-xs-up{/if}">
+  <div class="margin-top-15 payment-options {if $is_free}hidden-xs-up{/if}">
     {foreach from=$payment_options item="module_options"}
       {foreach from=$module_options item="option"}
         <div>

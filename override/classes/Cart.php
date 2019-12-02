@@ -15,6 +15,8 @@ class Cart extends CartCore {
 
     /** Variables temporaires **/
     private $customer;
+    private $address_invoice;
+    private $address_delivery;
 
     /**
     * OVERRIDE : Correction bug avec les lignes sans produits
@@ -37,6 +39,22 @@ class Cart extends CartCore {
             $this->customer = new Customer($this->id_customer);
 
         return $this->customer;
+    }
+
+    public function getAddressInvoice() {
+
+        if(!$this->address_invoice)
+            $this->address_invoice = new Address($this->id_address_invoice);
+
+        return $this->address_invoice;
+    }
+
+    public function getAddressDelivery() {
+
+        if(!$this->address_delivery)
+            $this->address_delivery = new Address($this->id_address_delivery);
+
+        return $this->address_delivery;
     }
 
     public function allowOption($id_option) {

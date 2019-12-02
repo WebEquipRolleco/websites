@@ -47,11 +47,11 @@
       {include file='_partials/notifications.tpl'}
     {/block}
 
-    <section id="wrapper">
+    <section id="wrapper" style="margin-top:0px !important;">
       
-      {include file='layouts/layout-brand.tpl'}
+      {*include file='layouts/layout-brand.tpl'*}
       
-      <div class="container">
+      <div class="container" style="padding-top:60px !important;">
 
       <div class="row">
             <div class="col-md-12">
@@ -100,6 +100,11 @@
       {hook h='displayBeforeBodyClosingTag'}
     {/block}
 
+    {assign var=bundle_key value=Configuration::get('KEY_FONT_AWESOME')}
+    {if $bundle_key}
+      <script src="https://kit.fontawesome.com/{$bundle_key}.js"></script>
+    {/if}
+    
   </body>
 
 </html>
