@@ -15,6 +15,7 @@ ALTER TABLE `ps_order_detail` ADD `prevent_notification` TINYINT DEFAULT '0' AFT
 ALTER TABLE `ps_order_detail` ADD `id_quotation_line` TEXT NULL AFTER `product_attribute_id`;
 ALTER TABLE `ps_order_detail` ADD `id_product_supplier` INT NULL AFTER `id_quotation_line`;
 
+ALTER TABLE `ps_order_state` ADD `id_m3` TINYINT DEFAULT NULL AFTER `id_order_state`;
 ALTER TABLE `ps_order_state` ADD `term_of_use` TINYINT DEFAULT '0' AFTER `pdf_delivery`;
 ALTER TABLE `ps_order_state` ADD `proforma` TINYINT DEFAULT '0' AFTER `paid`;
 ALTER TABLE `ps_order_state` ADD `rollcash` TINYINT DEFAULT '0' AFTER `proforma`;

@@ -108,6 +108,11 @@ class AdminStatusesController extends AdminStatusesControllerCore {
                     )
                 ),
                 array(
+                    'type' => 'text',
+                    'label' => $this->trans('Correspondance état M3', array(), 'Admin.Shopparameters.Feature'),
+                    'name' => 'id_m3'
+                ),
+                array(
                     'type' => 'file',
                     'label' => $this->trans('Icon', array(), 'Admin.Shopparameters.Feature'),
                     'name' => 'icon',
