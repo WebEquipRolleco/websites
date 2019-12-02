@@ -46,10 +46,12 @@ ALTER TABLE `ps_supplier` ADD `BC` VARCHAR(255) NULL AFTER `active`;
 ALTER TABLE `ps_supplier` ADD `BL` VARCHAR(255) NULL AFTER `BC`;
 
 ALTER TABLE `ps_orders` ADD `internal_reference` VARCHAR(255) NULL AFTER `reference`;
-ALTER TABLE `ps_orders` ADD `delivery_information` TEXT NULL AFTER `internal_reference`;
+ALTER TABLE `ps_orders` ADD `m3_reference` TEXT NULL AFTER `internal_reference`;
+ALTER TABLE `ps_orders` ADD `delivery_information` TEXT NULL AFTER `m3_reference`;
 ALTER TABLE `ps_orders` ADD `supplier_information` TEXT NULL AFTER `delivery_information`;
 ALTER TABLE `ps_orders` ADD `no_recall` TINYINT DEFAULT '0' AFTER `valid`;
-ALTER TABLE `ps_orders` ADD `display_with_taxes` TINYINT DEFAULT '0' AFTER `no_recall`;
+ALTER TABLE `ps_orders` ADD `exported` INT(1) DEFAULT '0' AFTER `no_recall`;
+ALTER TABLE `ps_orders` ADD `display_with_taxes` TINYINT DEFAULT '0' AFTER `exported`;
 ALTER TABLE `ps_orders` ADD `invoice_comment` TEXT NULL AFTER `invoice_number`;
 
 ALTER TABLE `ps_category_lang` ADD `bottom_description` TEXT NULL AFTER `description`;

@@ -6,6 +6,16 @@ class Order extends OrderCore {
 	const ONLY_QUOTATIONS = 2;
 	const ONLY_PRODUCTS = 3;
 
+	const NOT_EXPORTED = 0;
+	const STANDBY_EXPORT = 1;
+	const EXPORTED = 2;
+
+	/** Exporté vers M3 **/
+	public $exported = 0;
+
+	/** Référence commande M3 **/
+	public $m3_reference;
+
 	/** @var string Internal Reference */
 	public $internal_reference;
 
@@ -36,12 +46,14 @@ class Order extends OrderCore {
 	**/
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
+		self::$definition['fields']['m3_reference'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['internal_reference'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['delivery_information'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['supplier_information'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['invoice_comment'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['display_with_taxes'] = array('type' => self::TYPE_BOOL);
 		self::$definition['fields']['no_recall'] = array('type' => self::TYPE_BOOL);
+		self::$definition['fields']['exported'] = array('type' => self::TYPE_INT);
 		
 		parent::__construct($id_order, $id_lang, $id_shop);
 	}
