@@ -200,6 +200,11 @@
           {l s='Order' d='Admin.Global'}
           <span class="badge">{$order->reference}</span>
           <span class="badge">{l s="#" d='Admin.Orderscustomers.Feature'}{$order->id}</span>
+          {assign var=export_data value=$order->getExportedData()}
+          <span class="badge" title="{$export_data.info}">
+            <i class="icon-circle text-{$export_data.class}"></i> 
+            {l s="Statut export M3" d='Admin.Orderscustomers.Feature'}
+          </span>
           <div class="panel-heading-action">
             <div class="btn-group">
               <a class="btn btn-default{if !$previousOrder} disabled{/if}" href="{$link->getAdminLink('AdminOrders')|escape:'html':'UTF-8'}&amp;vieworder&amp;id_order={$previousOrder|intval}">

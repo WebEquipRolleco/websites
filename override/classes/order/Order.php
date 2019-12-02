@@ -59,6 +59,20 @@ class Order extends OrderCore {
 	}
 
 	/**
+	* Retourne les informations concernant l'export vers M3
+	* UTILISATION : page commande
+	* @return array
+	**/
+	public function getExportedData() {
+
+		$data[self::NOT_EXPORTED] = array('class'=>"danger", 'info'=>"Non exporté");
+		$data[self::STANDBY_EXPORT] = array('class'=>"warning", 'info'=>"En attente de validation");
+		$data[self::EXPORTED] = array('class'=>"success", 'info'=>"Exporté");;
+
+		return $data[$this->exported];
+	}
+
+	/**
 	* Retourne l'information PROFORMA
 	* @return bool
 	**/
