@@ -451,7 +451,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->comment_1;
             $data[] = $price->comment_2;
             $data[] = $price->getProduct() ? $price->getProduct()->id_supplier : null;
-            $data[] = $price->getTarget() ? $price->getTarget()->supplier_reference : null;
+            $data[] = Product::getSupplierReference($price->id_product, $price->id_product_attribute);
             $data[] = $price->getTarget() ? $price->getTarget()->batch : null;
             $data[] = $price->getTarget() ? $price->getTarget()->ecotax : 0;
             $data[] = ($price->getProduct() and $price->getProduct()->active) ? 'oui' : 'non';
@@ -495,7 +495,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = null;
             $data[] = $combination->getProduct()->id_supplier;
-            $data[] = $combination->supplier_reference;
+            $data[] = Product::getSupplierReference($combination->id_product, $combination->id);
             $data[] = $combination->batch;
             $data[] = $combination->ecotax;
             $data[] = $combination->getProduct()->active ? 'oui' : 'non';
@@ -534,7 +534,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = null;
             $data[] = $product->id_supplier;
-            $data[] = $product->supplier_reference;
+            $data[] = Product::getSupplierReference($product->id);
             $data[] = $product->batch;
             $data[] = $product->ecotax;
             $data[] = $product->active ? 'oui' : 'non';
