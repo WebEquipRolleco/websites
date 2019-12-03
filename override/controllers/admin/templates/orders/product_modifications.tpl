@@ -22,34 +22,33 @@
             </tr>
           </thead>
           <tbody>
-            {foreach from=$products item=product key=k}
+            {foreach from=$order->getDetails() item=product}
               <tr>
                 <td>
-                  {$product.product_name}
+                  {$product->product_name}
                 </td>
                 <td>
-                  <select class="form-control" name="update[{$product.id_order_detail}][id_supplier]">
-                    <option {if !$product.id_product_supplier}selected{/if}></option>
+                  <select class="form-control" name="update[{$product->id}][id_supplier]">
+                    <option {if !$product->id_product_supplier}selected{/if}></option>
                     {foreach from=$suppliers item=supplier}
-                      <option value="{$supplier.id_supplier}" {if $product.id_product_supplier == $supplier.id_supplier}selected{/if}>{$supplier.name}</option>
+                      <option value="{$supplier.id_supplier}" {if $product->id_product_supplier == $supplier.id_supplier}selected{/if}>{$supplier.name}</option>
                     {/foreach}
                   </select>
                 </td>
                 <td>
                   <em class="text-muted">{l s="Produit"}</em>
-                  <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_reference]" value="{$product.product_reference}">
+                  <input type="text" class="form-control" name="update[{$product->id}][product_reference]" value="{$product->product_reference}">
                   <em class="text-muted">{l s="Fournisseur"}</em>
-                  <input type="text" class="form-control" name="update[{$product.id_order_detail}][product_supplier_reference]" value="{$product.product_supplier_reference}">
+                  <input type="text" class="form-control" name="update[{$product->id}][product_supplier_reference]" value="{$product->product_supplier_reference}">
                 </td>
                 <td>
-                  <input type="number" min="1" step="1" id="quantity_{$product.id_order_detail}" class="form-control update-shipping-cost" name="update[{$product.id_order_detail}][product_quantity]" value="{$product.product_quantity}" data-target="{$product.id_order_detail}">
+                  <input type="number" min="1" step="1" id="quantity_{$product->id}" class="form-control update-shipping-cost" name="update[{$product->id}][product_quantity]" value="{$product->product_quantity}" data-target="{$product->id}">
                 </td>
                 <td>
                   <em class="text-muted">{l s='PA Unitaire'}</em>
-                  <input type="number" min="0" step="0.01" class="form-control" name="update[{$product.id_order_detail}][purchase_supplier_price]" value="{$product.purchase_supplier_price}">
+                  <input type="number" min="0" step="0.01" class="form-control" name="update[{$product->id}][purchase_supplier_price]" value="{$product->purchase_supplier_price}">
                   <em class="text-muted">{l s='Ports Unitaire'}</em>
-                  <input type="number" min="0" step="0.01" id="shipping_{$product.id_order_detail}" class="form-control update-shipping-cost" value="{($product.total_shipping_price_tax_excl / $product.product_quantity)|string_format:"%.2f"}" data-target="{$product.id_order_detail}">
-                  <input type="hidden" id="total_shipping_{$product.id_order_detail}" name="update[{$product.id_order_detail}][total_shipping_price_tax_excl]" value="{$product.total_shipping_price_tax_excl}">
+                  <input type="number" min="0" step="0.01" class="form-control" name="update[{$product->id}][delivery_fees]" value="{$product->delivery_fees|string_format:"%.2f"}">
                 </td>
               </tr>
             {/foreach}
@@ -69,17 +68,3 @@
     </form>
   </div>
 </div>
-
-<script>
-  $(document).ready(function() {
-
-    $('.update-shipping-cost').on('change', function() { 
-      var id_reference = $(this).data('target');
-      var shipping_value = $('#shipping_'+id_reference).val();
-      var quantity = $('#quantity_'+id_reference).val();
-
-      $('#total_shipping_'+id_reference).val(shipping_value * quantity);
-    });
-
-  });
-</script>

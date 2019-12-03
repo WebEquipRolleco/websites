@@ -2,6 +2,9 @@
 
 class OrderDetail extends OrderDetailCore {
 
+    /** @var float Delivery fees **/
+    public $delivery_fees;
+
     /** @var int Id quotation line **/
     public $id_quotation_line;
 
@@ -35,6 +38,7 @@ class OrderDetail extends OrderDetailCore {
 
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
+        //self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT);
         self::$definition['fields']['id_quotation_line'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['id_product_supplier'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['day'] = array('type' => self::TYPE_DATE);
@@ -112,8 +116,7 @@ class OrderDetail extends OrderDetailCore {
         $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
 
-        $this->total_shipping_price_tax_excl = $product['delivery_fees'] * $this->product_quantity;
-        $this->total_shipping_price_tax_incl = $this->total_shipping_price_tax_excl * 1.2;
+        $this->delivery_fees = $product['delivery_fees'];
         $this->ecotax = $product['ecotax'];
 
         $this->comment_product_1 = $product['comment_1'];

@@ -427,11 +427,14 @@ class Cart extends CartCore {
                     $row['is_gift'] = false;
                 }
 
-                $additionalRow = Product::getProductProperties((int)$this->id_lang, $row);
-                $row['reduction'] = $additionalRow['reduction'];
-                $row['price_without_reduction'] = $additionalRow['price_without_reduction'];
-                $row['specific_prices'] = $additionalRow['specific_prices'];
-                unset($additionalRow);
+                try {
+                    $additionalRow = Product::getProductProperties((int)$this->id_lang, $row);
+                    $row['reduction'] = $additionalRow['reduction'];
+                    $row['price_without_reduction'] = $additionalRow['price_without_reduction'];
+                    $row['specific_prices'] = $additionalRow['specific_prices'];
+                    unset($additionalRow);
+                }
+                catch(Exception $e) { }
 
                 $givenAwayQuantity = 0;
                 $giftIndex = $row['id_product'] . '-' . $row['id_product_attribute'];

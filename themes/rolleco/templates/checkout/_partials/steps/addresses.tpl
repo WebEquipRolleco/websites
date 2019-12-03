@@ -88,7 +88,7 @@
 
       {/if}
 
-      {if !$use_same_address}
+      {*if !$use_same_address}
 
         <h2 class="h4">{l s='Your Invoice Address' d='Shop.Theme.Checkout'}</h2>
 
@@ -114,7 +114,7 @@
           </p>
         {/if}
 
-      {/if}
+      {/if*}
 
       {if !$form_has_continue_button}
         <div class="clearfix">

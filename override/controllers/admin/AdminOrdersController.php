@@ -246,9 +246,11 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $rows = Db::getInstance()->executeS("SELECT id_product_supplier FROM ps_order_detail WHERE id_order = ".$this->current_id);
         foreach($rows as $row) {
 
-            $oa = OA::find($this->current_id, $row['id_product_supplier']);
-            if(!$oa->id)
-                $oa->save();
+            if($row['id_product_supplier']) {
+                $oa = OA::find($this->current_id, $row['id_product_supplier']);
+                if(!$oa->id)
+                    $oa->save();
+            }
         }
         
         // Supprimer un historique
@@ -303,7 +305,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                     $detail->product_reference = $row['product_reference'];
                     $detail->product_supplier_reference = $row['product_supplier_reference'];
                     $detail->purchase_supplier_price = $row['purchase_supplier_price'];
-                    $detail->total_shipping_price_tax_excl = $row['total_shipping_price_tax_excl'];
+                    $detail->delivery_fees = $row['delivery_fees'];
 
                     if($update) {
                         $update_order = true;

@@ -5,6 +5,7 @@ Multiboutique Prestashop 1.7
 git remote add preprod root@ns336802.cubeo.fr:/var/www/devrolleco/rolleco.git
 
 # Modification de la BDD 
+ALTER TABLE `ps_order_detail` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `product_price`;
 ALTER TABLE `ps_order_detail` ADD `week` INT(2) NULL AFTER `original_wholesale_price`;
 ALTER TABLE `ps_order_detail` ADD `day` DATE NULL AFTER `week`;
 ALTER TABLE `ps_order_detail` ADD `comment` TEXT NULL AFTER `day`;

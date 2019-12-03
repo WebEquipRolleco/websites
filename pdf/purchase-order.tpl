@@ -188,7 +188,7 @@
 					{Tools::displayPrice($details->purchase_supplier_price)}
 				</td>
 				<td style="text-align:center">
-					{Tools::displayPrice($details->total_shipping_price_tax_excl * $details->product_quantity)}
+					{Tools::displayPrice($details->delivery_fees * $details->product_quantity)}
 				</td>
 				<td style="text-align:center">
 					{Tools::displayPrice($details->total_price_tax_excl)}
