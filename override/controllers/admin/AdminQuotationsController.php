@@ -90,6 +90,7 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Mail', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatMail',
+                'search' => false
             ),
             'active' => array(
                 'title' => $this->trans('Actif', array(), 'Admin.Global'),
