@@ -285,24 +285,32 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
-					<div class="form-group">
-						<div class="alert bg-primary"><b>{l s="Compte client existant"}</b></div>
-						<select name="quotation[id_customer]" class="form-control select2">
-							<option value="">{l s='Choisir' d='Admin.Labels'}</option>
-							{foreach $customers as $customer}
-								<option value="{$customer.id_customer}" {if $quotation->id_customer == $customer.id_customer}selected{/if}>
-									{$customer.firstname} {$customer.lastname} ({$customer.email})
-								</option>
-							{/foreach}
-						</select>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="alert bg-primary"><b>{l s="Compte client existant"}</b></div>
+						</div>
+						<div class="col-lg-8">
+							<div class="form-group">
+								<select id="quotation_customer" name="quotation[id_customer]" class="form-control search-customer"></select>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<div class="input-group">
+									<input type="text" id="search_field" placeholder="{l s='Recherche' d='Admin.Labels'}">
+									<span id="loading_customer" class="input-group-addon bold" style="display:none"><i class="icon-spinner icon-spin"></i></span>
+									<span id="ok_customer" class="input-group-addon bold"><i class="icon-check-square"></i></span>
+								</div>
+							</div>
+						</div>
 					</div>
 					<hr>
 					<div class="alert bg-primary" style="margin-bottom:0px; border-radius:3px 3px 0px 0px">
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-8">
 								<b>{l s="Création de compte"}</b>
 							</div>
-							<div class="col-lg-6 text-right">
+							<div class="col-lg-4 text-right">
 								<span class="switch prestashop-switch fixed-width-lg" style="position:absolute; top:-8px; right:0px">
 									<input type="radio" id="creation_on" name="creation" value="1">
 									<label for="creation_on">{l s='Oui' d='Admin.Labels'}</label>
@@ -507,6 +515,7 @@
 {/if}
 
 <script>
+	var timeout = null;
 	$(document).ready(function() {
 		
 		/** SELECT 2 **/
@@ -523,6 +532,38 @@
 		});
 		$(document).on('change keyup', '.update-pa', function() {
 			updateBuyingPrices($(this).data('id'));
+		});
+
+		/** Recherche de clients **/
+		$('#search_field').on('keyup', function() {
+			var term = $(this).val();
+
+			$("#ok_customer").hide();
+			$('#loading_customer').show();
+
+			clearTimeout(timeout);
+			timeout = setTimeout(function() {
+
+				$.ajax({
+					url: "{$link->getAdminLink('AdminQuotations')}",
+					data: { ajax:true, action:'search_customer', term:term },
+					dataType: "json",
+					success : function(response) {
+
+						$('#quotation_customer').html(null);
+						response.forEach(function(e) {
+
+							if(e.company) e.email = e.email+" / "+e.company;
+							var option = new Option(e.firstname+" "+e.lastname+" ("+e.email+")", e.id);
+							$('#quotation_customer').append(option);
+						});
+					}
+				});
+
+				$("#ok_customer").show();
+				$('#loading_customer').hide();
+
+			}, 1000);
 		});
 
 		$('.remove_product').on('click', function(e) {

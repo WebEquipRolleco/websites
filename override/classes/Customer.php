@@ -177,4 +177,14 @@ class Customer extends CustomerCore {
 		return $this->quotation == self::QUOTATION_NEW;
 	}
 
+	/**
+	* Recherche un client
+	* UTILISATION : devis
+	* @return array
+	**/
+	public static function search($term) {
+
+		$term = "'%".pSql($term)."%'";
+		return Db::getInstance()->executeS("SELECT id_customer AS id, firstname, lastname, email, company FROM ps_customer WHERE firstname LIKE $term OR lastname LIKE $term OR email LIKE $term OR company LIKE $term");	
+	}
 }

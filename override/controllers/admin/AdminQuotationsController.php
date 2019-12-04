@@ -187,6 +187,10 @@ class AdminQuotationsController extends AdminController {
             case 'contact_modal':
                 $this->renderContactModal();
             break;
+
+            case 'search_customer':
+                die(json_encode(Customer::search(Tools::getValue('term'))));
+            break;
     	}
     }
 
@@ -277,7 +281,7 @@ class AdminQuotationsController extends AdminController {
                     $customer->lastname = $form['lastname'];
                     $customer->id_account_type = $form['id_account_type'];
                     $customer->company = $form['company'];
-                    
+
                     $customer->id_shop = $quotation->id_shop;
                     $customer->quotation = Customer::QUOTATION_NEW;
                     $customer->passwd = $this->crypto->hash($quotation->reference);
