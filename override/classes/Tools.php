@@ -3,7 +3,16 @@
 class Tools extends ToolsCore {
 
 	const BROWSE_INDEX = "BROWSE_TIMER";
+	const EMPTY_DATE = "0000-00-00 00:00:00";
 
+	/**
+	* Vérifie si un date est vide
+	* @return bool
+	**/
+	public static function isEmptyDate($value) {
+		return (bool)(!$value or $value == self::EMPTY_DATE);
+	}
+	
 	/**
 	* Retourne le temps de navigation d'un utilisateur
 	**/
