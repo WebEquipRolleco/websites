@@ -184,6 +184,9 @@ class Customer extends CustomerCore {
 	**/
 	public static function search($term) {
 
+		if(!$term)
+			return array();
+		
 		$term = "'%".pSql(strtolower($term))."%'";
 		return Db::getInstance()->executeS("SELECT id_customer AS id, firstname, lastname, email, company FROM ps_customer WHERE LOWER(firstname) LIKE $term collate utf8_bin OR LOWER(lastname) LIKE $term collate utf8_bin OR LOWER(email) LIKE $term OR LOWER(company) LIKE $term collate utf8_bin");	
 	}
