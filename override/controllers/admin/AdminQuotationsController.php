@@ -67,16 +67,6 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Créateur', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
-            /*'origin' => array(
-                'title' => $this->trans('Origine', array(), 'Admin.Global'),
-                'align' => 'text-center',
-                'callback' => 'formatOrigin',
-            ),
-            'source' => array(
-                'title' => $this->trans('Source', array(), 'Admin.Global'),
-                'align' => 'text-center',
-                'callback' => 'formatSource',
-            ),*/
             'price' => array(
                 'title' => $this->trans('Montant HT', array(), 'Admin.Global'),
                 'align' => 'text-center',
@@ -262,12 +252,9 @@ class AdminQuotationsController extends AdminController {
                 $quotation->origin = $form['origin'];
     			$quotation->source = $form['source'];
     			$quotation->email = $form['email'];
-    			$quotation->hidden_emails = $form['hidden_emails'];
     			$quotation->date_begin = $form['date_begin'];
 			    $quotation->date_end = $form['date_end'];
 			    $quotation->date_recall = $form['date_recall'];
-			    $quotation->phone = $form['phone'];
-			    $quotation->fax = $form['fax'];
 			    $quotation->comment = $form['comment'];
 			    $quotation->details = $form['details'];
 			    $quotation->id_employee = $form['id_employee'];
@@ -275,7 +262,6 @@ class AdminQuotationsController extends AdminController {
                 $quotation->new = $form['new'];
                 $quotation->highlight = $form['highlight'];
                 $quotation->option_ids = implode(Quotation::DELIMITER, $form['options']);
-                //$quotation->id_shop = $form['id_shop'];
 
                 if(!$quotation->id)
                     $quotation->generateReference(true);
