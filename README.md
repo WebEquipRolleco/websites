@@ -214,6 +214,8 @@ CREATE TABLE IF NOT EXISTS `ps_quotation` (
     `origin` INT(1) DEFAULT NULL, 
     `source` INT(1) DEFAULT NULL, 
     `email` VARCHAR(255) DEFAULT NULL, 
+    `phone` VARCHAR(255) DEFAULT NULL, 
+    `fax` VARCHAR(255) DEFAULT NULL, 
     `date_add` DATETIME DEFAULT NULL,
     `date_begin` DATE DEFAULT NULL,
     `date_end` DATE DEFAULT NULL,

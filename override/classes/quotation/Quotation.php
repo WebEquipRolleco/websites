@@ -23,6 +23,8 @@ class Quotation extends ObjectModel {
     public $origin;
     public $source = 1;
     public $email;
+    public $phone;
+    public $fax;
     public $date_begin;
     public $date_add;
     public $date_end;
@@ -54,6 +56,8 @@ class Quotation extends ObjectModel {
             'origin' => array('type' => self::TYPE_INT),
             'source' => array('type' => self::TYPE_INT),
             'email' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
+            'phone' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
+            'fax' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
             'date_add' => array('type' => self::TYPE_DATE),
             'date_begin' => array('type' => self::TYPE_DATE),
             'date_end' => array('type' => self::TYPE_DATE),

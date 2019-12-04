@@ -236,6 +236,19 @@
 							<span class="text-muted pull-right">{l s="Séparés par une virgule"}</span>
 							<input type="text" name="quotation[email]" id="email" class="form-control" value="{$quotation->email}" tabindex="1">
 						</div>
+
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="phone">{l s="Téléphone"}</label>
+							<input type="text" name="quotation[phone]" id="phone" class="form-control" value="{$quotation->phone}" tabindex="3">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="fax">{l s="Fax"}</label>
+							<input type="text" name="quotation[fax]" id="fax" class="form-control" value="{$quotation->fax}" tabindex="4">
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -328,6 +341,12 @@
 											<option value="{$type->id}" {if $type->default_value}selected{/if}>{$type->name}</option>
 										{/foreach}
 									</select>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label for="new_company">{l s="Société" d='Admin.Labels'}</label>
+									<input type="text" id="new_company" class="form-control" name="new_account[company]">
 								</div>
 							</div>
 						</div>

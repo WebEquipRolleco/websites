@@ -255,6 +255,8 @@ class AdminQuotationsController extends AdminController {
     			$quotation->date_begin = $form['date_begin'];
 			    $quotation->date_end = $form['date_end'];
 			    $quotation->date_recall = $form['date_recall'];
+			    $quotation->phone = $form['phone'];
+			    $quotation->fax = $form['fax'];
 			    $quotation->comment = $form['comment'];
 			    $quotation->details = $form['details'];
 			    $quotation->id_employee = $form['id_employee'];
@@ -274,7 +276,8 @@ class AdminQuotationsController extends AdminController {
                     $customer->firstname = $form['firstname'];
                     $customer->lastname = $form['lastname'];
                     $customer->id_account_type = $form['id_account_type'];
-
+                    $customer->company = $form['company'];
+                    
                     $customer->id_shop = $quotation->id_shop;
                     $customer->quotation = Customer::QUOTATION_NEW;
                     $customer->passwd = $this->crypto->hash($quotation->reference);
