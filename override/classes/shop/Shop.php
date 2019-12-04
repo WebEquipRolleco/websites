@@ -4,6 +4,10 @@ class Shop extends ShopCore {
 
     const CONDITIONS_DIR = "/documents/";
 
+    const PDF_IDENTITY = "fichier_identite";
+    const PDF_SALES = "conditions_ventes";
+    const PDF_PAYMENT = "conditions_paiement";
+
 	/** @var string Préfix de la référence commande **/
     public $reference_prefix;
 
@@ -107,16 +111,16 @@ class Shop extends ShopCore {
     * Retourne le nom du fichier de conditions de ventes
     * @return string
     **/
-    public function getConditionsFileName() {
-        return "conditions_ventes_".$this->id.".pdf";
+    public function getFileName($name) {
+        return $name."_".$this->id.".pdf";
     }
 
     /**
     * Vérifie l'existence d'un PDF de conditions de ventes
     * @return bool
     **/
-    public function hasConditionsFile() {
-        return is_file($this->getConditionsFilePath(true));
+    public function hasFile($name) {
+        return is_file($this->getFilePath($name, true));
     }
 
     /**
@@ -124,12 +128,24 @@ class Shop extends ShopCore {
     * @param bool $full Chemin absolu ou relatif
     * @return string
     **/
-    public function getConditionsFilePath($full = false) {
+    public function getFilePath($name, $full = false) {
 
         if($full)
-            return _PS_ROOT_DIR_.self::CONDITIONS_DIR.$this->getConditionsFileName();
+            return _PS_ROOT_DIR_.self::CONDITIONS_DIR.$this->getFileName($name);
         else
-            return self::CONDITIONS_DIR.$this->getConditionsFileName();
+            return self::CONDITIONS_DIR.$this->getFileName($name);
     }
     
+    /**
+    * Retourne la liste des documents
+    * @return array
+    **/
+    public function getDocuments() {
+
+        $data[] = array('label'=>"Fiche d'identité", 'name'=>self::PDF_IDENTITY, 'path'=>$this->getFilePath(self::PDF_IDENTITY), 'exists'=>$this->hasFile(self::PDF_IDENTITY));
+        $data[] = array('label'=>"Conditions de vente", 'name'=>self::PDF_SALES, 'path'=>$this->getFilePath(self::PDF_SALES), 'exists'=>$this->hasFile(self::PDF_SALES));
+        $data[] = array('label'=>"Conditions de paiement", 'name'=>self::PDF_PAYMENT, 'path'=>$this->getFilePath(self::PDF_PAYMENT), 'exists'=>$this->hasFile(self::PDF_PAYMENT));
+    
+        return $data;
+    }
 }

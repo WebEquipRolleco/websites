@@ -12,31 +12,33 @@
 				<b style="color:{$shop->color}">{$shop->name}</b>
 			</div>
 			<table class="table">
-				<tr>
-					<td>
-						<b>{l s="Conditions de ventes"}</b></td>
-					<td>
-					<td class="text-center">
-						<b>{l s="PDF"}</b>
-					</td>
-					<td>
-						<input type="file" class="form-control" name="new_conditions">
-					</td>
-					<td class="text-right">
-						{if $shop->hasConditionsFile()}
-							<a href="{$shop->getConditionsFilePath()}" class="btn btn-default" target="_blank">
-								<i class="icon-file"></i>
-							</a>
-							<button type="submit" class="btn btn-danger" name="remove_conditions">
-								<i class="icon-trash"></i>
-							</button>
-						{else}
-							<div class="label label-default">
-								<b><i class="icon-times"></i> &nbsp; {l s="Aucun fichier"}</b>
-							</div>
-						{/if}
-					</td>
-				</tr>
+				{foreach from=$shop->getDocuments() item=document}
+					<tr>
+						<td>
+							<b>{$document.label}</b></td>
+						<td>
+						<td class="text-center">
+							<b>{l s="PDF" d='Admin.Labels'}</b>
+						</td>
+						<td>
+							<input type="file" class="form-control" name="new_file[{$document.name}]">
+						</td>
+						<td class="text-right">
+							{if $document.exists}
+								<a href="{$document.path}" class="btn btn-default" target="_blank">
+									<i class="icon-file"></i>
+								</a>
+								<button type="submit" class="btn btn-danger" name="remove_file" value="{$document.name}">
+									<i class="icon-trash"></i>
+								</button>
+							{else}
+								<div class="label label-default">
+									<b><i class="icon-times"></i> &nbsp; {l s="Aucun fichier" d='Admin.Labels'}</b>
+								</div>
+							{/if}
+						</td>
+					</tr>
+				{/foreach}
 			</table>
 			<div class="panel-footer text-right">
 				<button type="submit" class="btn btn-success">

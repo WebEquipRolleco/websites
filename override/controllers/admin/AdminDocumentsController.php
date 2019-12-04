@@ -23,20 +23,24 @@ class AdminDocumentsController extends AdminController {
 		$shop = new Shop(Tools::getValue('selected_shop'));
 
 		// Upload d'un nouveau fichier
-		if($shop->id and isset($_FILES['new_conditions']) and $_FILES['new_conditions']['tmp_name']) {
-			if($_FILES['new_conditions']['type'] == 'application/pdf') {
-				@unlink($shop->getConditionsFilePath(true));
-				move_uploaded_file($_FILES['new_conditions']['tmp_name'], $shop->getConditionsFilePath(true));
-				$this->context->smarty->assign('alert', array('type'=>'success', 'content'=>'Fichier enregistré'));
+		if($shop->id and $files = $_FILES['new_file']) {
+			foreach($shop->getDocuments() as $document) {
+				$doc = $document['name'];
+				if(isset($files['tmp_name'][$doc]) and $files['tmp_name'][$doc])
+					if($files['type'][$doc] == 'application/pdf') {
+						@unlink($shop->getFilePath($doc, true));
+						move_uploaded_file($files['tmp_name'][$doc], $shop->getFilePath($doc, true));
+						$this->context->smarty->assign('alert', array('type'=>'success', 'content'=>'Fichier enregistré'));
+					}
+					else
+						$this->context->smarty->assign('alert', array('type'=>'danger', 'content'=>'Le fichier doit être au format PDF'));
 			}
-			else
-				$this->context->smarty->assign('alert', array('type'=>'danger', 'content'=>'Le fichier doit être au format PDF'));
 		}
 
 		// Suppression d'un fichier
-		if(Tools::isSubmit('remove_conditions')) {
-			@unlink($shop->getConditionsFilePath(true));
-			$this->context->smarty->assign('alert', array('type'=>'success', 'content'=>'Fichier supprimé'));
+		if($name = Tools::getValue('remove_file')) {
+			if(unlink($shop->getFilePath($name, true)))
+				$this->context->smarty->assign('alert', array('type'=>'success', 'content'=>'Fichier supprimé'));
 		}
 
 		parent::postProcess();
