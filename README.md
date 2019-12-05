@@ -73,11 +73,15 @@ ALTER TABLE `ps_product_attribute` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `
 ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
 ALTER TABLE `ps_product_attribute` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
 ALTER TABLE `ps_product_attribute` ADD `batch` INT DEFAULT NULL AFTER `position`;
+ALTER TABLE `ps_product_attribute` ADD `comment_1` TEXT DEFAULT NULL AFTER `batch`;
+ALTER TABLE `ps_product_attribute` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
 ALTER TABLE `ps_product_attribute_shop` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `price`;
 ALTER TABLE `ps_product_attribute_shop` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
 ALTER TABLE `ps_product_attribute_shop` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
 ALTER TABLE `ps_product_attribute_shop` ADD `batch` INT DEFAULT NULL AFTER `position`;
+ALTER TABLE `ps_product_attribute_shop` ADD `comment_1` TEXT DEFAULT NULL AFTER `batch`;
+ALTER TABLE `ps_product_attribute_shop` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
 ALTER TABLE `ps_specific_price` ADD `buying_price` FLOAT NULL AFTER `to`;
 ALTER TABLE `ps_specific_price` ADD `delivery_fees` FLOAT NULL AFTER `buying_price`;

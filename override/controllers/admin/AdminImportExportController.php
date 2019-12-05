@@ -211,8 +211,8 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = null;
                 $data[] = null;
                 $data[] = $product->id_supplier;
-                $data[] = null;
-                $data[] = null;
+                $data[] = $combination->comment_1;
+                $data[] = $combination->comment_2;
 
                 // Liste de toutes les caractéristiques
                 foreach($attributes as $group)
@@ -328,9 +328,11 @@ class AdminImportExportControllerCore extends AdminController {
                         $combination->id_product = $row["id_product"];
                         $combination->reference = $row["reference"];
                         $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
+                        $combination->comment_1 = $row["comment_1"];
+                        $combination->comment_2 = $row["comment_2"];
                         $combination->quantity = 99999;
                         $combination->low_stock_threshold = 0;
-                        $combination->low_stock_alert = false;
+                        $combination->low_stock_alert = false;  
 
                         if($update)
                             $combination->save();
