@@ -32,7 +32,8 @@ class Webequip_Configuration extends Module {
         $check = parent::install();
 
         $check .= $this->registerHook('displayAdminProductsPriceStepBottom');
-        $check .= $this->registerHook('displayAdminProductsPriceStepBottom');
+        $check .= $this->registerHook('displayAdminProductsCombinationBottom');
+        $check .= $this->registerHook('displayAdminProductsMainStepLeftColumnBottom');
         $check .= $this->registerHook('displayAdminProductsMainStepRightColumnBottom');
 
         if(!isTabInstalled("WEBEQUIP"))
@@ -101,8 +102,11 @@ class Webequip_Configuration extends Module {
         if(!$this->isRegisteredInHook("displayAdminProductsPriceStepBottom"))
             $this->registerHook('displayAdminProductsPriceStepBottom');
 
-        if(!$this->isRegisteredInHook("displayAdminProductsPriceStepBottom"))
-            $this->registerHook('displayAdminProductsPriceStepBottom');
+        if(!$this->isRegisteredInHook("displayAdminProductsCombinationBottom"))
+            $this->registerHook('displayAdminProductsCombinationBottom');
+
+        if(!$this->isRegisteredInHook("displayAdminProductsMainStepLeftColumnBottom"))
+            $this->registerHook('displayAdminProductsMainStepLeftColumnBottom');
 
         if(!$this->isRegisteredInHook("displayAdminProductsMainStepRightColumnBottom"))
             $this->registerHook('displayAdminProductsMainStepRightColumnBottom');
@@ -298,6 +302,14 @@ class Webequip_Configuration extends Module {
     public function hookDisplayAdminProductsCombinationBottom($params) {
         $this->context->smarty->assign('combination', new Combination($params['id_product_attribute']));
        return $this->display(__FILE__, 'combination_prices.tpl');
+    }
+
+    /**
+    * Ajoute la gestion des commentaires produits
+    **/
+    public function hookDisplayAdminProductsMainStepLeftColumnBottom($params) {
+        $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
+        return $this->display(__FILE__, 'product_comments.tpl');
     }
 
     /**
