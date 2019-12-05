@@ -598,7 +598,8 @@
 				e.preventDefault();
 		});
 
-		$('.change-picture').on('click', function() {
+		/** Changement d'image ou de document **/
+		$('.change-file').on('click', function() {
 			$($(this).data('id')).click();
 		});
 

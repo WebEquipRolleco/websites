@@ -236,6 +236,13 @@ class QuotationLine extends ObjectModel {
 	}
 
 	/**
+	* Retourne le nom du document associé
+	**/
+	public function getDocumentName() {
+		return $this->id.".pdf";
+	}
+
+	/**
 	* Retourne le lien de l'image
 	* @param bool $absolute Chemin relatif ou absolu 
 	* @return string
@@ -244,6 +251,19 @@ class QuotationLine extends ObjectModel {
 
 		if(is_file($this->getDirectory(true).$this->getFileName()))
 			return $this->getDirectory($absolute).$this->getFileName();
+		else
+			return null;
+	}
+
+	/**
+	* Retourne le lien du document
+	* @param bool $absolute Chemin relatif ou absolu 
+	* @return string
+	**/
+	public function getDocumentLink($absolute = false) {
+
+		if(is_file($this->getDirectory(true).$this->getDocumentName()))
+			return $this->getDirectory($absolute).$this->getDocumentName();
 		else
 			return null;
 	}

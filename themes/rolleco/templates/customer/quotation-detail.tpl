@@ -73,6 +73,12 @@
 						{if $line->information}
 							<div class="text-muted">{$line->information|replace:"|":'<br />' nofilter}</div>
 						{/if}
+						{if $line->getDocumentLink()}
+							<br />
+							<a href="{$line->getDocumentLink()}">
+								<i class="fa fa-download"></i> {l s="Télécharger le document"}
+							</a>
+						{/if}
 					</td>
 					<td class="text-center">{if $line->selling_price}{Tools::displayPrice($line->selling_price)}{/if}</td>
 					<td class="text-center">{if $line->quantity}{$line->quantity}{/if}</td>

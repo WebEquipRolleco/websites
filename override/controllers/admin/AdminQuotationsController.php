@@ -247,6 +247,12 @@ class AdminQuotationsController extends AdminController {
                 $quotation->generateReference();
             }
 
+            // Suppression d'un document
+            if($id = Tools::getValue('remove_document')) {
+                $line = new QuotationLine($id);
+                @unlink($line->getDocumentLink(true));
+            }
+            
             // Enregistrement des informations
     		if(Tools::getIsset('quotation')) {
     			$form = Tools::getValue('quotation');
@@ -552,8 +558,14 @@ class AdminQuotationsController extends AdminController {
                 $line->position = $form['position'];
     			$line->save();
 
-                if(isset($_FILES['lines']['name'][$form['id']])) {
-                    move_uploaded_file($_FILES['lines']['tmp_name'][$form['id']], $line->getDirectory(true).$line->getFileName());
+                if(isset($_FILES['lines']['name'][$form['id']]['image'])) {
+                    move_uploaded_file($_FILES['lines']['tmp_name'][$form['id']]['image'], $line->getDirectory(true).$line->getFileName());
+                }
+
+                if(isset($_FILES['lines']['name'][$form['id']]['document'])) {
+                    if($_FILES['lines']['type'][$form['id']]['document'] == 'application/pdf') {
+                        move_uploaded_file($_FILES['lines']['tmp_name'][$form['id']]['document'], $line->getDirectory(true).$line->getDocumentName());   
+                    }
                 }
     		}
     }

@@ -1,6 +1,7 @@
 <tr>
 	<input type="hidden" class="line" name="lines[{$line->id}][id]" value="{$line->id}">
-	<input type="file" id="new_file_{$line->id}" name="lines[{$line->id}]" style="height:0px; width:0px; overflow:hidden;">
+	<input type="file" id="new_file_{$line->id}" name="lines[{$line->id}][image]" style="height:0px; width:0px; overflow:hidden;">
+	<input type="file" id="new_document_{$line->id}" name="lines[{$line->id}][document]" style="height:0px; width:0px; overflow:hidden;">
 	
 	{* REFERENCE / IMAGE *}
 	<td width="5%" class="text-center">
@@ -11,7 +12,7 @@
 		{if $line->getImageLink()}
 			<img src="{$line->getImageLink()}" style="height:75px; width:75px; border: 1px solid lightgrey; margin-bottom: 2px">
 		{/if}
-		<button type="button" class="btn btn-xs btn-block btn-default change-picture" data-id="#new_file_{$line->id}">
+		<button type="button" class="btn btn-xs btn-block btn-default change-file" data-id="#new_file_{$line->id}">
 			Changer
 		</button>
 	</td>
@@ -135,9 +136,26 @@
 		<input type="text" class="form-control" name="lines[{$line->id}][reference_supplier]" value="{$line->reference_supplier}">	
 	</td>
 
-	{* COMMENTAIRE *}
+	{* COMMENTAIRE + FICHIER *}
 	<td>
-		<textarea rows="6" class="form-control" name="lines[{$line->id}][comment]" style="resize:vertical">{$line->comment}</textarea>
+		<div class="form-group">
+			<textarea rows="6" class="form-control" name="lines[{$line->id}][comment]" style="resize:vertical">{$line->comment}</textarea>
+		</div>
+		<div class="text-center">
+			{if $line->getDocumentLink()}
+				<a href="{$line->getDocumentLink()}">{l s="Télécharger le document joint"}</a>
+				<div>
+					<button type="button" class="btn btn-xs btn-default change-file" data-id="#new_document_{$line->id}">
+						{l s="Changer le document"}
+					</button>
+					<button type="submit" class="btn btn-xs btn-danger" name="remove_document" value="{$line->id}" title="{l s='Delete'}">
+						<i class="icon-times"></i>
+					</button>
+				</div>
+			{else}
+				<button type="button" class="btn btn-xs btn-default change-file" data-id="#new_document_{$line->id}">{l s="Ajouter un fichier"}</button>
+			{/if}
+		</div>
 	</td>
 
 	{* POSITION *}

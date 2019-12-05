@@ -10,7 +10,13 @@
 			<div>{$property}</div>
 		{/foreach}
 		{if $line->information}
-			<em class="text-muted">{$line->information|replace:"|":'<br />' nofilter}</em>
+			<div><em class="text-muted">{$line->information|replace:"|":'<br />' nofilter}</em></div>
+		{/if}
+		{if $line->getDocumentLink()}
+			<br />
+			<a href="{$line->getDocumentLink()}">
+				<i class="fa fa-download"></i> {l s="Télécharger le document"}
+			</a>
 		{/if}
 	</td>
 	<td class="cart_reference text-center">
