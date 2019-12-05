@@ -586,7 +586,7 @@ class AdminImportExportControllerCore extends AdminController {
                     $price->from_quantity = $row['min_quantity'];
                     $price->comment_1 = $row['comment_1'];
                     $price->comment_2 = $row['comment_2'];
-                    $price->from = Tools:::isEmptyDate($row['from']) ? date('Y-01-01 00:00:00') : $row['from'];
+                    $price->from = Tools::isEmptyDate($row['from']) ? date('Y-01-01 00:00:00') : $row['from'];
                     $price->to = Tools::isEmptyDate($row['to']) ? date('Y-01-01 00:00:00') : $row['to'];
                     $price->id_shop = $row['id_shop'] ?? 0;
                     $price->id_group = (int)$row['id_group']; //die(var_dump($price->id_group));
