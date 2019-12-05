@@ -268,6 +268,7 @@ class AdminQuotationsController extends AdminController {
                 $quotation->new = $form['new'];
                 $quotation->highlight = $form['highlight'];
                 $quotation->option_ids = implode(Quotation::DELIMITER, $form['options']);
+                $quotation->document_ids = implode(Quotation::DELIMITER, $form['documents']);
 
                 if(!$quotation->id)
                     $quotation->generateReference(true);
@@ -348,13 +349,14 @@ class AdminQuotationsController extends AdminController {
                 $attachments['pdf']['mime'] = 'application/pdf';
             }
 
-            // Gestion pièces jointes : CGV
-            if(Tools::getValue('cgv')) {
-                $attachments['cgv']['content'] = file_get_contents($quotation->getShop()->getConditionsFilePath(true));
-                $attachments['cgv']['name'] = "cgv.pdf";
-                $attachments['cgv']['mime'] = 'application/pdf';
-            }
-
+            // Gestion des pièces jointes : documents de la boutique
+            foreach($quotation->getShop()->getDocuments() as $document)
+                if(in_array($document['name'], $quotation->getDocuments()) and $document['exists']) {
+                    $attachments[$document['name']]['content'] = file_get_contents($quotation->getShop()->getFilePath($document['name'], true));
+                    $attachments[$document['name']]['name'] = $document['name'].".pdf";
+                    $attachments[$document['name']]['mime'] = 'application/pdf';  
+                }
+                
             // Envoi des e-mails
             foreach($emails as $email)
                 Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop), $attachments);

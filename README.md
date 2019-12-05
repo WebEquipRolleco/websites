@@ -227,6 +227,7 @@ CREATE TABLE IF NOT EXISTS `ps_quotation` (
     `new` TINYINT(1) DEFAULT NULL,
     `hightlight` TINYINT(1) DEFAULT NULL,
     `option_ids` VARCHAR(255) DEFAULT NULL, 
+    `document_ids` VARCHAR(255) DEFAULT NULL, 
     `id_shop` INT(1) DEFAULT NULL,
     `secure_key` VARCHAR(255) DEFAULT NULL, 
     `mail_sent` TINYINT(1) DEFAULT 0,

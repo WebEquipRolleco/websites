@@ -36,12 +36,14 @@ class Quotation extends ObjectModel {
     public $new = 1;
     public $highlight = 0;
     public $option_ids;
+    public $document_ids;
     public $id_shop;
     public $secure_key;
     public $mail_sent = false;
 
     // Variables temporaires
     private $options = array();
+    private $documents = array();
     private $customer;
     private $employee;
     private $shop;
@@ -69,6 +71,7 @@ class Quotation extends ObjectModel {
             'new' => array('type' => self::TYPE_BOOL),
             'highlight' => array('type' => self::TYPE_BOOL),
             'option_ids' => array('type' => self::TYPE_STRING),
+            'document_ids' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
             'id_shop' => array('type' => self::TYPE_INT),
             'secure_key' => array('type' => self::TYPE_STRING),
             'mail_sent' => array('type' => self::TYPE_BOOL)
@@ -101,6 +104,18 @@ class Quotation extends ObjectModel {
             $this->options = explode(self::DELIMITER, $this->option_ids);
 
         return $this->options;
+    }
+
+    /**
+    * Retourne la liste des noms de documents pouvant être téléchargés dans le devis
+    * @return array
+    **/
+    public function getDocuments() {
+
+        if($this->document_ids and empty($this->documents))
+            $this->documents = explode(self::DELIMITER, $this->document_ids);
+
+        return $this->documents;
     }
 
     /**

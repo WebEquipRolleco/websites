@@ -29,29 +29,35 @@
 		      			<label>{l s="Message" d='Admin.Labels'}</label>
 		      			<textarea rows="10" class="tiny_mce form-control" name="content">{l s="Nous nous permettons de revenir vers vous afin de faire le point sur votre projet.\r\nN'hésitez pas à nous contacter par mail, téléphone ou fax si vous avez la moindre question au sujet de votre devis."}</textarea>
 		      		</div>
+		      		<div class="row">
+			      		<div class="col-lg-12">
+			      			<table class="table">
+			      				<tr class="bg-primary">
+			      					<th colspan="2" class="text-center">{l s="Documents à joindre"}</th>
+			      				</tr>
+			      				<tr>
+			      					<td>{l s="Ajouter le PDF" d='Admin.Labels'}</td>
+			      					<td class="text-right"><input type="checkbox" name="pdf" value="1" checked></td>
+			      				</tr>
+			      				{foreach from=$quotation->getShop()->getDocuments() item=document}
+			      					{if $document.exists}
+			      						<tr>
+				      						<td>{$document.label}</td>
+				      						<td class="text-right">
+				      							{if $document.name|in_array:$quotation->getDocuments()}
+				      								<i class="icon-check-square text-success"></i>
+				      							{else}
+				      								<i class="icon-times text-danger"></i>
+				      							{/if}
+				      						</td>
+				      					</tr>
+			      					{/if}
+			      				{/foreach}
+							</table>
+						</div>
+			      	</div>
 		      	</div>
-		      	<div class="row">
-		      		<div class="col-lg-6 text-center">
-		      			<label>{l s="Ajouter le PDF" d='Admin.Labels'}</label>
-				      	<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
-							<input type="radio" name="pdf" id="pdf_on" value="1" checked>
-							<label for="pdf_on">{l s='Yes' d='Admin.Labels'}</label>
-							<input type="radio" name="pdf" id="pdf_off" value="0">
-							<label for="pdf_off">{l s='No' d='Admin.Labels'}</label>
-							<a class="slide-button btn"></a>
-						</span>
-					</div>
-					<div class="col-lg-6 text-center">
-		      			<label>{l s="Ajouter les CGV" d='Admin.Labels'}</label>
-				      	<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
-							<input type="radio" name="cgv" id="cgv_on" value="1" checked>
-							<label for="cgv_on">{l s='Yes' d='Admin.Labels'}</label>
-							<input type="radio" name="cgv" id="cgv_off" value="0">
-							<label for="cgv_off">{l s='No' d='Admin.Labels'}</label>
-							<a class="slide-button btn"></a>
-						</span>
-					</div>
-		      	</div>
+
 		      	<div class="modal-footer">
 		        	<button type="submit" class="btn btn-success" name="send">
 		        		<b><i class="icon-check-square"></i> &nbsp; {l s="Send" d='Admin.Actions'}</b>

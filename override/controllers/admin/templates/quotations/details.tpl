@@ -261,20 +261,42 @@
 					<textarea rows="5" name="quotation[details]" id="details" class="form-control">{$quotation->details}</textarea>
 				</div>
 				<div class="row">
-					{foreach from=OrderOption::getOrderOptions() item=option}
-						{assign var=selected value=$option->id|in_array:$quotation->getOptions()}
-						{assign var=empty value=empty($quotation->getOptions())}
-						<div class="col-lg-3 text-center">
-							<span class="label label-default" title="{l s='Autoriser cette option dans le panier'}"><b>{$option->name}</b></span>
-							<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
-								<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_on" value="{$option->id}" {if $selected or $empty}checked{/if}>
-								<label for="option_{$option->id}_on">{l s='Oui' d='Admin.Labels'}</label>
-								<input type="radio" name="quotation[options][{$option->id}]" id="option_{$option->id}_off" value="" {if !$selected and !$empty}checked{/if}>
-								<label for="option_{$option->id}_off">{l s='Non' d='Admin.Labels'}</label>
-								<a class="slide-button btn"></a>
-							</span>
-						</div>
-					{/foreach}
+					<div class="col-lg-6">
+						<table class="table">
+							<tr>
+								<th colspan="2" class="bg-primary">{l s="Options disponibles pour le devis"}</th>
+							</tr>
+							{foreach from=OrderOption::getOrderOptions() item=option}
+								{assign var=selected value=$option->id|in_array:$quotation->getOptions()}
+								{assign var=empty value=empty($quotation->getOptions())}
+								<tr>
+									<td>{$option->name}</td>
+									<td class="text-right">
+										<input type="checkbox" name="quotation[options][{$option->id}]" value="{$option->id}" {if $selected or $empty}checked{/if}>
+									</td>
+								</tr>
+							{/foreach}
+						</table>
+					</div>
+					<div class="col-lg-6">
+						<table class="table">
+							<tr>
+								<th colspan="2" class="bg-primary">{l s="Documents téléchargeables"}</th>
+							</tr>
+							{foreach from=$quotation->getShop()->getDocuments() item=document}
+								<tr>
+									<td>{$document.label}</td>
+									<td class="text-right">
+										{if $document.exists}
+											<input type="checkbox" name="quotation[documents][]" value="{$document.name}" {if $document.name|in_array:$quotation->getDocuments()}checked{/if}>
+										{else}
+											<span class="label label-default">{l s="Aucun document"}</span>
+										{/if}
+									</td>
+								</tr>
+							{/foreach}
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
