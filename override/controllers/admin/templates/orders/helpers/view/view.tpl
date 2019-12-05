@@ -238,8 +238,8 @@
               {l s='No invoice' d='Admin.Orderscustomers.Feature'}
             </span>
           {/if}
-          &nbsp;
-          {if $order->delivery_number}
+          {*&nbsp;*}
+          {*if $order->delivery_number}
             <a class="btn btn-default _blank"  href="{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&amp;submitAction=generateDeliverySlipPDF&amp;id_order={$order->id|intval}">
               <i class="icon-truck"></i>
               {l s='View delivery slip' d='Admin.Orderscustomers.Feature'}
@@ -249,7 +249,7 @@
               <i class="icon-remove"></i>
               {l s='No delivery slip' d='Admin.Orderscustomers.Feature'}
             </span>
-          {/if}
+          {/if*}
           &nbsp;
           {if Configuration::get('PS_ORDER_RETURN')}
             <a id="desc-order-standard_refund" class="btn btn-default" href="#refundForm">
