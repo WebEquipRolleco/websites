@@ -288,7 +288,8 @@
 									<td>{$document.label}</td>
 									<td class="text-right">
 										{if $document.exists}
-											<input type="checkbox" name="quotation[documents][]" value="{$document.name}" {if $document.name|in_array:$quotation->getDocuments()}checked{/if}>
+											<input type="checkbox" name="quotation[documents][]" value="{$document.name}" {if empty(
+												$quotation->getDocuments()) or $document.name|in_array:$quotation->getDocuments()}checked{/if}>
 										{else}
 											<span class="label label-default">{l s="Aucun document"}</span>
 										{/if}
