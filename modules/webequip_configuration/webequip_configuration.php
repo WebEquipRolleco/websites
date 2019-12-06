@@ -12,6 +12,7 @@ class Webequip_Configuration extends Module {
     const CONFIG_DEFAULT_STATE_FAILURE = 'DEFAULT_STATE_FAILURE';
     const CONFIG_BLBC_HIDDEN_MAIL = "BLBC_HIDDEN_MAIL";
     const CONFIG_BLBC_ORDER_STATE = "BLBC_ORDER_STATE";
+    const CONFIG_EXPORT_EXCLUDED_STATES = "EXPORT_EXCLUDED_STATES";
 
 	public function __construct() {
         $this->name = 'webequip_configuration';
@@ -244,6 +245,11 @@ class Webequip_Configuration extends Module {
                 Configuration::updateValue($name, $id_state);
         }
 
+        // Enregistrement des états exclus des exports et statistiques
+        if(Tools::getIsset(self::CONFIG_EXPORT_EXCLUDED_STATES))
+            Configuration::updateValue(self::CONFIG_EXPORT_EXCLUDED_STATES, implode(',', Tools::getValue(self::CONFIG_EXPORT_EXCLUDED_STATES)));
+
+        // Enregistrement de la configuration des BL et BC
         foreach(array(self::CONFIG_BLBC_HIDDEN_MAIL, self::CONFIG_BLBC_ORDER_STATE) as $name)
             if(Tools::getIsset($name))
                 Configuration::updateValue($name, Tools::getValue($name));
@@ -257,6 +263,7 @@ class Webequip_Configuration extends Module {
         $this->context->smarty->assign(self::CONFIG_DEFAULT_STATE_FAILURE, Configuration::get(self::CONFIG_DEFAULT_STATE_FAILURE));
         $this->context->smarty->assign(self::CONFIG_BLBC_HIDDEN_MAIL, Configuration::get(self::CONFIG_BLBC_HIDDEN_MAIL));
         $this->context->smarty->assign(self::CONFIG_BLBC_ORDER_STATE, Configuration::get(self::CONFIG_BLBC_ORDER_STATE));
+        $this->context->smarty->assign(self::CONFIG_EXPORT_EXCLUDED_STATES, explode(',', Configuration::get(self::CONFIG_EXPORT_EXCLUDED_STATES)));
 
         return $this->display(__FILE__, 'config.tpl');
     }

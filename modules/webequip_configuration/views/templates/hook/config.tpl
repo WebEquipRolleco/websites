@@ -149,6 +149,31 @@
 <form method="post">
 	<div class="panel">
 		<div class="panel-heading">
+			<i class="icon-cogs"></i> Etats exclus et exports et statistiques
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="form-group">
+					<label>Etats commandes</label>
+					<select class="form-control" name="EXPORT_EXCLUDED_STATES[]" multiple>
+						{foreach from=$states item=state}
+							<option value="{$state.id_order_state}" {if $state.id_order_state|in_array:$EXPORT_EXCLUDED_STATES}selected{/if}>{$state.name}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="submit" class="btn btn-success">
+				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
+			</button>
+		</div>
+	</div>
+</form>
+
+<form method="post">
+	<div class="panel">
+		<div class="panel-heading">
 			<i class="icon-cogs"></i> Configuration envoi des BC / BL
 		</div>
 		<div class="row">
