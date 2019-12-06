@@ -117,7 +117,7 @@
     <div class="col-xs-12 col-lg-12 margin-top-15">
       <hr />
       <h4 class="text-center bold uppercase margin-top-15">
-        {l s="Récapitulatif de la commande" d='Shop.Theme.Checkout'}
+        {l s="Type de paiement" d='Shop.Theme.Checkout'}
       </h4>
     </div>
 
