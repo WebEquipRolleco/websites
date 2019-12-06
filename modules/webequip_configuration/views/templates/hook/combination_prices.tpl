@@ -28,5 +28,8 @@
 		<label form="combination_{$combination->id}_attribute_comment-1" class="form-control-label">{l s="Commentaire 1"}</label>
         <input type="text" id="combination_{$combination->id}_attribute_comment-1" name="comment-1_{$combination->id}" class="form-control" value="{$combination->comment_1}">
 	</div>
-
+	<div class="col-xs-12 col-sm-6 form-group">
+		<label form="combination_{$combination->id}_attribute_comment-2" class="form-control-label">{l s="Commentaire 2"}</label>
+        <input type="text" id="combination_{$combination->id}_attribute_comment-2" name="comment-2_{$combination->id}" class="form-control" value="{$combination->comment_2}">
+	</div>
 </div>
