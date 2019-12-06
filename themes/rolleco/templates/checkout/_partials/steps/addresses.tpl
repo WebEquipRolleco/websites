@@ -20,7 +20,7 @@
 
       <div class="row">
         <div class="col-xs-12 col-lg-6 offset-lg-3">
-          <h4 class="text-center bold">{l s="Votre addresse de facturation" d='Shop.Theme.Checkout'}</h4>
+          <h4 class="text-center bold">{l s="Votre adresse de facturation" d='Shop.Theme.Checkout'}</h4>
           {foreach from=$customer.addresses item=address}
             <input type="hidden" name="id_address_invoice" value="{$address.id}">
             <article class="address-item">
