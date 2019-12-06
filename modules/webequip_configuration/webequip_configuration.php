@@ -292,7 +292,13 @@ class Webequip_Configuration extends Module {
     * Ajoute la gestion du rollcash et des frais de port dans le produit
     **/
     public function hookDisplayAdminProductsPriceStepBottom($params) { 
+
+        foreach(SpecificPrice::getByProductId($params['id_product']) as $row)
+            $prices[] = new SpecificPrice($row['id_specific_price']);
+
         $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
+        $this->context->smarty->assign('prices', $prices);
+
         return $this->display(__FILE__, 'product_prices.tpl');
     }
 
@@ -335,6 +341,26 @@ class Webequip_Configuration extends Module {
                 die($product->destocking ? "1" : "0");
             }
 
+            if(Tools::getValue('action') == 'save_prices') {
+                
+                $form = array();
+                parse_str(Tools::getValue('form'), $form);
+
+                if(is_array($form) and isset($form['prices'])) {
+                    foreach($form['prices'] as $id => $row) {
+
+                        $price = new SpecificPrice($id);
+                        
+                        $price->buying_price = $row['buying_price'];
+                        $price->delivery_fees = $row['delivery_fees'];
+                        $price->price = $row['price'];
+                        $price->comment_1 = $row['comment_1'];
+                        $price->comment_2 = $row['comment_2'];
+
+                        $price->save();
+                    }
+                }
+            }
         }
     }
 }

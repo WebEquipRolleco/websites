@@ -20,6 +20,9 @@ class Product extends ProductCore {
 	/** @var bool Destocking **/
 	public $destocking = false;
 
+	/** Variables temporaires **/
+	private $supplier;
+
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
 		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
@@ -31,6 +34,17 @@ class Product extends ProductCore {
 		parent::__construct($id_product, $full, $id_lang, $id_shop, $context);
 	}
 	
+	/**
+	* Retourne le fournisseur du produit
+	**/
+	public function getSupplier() {
+
+		if(!$this->supplier and $this->id_supplier)
+			$this->supplier = new Supplier($this->id_supplier);
+
+		return $this->supplier;
+	}
+
 	/**
     * Get all available attribute groups
     * OVERRIDE : modification ordre d'affichage dans la liste

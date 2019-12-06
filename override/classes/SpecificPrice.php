@@ -49,6 +49,8 @@ class SpecificPrice extends SpecificPriceCore {
 
 		if($this->id_product_attribute and !$this->combination)
 			$this->combination = new Combination($this->id_product_attribute, 1, $this->id_shop);
+
+		return $this->combination;
 	}
 
 	/**
