@@ -38,7 +38,7 @@ class CheckoutDeliveryStep extends CheckoutDeliveryStepCore {
             ;
         }
 
-        $this->setTitle($this->getTranslator()->trans('Shipping Method', array(), 'Shop.Theme.Checkout'));
+        $this->setTitle($this->getTranslator()->trans('Commentaire livraison', array(), 'Shop.Theme.Checkout'));
 
         Hook::exec('actionCarrierProcess', array('cart' => $this->getCheckoutSession()->getCart()));
     }
