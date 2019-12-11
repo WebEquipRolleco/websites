@@ -52,19 +52,19 @@
 						<div class="col-lg-4 text-center">
 							<div><b>{displayPrice price=$turnover}</b></div>
 							<div class="text-{if $rate_turnover}success{else}danger{/if}">
-								{if $rate_turnover}+{/if}{$rate_turnover} %
+								{if $rate_turnover}+{/if}{$rate_turnover|string_format:"%.2f"} %
 							</div>
 						</div>
 						<div class="col-lg-4 text-center">
 							<div><b>{$nb_orders}</b></div>
 							<div class="text-{if $rate_nb_orders}success{else}danger{/if}">
-								{if $rate_nb_orders}+{/if}{$rate_nb_orders} %
+								{if $rate_nb_orders}+{/if}{$rate_nb_orders|string_format:"%.2f"} %
 							</div>
 						</div>
 						<div class="col-lg-4 text-center">
 							<div><b>{displayPrice price=$avg}</b></div>
 							<div class="text-{if $rate_avg}success{else}danger{/if}">
-								{if $rate_avg}+{/if}{$rate_avg} %
+								{if $rate_avg}+{/if}{$rate_avg|string_format:"%.2f"} %
 							</div>
 						</div>
 					</div>
@@ -76,6 +76,9 @@
 						{l s="Différence objectif jour"}
 					</div>
 					<b>{displayPrice price=$balance}</b>
+					<div class="text-{if $balance_rate > 0}success{else}danger{/if}">
+						{if $balance_rate > 0}+{/if}{$balance_rate|string_format:"%.2f"} %
+					</div>
 				</div>
 			</div>
 		</div>

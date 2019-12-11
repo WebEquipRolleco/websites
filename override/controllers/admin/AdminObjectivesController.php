@@ -68,7 +68,8 @@ class AdminObjectivesControllerCore extends AdminController {
         $this->context->smarty->assign('nb_orders', $nb_orders);
         $this->context->smarty->assign('avg', $avg);
         $this->context->smarty->assign('balance', $balance);
-
+        $this->context->smarty->assign('balance_rate', Tools::getRate($turnover, $objective->value));
+        
         $last_turnover = Order::sumTurnover(false, $this->date_compare, $this->date_compare);
         $last_nb_orders = Order::count($this->date_compare, $this->date_compare);
         $last_avg = ($last_turnover and $last_nb_orders) ? $last_turnover / $last_nb_orders : 0;

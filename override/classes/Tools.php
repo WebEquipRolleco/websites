@@ -43,7 +43,10 @@ class Tools extends ToolsCore {
 	**/
 	public static function getRate($nb_now, $nb_then) {
 
-		if($nb_now == 0 || $nb_then == 0 || $nb_now == $nb_then) 
+		if($nb_now == 0)
+			return 0;
+
+		if($nb_then == 0 || $nb_now == $nb_then) 
 			return 100;
 
 		if($nb_now > $nb_then)
