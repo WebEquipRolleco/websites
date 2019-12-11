@@ -25,7 +25,7 @@
 			{if $order}
 				&nbsp;
 				<span class="label label-success">
-					<b>{l s="Commande" d='Admin.Labels'} {$order->reference}</b>
+					<b>{l s="Commande" d='Admin.Labels'} {$order->reference} - {$order->date_add|date_format:'d/m/Y H:i'}</b>
 				</span>
 			{/if}
 		</div>

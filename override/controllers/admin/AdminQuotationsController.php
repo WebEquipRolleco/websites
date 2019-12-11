@@ -33,7 +33,7 @@ class AdminQuotationsController extends AdminController {
             )
         );
 
-        $this->_select = "a.*, a.id_quotation AS id, a.id_quotation AS id_2, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price, c.company";
+        $this->_select = "a.*, a.id_quotation AS id, a.id_quotation AS id_2, a.id_quotation AS id_3, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price, c.company";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
         $this->_where = " AND a.id_shop = ".$this->context->shop->id;
@@ -50,6 +50,11 @@ class AdminQuotationsController extends AdminController {
             'id_2' => array(
                 'title' => $this->trans('Commande', array(), 'Admin.Global'),
                 'callback' => 'formatOrder',
+            ),
+            'id_3' => array(
+                'title' => $this->trans('Date commande', array(), 'Admin.Global'),
+                'callback' => 'formatOrderDate',
+                'type' => 'datetime'
             ),
             'customer' => array(
                 'title' => $this->trans('Client', array(), 'Admin.Global'),
@@ -121,7 +126,15 @@ class AdminQuotationsController extends AdminController {
         $order = $quotation->getOrder();
 
         if($order) return $order->reference;
-        return '-';
+        return null;
+    }
+
+    public function formatOrderDate($value) {
+        $quotation = new Quotation($value);
+        $order = $quotation->getOrder();
+
+        if($order) return $order->date_add;
+        return null;
     }
 
     public function formatDate($value) {
