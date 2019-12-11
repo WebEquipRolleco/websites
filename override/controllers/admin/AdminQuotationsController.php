@@ -33,9 +33,11 @@ class AdminQuotationsController extends AdminController {
             )
         );
 
-        $this->_select = "a.*, a.id_quotation AS id, a.id_quotation AS id_2, a.id_quotation AS id_3, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price, c.company";
+        $this->_select = "a.*, o.reference AS order_reference, o.date_add AS order_date, a.id_quotation AS id, a.id_quotation AS id_2, a.id_quotation AS id_3, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price, c.company";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.QuotationAssociation::TABLE_NAME.' qa ON (qa.id_quotation = a.id_quotation)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'orders o ON (qa.id_cart = o.id_cart)';
         $this->_where = " AND a.id_shop = ".$this->context->shop->id;
 
         $this->_orderBy = 'reference';
@@ -47,13 +49,11 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Référence', array(), 'Admin.Global'),
                 'filter_key' => 'a!reference'
             ),
-            'id_2' => array(
+            'order_reference' => array(
                 'title' => $this->trans('Commande', array(), 'Admin.Global'),
-                'callback' => 'formatOrder',
             ),
-            'id_3' => array(
+            'order_date' => array(
                 'title' => $this->trans('Date commande', array(), 'Admin.Global'),
-                'callback' => 'formatOrderDate',
                 'type' => 'datetime'
             ),
             'customer' => array(
@@ -119,22 +119,6 @@ class AdminQuotationsController extends AdminController {
 
         if($order_way = Tools::getValue('quotationOrderway'))
         $this->_orderWay = $order_way;
-    }
-
-    public function formatOrder($value) {
-        $quotation = new Quotation($value);
-        $order = $quotation->getOrder();
-
-        if($order) return $order->reference;
-        return null;
-    }
-
-    public function formatOrderDate($value) {
-        $quotation = new Quotation($value);
-        $order = $quotation->getOrder();
-
-        if($order) return $order->date_add;
-        return null;
     }
 
     public function formatDate($value) {
