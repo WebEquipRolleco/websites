@@ -37,7 +37,7 @@ class AdminQuotationsController extends AdminController {
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.QuotationAssociation::TABLE_NAME.' qa ON (qa.id_quotation = a.id_quotation)';
-        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'orders o ON (qa.id_cart = o.id_cart)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'orders o ON (qa.id_cart IS NOT NULL AND qa.id_cart = o.id_cart)';
         $this->_where = " AND a.id_shop = ".$this->context->shop->id;
 
         $this->_orderBy = 'reference';
