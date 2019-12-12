@@ -41,6 +41,13 @@ class Shop extends ShopCore {
 	}
 
     /**
+    * @return int
+    **/
+    public function getContextualShopId() {
+        return (int)self::$context_id_shop ?? 1;
+    }
+
+    /**
     * Load list of groups and shops, and cache it
     * @param bool $refresh
     **/
