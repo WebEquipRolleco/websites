@@ -2,6 +2,9 @@
 
 class AttributeGroup extends AttributeGroupCore {
 
+    /** @var int $column Numéro de la colonne dans laquelle sont affichés les informations **/
+    public $column;
+
 	/** @var bool $quotatation Information reprise ou nom sur les produits des devis */
     public $quotation = true;
 
@@ -17,6 +20,7 @@ class AttributeGroup extends AttributeGroupCore {
             'quotation' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
             'group_type' =>    array('type' => self::TYPE_STRING, 'required' => true),
             'position' =>        array('type' => self::TYPE_INT, 'validate' => 'isInt'),
+            'column' =>        array('type' => self::TYPE_INT, 'validate' => 'isInt'),
 
             /* Lang fields */
             'name' =>            array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),

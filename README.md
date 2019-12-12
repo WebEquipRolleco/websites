@@ -91,6 +91,7 @@ ALTER TABLE `ps_specific_price` ADD `comment_2` TEXT NULL AFTER `comment_1`;
 ALTER TABLE `ps_employee` ADD `sav` TINYINT DEFAULT '0' AFTER `active`;
 
 ALTER TABLE `ps_attribute_group` ADD `quotation` TINYINT DEFAULT '1' AFTER `is_color_group`;
+ALTER TABLE `ps_attribute_group` ADD `column` INT(2) DEFAULT NULL AFTER `position`;
 
 ALTER TABLE `ps_cms` ADD `display_raw` TINYINT DEFAULT '0' AFTER `active`;
 

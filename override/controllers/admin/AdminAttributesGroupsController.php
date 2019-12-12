@@ -39,6 +39,12 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
             	'active' => 'status',
                 'type' => 'bool', 
             ),
+            'column' => array(
+                'title' => $this->trans('Colonne', array(), 'Admin.Global'),
+                'filter_key' => 'a!column',
+                'align' => 'center',
+                'class' => 'fixed-width-xs'
+            ),
             'position' => array(
                 'title' => $this->trans('Position', array(), 'Admin.Global'),
                 'filter_key' => 'a!position',
@@ -139,7 +145,14 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
 	                    )
 	                ),
 	                'hint' => $this->trans('Afficher dans les produits des devis', array(), 'Admin.Advparameters.Help')
-	            )
+	            ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Colonne', array(), 'Admin.Global'),
+                    'name' => 'column',
+                    'col' => '4',
+                    'hint' => $this->trans('Colonne 1 : Dimensions | Colonne 2 : Délai', array(), 'Admin.Catalog.Help')
+                )
             )
         );
 

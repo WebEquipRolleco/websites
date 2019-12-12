@@ -2,13 +2,9 @@
 	<table class="table combinations-table vertical-align">
 		<thead>
 			<tr>
-				<th class="hidden-lg-up bold text-center">
-					{l s="Propriétés"}
-				</th>
-				<th class="hidden-lg-down">{l s="Référence"}</th>
-				{foreach from=$groups item=group}
-					<th class="hidden-lg-down">{$group.name}</th>
-				{/foreach}
+				<th>{l s="Dimensions"}</th>
+				<th>{l s="Commentaire"}</th>
+				<th>{l s="Délai"}</th>
 				<th>{l s="Prix unitaire HT"}</th>
 				<th>{l s="Quantité"}</th>
 			</tr>
@@ -18,22 +14,21 @@
 				{assign var='loop_from_quantity' value=0}
 				{assign var='loop_price' value=0}
 				<tr>
-					<td class="hidden-lg-up text-center">
-						{if $combination.id_image > 0}
-							<a href="#" class="display-image" data-image-id="{$combination.id_image}">
-								<b>{$combination.reference}</b>
-							</a>
-						{else}
-							<b>{$combination.reference}</b>
-						{/if}
-						{foreach from=$combination.attributes_values item=value}
-							<br />{$value}
+					<td class="text-center">
+						{foreach from=Combination::loadColumn($id_combination, 1) item=row name=column_1}
+							<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
 						{/foreach}
 					</td>
-					<td class="hidden-lg-down bold text-center">{$combination.reference}</td>
-					{foreach from=$combination.attributes_values item=value}
-						<td class="hidden-lg-down text-center">{$value}</td>
-					{/foreach}
+					<td>
+						{assign var=comments value=Combination::loadComments($id_combination)}
+						{if $comments.comment_1}<div>{$comments.comment_1}</div>{/if}
+						{if $comments.comment_2}<div>{$comments.comment_2}</div>{/if}
+					</td>
+					<td class="text-center">
+						{foreach from=Combination::loadColumn($id_combination, 3) item=row}
+							{$row.value} 
+						{/foreach}
+					</td>
 					{assign var=prices value=SpecificPrice::getByProductId($product.id_product, $id_combination)}
 					{if $prices|count}
 						<td class="text-center" style="padding:5px">
