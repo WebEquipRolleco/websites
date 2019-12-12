@@ -138,7 +138,7 @@ abstract class StockManagementRepository
 
         $shop = $this->context->shop;
         if ($shop->getContextType() !== $shop::CONTEXT_SHOP) {
-            throw new NotImplementedException('Shop context types other than "single shop" are not supported');
+            //throw new NotImplementedException('Shop context types other than "single shop" are not supported');
         }
 
         $this->shopId = $shop->getContextualShopId();
