@@ -107,7 +107,8 @@ CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `width` INT(11) DEFAULT NULL, 
     `white_list` VARCHAR(255) DEFAULT NULL, 
     `black_list` VARCHAR(255) DEFAULT NULL, 
-    `position` INT(11) DEFAULT 1, 
+    `position` INT(2) DEFAULT 1, 
+    `location` INT(2) DEFAULT 1, 
     `active` TINYINT DEFAULT 1,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

@@ -34,6 +34,9 @@ class ProductIcon extends ObjectModel {
 	/** @var int Position **/
 	public $position = 1;
 
+    /** @var int Position **/
+    public $location = 1;
+
 	/** @var bool Active **/
 	public $active = true;
 
@@ -55,7 +58,8 @@ class ProductIcon extends ObjectModel {
 			'width'			=> array('type' => self::TYPE_INT),
 			'white_list'	=> array('type' => self::TYPE_STRING),
 			'black_list' 	=> array('type' => self::TYPE_STRING),
-			'position'		=> array('type' => self::TYPE_INT),
+            'position'      => array('type' => self::TYPE_INT),
+			'location'		=> array('type' => self::TYPE_INT),
 			'active' 		=> array('type' => self::TYPE_BOOL)
 		)
 	);
@@ -176,4 +180,16 @@ class ProductIcon extends ObjectModel {
     public function addShop($id_shop) {
     	Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.self::TABLE_NAME."_shop VALUES(".$this->id.", $id_shop)");
     }
+
+    /**
+    * Retourne la liste des emplacements possibles
+    **/
+    public static function getLocations() {
+
+        $data[1] = "Colonne du milieu";
+        $data[2] = "Prix produit";
+
+        return $data;
+    }
+    
 }

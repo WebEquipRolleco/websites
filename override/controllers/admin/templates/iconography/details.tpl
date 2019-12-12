@@ -22,6 +22,14 @@
 					<input type="text" id="name" class="form-control" name="form[name]" value="{$icon->name}" autocomplete="off" required>
 				</div>
 				<div class="form-group">
+					<label for="location">{l s="Emplacement"} <em class="text-danger">*</em></label>
+					<select id="location" class="form-control" name="form[location]" required>
+						{foreach from=ProductIcon::getLocations() key=value item=name}
+							<option value="{$value}" {if $value == $icon->location}selected{/if}>{$name}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="form-group">
 					<label for="position">{l s="Position"} <em class="text-danger">*</em></label>
 					<input type="number" step="1" min="1" id="position" class="form-control" name="form[position]" value="{$icon->position}" required>
 				</div>

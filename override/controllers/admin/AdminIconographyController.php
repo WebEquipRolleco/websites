@@ -29,6 +29,11 @@ class AdminIconographyControllerCore extends AdminController {
                 'title' => $this->trans('Name', array(), 'Admin.Global'),
                 'align' => 'center',
             ),
+            'location' => array(
+                'title' => $this->trans('Position', array(), 'Admin.Global'),
+                'align' => 'center',
+                'callback' => 'renderLocation'
+            ),
             'position' => array(
                 'title' => $this->trans('Position', array(), 'Admin.Global'),
                 'align' => 'center',
@@ -43,6 +48,10 @@ class AdminIconographyControllerCore extends AdminController {
         );
     }
 
+    public function renderLocation($value) {
+        return ProductIcon::getLocations()[$value];
+    }
+    
     public function initContent() {
     	parent::initContent();
 
