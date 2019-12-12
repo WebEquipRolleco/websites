@@ -1,7 +1,8 @@
-{if $product.main_variants|count > 0}
+{if $combinations|count > 0}
 	<table class="table combinations-table vertical-align">
 		<thead>
 			<tr>
+				<th>{l s="Référence"}</th>
 				<th>{l s="Dimensions"}</th>
 				<th>{l s="Commentaire"}</th>
 				<th>{l s="Délai"}</th>
@@ -15,6 +16,9 @@
 				{assign var='loop_price' value=0}
 				<tr>
 					<td class="text-center">
+						{$combination.reference}
+					</td>
+					<td class="text-center">
 						{foreach from=Combination::loadColumn($id_combination, 1) item=row name=column_1}
 							<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
 						{/foreach}
@@ -25,7 +29,7 @@
 						{if $comments.comment_2}<div>{$comments.comment_2}</div>{/if}
 					</td>
 					<td class="text-center">
-						{foreach from=Combination::loadColumn($id_combination, 3) item=row}
+						{foreach from=Combination::loadColumn($id_combination, 2) item=row}
 							{$row.value} 
 						{/foreach}
 					</td>
