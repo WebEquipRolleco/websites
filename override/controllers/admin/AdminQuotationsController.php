@@ -499,6 +499,9 @@ class AdminQuotationsController extends AdminController {
             $line->min_quantity = $product->minimal_quantity;
             if($line->min_quantity) $line->quantity = $line->min_quantity;
 
+            if($product->comment_1) $line->name .= " | ".$product->comment_1;
+            if($product->comment_2) $line->name .= " | ".$product->comment_2;
+
             // Gestion déclinaison
             $product->id_product_attribute = $infos[1] ?? null;
             if($product->id_product_attribute and $combination = new Combination($product->id_product_attribute)) {
@@ -512,6 +515,9 @@ class AdminQuotationsController extends AdminController {
                 
                 $line->min_quantity = $combination->minimal_quantity;
                 $line->quantity = $line->min_quantity;
+
+                if($combination->comment_1) $line->name .= " | ".$combination->comment_1;
+                if($combination->comment_2) $line->name .= " | ".$combination->comment_2;
             }
     		
             // Référence du fournisseur
@@ -522,8 +528,6 @@ class AdminQuotationsController extends AdminController {
         $prices = SpecificPrice::getDefaultPrices($line->id_product, $line->id_combination);
         if(empty($prices)) $prices = SpecificPrice::getDefaultPrices($line->id_product, 0);
 
-        if($prices['comment_1']) $line->name .= " | ".$prices['comment_1'];
-        if($prices['comment_2']) $line->name .= " | ".$prices['comment_2'];
         $line->buying_price = round($prices['buying_price'], 2);
         $line->buying_fees = round($prices['delivery_fees'], 2);
         $line->selling_price = round($prices['price'], 2);
