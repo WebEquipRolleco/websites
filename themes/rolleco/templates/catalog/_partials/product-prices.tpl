@@ -1,5 +1,5 @@
 {if $product.show_price}
-  <div class="product-prices">
+  <div class="product-prices text-center">
     {block name='product_discount'}
       {if $product.has_discount}
         <div class="product-discount">
@@ -33,6 +33,8 @@
           {/if}
         </div>
 
+        
+
         {block name='product_unit_price'}
           {if $displayUnitPrice}
             <p class="product-unit-price sub">{l s='(%unit_price%)' d='Shop.Theme.Catalog' sprintf=['%unit_price%' => $product.unit_price_full]}</p>
@@ -40,6 +42,17 @@
         {/block}
       </div>
     {/block}
+
+    {foreach from=ProductIcon::getList(2) item=icon}
+          {if $icon->display($product.id_product, Context::getContext()->shop->id)}
+            <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
+              <a href="{$icon->url}" title="{$icon->title}">
+                <img class="img-thumbnail" src="{$icon->getImgPath()}" {if $icon->height}height="{$icon->height}px"{/if} {if $icon->width}width="{$icon->width}px"{/if}>
+                {$icon->title}
+              </a>
+            </div>
+          {/if}
+        {/foreach}
 
     {block name='product_without_taxes'}
       {if $priceDisplay == 2}

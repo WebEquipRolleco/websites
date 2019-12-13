@@ -163,7 +163,8 @@ class AdminIconographyControllerCore extends AdminController {
     		$icon->url = $form['url'];
     		$icon->active = $form['active'];
     		$icon->position = $form['position'];
-
+            $icon->location = $form['location'];
+            
     		if(isset($form['height']))
     			$icon->height = $form['height'];
     		if(isset($form['width']))

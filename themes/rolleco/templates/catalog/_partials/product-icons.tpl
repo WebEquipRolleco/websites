@@ -1,5 +1,5 @@
 <div class="text-center">
-	{foreach from=ProductIcon::getList() item=icon}
+	{foreach from=ProductIcon::getList(1) item=icon}
 		{if $icon->display($product.id_product, Context::getContext()->shop->id)}
 			<div class="margin-bottom-10">
 				<a href="{$icon->url}" title="{$icon->title}">

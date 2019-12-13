@@ -89,6 +89,10 @@
               {$product.description_short nofilter}
             </div>
             <a href="#full_description" class="description-link">{l s="Voir la description complète"}</a>
+
+            <a href="#content-wrapper" class="btn btn-block btn-info text-center margin-top-10">
+              <b>{l s="Sélectionnez le modèle"}</b>
+            </a>
           {/block}
 
           {block name='product_prices'}

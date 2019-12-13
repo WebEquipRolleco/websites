@@ -1,5 +1,5 @@
 {if $combinations|count > 0}
-	<table class="table combinations-table vertical-align">
+	<table id="product_selection" class="table combinations-table vertical-align">
 		<thead>
 			<tr>
 				<th>{l s="Référence"}</th>

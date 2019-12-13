@@ -3,7 +3,7 @@
 
 	<div class="panel text-right">
 		<a href="{$link->getAdminLink('AdminOrderOptions')}" class="btn btn-default">
-			<b>{l s='Annuler' d='Shop.Theme.Labels'}</b>
+			<b>{l s='Retour' d='Shop.Theme.Labels'}</b>
 		</a>
 		<button type="submit" class="btn btn-success" name="save">
 			<b>{l s='Enregistrer' d='Shop.Theme.Labels'}</b>

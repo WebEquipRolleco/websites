@@ -67,10 +67,11 @@ class ProductIcon extends ObjectModel {
 	/**
 	* Retourne la liste des icones
 	**/
-	public static function getList($active = true) {
+	public static function getList($position = false, $active = true) {
 
-		$sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME;
-		if($active) $sql .= " WHERE active = 1";
+		$sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE 1";
+        if($position) $sql .= " AND location = $position";
+		if($active) $sql .= " AND active = 1";
 		$sql .= " ORDER BY position ASC";
 
 		$data = array();
