@@ -230,9 +230,9 @@
 				<label>{l s="Activer les SAV"}</label>
 				<span class="switch prestashop-switch fixed-width-lg">
 					<input type="radio" name="AFTER_SALES_ENABLED" id="AFTER_SALES_ENABLED_on" value="1" {if $AFTER_SALES_ENABLED}checked{/if}>
-					<label for="AFTER_SALES_ENABLED_on">{l s='Yes' d='Shop.Theme.Labels'}</label>
+					<label for="AFTER_SALES_ENABLED_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
 					<input type="radio" name="AFTER_SALES_ENABLED" id="AFTER_SALES_ENABLED_off" value="0" {if !$AFTER_SALES_ENABLED}checked{/if}>
-					<label for="AFTER_SALES_ENABLED_off">{l s='No' d='Shop.Theme.Labels'}</label>
+					<label for="AFTER_SALES_ENABLED_off">{l s='Non' d='Shop.Theme.Labels'}</label>
 					<a class="slide-button btn"></a>
 				</span>
 			</div>
