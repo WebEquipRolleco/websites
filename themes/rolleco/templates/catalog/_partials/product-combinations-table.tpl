@@ -34,7 +34,7 @@
 					</td>
 					<td class="text-center" style="padding:5px">
 						{assign var=prices value=SpecificPrice::getByProductId($product.id_product, $id_combination)}
-						{if $prices|count > 0}
+						{if $prices|count > 1}
 							{assign var='loop_from_quantity' value=0}
 							{assign var='loop_price' value=0}
 							<table id="prices_{$id_combination}" class="prices-table">
