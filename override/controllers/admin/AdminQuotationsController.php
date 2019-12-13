@@ -502,6 +502,11 @@ class AdminQuotationsController extends AdminController {
             if($product->comment_1) $line->name .= " | ".$product->comment_1;
             if($product->comment_2) $line->name .= " | ".$product->comment_2;
 
+            $dim = array();
+            foreach(Product::loadColumn($product->id, 1) as $row)
+                $dim[] = $row['name'].". ".$row['value'];
+            $line->properties = implode(" x ", $dim);
+
             // Gestion déclinaison
             $product->id_product_attribute = $infos[1] ?? null;
             if($product->id_product_attribute and $combination = new Combination($product->id_product_attribute)) {
@@ -518,6 +523,11 @@ class AdminQuotationsController extends AdminController {
 
                 if($combination->comment_1) $line->name .= " | ".$combination->comment_1;
                 if($combination->comment_2) $line->name .= " | ".$combination->comment_2;
+
+                $dim = array();
+                foreach(Combination::loadColumn($combination->id, 1) as $row)
+                    $dim[] = $row['name'].". ".$row['value'];
+                $line->properties = implode(" x ", $dim);
             }
     		
             // Référence du fournisseur
