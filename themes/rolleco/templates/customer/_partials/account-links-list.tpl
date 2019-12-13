@@ -19,7 +19,9 @@
     {/if}
 
     {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('QuotationList') icon='calculator' text='Mes devis'}
-    {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('AfterSales') icon='comments' text='Service après vente'}
+    {if Configuration::get('AFTER_SALES_ENABLED')}
+      {include file='customer/_partials/account-link.tpl' url=$link->getPageLink('AfterSales') icon='comments' text='Service après vente'}
+    {/if}
     {*include file='customer/_partials/account-link.tpl' url=$link->getModuleLink('webequip_reviews', 'account') icon='star' text='Mes avis'*}
 
     {block name='display_customer_account'}

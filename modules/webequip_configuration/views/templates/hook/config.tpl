@@ -1,4 +1,4 @@
-<form method="post">
+<form id="config_tabs" action="#config_tabs" method="post">
 	<div class="panel">
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Configuration des onglets
@@ -70,7 +70,7 @@
 	</div>
 </form>
 
-<form method="post">
+<form id="footer_links" action="#footer_links" method="post">
 	<div class="panel">
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Gestion des liens du footer
@@ -111,7 +111,7 @@
 	</div>
 </form>
 
-<form method="post">
+<form id="default_states" action="#default_states" method="post">
 	<div class="panel">
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Etat commandes par défaut	
@@ -146,7 +146,7 @@
 	</div>
 </form>
 
-<form method="post">
+<form id="stat_states" action="#stat_states" method="post">
 	<div class="panel">
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Etats exclus et exports et statistiques
@@ -171,7 +171,7 @@
 	</div>
 </form>
 
-<form method="post">
+<form id="BL_BC" action="#BL_BC" method="post">
 	<div class="panel">
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Configuration envoi des BC / BL
@@ -201,7 +201,7 @@
 	</div>
 </form>
 
-<form method="post">
+<form id="text_size" action="#text_size" method="post">
 	<div class="panel">
 		<div class="panel-heading">
 			<i class="icon-cogs"></i> Forcer la police du menu principal	
@@ -210,6 +210,31 @@
 			<div class="col-lg-4">
 				<label>{l s="Taille de la police en PX" mod="webequip_configuration"}</label>
 				<input type="text" class="form-control" name="MENU_FORCED_FONT_SIZE" value="{$MENU_FORCED_FONT_SIZE}">
+			</div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="submit" class="btn btn-success">
+				<i class="process-icon-save"></i> <b>{l s="Save" d='Shop.Theme.Actions'}</b>
+			</button>
+		</div>
+	</div>
+</form>
+
+<form id="after_sales" action="#after_sales" method="post">
+	<div class="panel">
+		<div class="panel-heading">
+			<i class="icon-cogs"></i> Service après vente
+		</div>
+		<div class="row">
+			<div class="col-lg-4">
+				<label>{l s="Activer les SAV"}</label>
+				<span class="switch prestashop-switch fixed-width-lg">
+					<input type="radio" name="AFTER_SALES_ENABLED" id="AFTER_SALES_ENABLED_on" value="1" {if $AFTER_SALES_ENABLED}checked{/if}>
+					<label for="AFTER_SALES_ENABLED_on">{l s='Yes' d='Shop.Theme.Labels'}</label>
+					<input type="radio" name="AFTER_SALES_ENABLED" id="AFTER_SALES_ENABLED_off" value="0" {if !$AFTER_SALES_ENABLED}checked{/if}>
+					<label for="AFTER_SALES_ENABLED_off">{l s='No' d='Shop.Theme.Labels'}</label>
+					<a class="slide-button btn"></a>
+				</span>
 			</div>
 		</div>
 		<div class="panel-footer text-right">

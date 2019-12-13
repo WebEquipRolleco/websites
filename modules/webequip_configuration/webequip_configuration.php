@@ -13,6 +13,7 @@ class Webequip_Configuration extends Module {
     const CONFIG_BLBC_HIDDEN_MAIL = "BLBC_HIDDEN_MAIL";
     const CONFIG_BLBC_ORDER_STATE = "BLBC_ORDER_STATE";
     const CONFIG_EXPORT_EXCLUDED_STATES = "EXPORT_EXCLUDED_STATES";
+    const CONFIG_AFTER_SALES_ENABLED = "AFTER_SALES_ENABLED";
 
 	public function __construct() {
         $this->name = 'webequip_configuration';
@@ -254,6 +255,10 @@ class Webequip_Configuration extends Module {
             if(Tools::getIsset($name))
                 Configuration::updateValue($name, Tools::getValue($name));
 
+        // Enregistrement des fonctionnalités SAV
+        if(Tools::getIsset(self::CONFIG_AFTER_SALES_ENABLED))
+            Configuration::updateValue(self::CONFIG_AFTER_SALES_ENABLED, Tools::getValue(self::CONFIG_AFTER_SALES_ENABLED));
+        
         $this->context->smarty->assign('tabs', $tabs);
         $this->context->smarty->assign('cms', CMS::getCMSPages(1));
         $this->context->smarty->assign('old_sav_id', $this->isTabInstalled(self::OLD_SAV_TAB));
@@ -264,6 +269,7 @@ class Webequip_Configuration extends Module {
         $this->context->smarty->assign(self::CONFIG_BLBC_HIDDEN_MAIL, Configuration::get(self::CONFIG_BLBC_HIDDEN_MAIL));
         $this->context->smarty->assign(self::CONFIG_BLBC_ORDER_STATE, Configuration::get(self::CONFIG_BLBC_ORDER_STATE));
         $this->context->smarty->assign(self::CONFIG_EXPORT_EXCLUDED_STATES, explode(',', Configuration::get(self::CONFIG_EXPORT_EXCLUDED_STATES)));
+        $this->context->smarty->assign(self::CONFIG_AFTER_SALES_ENABLED, Configuration::get(self::CONFIG_AFTER_SALES_ENABLED));
 
         return $this->display(__FILE__, 'config.tpl');
     }

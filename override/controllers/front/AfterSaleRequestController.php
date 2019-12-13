@@ -9,6 +9,9 @@ class AfterSaleRequestControllerCore extends FrontController {
     **/
 	public function initContent() {
 		
+		if(!Configuration::get('AFTER_SALES_ENABLED'))
+            Tools::redirect($this->context->link->getPageLink('index'));
+        
 		parent::initContent();
 		$this->page_link = new Link();
 		

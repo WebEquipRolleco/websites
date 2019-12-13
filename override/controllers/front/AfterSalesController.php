@@ -6,6 +6,10 @@ class AfterSalesControllerCore extends FrontController {
     * @see FrontController::initContent()
     **/
 	public function initContent() {
+
+        if(!Configuration::get('AFTER_SALES_ENABLED'))
+            Tools::redirect($this->context->link->getPageLink('index'));
+
 		parent::initContent();
 
 		if(Tools::getIsset('sav'))
