@@ -22,11 +22,11 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-<div class="product-add-to-cart">
+<div class="product-add-to-cart text-center">
   {if !$configuration.is_catalog and empty($combinations)}
 
     {block name='product_quantity'}
-      <div class="product-quantity clearfix">
+      <div class="product-quantity clearfix" style="display:inline-block;">
         <div class="qty">
           <input
             type="text"
