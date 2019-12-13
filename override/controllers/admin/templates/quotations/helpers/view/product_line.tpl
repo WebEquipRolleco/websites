@@ -100,7 +100,7 @@
 
 	{* QUANTITE *}
 	<td class="text-center">
-		<input type="number"  min="{if $line->getProduct()}{$line->getProduct()->minimal_quantity}{else}0{/if}" {if $line->getProduct() and $line->getProduct()->batch > 0}step="{$line->getProduct()->batch}"{/if} id="quantity_{$line->id}" class="form-control text-center update-price" data-id="{$line->id}" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
+		<input type="text"  min="{if $line->getProduct()}{$line->getProduct()->minimal_quantity}{else}0{/if}" {if $line->getProduct() and $line->getProduct()->batch > 0}step="{$line->getProduct()->batch}"{/if} id="quantity_{$line->id}" class="form-control text-center update-price" data-id="{$line->id}" name="lines[{$line->id}][quantity]" value="{$line->quantity}">
 	</td>
 
 	{* TOTAL DE VENTE *}
