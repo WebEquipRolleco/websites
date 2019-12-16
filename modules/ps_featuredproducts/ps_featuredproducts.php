@@ -237,21 +237,32 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
         );
     }
 
-    public function renderWidget($hookName = null, array $configuration = [])
-    {
-        if (!$this->isCached($this->templateFile, $this->getCacheId('ps_featuredproducts'))) {
-            $variables = $this->getWidgetVariables($hookName, $configuration);
+    public function renderWidget($hookName = null, array $configuration = []) {
+        if($hookName != "displayFooterProduct") {
+            if(!$this->isCached($this->templateFile, $this->getCacheId('ps_featuredproducts'))) {
+                $variables = $this->getWidgetVariables($hookName, $configuration);
 
-            if (empty($variables)) {
-                return false;
+                if(empty($variables))
+                    return false;
+
+                $this->smarty->assign($variables);
             }
 
-            $this->smarty->assign($variables);
+            return $this->fetch($this->templateFile, $this->getCacheId('ps_featuredproducts'));
+        }
+        else {
+
+            $variables = $this->getWidgetVariables($hookName, $configuration);
+            if(empty($variables)) return false;
+
+            $this->smarty->assign('products', $this->getProducts($configuration['product']['id_category_default']));
+            $this->smarty->assign('name', $configuration['product']['name']);
+            
+            return $this->fetch('module:ps_featuredproducts/views/templates/hook/product_footer.tpl'); 
         }
 
-        return $this->fetch($this->templateFile, $this->getCacheId('ps_featuredproducts'));
+        return false;
     }
-
     public function getWidgetVariables($hookName = null, array $configuration = [])
     {
         $products = $this->getProducts();
@@ -265,9 +276,12 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
         return false;
     }
 
-    protected function getProducts()
-    {
-        $category = new Category((int) Configuration::get('HOME_FEATURED_CAT'));
+    protected function getProducts($id_cat = null) {
+
+        if(!$id_cat)
+            $id_cat = (int)Configuration::get('HOME_FEATURED_CAT');
+
+        $category = new Category($id_cat);
 
         $searchProvider = new CategoryProductSearchProvider(
             $this->context->getTranslator(),
