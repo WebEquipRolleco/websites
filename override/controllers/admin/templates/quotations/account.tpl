@@ -7,7 +7,7 @@
 					<td style="padding:7px 0">
 						<font size="2" face="Open-sans, sans-serif" color="#555454">
 							<span style="text-align:center; color:#777">
-								<div style="color:red">Afin de facilité votre démarche, nous avons également pris la liberté de vous créer un compte sur notre site. Vous pourrez ainsi vous connecter avec les identifiants suivant et retrouver ce devis directement dans votre compte.</div>
+								<div style="color:red">{l s="Afin de facilité votre démarche, nous avons également pris la liberté de vous créer un compte sur notre site. Vous pourrez ainsi vous connecter avec les identifiants suivant et retrouver ce devis directement dans votre compte."}</div>
 								<br />
 								<div><b>Identifiant</b></div>
 								<div>{$quotation->getCustomer()->email}</div>

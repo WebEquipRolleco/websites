@@ -4,6 +4,7 @@
 {foreach from=$reassurances item=reassurance}
 	{if $reassurance->link}<a href="{$reassurance->link}">{/if}
     <div class="rassurance-product">
+    	{$reassurance->icon nofilter}
     	{$reassurance->text|strip_tags:true}
     </div>
     {if $reassurance->link}</a>{/if}

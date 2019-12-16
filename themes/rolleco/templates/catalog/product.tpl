@@ -222,21 +222,6 @@
 
     </div>
 
-    {block name='product_accessories'}
-      {if $accessories}
-        <section class="product-accessories top-space clearfix">
-          <h3 class="section-title">{l s='You might also like' d='Shop.Theme.Catalog'}</h3>
-          <div class="products">
-            {foreach from=$accessories item="product_accessory"}
-              {block name='product_miniature'}
-                {include file='catalog/_partials/miniatures/product.tpl' product=$product_accessory}
-              {/block}
-            {/foreach}
-          </div>
-        </section>
-      {/if}
-    {/block}
-
     {block name='product_footer'}
       {if isset($category)}
         {hook h='displayFooterProduct' product=$product category=$category}

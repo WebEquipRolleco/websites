@@ -1,9 +1,9 @@
 <table id="product_selection" class="table combinations-table vertical-align">
 	<thead>
 		<tr>
-			<th width="20%">{l s="Référence"}</th>
-			<th width="15%">{l s="Dimensions"}</th>
-			<th width="30%">{l s="Commentaire"}</th>
+			<th width="10%">{l s="Réf."}</th>
+			<th width="20%">{l s="Dimensions"}</th>
+			<th width="35%">{l s="Commentaire"}</th>
 			<th width="10%">{l s="Délai"}</th>
 			<th width="15%">{l s="Prix unitaire HT"}</th>
 			<th width="10%">{l s="Quantité"}</th>
@@ -155,11 +155,100 @@
 	</tbody>
 </table>
 
-<div class="well">
+{* ACCESSOIRES *}
+{block name='product_accessories'}
+  	{if $accessories}
+  		<h3 class="text-primary uppercase margin-top-sm">{l s="Accessoires"}</h3>
+  		<table class="table combinations-table vertical-align">
+  			<thead>
+				<tr>
+					<th width="10%">{l s="Réf."}</th>
+					<th width="25%">{l s="Désignation"}</th>
+					<th width="15%">{l s="Dimensions"}</th>
+					<th width="15%">{l s="Commentaire"}</th>
+					<th width="10%">{l s="Délai"}</th>
+					<th width="15%">{l s="Prix unitaire HT"}</th>
+					<th width="10%">{l s="Quantité"}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach from=$accessories item=product}
+					<td class="text-center">{$product.reference}</td>
+					<td>{$product.name}</td>
+					<td class="text-center">
+						{foreach from=Product::loadColumn($product.id_product, 1) item=row name=column_1}
+							<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+						{/foreach}
+					</td>
+					<td>
+						{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
+						{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+					</td>
+					<td class="text-center">
+						{foreach from=Product::loadColumn($product.id_product, 2) item=row}
+							{$row.value} 
+						{/foreach}
+					</td>
+					<td>
+						<table id="prices_{$product.id_product}" class="prices-table">
+							{assign var=prices value=SpecificPrice::getByProductId($product.id_product)}
+							{if $prices|count > 1}
+								{assign var='loop_from_quantity' value=0}
+								{assign var='loop_price' value=0}
+								{foreach from=$prices item=specific_price name=loop_prices}
+									{if !$smarty.foreach.loop_prices.first}
+										<tr class="specific_prices_{$product.id_product} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
+											<td class="hidden-sm-down text-left">
+												{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
+											</td>
+											<td class="hidden-sm-down text-right">{Tools::displayPrice($loop_price)}</td>
+											<td class="hidden-md-up text-center">
+												{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
+												<br />
+												{Tools::displayPrice($loop_price)}
+												<hr />
+											</td>
+										</tr>
+									{/if}
+									{assign var='loop_from_quantity' value=$specific_price.from_quantity}
+									{assign var='loop_price' value=$specific_price.price}
+								{/foreach}
+								{if $loop_price}
+									<tr class="specific_prices_{$product.id_product}" data-min='{$loop_from_quantity}' data-price="{$loop_price}">
+										<td class="hidden-sm-down text-left">
+											{$loop_from_quantity} {l s='et +'}
+										</td>
+										<td class="hidden-sm-down text-right">{Tools::displayPrice($loop_price)}</td>
+										<td class="hidden-md-up text-center">
+											{$loop_from_quantity} {l s='et +'}
+											<br />
+											{Tools::displayPrice($loop_price)}
+										</td>
+									</tr>
+								{/if}
+							{else}
+								{foreach from=$prices item=specific_price}
+									<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
+								{/foreach}
+							{/if}
+						</table>
+					</td>
+					<td class="text-center">
+						<div class="qty">
+		          			<input type="text" name="qty" id="quantity_wanted_{$product.id_product}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-id-product="{$product.id_product}" data-id-combination="{$product.id_product}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
+		        		</div>
+					</td>
+				{/foreach}
+			</tbody>
+  		</table>
+    {/if}
+{/block}
+
+<div class="well margin-top-sm">
 	<div class="row">
-		<div id="prices_summary" class="col-xs-12 col-lg-9 text-center">
-			<span id="total_price_selection" style="display:none"></span>
-			<span id="total_price_selection_wt" style="display:none"></span>
+		<div id="prices_summary" class="col-xs-12 col-lg-9 text-right">
+			<div id="total_price_selection" style="display:none"></div>
+			<div id="total_price_selection_wt" style="display:none"></div>
 		</div>
 		<div class="col-xs-12 col-lg-3">
 			<button type="button" id="add_all_to_cart" class="btn btn-block btn-success bold disabled" data-dismiss="modal">
