@@ -53,7 +53,7 @@ class Product extends ProductCore {
         if (!Combination::isFeatureActive()) {
             return array();
         }
-        $sql = 'SELECT ag.`id_attribute_group`, ag.`is_color_group`, agl.`name` AS group_name, agl.`public_name` AS public_group_name,
+        $sql = 'SELECT ag.`id_attribute_group`, pa.`batch`, ag.`is_color_group`, agl.`name` AS group_name, agl.`public_name` AS public_group_name,
 					a.`id_attribute`, al.`name` AS attribute_name, a.`color` AS attribute_color, product_attribute_shop.`id_product_attribute`,
 					IFNULL(stock.quantity, 0) as quantity, product_attribute_shop.`price`, product_attribute_shop.`ecotax`, product_attribute_shop.`weight`,
 					product_attribute_shop.`default_on`, pa.`reference`, product_attribute_shop.`unit_price_impact`,

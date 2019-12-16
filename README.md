@@ -61,7 +61,7 @@ ALTER TABLE `ps_product` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
 ALTER TABLE `ps_product` ADD `destocking` TINYINT DEFAULT '0' AFTER `rollcash`;
 ALTER TABLE `ps_product` ADD `comment_1` TEXT DEFAULT NULL AFTER `destocking`;
 ALTER TABLE `ps_product` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
-ALTER TABLE `ps_product` ADD `batch` INT DEFAULT NULL AFTER `comment_2`;
+ALTER TABLE `ps_product` ADD `batch` INT DEFAULT '1' AFTER `comment_2`;
 
 ALTER TABLE `ps_product_shop` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `pack_stock_type`;
 ALTER TABLE `ps_product_shop` ADD `comment_1` TEXT DEFAULT NULL AFTER `delivery_fees`;
@@ -70,7 +70,7 @@ ALTER TABLE `ps_product_shop` ADD `batch` INT DEFAULT NULL AFTER `comment_2`;
 
 ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
 ALTER TABLE `ps_product_attribute` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
-ALTER TABLE `ps_product_attribute` ADD `batch` INT DEFAULT NULL AFTER `position`;
+ALTER TABLE `ps_product_attribute` ADD `batch` INT '1' NULL AFTER `position`;
 ALTER TABLE `ps_product_attribute` ADD `comment_1` TEXT DEFAULT NULL AFTER `batch`;
 ALTER TABLE `ps_product_attribute` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
