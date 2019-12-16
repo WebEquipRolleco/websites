@@ -2,9 +2,6 @@
 
 class Product extends ProductCore {
 
-	/** @var float Delivery_fees **/
-	public $delivery_fees;
-
 	/** @var float Rollcash **/
 	public $rollcash;
 
@@ -25,7 +22,6 @@ class Product extends ProductCore {
 
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
-		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT, 'shop'=>true);
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
 		self::$definition['fields']['comment_1'] = array('type' => self::TYPE_STRING, 'shop'=>true);
 		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);
