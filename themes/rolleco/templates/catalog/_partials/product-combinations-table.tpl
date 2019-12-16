@@ -246,9 +246,9 @@
 
 <div class="well margin-top-sm">
 	<div class="row">
-		<div id="prices_summary" class="col-xs-12 col-lg-9 text-right">
-			<div id="total_price_selection" style="display:none"></div>
-			<div id="total_price_selection_wt" style="display:none"></div>
+		<div id="prices_summary" class="col-xs-12 col-lg-9 text-center">
+			<span id="total_price_selection" style="display:none"></span>
+			<span id="total_price_selection_wt" style="display:none"></span>
 		</div>
 		<div class="col-xs-12 col-lg-3">
 			<button type="button" id="add_all_to_cart" class="btn btn-block btn-success bold disabled" data-dismiss="modal">

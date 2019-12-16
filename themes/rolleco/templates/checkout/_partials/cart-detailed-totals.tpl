@@ -6,8 +6,8 @@
         <table class="table combinations-table">
           <thead>
             <tr>
-              <th class="text-center">{l s="Total PRODUITS ET OPTIONS HT" d='Shop.Theme.Checkout'}</th>
-              <th class="text-center">{Tools::displayPrice(Context::getContext()->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS))}</th>
+              <th class="text-center">{l s="Total produits et options HT" d='Shop.Theme.Checkout'}</th>
+              <th class="text-center">{Tools::displayPrice(Context::getContext()->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS) + OrderOptionCart::getCartTotal())}</th>
           </thead>
           <tbody>
             <tr>
