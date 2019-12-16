@@ -167,9 +167,9 @@ class Quotation extends ObjectModel {
 
         $data = array();
 
-        foreach(Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_quotation = ".$this->id.' ORDER BY position') as $row) {
-            $data[] = new QuotationLine($row[QuotationLine::TABLE_PRIMARY]);
-        }
+        if($this->id)
+            foreach(Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_quotation = ".$this->id.' ORDER BY position') as $row)
+                $data[] = new QuotationLine($row[QuotationLine::TABLE_PRIMARY]);
 
         return $data;
     }
