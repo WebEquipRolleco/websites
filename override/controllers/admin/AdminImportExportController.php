@@ -222,9 +222,19 @@ class AdminImportExportControllerCore extends AdminController {
             }
         }
 
-        header('Content-Type: application/csv; charset=UTF-16LE');
+        /*header('Content-Type: application/csv; charset=UTF-16LE');
         header('Content-Disposition: attachment; filename="produits_'.date('d-m_h-i').'.csv";');
-        die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));
+        die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));*/
+
+        $file_name = "produits_".date('d-m_h-i').".csv";
+        header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Disposition: attachment; filename=$file_name");
+        header("Expires: 0");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Pragma: no-cache");
+        echo "\xEF\xBB\xBF"; // UTF-8 BOM
+        die($csv);
     }
 
     /**
@@ -549,9 +559,19 @@ class AdminImportExportControllerCore extends AdminController {
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }
 
-        header('Content-Type: application/csv; charset=UTF-16LE');
+        /*header('Content-Type: application/csv; charset=UTF-16LE');
         header('Content-Disposition: attachment; filename="prix_'.date('d-m_h-i').'.csv";');
-        die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));
+        die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));*/
+
+        $file_name = "prix_".date('d-m_h-i').".csv";
+        header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Disposition: attachment; filename=$file_name");
+        header("Expires: 0");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Pragma: no-cache");
+        echo "\xEF\xBB\xBF"; // UTF-8 BOM
+        die($csv);
     }
 
     /**
