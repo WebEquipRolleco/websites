@@ -256,7 +256,7 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
             $variables = $this->getWidgetVariables($hookName, $configuration);
             if(empty($variables)) return false;
 
-            $this->smarty->assign('products', $this->getProducts($configuration['product']['id_category_default']));
+            $this->smarty->assign('products', $this->getProducts($configuration['product']));
             $this->smarty->assign('name', $configuration['product']['name']);
 
             return $this->fetch('module:ps_featuredproducts/views/templates/hook/product_footer.tpl'); 
@@ -277,9 +277,11 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
         return false;
     }
 
-    protected function getProducts($id_cat = null) {
+    protected function getProducts($product = null) {
 
-        if(!$id_cat)
+        if($product)
+            $id_cat = $product['id_category_default'];
+        else
             $id_cat = (int)Configuration::get('HOME_FEATURED_CAT');
 
         $category = new Category($id_cat);
@@ -331,11 +333,13 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
         $products_for_template = [];
 
         foreach ($result->getProducts() as $rawProduct) {
-            $products_for_template[] = $presenter->present(
-                $presentationSettings,
-                $assembler->assembleProduct($rawProduct),
-                $this->context->language
-            );
+            if(!$product or $rawProduct['id_product'] != $product['id_product']) {
+                $products_for_template[] = $presenter->present(
+                    $presentationSettings,
+                    $assembler->assembleProduct($rawProduct),
+                    $this->context->language
+                );
+            }
         }
 
         return $products_for_template;
