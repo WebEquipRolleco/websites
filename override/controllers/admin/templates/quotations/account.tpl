@@ -1,4 +1,4 @@
-{if $quotation->getCustomer()->isNewFromQuotation()}
+{if $quotation->getCustomer() and $quotation->getCustomer()->isNewFromQuotation()}
 	<tr>
 		<td class="box" style="border:1px solid #D6D4D4;background-color:#f8f8f8;padding:7px 0">
 			<table class="table" style="width:100%">

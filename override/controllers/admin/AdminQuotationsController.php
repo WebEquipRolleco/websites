@@ -173,7 +173,7 @@ class AdminQuotationsController extends AdminController {
 
     public function formatActions($value) {
         $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/quotations/actions.tpl");
-        $this->context->smarty->assign('id', $value);
+        $this->context->smarty->assign('quotation', new Quotation($value));
         
         return $tpl->fetch();
     }
