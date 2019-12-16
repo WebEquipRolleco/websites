@@ -78,6 +78,7 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
             && $this->registerHook('categoryUpdate')
             && $this->registerHook('displayHome')
             && $this->registerHook('displayOrderConfirmation2')
+            && $this->registerHook('displayFooterProduct')
             && $this->registerHook('displayCrossSellingShoppingCart')
             && $this->registerHook('actionAdminGroupsControllerSaveAfter')
         ;
@@ -257,7 +258,7 @@ class Ps_FeaturedProducts extends Module implements WidgetInterface
 
             $this->smarty->assign('products', $this->getProducts($configuration['product']['id_category_default']));
             $this->smarty->assign('name', $configuration['product']['name']);
-            
+
             return $this->fetch('module:ps_featuredproducts/views/templates/hook/product_footer.tpl'); 
         }
 
