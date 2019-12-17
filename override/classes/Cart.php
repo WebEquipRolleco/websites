@@ -254,8 +254,63 @@ class Cart extends CartCore {
     }
 
     /**
+    * Are all products of the Cart in stock?
+    * OVERRIDE : wtf ? n'ajoute pas les options de stock
+    *
+    * @param bool $ignore_virtual Ignore virtual products
+    * @param bool $exclusive (DEPRECATED) If true, the validation is exclusive : it must be present product in stock and out of stock
+    * @since 1.5.0
+    *
+    * @return bool False if not all products in the cart are in stock
+    */
+    public function isAllProductsInStock($ignoreVirtual = false, $exclusive = false)
+    {
+        if (func_num_args() > 1) {
+            @trigger_error(
+                '$exclusive parameter is deprecated since version 1.7.3.2 and will be removed in the next major version.',
+                E_USER_DEPRECATED
+            );
+        }
+        $productOutOfStock = 0;
+        $productInStock = 0;
+
+        foreach ($this->getProducts() as $product) {
+            if ($ignoreVirtual && $product['is_virtual']) {
+                continue;
+            }
+            $idProductAttribute = !empty($product['id_product_attribute']) ? $product['id_product_attribute'] : null;
+            $availableOutOfStock = Product::isAvailableWhenOutOfStock($product['out_of_stock']);
+            $productQuantity = Product::getQuantity(
+                $product['id_product'],
+                $idProductAttribute,
+                null,
+                $this,
+                $product['id_customization']
+            );
+
+            if (!$exclusive
+                && ($productQuantity < 0 && !$availableOutOfStock)
+            ) {
+                return false;
+            } else if ($exclusive) {
+                if ($productQuantity <= 0) {
+                    $productOutOfStock++;
+                } else {
+                    $productInStock++;
+                }
+
+                if ($productInStock > 0 && $productOutOfStock > 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
     * Return cart products
-    * OVERRIDE : ajout commentaire_1, commentaire_2, rollcash, delivery_fees
+    * OVERRIDE : ajout commentaire_1, commentaire_2, rollcash
     *
     * @param bool $refresh
     * @param bool $id_product
@@ -286,7 +341,7 @@ class Cart extends CartCore {
         $sql = new DbQuery();
 
         // Build SELECT
-        $sql->select('p.`comment_1`, p.`comment_2`, p.`delivery_fees`, p.`rollcash`, cp.`id_product_attribute`, cp.`id_product`, cp.`quantity` AS cart_quantity, cp.id_shop, cp.`id_customization`, pl.`name`, p.`is_virtual`, pl.`description_short`, pl.`available_now`, pl.`available_later`, product_shop.`id_category_default`, p.`id_supplier`, p.`id_manufacturer`, m.`name` AS manufacturer_name, product_shop.`on_sale`, product_shop.`ecotax`, product_shop.`additional_shipping_cost`, product_shop.`available_for_order`, product_shop.`show_price`, product_shop.`price`, product_shop.`active`, product_shop.`unity`, product_shop.`unit_price_ratio`, stock.`quantity` AS quantity_available, p.`width`, p.`height`, p.`depth`, stock.`out_of_stock`, p.`weight`, p.`available_date`, p.`date_add`, p.`date_upd`, IFNULL(stock.quantity, 0) as quantity, pl.`link_rewrite`, cl.`link_rewrite` AS category, CONCAT(LPAD(cp.`id_product`, 10, 0), LPAD(IFNULL(cp.`id_product_attribute`, 0), 10, 0), IFNULL(cp.`id_address_delivery`, 0), IFNULL(cp.`id_customization`, 0)) AS unique_id, cp.id_address_delivery, product_shop.advanced_stock_management, ps.product_supplier_reference supplier_reference');
+        $sql->select('p.`comment_1`, p.`comment_2`, p.`rollcash`, cp.`id_product_attribute`, cp.`id_product`, cp.`quantity` AS cart_quantity, cp.id_shop, cp.`id_customization`, pl.`name`, p.`is_virtual`, pl.`description_short`, pl.`available_now`, pl.`available_later`, product_shop.`id_category_default`, p.`id_supplier`, p.`id_manufacturer`, m.`name` AS manufacturer_name, product_shop.`on_sale`, product_shop.`ecotax`, product_shop.`additional_shipping_cost`, product_shop.`available_for_order`, product_shop.`show_price`, product_shop.`price`, product_shop.`active`, product_shop.`unity`, product_shop.`unit_price_ratio`, stock.`quantity` AS quantity_available, p.`width`, p.`height`, p.`depth`, stock.`out_of_stock`, p.`weight`, p.`available_date`, p.`date_add`, p.`date_upd`, IFNULL(stock.quantity, 0) as quantity, pl.`link_rewrite`, cl.`link_rewrite` AS category, CONCAT(LPAD(cp.`id_product`, 10, 0), LPAD(IFNULL(cp.`id_product_attribute`, 0), 10, 0), IFNULL(cp.`id_address_delivery`, 0), IFNULL(cp.`id_customization`, 0)) AS unique_id, cp.id_address_delivery, product_shop.advanced_stock_management, ps.product_supplier_reference supplier_reference');
 
         // Build FROM
         $sql->from('cart_product', 'cp');
@@ -338,7 +393,7 @@ class Cart extends CartCore {
 
         if (Combination::isFeatureActive()) {
             $sql->select('
-                product_attribute_shop.`price` AS price_attribute, product_attribute_shop.`ecotax` AS ecotax_attr, product_attribute_shop.`delivery_fees` AS delivery_fees_attr, product_attribute_shop.`rollcash` AS rollcash_attr,
+                product_attribute_shop.`price` AS price_attribute, product_attribute_shop.`ecotax` AS ecotax_attr, product_attribute_shop.`rollcash` AS rollcash_attr,
                 IF (IFNULL(pa.`reference`, \'\') = \'\', p.`reference`, pa.`reference`) AS reference,
                 (p.`weight`+ pa.`weight`) weight_attribute,
                 IF (IFNULL(pa.`ean13`, \'\') = \'\', p.`ean13`, pa.`ean13`) AS ean13,
@@ -423,8 +478,13 @@ class Cart extends CartCore {
             }
 
             foreach ($result as &$row) {
+
                 if (!array_key_exists('is_gift', $row)) {
                     $row['is_gift'] = false;
+                }
+
+                if (!array_key_exists('allow_oosp', $row)) {
+                    $row['allow_oosp'] = true;
                 }
 
                 try {
@@ -465,7 +525,7 @@ class Cart extends CartCore {
     }
 
     /**
-    * OVERRIDE : ajout rollcash, delivery_fees
+    * OVERRIDE : ajout rollcash
     *
     * @param $row
     * @param $shopContext
@@ -481,9 +541,6 @@ class Cart extends CartCore {
         if (isset($row['ecotax_attr']) && $row['ecotax_attr'] > 0) {
             $row['ecotax'] = (float)$row['ecotax_attr'];
         }
-
-        if(isset($row['delivery_fees_attr']) && $row['delivery_fees_attr'] > 0)
-            $row['delivery_fees'] = (float)$row['delivery_fees_attr'];
 
         if(isset($row['rollcash_attr']) && $row['rollcash_attr'] > 0)
             $row['rollcash'] = (float)$row['rollcash_attr'];

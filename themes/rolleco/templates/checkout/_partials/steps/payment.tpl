@@ -65,7 +65,7 @@
           <tr class="text-muted">
             <td class="bg-grey text-center" style="vertical-align:middle;">
               <div class="bold">{$product.name}</div>
-              {l s="Référence : %s" sprintf=[$product.reference_to_display]}
+              {l s="Référence : %s" sprintf=[$product.reference]}
             </td>
             <td class="bg-grey text-center" style="vertical-align:middle;">
               {$product.cart_quantity}

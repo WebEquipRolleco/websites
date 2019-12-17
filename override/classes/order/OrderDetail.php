@@ -38,7 +38,7 @@ class OrderDetail extends OrderDetailCore {
 
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
-        //self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT);
+        self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT);
         self::$definition['fields']['id_quotation_line'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['id_product_supplier'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['day'] = array('type' => self::TYPE_DATE);
@@ -116,7 +116,7 @@ class OrderDetail extends OrderDetailCore {
         $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
 
-        $this->delivery_fees = $product['delivery_fees'];
+        $this->delivery_fees = isset($product['specific_prices']) ? $pproduct['specific_prices']['delivery_fees'] : 0;
         $this->ecotax = $product['ecotax'];
 
         $this->comment_product_1 = $product['comment_1'];
