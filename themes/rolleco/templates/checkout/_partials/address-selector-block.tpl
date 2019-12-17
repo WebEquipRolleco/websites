@@ -24,7 +24,7 @@
  *}
 {block name='address_selector_blocks'}
   {foreach from=$addresses item=address name=addresses}
-    <article id="{$name|classname}-address-{$address.id}" class="address-item">
+    <article id="{$name|classname}-address-{$address.id}" class="address-item{if $address.id == $selected} selected{/if}">
       <header class="h4">
         <label class="radio-block">
           <span class="custom-radio">
