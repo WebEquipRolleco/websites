@@ -38,7 +38,7 @@
                   </div>
                 </label>
               </header>
-              <hr />
+              {*<hr />
               <footer class="address-footer bg-grey">
                 <a href="{url entity='order' params=['id_address' => $address.id, 'editAddress'=>'delivery', 'token' => $token]}" class="btn btn-warning edit-address" data-link-action="edit-address" title="{l s='Edit' d='Shop.Theme.Actions'}">
                   <i class="fa fa-edit edit"></i>
@@ -47,7 +47,7 @@
                 data-link-action="delete-address" title="{l s='Delete' d='Shop.Theme.Actions'}">
                   <i class="fa fa-trash-alt delete"></i>
                 </a>
-              </footer>
+              </footer>*}
             </article>
             {break}
           {/foreach}
