@@ -10,7 +10,7 @@
 	</div>
 	<div class="col-lg-3">
 		<div class="text-muted">&nbsp;</div>
-		<button type="submit" class="btn btn-info">
+		<button type="submit" class="btn btn-success">
 			<i class="icon-check-square"></i> &nbsp; <b>Valider</b>
 		</button>
 	</div>

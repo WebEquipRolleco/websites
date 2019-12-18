@@ -235,4 +235,62 @@ class OrderDetail extends OrderDetailCore {
 		return $this->purchase_supplier_price * $this->product_quantity + $this->total_shipping_price_tax_excl;
 	}
 
+    /**
+    * Compte le nombre de références uniques vendues
+    * @param $string|DateTime $date_begin
+    * @param $string|DateTime $date_end
+    * @return int
+    **/
+    public static function countReferences($date_begin, $date_end) {
+
+        if(!is_string($date_begin)) $date_begin = $date_begin->format('Y-m-d 00:00:00');
+        if(!is_string($date_end)) $date_end = $date_end->format('Y-m-d 23:59:59');
+
+        return Db::getInstance()->getValue("SELECT COUNT(DISTINCT(od.product_reference)) FROM ps_order_detail od, ps_orders o WHERE od.id_order = o.id_order AND o.date_add >= '$date_begin' AND o.date_add <= '$date_end'");
+    }
+
+    /**
+    * Calcul un chiffre d'affaire sur une période de temps
+    * @param mixed $date_begin
+    * @param mixed $date_end
+    * @param bool $use_taxes
+    * @param int $type
+    * @return float
+    **/
+    public static function sumTurnover($date_begin, $date_end, $use_taxes = false, $type = Order::ALL_PRODUCTS) {
+
+        if(!is_string($date_begin)) $date_begin = $date_begin->format('Y-m-d 00:00:00');
+        if(!is_string($date_end)) $date_end = $date_end->format('Y-m-d 23:59:59');
+
+        if($use_taxes) $field = "od.total_price_tax_incl";
+        else $field = "od.total_price_tax_excl";
+
+        $sql = "SELECT SUM($field) FROM ps_order_detail od, ps_orders o WHERE od.id_order = o.id_order AND o.date_add >= '$date_begin' AND o.date_add <= '$date_end'";
+        if($type == ORDER::ONLY_PRODUCTS) $sql .= " AND (od.id_quotation_line IS NULL OR od.id_quotation_line = 0)";
+        if($type == ORDER::ONLY_QUOTATIONS) $sql .= " AND (od.id_quotation_line IS NOT NULL OR od.id_quotation_line <> 0)";
+
+        return (float)Db::getInstance()->getValue($sql);
+    }
+
+    /**
+    * Calcul un chiffre d'affaire sur une période de temps
+    * @param mixed $date_begin
+    * @param mixed $date_end
+    * @param string $reference
+    * @param bool $use_taxes
+    * @return float
+    **/
+    public static function sumProductTurnover($date_begin, $date_end, $reference, $use_taxes = false) {
+
+        if(!is_string($date_begin)) $date_begin = $date_begin->format('Y-m-d 00:00:00');
+        if(!is_string($date_end)) $date_end = $date_end->format('Y-m-d 23:59:59');
+
+        if($use_taxes) $field = "od.total_price_tax_incl";
+        else $field = "od.total_price_tax_excl";
+
+        $sql = "SELECT SUM($field) FROM ps_order_detail od, ps_orders o WHERE od.id_order = o.id_order AND o.date_add >= '$date_begin' AND o.date_add <= '$date_end' AND od.product_reference = '$reference'";
+
+        return (float)Db::getInstance()->getValue($sql);
+
+    }
 }

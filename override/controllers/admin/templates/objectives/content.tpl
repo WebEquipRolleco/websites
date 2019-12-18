@@ -6,8 +6,8 @@
 
 		</div>
 		<div class="col-lg-6 text-right">
-			<button type="button" id="switch_display" class="btn btn-default">
-				<i class="icon-refresh"></i> &nbsp; {l s='Graphiques / Données'}
+			<button type="button" id="switch_display" class="btn btn-primary">
+				<b><i class="icon-refresh"></i> &nbsp; {l s='Graphiques / Données'}</b>
 			</button>
 		</div>
 	</div>
@@ -18,7 +18,7 @@
 	<div class="panel">
 		<form method="post" class="form-inline">
 			<input type="date" class="form-control" name="date_current" value="{$date_current}">
-			<button type="submit" class="btn btn-primary">
+			<button type="submit" class="btn btn-success">
 				<b><i class="icon-refresh"></i> &nbsp; Filtrer</b>
 			</button>
 		</form>
@@ -145,7 +145,7 @@
 							<input type="date" class="form-control" name="date_end" value="{$date_end}" required>
 						</div>
 						<div class="col-lg-2">
-							<button type="submit" class="btn btn-block btn-primary">
+							<button type="submit" class="btn btn-block btn-success">
 								<b><i class="icon-refresh"></i> &nbsp; Filtrer</b>
 							</button>
 						</div>

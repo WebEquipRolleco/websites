@@ -47,6 +47,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminObjectives"))
             $check .= $this->installTab("Objectifs", "AdminObjectives", 'WEBEQUIP', 'equalizer');
 
+        if(!isTabInstalled("AdminReport"))
+            $check .= $this->installTab("Rapport", "AdminReport", 'WEBEQUIP', 'list');
+
         if(!isTabInstalled("AdminResults"))
             $check .= $this->installTab("Résultats", "AdminResults", 'WEBEQUIP', 'grid_on');
 
@@ -128,6 +131,10 @@ class Webequip_Configuration extends Module {
                 $this->installTab("Objectifs", "AdminObjectives", 'WEBEQUIP', 'equalizer');
             break;
 
+            case 'REPORT':
+                $this->installTab("Rapport", "AdminReport", 'WEBEQUIP', 'list');
+            break;
+
             case 'RESULTS':
                 $this->installTab("Résultats", "AdminResults", 'WEBEQUIP', 'grid_on');
             break;
@@ -202,6 +209,7 @@ class Webequip_Configuration extends Module {
         $tabs[1] = array('name'=>"WEB-EQUIP", 'id'=>$this->isTabInstalled('WEBEQUIP'), 'action'=>'WEBEQUIP');
         $tabs[1]['children'][] = array('name'=>'Coordonnées', 'id'=>$this->isTabInstalled('AdminContactInformation'), 'action'=>'CONTACTS');
         $tabs[1]['children'][] = array('name'=>"Objectifs", 'id'=>$this->isTabInstalled("AdminObjectives"), 'action'=>'OBJECTIVES');
+        $tabs[1]['children'][] = array('name'=>"Rapport", 'id'=>$this->isTabInstalled("AdminReport"), 'action'=>'REPORT');
         $tabs[1]['children'][] = array('name'=>"Résultats", 'id'=>$this->isTabInstalled("AdminResults"), 'action'=>'RESULTS');
         $tabs[1]['children'][] = array('name'=>"Documents", 'id'=>$this->isTabInstalled("AdminDocuments"), 'action'=>'DOCUMENTS');
         $tabs[1]['children'][] = array('name'=>"Import / Export", 'id'=>$this->isTabInstalled("AdminImportExport"), 'action'=>'IMPORT_EXPORT');
