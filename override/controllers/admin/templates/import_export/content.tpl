@@ -119,6 +119,57 @@
 
 </div>
 
+<div class="row">
+	<div class="col-lg-6">
+		<form method="post">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-download"></i> <b>Export commandes</b>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label for="date_begin">Date de début</label>
+							<input type="date" id="date_begin" class="form-control" name="date_begin" required>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label for="date_end">Date de fin</label>
+							<input type="date" id="date_end" class="form-control" name="date_end" required>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label>Délimiter de valeurs</label>
+							<input type="text" class="form-control" name="delimiter" value="{$delimiter}" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					{foreach from=Shop::getShops() item=shop}
+						<div class="col-lg-4 text-center">
+							<label for="shop_{$shop.id_shop}" style="color:{$shop.color}">{$shop.name}</label>
+							<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto;">
+								<input type="radio" name="shops[{$shop.id_shop}]" id="shop_{$shop.id_shop}_on" value="1" checked>
+								<label for="shop_{$shop.id_shop}_on">Oui</label>
+								<input type="radio" name="shops[{$shop.id_shop}]" id="shop_{$shop.id_shop}_off" value="0">
+								<label for="shop_{$shop.id_shop}_off">Non</label>
+								<a class="slide-button btn"></a>
+							</span>
+						</div>
+					{/foreach}
+				</div>
+				<div class="panel-footer text-right">
+					<button type="submit" class="btn btn-success" name="action" value="export_orders" style="width:69px">
+						<i class="process-icon-download"></i> <b>Exporter</b>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
 <script>
 	$(document).on('ready', function() {
 

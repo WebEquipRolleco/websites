@@ -109,6 +109,15 @@ class AfterSale extends ObjectModel {
     }
 
     /**
+    * Retourne le nombre de SAV associés à une commande
+    * @param int $id_order
+    * @return int
+    **/
+    public static function hasAfterSales($id_order) {
+        return Db::getInstance()->getValue("SELECT COUNT(".self::TABLE_PRIMARY.") FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_order = $id_order");
+    }
+
+    /**
     * Fonction de recherche générique en fonction d'une liste d'options
     * @param array $options
     * @return array

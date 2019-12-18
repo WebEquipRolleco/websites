@@ -73,6 +73,14 @@ class Order extends OrderCore {
 	}
 
 	/**
+	* Retourne un objet date
+	* @return DateTime
+	**/
+	public function getDate($name) {
+		return new DateTime($this->{$name});
+	}
+
+	/**
 	* Retourne l'information PROFORMA
 	* @return bool
 	**/
