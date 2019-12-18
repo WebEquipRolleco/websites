@@ -263,7 +263,7 @@ class Order extends OrderCore {
 	**/
 	public static function count($date_begin = null, $date_end = null, $id_shop = null) {
 
-		$sql = "SELECT COUNT(*) FROM ps_orders o, ps_order_state os WHERE 1"; //o.current_state = os.id_order_state AND os.paid = 1";
+		$sql = "SELECT COUNT(*) FROM ps_orders o WHERE 1"; //, ps_order_state os WHERE o.current_state = os.id_order_state AND os.paid = 1";
 
 		if($date_begin) {
 			
