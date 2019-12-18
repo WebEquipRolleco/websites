@@ -384,22 +384,15 @@ class Order extends OrderCore {
 	public static function sumBuyingPrice($ids, $use_taxes = false, $quotation = self::ALL_PRODUCTS) {
 
 		$value = 0;
+		foreach($ids as $id) {
 
-		if(!empty($ids)) {
-
-			$sql = "SELECT * FROM ps_order_detail WHERE id_order IN (".implode(',', $ids).")";
-				if($quotation == self::ONLY_QUOTATIONS) $sql .= " AND id_quotation_line IS NOT NULL";
-				if($quotation == self::ONLY_PRODUCTS) $sql .= " AND id_quotation_line IS NULL";
-
-		
-			foreach(Db::getInstance()->executeS($sql) as $row)
-				$value += $row['purchase_supplier_price'] * $row['product_quantity'];
+			$order = new Order($id);
+			foreach($order->getDetails() as $detail)
+				if($quotation == self::ALL_PRODUCTS OR ($quotation == self::ONLY_QUOTATIONS and $detail->id_quotation_line) OR ($quotation == self::ONLY_PRODUCTS and !$detail->id_quotation_line))
+				$value += $detail->getTotalBuyingPrice();
 		}
 
-		if($use_taxes) 
-			return (($value * 1.2) + $row['total_shipping_price_tax_incl']);
-		else
-			return ($value + $row['total_shipping_price_tax_excl']);
+		return $value * ($use_taxes ? 1.2 : 1);
 	}
 
 	/**
