@@ -34,7 +34,7 @@ class AdminReportControllerCore extends AdminController {
     	$data = array();
 
     	for($x=1; $x<=date('W'); $x++) {
-    		$date->setISODate(date('Y'), $this->selected_week);
+    		$date->setISODate(date('Y'), $x);
     		$data[$x]['begin'] = $date->format('d/m/Y');
     		$date->modify('+6 days');
     		$data[$x]['end'] = $date->format('d/m/Y');
