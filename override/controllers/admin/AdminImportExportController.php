@@ -482,7 +482,7 @@ class AdminImportExportControllerCore extends AdminController {
 
         // Déclinaisons sans prix
         $sql = "SELECT pa.id_product_attribute FROM ps_product_attribute pa, ps_product p WHERE pa.id_product = p.id_product AND p.id_product";
-        if(!empty($ids_combination)) $sql .= "AND pa.id_product_attribute NOT IN (".implode(',', $ids_combination).")";
+        if(!empty($ids_combination)) $sql .= " AND pa.id_product_attribute NOT IN (".implode(',', $ids_combination).")";
         if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 1";
         if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 0";
 
