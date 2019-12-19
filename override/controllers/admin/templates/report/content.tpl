@@ -77,6 +77,19 @@
 		<div class="panel text-center">
 			<div class="row">
 				<div class="col-lg-6">
+					<h2>{displayPrice price=$turnover_total}</h2>
+					<div>CA total {$smarty.capture.taxes}</div>
+				</div>
+				<div class="col-lg-6">
+					<h2>{displayPrice price=$turnover_avg}</h2>
+					<div>Panier moyen {$smarty.capture.taxes}</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel text-center">
+			<div class="row">
+				<div class="col-lg-6">
 					<h2>{displayPrice price=$turnover_products}</h2>
 					<div>CA naturel {$smarty.capture.taxes}</div>
 				</div>
@@ -85,11 +98,6 @@
 					<div>CA devis {$smarty.capture.taxes}</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="panel text-center">
-			<h2>{displayPrice price=$turnover_avg}</h2>
-			<div>Panier moyen {$smarty.capture.taxes}</div>
 		</div>
 
 		<div class="panel text-center">
