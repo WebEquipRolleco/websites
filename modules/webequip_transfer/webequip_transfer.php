@@ -282,7 +282,7 @@ class webequip_transfer extends Module {
 		}
 
 		$sql = "SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c";
-		if(isset($ids) and $ids) $sql .= " AND c.id_customer NOT IN ($ids)";
+		if(isset($ids) and $ids) $sql .= " WHERE c.id_customer NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
