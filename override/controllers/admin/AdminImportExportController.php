@@ -701,7 +701,7 @@ class AdminImportExportControllerCore extends AdminController {
 
             foreach($order->getDetails() as $detail) {
                 
-                $total += $detail->total_price_tax_incl;
+                $total += $detail->total_price_tax_excl;
                 $buying_price = $detail->getTotalBuyingPrice();
                 $margin = $order->total_products - $buying_price;
                 $margin_rate = ($order->total_products > 0) ? Tools::getMarginRate($margin, $order->total_products) : 0;
@@ -709,14 +709,14 @@ class AdminImportExportControllerCore extends AdminController {
                 $data = array();
                 $data[] = $order->getDate('date_add')->format('d/m/Y');
                 $data[] = $order->reference;
-                $data[] = $detail->reference;
+                $data[] = $detail->product_reference;
                 $data[] = $detail->product_id ? $this->findFamily($detail->product_id) : '-';
                 $data[] = $detail->getSupplier() ? $detail->getSupplier()->reference." - ".$detail->getSupplier()->name : '-';
                 $data[] = $order->getShop()->name;
                 $data[] = $order->product_supplier_reference;
                 $data[] = $detail->product_name;
-                $data[] = $detail->quantity;
-                $data[] = $order->total_products;
+                $data[] = $detail->product_quantity;
+                $data[] = round($detail->total_price_tax_excl, 2);
                 $data[] = round($buying_price, 2);
                 $data[] = round($margin, 2);
                 $data[] = round($margin_rate, 2);
