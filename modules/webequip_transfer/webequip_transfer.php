@@ -247,21 +247,21 @@ class webequip_transfer extends Module {
 		}
 
 		$sql = "SELECT * FROM ps_manufacturer";
-		if($isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
+		if(isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
 		
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer VALUES(".$row['id_manufacturer'].", '".pSql(utf8_encode($row['name']))."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].")");
 
 		$sql = "SELECT * FROM ps_manufacturer_lang";
-		if($isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
+		if(isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer_lang VALUES(".$row['id_manufacturer'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".pSql($row['short_description'])."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
 
 		$sql = "SELECT * FROM ps_manufacturer_shop";
-		if($isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
+		if(isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
