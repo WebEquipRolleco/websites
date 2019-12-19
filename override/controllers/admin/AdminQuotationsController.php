@@ -274,7 +274,7 @@ class AdminQuotationsController extends AdminController {
     			$form = Tools::getValue('quotation');
 
     			$quotation->status = $form['status'];
-    			$quotation->id_customer = $form['id_customer'];
+    			$quotation->id_customer = $form['id_customer'] ?? $quotation->id_customer;
                 $quotation->origin = $form['origin'];
     			$quotation->source = $form['source'];
     			$quotation->email = $form['email'];

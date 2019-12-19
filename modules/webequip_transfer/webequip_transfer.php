@@ -238,7 +238,7 @@ class webequip_transfer extends Module {
 		if(Tools::getValue('eraze')) {
 			Db::getInstance()->execute("DELETE FROM ps_manufacturer");
 			Db::getInstance()->execute("DELETE FROM ps_manufacturer_lang");
-			Db::getInstance()->execute("DELETE FROM ps_manufacturer_shop");
+			
 		}
 		else {
 			$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_manufacturer) FROM id_manufacturer");
@@ -260,10 +260,8 @@ class webequip_transfer extends Module {
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer_lang VALUES(".$row['id_manufacturer'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".pSql($row['short_description'])."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
 
-		$sql = "SELECT * FROM ps_manufacturer_shop";
-		if(isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
+		Db::getInstance()->execute("DELETE FROM ps_manufacturer_shop");
+		$result = $this->old_db->query("SELECT * FROM ps_manufacturer_shop");
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer_shop VALUES(".$row['id_manufacturer'].", ".$row['id_shop'].")");
 	}
@@ -594,6 +592,10 @@ class webequip_transfer extends Module {
 			}
 		}
 
+		$states[1] = Quotation::STATUS_REFUSED;
+		$states[2] = Quotation::STATUS_WAITING;
+		$states[3] = Quotation::STATUS_VALIDATED;
+
 		$query = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
 		if(isset($ids) and $ids) $query .= " WHERE d.id_activis_devis NOT IN ($ids)";
 		$query .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis ORDER BY d.id_activis_devis DESC";
@@ -605,7 +607,7 @@ class webequip_transfer extends Module {
 				Db::getInstance()->execute("INSERT INTO ps_quotation VALUES(
 					".$row['id_activis_devis'].",
 					'".pSql($row['hash'])."',
-					".$row['id_state'].",
+					".(isset($states[$row['id_state']]) ? $states[$row['id_state']] : Quotation::STATUS_OVER).",
 					".$row['id_customer'].",
 					NULL,
 					NULL,
