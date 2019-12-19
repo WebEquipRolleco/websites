@@ -216,76 +216,6 @@ class Order extends OrderCore {
 
 		return $total;
 	}
-	
-	/**
-	* Calcul un chiffre d'affaire sur une période de temps
-	* @param bool $use_taxes
-	* @param mixed $date_begin
-	* @param mixed $date_end
-	* @param int $id_shop
-	* @return float
-	**/
-	public static function  sumTurnover($use_taxes = false, $date_begin = false, $date_end = false, $id_shop = null) {
-
-		if($use_taxes) $column = 'total_paid_tax_incl';
-		else $column = 'total_paid_tax_excl';
-
-		$sql = "SELECT SUM($column) FROM ps_orders o, ps_order_state os WHERE o.current_state = os.id_order_state AND os.paid = 1";
-
-		if($date_begin) {
-			
-			if(is_object($date_begin))
-				$date_begin = $date_begin->format('Y-m-d');
-
-			$sql .= " AND o.date_add >= '$date_begin 00:00:00'";
-		}
-
-		if($date_end) {
-
-			if(is_object($date_end))
-				$date_end = $date_end->format('Y-m-d');
-
-			$sql .= " AND o.date_add <= '$date_end 23:59:59'";
-		}
-
-		if($id_shop)
-			$sql .= " AND id_shop = $id_shop";
-
-		return (float)Db::getInstance()->getValue($sql);
-	}
-
-	/**
-	* Compte le nombre de commandes sur une période de temps
-	* @param mixed $date_begin
-	* @param mixed $date_end
-	* @param int $id_shop
-	* @return int 
-	**/
-	public static function count($date_begin = null, $date_end = null, $id_shop = null) {
-
-		$sql = "SELECT COUNT(*) FROM ps_orders o WHERE 1"; //, ps_order_state os WHERE o.current_state = os.id_order_state AND os.paid = 1";
-
-		if($date_begin) {
-			
-			if(is_object($date_begin))
-				$date_begin = $date_begin->format('Y-m-d');
-
-			$sql .= " AND o.date_add >= '$date_begin 00:00:00'";
-		}
-
-		if($date_end) {
-
-			if(is_object($date_end))
-				$date_end = $date_end->format('Y-m-d');
-
-			$sql .= " AND o.date_add <= '$date_end 23:59:59'";
-		}
-
-		if($id_shop)
-			$sql .= " AND id_shop = $id_shop";
-		
-		return (int)Db::getInstance()->getValue($sql);
-	}
 
 	/**
 	* Retourne la liste des produits commandés par un client
@@ -307,47 +237,6 @@ class Order extends OrderCore {
 			return false;
 
 		return Db::getInstance()->getValue("SELECT id_order FROM ps_orders WHERE reference = '$reference' OR internal_reference = '$reference'");
-	}
-
-	/**
-	* Retourne une liste fitrée d'ID commande
-	* UTILISATION : page de résultats
-	* @param array $options
-	* @return array
-	**/ 
-	public static function findIds($options) {
-
-		$sql = "SELECT DISTINCT(o.id_order) FROM "._DB_PREFIX_."orders o";
-
-		if(isset($options['payment_methods']))
-			$sql .= " INNER JOIN ps_order_payment p ON o.reference = p.order_reference AND p.payment_method IN (".implode(',', $options['payment_methods']).")";
-
-		if(isset($options['customer_types']))
-			$sql .= " INNER JOIN ps_customer c ON o.id_customer = c.id_customer AND c.id_account_type IN(".implode(',', $options['customer_types']).")";
-
-		$sql .= " WHERE 1";
-
-		if(isset($options['quotations']))
-			$sql .= " AND EXISTS (SELECT d.id_order_detail FROM ps_order_detail d WHERE id_order = o.id_order AND d.id_quotation_line IS NOT NULL)";
-
-		if(isset($options['date_begin'])) {
-			if(!is_string($options['date_begin'])) $options['date_begin'] = $options['date_begin']->format('Y-m-d 00:00:00');
-			$sql .= " AND o.date_add >= '".$options['date_begin']."'";
-		}
-
-		if(isset($options['date_end'])) {
-			if(!is_string($options['date_end'])) $options['date_end'] = $options['date_end']->format('Y-m-d 23:59:59');
-			$sql .= " AND o.date_add <= '".$options['date_end']."'";
-		}
-
-		if(isset($options['shops']))
-			$sql .= " AND o.id_shop IN (".implode(',', $options['shops']).")";
-
-		$exclude_states = Configuration::get('EXPORT_EXCLUDED_STATES');
-		if($exclude_states)
-			$sql .= " AND o.current_state NOT IN ($exclude_states)";
-
-		return array_map(function($e) { return $e['id_order']; }, Db::getInstance()->executeS($sql));
 	}
 
 	/**
@@ -526,6 +415,99 @@ class Order extends OrderCore {
     	$json['lignesArticle'] = $data;
 
     	return json_encode($json);
+	}
+
+	/**
+	* Retourne une liste fitrée d'ID commande
+	* FONCTION GLOBALE DE RECHERCHE DE COMMANDE
+	* @param array $options
+	* @return array
+	**/ 
+	public static function findIds($options) {
+
+		$sql = "SELECT DISTINCT(o.id_order) FROM "._DB_PREFIX_."orders o";
+
+		// Filtrer en fonction des méthodes de paiement
+		if(isset($options['payment_methods']))
+			$sql .= " INNER JOIN ps_order_payment p ON (o.reference = p.order_reference AND p.payment_method IN (".implode(',', $options['payment_methods'])."))";
+
+		// Filter en fonction des types de clients
+		if(isset($options['customer_types']))
+			$sql .= " INNER JOIN ps_customer c ON (o.id_customer = c.id_customer AND c.id_account_type IN(".implode(',', $options['customer_types'])."))";
+
+		// Filter sur l'état 'payée' de la commande
+		if(isset($options['paid']))
+			$sql .= " INNER JOIN ps_order_state os ON (o.current_state = os.id_order_state AND os.paid = ".$options['paid'].")";
+
+		$sql .= " WHERE 1";
+
+		// Filter en fonction du type de produit concerné (nature ou devis)
+		if(isset($options['quotations']))
+			$sql .= " AND EXISTS (SELECT d.id_order_detail FROM ps_order_detail d WHERE id_order = o.id_order AND d.id_quotation_line IS NOT NULL)";
+
+		// Borner la recherche à une date minimum
+		if(isset($options['date_begin'])) {
+			if(!is_string($options['date_begin'])) $options['date_begin'] = $options['date_begin']->format('Y-m-d 00:00:00');
+			$sql .= " AND o.date_add >= '".$options['date_begin']."'";
+		}
+
+		// Borner la recherche à un date maximum
+		if(isset($options['date_end'])) {
+			if(!is_string($options['date_end'])) $options['date_end'] = $options['date_end']->format('Y-m-d 23:59:59');
+			$sql .= " AND o.date_add <= '".$options['date_end']."'";
+		}
+
+		// Filtrer en fonction des boutiques
+		if(isset($options['shops']))
+			$sql .= " AND o.id_shop IN (".implode(',', $options['shops']).")";
+
+		// Etats exclus de la recherche
+		$exclude_states = Configuration::get('EXPORT_EXCLUDED_STATES');
+		if($exclude_states)
+			$sql .= " AND o.current_state NOT IN ($exclude_states)";
+
+		return array_map(function($e) { return $e['id_order']; }, Db::getInstance()->executeS($sql));
+	}
+
+	/**
+	* Compte le nombre de commandes sur une période de temps
+	* @param mixed $date_begin
+	* @param mixed $date_end
+	* @param int $id_shop
+	* @return int 
+	**/
+	public static function count($date_begin = null, $date_end = null, $id_shop = null) {
+
+		$options['date_begin'] = $date_begin;
+		$options['date_end'] = $date_end;
+		if($id_shop) $options['shops'][] = $id_shop;
+
+		return count(self::findIds($options));
+	}
+
+	/**
+	* Calcul un chiffre d'affaire sur une période de temps
+	* @param bool $use_taxes
+	* @param mixed $date_begin
+	* @param mixed $date_end
+	* @param int $id_shop
+	* @return float
+	**/
+	public static function  sumTurnover($use_taxes = false, $date_begin = false, $date_end = false, $id_shop = null) {
+
+		$options['paid'] = 1;
+		if($date_begin) $options['date_begin'] = $date_begin;
+        if($date_end) $options['date_end'] = $date_end;
+        if($id_shop) $options['shops'][] = $id_shop;
+
+        $ids = Order::findIds($options);
+        if(!$ids) return 0;
+
+		if($use_taxes) $column = 'total_paid_tax_incl';
+		else $column = 'total_paid_tax_excl';
+
+		$sql = "SELECT SUM($column) FROM ps_orders o WHERE o.id_order IN (".implode(',', $ids).")";
+		return (float)Db::getInstance()->getValue($sql);
 	}
 
 }

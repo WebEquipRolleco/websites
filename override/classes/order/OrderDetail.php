@@ -243,10 +243,14 @@ class OrderDetail extends OrderDetailCore {
     **/
     public static function countReferences($date_begin, $date_end) {
 
-        if(!is_string($date_begin)) $date_begin = $date_begin->format('Y-m-d 00:00:00');
-        if(!is_string($date_end)) $date_end = $date_end->format('Y-m-d 23:59:59');
+        $options['date_begin'] = $date_begin;
+        $options['date_end'] = $date_end;
+        $ids = Order::findIds($options);
 
-        return Db::getInstance()->getValue("SELECT COUNT(DISTINCT(od.product_reference)) FROM ps_order_detail od, ps_orders o WHERE od.id_order = o.id_order AND o.date_add >= '$date_begin' AND o.date_add <= '$date_end'");
+        if(!$ids)
+            return 0;
+
+        return Db::getInstance()->getValue("SELECT COUNT(DISTINCT(od.product_reference)) FROM ps_order_detail od WHERE od.id_order IN (".implode(',', $ids).")");
     }
 
     /**
@@ -259,13 +263,17 @@ class OrderDetail extends OrderDetailCore {
     **/
     public static function sumTurnover($date_begin, $date_end, $use_taxes = false, $type = Order::ALL_PRODUCTS) {
 
-        if(!is_string($date_begin)) $date_begin = $date_begin->format('Y-m-d 00:00:00');
-        if(!is_string($date_end)) $date_end = $date_end->format('Y-m-d 23:59:59');
+        $options['date_begin'] = $date_begin;
+        $options['date_end'] = $date_end;
+        $ids = Order::findIds($options);
+
+        if(!$ids)
+            return 0;
 
         if($use_taxes) $field = "od.total_price_tax_incl";
         else $field = "od.total_price_tax_excl";
 
-        $sql = "SELECT SUM($field) FROM ps_order_detail od, ps_orders o WHERE od.id_order = o.id_order AND o.date_add >= '$date_begin' AND o.date_add <= '$date_end'";
+        $sql = "SELECT SUM($field) FROM ps_order_detail od WHERE od.id_order IN (".implode(',', $ids).")";
         if($type == ORDER::ONLY_PRODUCTS) $sql .= " AND (od.id_quotation_line IS NULL OR od.id_quotation_line = 0)";
         if($type == ORDER::ONLY_QUOTATIONS) $sql .= " AND (od.id_quotation_line IS NOT NULL OR od.id_quotation_line <> 0)";
 
@@ -282,13 +290,17 @@ class OrderDetail extends OrderDetailCore {
     **/
     public static function sumProductTurnover($date_begin, $date_end, $reference, $use_taxes = false) {
 
-        if(!is_string($date_begin)) $date_begin = $date_begin->format('Y-m-d 00:00:00');
-        if(!is_string($date_end)) $date_end = $date_end->format('Y-m-d 23:59:59');
+        $options['date_begin'] = $date_begin;
+        $options['date_end'] = $date_end;
+        $ids = Order::findIds($options);
+
+        if(!$ids)
+            return 0;
 
         if($use_taxes) $field = "od.total_price_tax_incl";
         else $field = "od.total_price_tax_excl";
 
-        $sql = "SELECT SUM($field) FROM ps_order_detail od, ps_orders o WHERE od.id_order = o.id_order AND o.date_add >= '$date_begin' AND o.date_add <= '$date_end' AND od.product_reference = '$reference'";
+        $sql = "SELECT SUM($field) FROM ps_order_detail od WHERE od.id_order IN (".implode(',', $ids).") AND od.product_reference = '$reference'";
 
         return (float)Db::getInstance()->getValue($sql);
 
