@@ -17,7 +17,7 @@ class AdminReportControllerCore extends AdminController {
 
         // Formulaire
         $this->selected_week = Tools::getValue('selected_week', date('W'));
-        $this->use_taxes = Tools::getValue('selected_taxes', true);
+        $this->use_taxes = Tools::getValue('selected_taxes', false);
 
         // Récupérer les dates
         $date = new DateTime();
