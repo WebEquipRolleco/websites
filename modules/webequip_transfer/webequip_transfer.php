@@ -95,7 +95,7 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME, 'updatable'=>true);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
+		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute');
@@ -235,19 +235,35 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_manufacturer");
-		Db::getInstance()->execute("DELETE FROM ps_manufacturer_lang");
-		Db::getInstance()->execute("DELETE FROM ps_manufacturer_shop");
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_manufacturer");
+			Db::getInstance()->execute("DELETE FROM ps_manufacturer_lang");
+			Db::getInstance()->execute("DELETE FROM ps_manufacturer_shop");
+		}
+		else {
+			$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_manufacturer) FROM id_manufacturer");
+			$ids = array_map(function($e) { return $e['id_manufacturer']; }, $ids);
+			$ids = trim(implode(",", $ids));	
+		}
 
-		$result = $this->old_db->query("SELECT * FROM ps_manufacturer");
+		$sql = "SELECT * FROM ps_manufacturer";
+		if($isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
+		
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer VALUES(".$row['id_manufacturer'].", '".pSql(utf8_encode($row['name']))."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].")");
 
-		$result = $this->old_db->query("SELECT * FROM ps_manufacturer_lang");
+		$sql = "SELECT * FROM ps_manufacturer_lang";
+		if($isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer_lang VALUES(".$row['id_manufacturer'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".pSql($row['short_description'])."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
 
-		$result = $this->old_db->query("SELECT * FROM ps_manufacturer_shop");
+		$sql = "SELECT * FROM ps_manufacturer_shop";
+		if($isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_manufacturer_shop VALUES(".$row['id_manufacturer'].", ".$row['id_shop'].")");
 	}
