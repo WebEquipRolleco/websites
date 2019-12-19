@@ -94,7 +94,7 @@ class webequip_transfer extends Module {
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME, 'updatable'=>true);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
-		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true);
+		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true);
 		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
@@ -188,11 +188,21 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_supplier");
-		Db::getInstance()->execute("DELETE FROM ps_supplier_lang");
-		Db::getInstance()->execute("DELETE FROM ps_supplier_shop");
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_supplier");
+			Db::getInstance()->execute("DELETE FROM ps_supplier_lang");
+			Db::getInstance()->execute("DELETE FROM ps_supplier_shop");
+		}
+		else {
+			$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_supplier) FROM ps_supplier");
+			$ids = array_map(function($e) { return $e['id_supplier']; }, $ids);
+			$ids = trim(implode(",", $ids));
+		}
 
-		$result = $this->old_db->query("SELECT * FROM ps_supplier");
+		$sql = "SELECT * FROM ps_supplier";
+		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			$split = explode('-', $row['name']);
@@ -202,11 +212,17 @@ class webequip_transfer extends Module {
 				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", NULL, '".pSql(utf8_encode($row['name']))."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
 		}
 
-		$result = $this->old_db->query("SELECT * FROM ps_supplier_lang");
+		$sql = "SELECT * FROM ps_supplier_lang";
+		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_supplier_lang VALUES(".$row['id_supplier'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
 
-		$result = $this->old_db->query("SELECT * FROM ps_supplier_shop");
+		$sql = "SELECT * FROM ps_supplier_shop";
+		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("INSERT INTO ps_supplier_shop VALUES(".$row['id_supplier'].", ".$row['id_shop'].")");
 		}
@@ -553,7 +569,7 @@ class webequip_transfer extends Module {
 		}
 
 		$query = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
-		if($ids) $query .= " WHERE d.id_activis_devis NOT IN ($ids)";
+		if(isset($ids) and $ids) $query .= " WHERE d.id_activis_devis NOT IN ($ids)";
 		$query .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis ORDER BY d.id_activis_devis DESC";
 
 		$result = $this->old_db->query($query);
@@ -609,7 +625,7 @@ class webequip_transfer extends Module {
 		}
 
 		$query = "SELECT * FROM ps_activis_devis_line";
-		if($ids) $query .= " WHERE id_activis_devis_line NOT IN ($ids)";
+		if(isset($ids) and $ids) $query .= " WHERE id_activis_devis_line NOT IN ($ids)";
 		$query .= " ORDER BY id_activis_devis DESC";
 
 		$result = $this->old_db->query($query);
@@ -714,7 +730,7 @@ class webequip_transfer extends Module {
 		}
 
 		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
-		if($ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
+		if(isset($ids) and $ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
 
 		$query = "SELECT * FROM ps_product WHERE id_product IN ($sub_query)";
 
@@ -778,7 +794,7 @@ class webequip_transfer extends Module {
 			)");
 
 		$query = 'SELECT * FROM ps_product_shop';
-		if($ids) $query .= " WHERE id_product NOT IN ($ids)";
+		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc())
@@ -819,7 +835,7 @@ class webequip_transfer extends Module {
 			)");
 
 		$query = 'SELECT * FROM ps_product_lang';
-		if($ids) $query .= " WHERE id_product NOT IN ($ids)";
+		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc())
