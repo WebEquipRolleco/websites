@@ -706,6 +706,7 @@ class AdminImportExportControllerCore extends AdminController {
                 $margin = $order->total_products - $buying_price;
                 $margin_rate = ($order->total_products > 0) ? Tools::getMarginRate($margin, $order->total_products) : 0;
 
+                $data = array();
                 $data[] = $order->getDate('date_add')->format('d/m/Y');
                 $data[] = $order->reference;
                 $data[] = $detail->reference;
