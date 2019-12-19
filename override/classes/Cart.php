@@ -207,7 +207,7 @@ class Cart extends CartCore {
 
         }
 
-        if(in_array($type, array(Cart::BOTH, Cart::BOTH_WITHOUT_SHIPPING)))
+        if(!$products and in_array($type, array(Cart::BOTH, Cart::BOTH_WITHOUT_SHIPPING, Cart::ONLY_PRODUCTS)))
             $value += OrderOptionCart::getCartTotal($this->id);
 
         // ROUND AND RETURN
