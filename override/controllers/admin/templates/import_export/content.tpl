@@ -141,8 +141,8 @@
 					</div>
 					<div class="col-lg-4">
 						<div class="form-group">
-							<label>Délimiter de valeurs</label>
-							<input type="text" class="form-control" name="delimiter" value="{$delimiter}" required>
+							<label>Séparateur de colonnes</label>
+							<input type="text" class="form-control" name="separator" value="{$separator}" required>
 						</div>
 					</div>
 				</div>
