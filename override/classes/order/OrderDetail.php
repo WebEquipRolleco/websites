@@ -275,7 +275,7 @@ class OrderDetail extends OrderDetailCore {
 
         $sql = "SELECT SUM($field) FROM ps_order_detail od WHERE od.id_order IN (".implode(',', $ids).")";
         if($type == ORDER::ONLY_PRODUCTS) $sql .= " AND (od.id_quotation_line IS NULL OR od.id_quotation_line = 0)";
-        if($type == ORDER::ONLY_QUOTATIONS) $sql .= " AND (od.id_quotation_line IS NOT NULL OR od.id_quotation_line <> 0)";
+        if($type == ORDER::ONLY_QUOTATIONS) $sql .= " AND (od.id_quotation_line IS NOT NULL AND od.id_quotation_line <> 0)";
 
         return (float)Db::getInstance()->getValue($sql);
     }
