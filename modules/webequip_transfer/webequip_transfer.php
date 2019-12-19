@@ -87,7 +87,7 @@ class webequip_transfer extends Module {
 	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
-		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false);
+		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
@@ -272,10 +272,19 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_customer");
-		Db::getInstance()->execute("DELETE FROM ps_customer_group");
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_customer");
+		}
+		else {
+			$ids = Db::getInstance()->executeS("SELECT id_customer FROM ps_customer");
+			$ids = array_map(function($e) { return $e['id_customer']; }, $ids);
+			$ids = trim(implode(',', $ids));
+		}
 
-		$result = $this->old_db->query("SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c");
+		$sql = "SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c";
+		if(isset($ids) and $ids) $sql .= " AND c.id_customer NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_customer VALUES(
 				".$row['id_customer'].",
@@ -325,6 +334,7 @@ class webequip_transfer extends Module {
 				NULL
 			)");
 
+		Db::getInstance()->execute("DELETE FROM ps_customer_group");
 		$result = $this->old_db->query("SELECT * FROM ps_customer_group");
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_customer_group VALUES(".$row['id_customer'].", ".$row['id_group'].")");
