@@ -71,6 +71,13 @@ class QuotationAssociation extends ObjectModel {
     }
 
     /**
+    * Efface les associations de devis supprimés
+    **/
+    public static function erazeDeletedQuotations() {
+        Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE ".Quotation::TABLE_PRIMARY." NOT IN (SELECT ".Quotation::TABLE_PRIMARY." FROM "._DB_PREFIX_.Quotation::TABLE_NAME.")");
+    }
+
+    /**
     * Supprime un devis du panier
     * @param int $id_quotation
     * @param int $id_cart

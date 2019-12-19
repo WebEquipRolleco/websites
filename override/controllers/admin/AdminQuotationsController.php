@@ -241,6 +241,9 @@ class AdminQuotationsController extends AdminController {
 
     	parent::initContent();
 
+        if(Tools::getIsset('deletequotation'))
+            QuotationAssociation::erazeDeletedQuotations();
+        
     	if(Tools::getIsset('updatequotation') or Tools::getIsset('addquotation')) {
 
     		$quotation = new Quotation($this->id_quotation);
