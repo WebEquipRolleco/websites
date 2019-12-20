@@ -495,7 +495,7 @@ class Order extends OrderCore {
 	**/
 	public static function  sumTurnover($use_taxes = false, $date_begin = false, $date_end = false, $id_shop = null) {
 
-		$options['paid'] = 1;
+		//$options['paid'] = 1;
 		if($date_begin) $options['date_begin'] = $date_begin;
         if($date_end) $options['date_end'] = $date_end;
         if($id_shop) $options['shops'][] = $id_shop;
