@@ -91,9 +91,10 @@ class Product extends ProductCore {
 	* UTILISATION : devis
 	* @param int $id_lang
 	* @param bool $quotation
+	* @param int|null $id_shop
 	* @return array
 	**/
-	public static function getSimpleActiveProducts($id_lang = 1, $quotation = false) {
+	public static function getSimpleActiveProducts($id_lang = 1, $quotation = false, $id_shop = null) {
         
         $context = Context::getContext();
 
@@ -115,8 +116,9 @@ class Product extends ProductCore {
 				FROM `'._DB_PREFIX_.'product` p
 				'.Shop::addSqlAssociation('product', 'p').'
 				LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product` '.Shop::addSqlRestrictionOnLang('pl').')
-				LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa ON (p.`id_product` = pa.`id_product`)
-				WHERE pl.`id_lang` = '.(int)$id_lang.'
+				LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa ON (p.`id_product` = pa.`id_product`)'
+				.($id_shop ? ' INNER JOIN `'._DB_PREFIX_.'product_shop` ps ON (p.`id_product` = ps.`id_product` AND ps.`id_shop` = '.$id_shop.') ' : '').
+				'WHERE pl.`id_lang` = '.(int)$id_lang.'
 				AND p.active = 1
 				'.($front ? ' AND product_shop.`visibility` IN ("both", "catalog")' : '');
 
