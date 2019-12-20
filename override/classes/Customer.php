@@ -180,14 +180,20 @@ class Customer extends CustomerCore {
 	/**
 	* Recherche un client
 	* UTILISATION : devis
+	* @param string $term
+	* @param int|null $id_shop
 	* @return array
 	**/
-	public static function search($term) {
+	public static function search($term, $id_shop = null) {
 
 		if(!$term)
 			return array();
 		
 		$term = "'%".pSql(strtolower($term))."%'";
-		return Db::getInstance()->executeS("SELECT id_customer AS id, firstname, lastname, email, company FROM ps_customer WHERE LOWER(firstname) LIKE $term collate utf8_bin OR LOWER(lastname) LIKE $term collate utf8_bin OR LOWER(email) LIKE $term OR LOWER(company) LIKE $term collate utf8_bin");	
+
+		$sql = "SELECT id_customer AS id, firstname, lastname, email, company FROM ps_customer WHERE (LOWER(firstname) LIKE $term collate utf8_bin OR LOWER(lastname) LIKE $term collate utf8_bin OR LOWER(email) LIKE $term OR LOWER(company) LIKE $term collate utf8_bin)";
+		if($id_shop) $sql .= " AND id_shop = $id_shop";
+		
+		return Db::getInstance()->executeS($sql);	
 	}
 }

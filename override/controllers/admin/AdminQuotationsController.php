@@ -202,7 +202,7 @@ class AdminQuotationsController extends AdminController {
             break;
 
             case 'search_customer':
-                die(json_encode(Customer::search(Tools::getValue('term'))));
+                die(json_encode(Customer::search(Tools::getValue('term'), Tools::getValue('id_shop'))));
             break;
     	}
     }

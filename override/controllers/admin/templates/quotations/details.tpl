@@ -569,7 +569,7 @@
 
 				$.ajax({
 					url: "{$link->getAdminLink('AdminQuotations')}",
-					data: { ajax:true, action:'search_customer', term:term },
+					data: { ajax:true, action:'search_customer', term:term, id_shop:{$quotation->id_shop} },
 					dataType: "json",
 					success : function(response) {
 
