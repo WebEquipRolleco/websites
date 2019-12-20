@@ -190,8 +190,8 @@ class webequip_transfer extends Module {
 	private function getSavedIds($key, $table) {
 		
 		$ids = Db::getInstance()->executeS("SELECT $key FROM $table");
-		$ids = array_map(function($e) { return $e[$key]; }, $ids);
-		return $ids = trim(implode(',', $ids));
+		$ids = array_map(function($e) { return array_shift($e); }, $ids);
+		return trim(implode(',', $ids));
 	}
 
 	/**
