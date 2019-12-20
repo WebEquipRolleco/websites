@@ -549,24 +549,30 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_order_history", "ps_order_history");
 
-		$sql = "SELECT * FROM ps_order_history";
-		if(isset($ids) and $ids) $sql .= " WHERE id_order_history NOT IN ($ids)";
+		$sql = "SELECT * FROM ps_order_history WHERE id_order IN (".$this->getSavedIds('id_order', 'ps_orders').")";
+		if(isset($ids) and $ids) $sql .= " AND id_order_history NOT IN ($ids)";
 		$sql .= " ORDER BY id_order_history DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
-			$history = new OrderHistory();
-			$history->force_id = true;
+			$history = new OrderHistory($row['id_order_history']);
 
-			$history->id = $row['id_order_history'];
 			$history->id_order = $row['id_order'];
 		    $history->id_order_state = $row['id_order_state'];
 		    $history->id_employee = $row['id_employee'];
 		    $history->date_add = $row['date_add'];
 		    $history->date_upd = date('Y-m-d H:i:s');
 
-		    $history->save();
+		    if($history->id == $row['id_order_history']){
+		    	$history->update();
+		    }
+		    else {
+
+		    	$history->id = $row['id_order_history'];
+		    	$history->force_id = true;
+		    	$history->add();	
+		    }
 		}
 	}
 
