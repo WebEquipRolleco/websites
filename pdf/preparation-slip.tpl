@@ -159,10 +159,10 @@
 					<span style="font-size:8pt; font-weight:bold;">{l s='Réf.' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td width="10%" style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s="Prix d'achat" d='Shop.Pdf' pdf=true}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s="PAU HT" d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td width="10%" style="text-align:center">
-					<span style="font-size:8pt; font-weight:bold;">{l s='Prix unitaire (HT)' d='Shop.Pdf' pdf=true}</span>
+					<span style="font-size:8pt; font-weight:bold;">{l s='PVU HT' d='Shop.Pdf' pdf=true}</span>
 				</td>
 				<td width="5%" style="text-align:center">
 					<span style="font-size:8pt; font-weight:bold;">{l s='Qté' d='Shop.Pdf' pdf=true}</span>
