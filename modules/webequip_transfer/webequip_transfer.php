@@ -437,8 +437,16 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_order_detail");
-		$result = $this->old_db->query("SELECT * FROM ps_order_detail ORDER BY id_order_detail DESC");
+		if(Tools::getValue('eraze'))
+			Db::getInstance()->execute("DELETE FROM ps_order_detail");
+		else
+			$ids = $this->getSavedIds("id_order_detail", "ps_order_detail");
+
+		$sql = "SELECT * FROM ps_order_detail";
+		if(isset($ids) and $ids) $sql .= " WHERE id_order_detail NOT IN ($ids)";
+		$sql .= " ORDER BY id_order_detail DESC";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_order_detail VALUES(
 				".$row['id_order_detail'].",
