@@ -89,9 +89,10 @@ class webequip_transfer extends Module {
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
-		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
+		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
+		$data['ps_order_history'] = array('name'=>"Commandes : historique des états", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME, 'updatable'=>true);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -182,6 +183,18 @@ class webequip_transfer extends Module {
 	}
 
 	/**
+	* Récupère les ID à ignorer (dans le cas d'une mise à jour de la BDD et non d'un remplacement)
+	* @param string $key Clé primaire a sauvegarder
+	* @param string $table Table concernée par le transfert de données
+	**/
+	private function getSavedIds($key, $table) {
+		
+		$ids = Db::getInstance()->executeS("SELECT $key FROM $table");
+		$ids = array_map(function($e) { return $e[$key]; }, $ids);
+		return $ids = trim(implode(',', $ids));
+	}
+
+	/**
 	* Transfert des fournisseurs
 	**/
 	private function transfer_ps_supplier() {
@@ -193,11 +206,8 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("DELETE FROM ps_supplier_lang");
 			Db::getInstance()->execute("DELETE FROM ps_supplier_shop");
 		}
-		else {
-			$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_supplier) FROM ps_supplier");
-			$ids = array_map(function($e) { return $e['id_supplier']; }, $ids);
-			$ids = trim(implode(",", $ids));
-		}
+		else
+			$ids = $this->getSavedIds("id_supplier", "ps_supplier");
 
 		$sql = "SELECT * FROM ps_supplier";
 		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
@@ -238,13 +248,9 @@ class webequip_transfer extends Module {
 		if(Tools::getValue('eraze')) {
 			Db::getInstance()->execute("DELETE FROM ps_manufacturer");
 			Db::getInstance()->execute("DELETE FROM ps_manufacturer_lang");
-			
 		}
-		else {
-			$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_manufacturer) FROM id_manufacturer");
-			$ids = array_map(function($e) { return $e['id_manufacturer']; }, $ids);
-			$ids = trim(implode(",", $ids));	
-		}
+		else
+			$ids = $this->getSavedIds("id_manufacturer", "ps_manufacturer");
 
 		$sql = "SELECT * FROM ps_manufacturer";
 		if(isset($ids) and $ids) $sql .= " WHERE id_manufacturer NOT IN ($ids)";
@@ -286,14 +292,10 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze')) {
+		if(Tools::getValue('eraze'))
 			Db::getInstance()->execute("DELETE FROM ps_customer");
-		}
-		else {
-			$ids = Db::getInstance()->executeS("SELECT id_customer FROM ps_customer");
-			$ids = array_map(function($e) { return $e['id_customer']; }, $ids);
-			$ids = trim(implode(',', $ids));
-		}
+		else
+			$ids = $this->getSavedIds("id_customer", "ps_customer");
 
 		$sql = "SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c";
 		if(isset($ids) and $ids) $sql .= " WHERE c.id_customer NOT IN ($ids)";
@@ -361,10 +363,16 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_orders");
-		Db::getInstance()->execute("DELETE FROM ps_order_history");
+		if(Tools::getValue('eraze'))
+			Db::getInstance()->execute("DELETE FROM ps_orders");
+		else
+			$ids = $this->getSavedIds("id_order", "ps_orders");
 
-		$result = $this->old_db->query("SELECT * FROM ps_orders");
+		$sql = "SELECT * FROM ps_orders";
+		if(isset($ids) and $ids) $sql .= " WHERE id_order NOT IN ($ids)";
+		$sql .= " ORDER BY id_order DESC";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) 
 			Db::getInstance()->execute("INSERT INTO ps_orders VALUES(
 				".$row['id_order'].",
@@ -430,7 +438,7 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		Db::getInstance()->execute("DELETE FROM ps_order_detail");
-		$result = $this->old_db->query("SELECT * FROM ps_order_detail ORDER BY id_order_detail");
+		$result = $this->old_db->query("SELECT * FROM ps_order_detail ORDER BY id_order_detail DESC");
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_order_detail VALUES(
 				".$row['id_order_detail'].",
@@ -487,6 +495,9 @@ class webequip_transfer extends Module {
 			)");
 	}
 
+	/**
+	* Transfert des états de commande
+	**/
 	private function transfer_ps_order_state() {
 
 		$this->connectToDB();
@@ -524,6 +535,39 @@ class webequip_transfer extends Module {
 				'".pSql(utf8_encode($row['name']))."',
 				'".$row['template']."'
 			)");
+	}
+
+	/**
+	* Transfert des historiques de changement de statut
+	**/
+	private function transfer_ps_order_history() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze'))
+			Db::getInstance()->execute("DELETE FROM ps_order_history");
+		else
+			$ids = $this->getSavedIds("id_order_history", "ps_order_history");
+
+		$sql = "SELECT * FROM ps_order_history";
+		if(isset($ids) and $ids) $sql .= " WHERE id_order_history NOT IN ($ids)";
+		$sql .= " ORDER BY id_order_history DESC";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$history = new OrderHistory();
+			$history->force_id = true;
+
+			$history->id = $row['id_order_history'];
+			$history->id_order = $row['id_order'];
+		    $history->id_order_state = $row['id_order_state'];
+		    $history->id_employee = $row['id_employee'];
+		    $history->date_add = $row['date_add'];
+		    $history->date_upd = date('Y-m-d H:i:s');
+
+		    $history->save();
+		}
 	}
 
 	/**
@@ -583,14 +627,8 @@ class webequip_transfer extends Module {
 
 		if(Tools::getValue('eraze'))
 			Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.Quotation::TABLE_NAME);
-		else {
-
-			$ids = Db::getInstance()->executeS("SELECT ".Quotation::TABLE_PRIMARY." FROM "._DB_PREFIX_.Quotation::TABLE_NAME);
-			if($ids) {
-				$ids = array_map(function($e) { return $e[Quotation::TABLE_PRIMARY]; }, $ids);
-				$ids = trim(implode(',', $ids));
-			}
-		}
+		else
+			$ids = $this->getSavedIds(Quotation::TABLE_PRIMARY, _DB_PREFIX_.Quotation::TABLE_NAME);
 
 		$states[1] = Quotation::STATUS_REFUSED;
 		$states[2] = Quotation::STATUS_WAITING;
@@ -643,14 +681,8 @@ class webequip_transfer extends Module {
 
 		if(Tools::getValue('eraze'))
 			Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME);
-		else {
-
-			$ids = Db::getInstance()->executeS("SELECT ".QuotationLine::TABLE_PRIMARY." FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME);
-			if($ids) {
-				$ids = array_map(function($e) { return $e[QuotationLine::TABLE_PRIMARY]; }, $ids);
-				$ids = trim(implode(',', $ids));
-			}
-		}
+		else
+			$ids = $this->getSavedIds(QuotationLine::TABLE_PRIMARY, _DB_PREFIX_.QuotationLine::TABLE_NAME);
 
 		$query = "SELECT * FROM ps_activis_devis_line";
 		if(isset($ids) and $ids) $query .= " WHERE id_activis_devis_line NOT IN ($ids)";
@@ -748,14 +780,8 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("DELETE FROM ps_product_shop");
 			Db::getInstance()->execute("DELETE FROM ps_product_lang");
 		}
-		else {
-
-			$ids = Db::getInstance()->executeS("SELECT id_product FROM ps_product");
-			if($ids) {
-				$ids = array_map(function($e) { return $e['id_product']; }, $ids);
-				$ids = trim(implode(',', $ids));
-			}
-		}
+		else
+			$ids = $this->getSavedIds("id_product", "ps_product");
 
 		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
 		if(isset($ids) and $ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
