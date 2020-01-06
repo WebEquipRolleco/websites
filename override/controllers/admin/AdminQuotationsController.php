@@ -33,7 +33,7 @@ class AdminQuotationsController extends AdminController {
             )
         );
 
-        $this->_select = "a.*, a.id_quotation AS id, a.id_quotation AS id_2, a.id_quotation AS id_3, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price, c.company";
+        $this->_select = "a.*, CONCAT_WS('. ', c.email, a.email) AS emails, a.id_quotation AS id, a.id_quotation AS id_2, a.id_quotation AS id_3, CONCAT(c.firstname, ' ', c.lastname) AS customer, CONCAT(e.firstname, ' ', e.lastname) AS employee, (SELECT SUM(l.selling_price * l.quantity) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." l WHERE l.id_quotation = a.id_quotation) AS price, c.company";
         $this->_join = ' LEFT JOIN '._DB_PREFIX_.'customer c ON (a.id_customer = c.id_customer)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
         $this->_where = " AND a.id_shop = ".$this->context->shop->id;
@@ -60,7 +60,7 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Client', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
-            'email' => array(
+            'emails' => array(
                 'title' => $this->trans('E-mails', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
