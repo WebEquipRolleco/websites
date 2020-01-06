@@ -86,7 +86,7 @@ class webequip_transfer extends Module {
 	**/
 	private function getTransferList() {
 		
-		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
+		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
@@ -285,10 +285,48 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_address");
-		$result = $this->old_db->query("SELECT * FROM ps_address");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_address VALUES(".$row['id_address'].", ".$row['id_country'].", ".$row['id_state'].", ".$row['id_customer'].", ".$row['id_manufacturer'].", ".$row['id_supplier'].", ".$row['id_warehouse'].", '".pSql(utf8_encode($row['alias']))."', '".pSql(utf8_encode($row['company']))."', '".pSql(utf8_encode($row['lastname']))."', '".pSql(utf8_encode($row['firstname']))."', '".pSql(utf8_encode($row['address1']))."', '".pSql(utf8_encode($row['address2']))."', '".$row['postcode']."', '".pSql(utf8_encode($row['city']))."', '".pSql(utf8_encode($row['other']))."', '".$row['phone']."', '".$row['phone_mobile']."', '".$row['vat_number']."', '".$row['dni']."', '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['deleted'].")");
+		if(Tools::getValue('eraze'))
+			Db::getInstance()->execute("DELETE FROM ps_address");
+		else
+			$ids = $this->getSavedIds("id_address", "ps_address");
+
+		$sql = "SELECT * FROM ps_address";
+		if(isset($ids) and $ids) $sql .= " WHERE id_address NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$address = new Address($row['id_address'], 1);
+			$update = !empty($address->id);
+
+			$address->id = $row['id_address'];
+			$address->id_customer = $row['id_customer'];
+			$address->id_manufacturer = $row['id_manufacturer'];
+			$address->id_supplier = $row['id_supplier'];
+			$address->id_warehouse = $row['id_warehouse'];
+			$address->id_country = $row['id_country'];
+			$address->id_state = $row['id_state'];
+			$address->country = utf8_encode($row['country']);
+			$address->alias = utf8_encode($row['alias']);
+			$address->company = utf8_encode($row['company']);;
+			$address->lastname = $row['lastname'] ? utf8_encode($row['lastname']) : '-';
+			$address->firstname = $row['firstname'] ? utf8_encode($row['firstname']) : '-';
+			$address->address1 = str_replace("?", "'", utf8_encode($row['address1']));
+			$address->address2 = utf8_encode($row['address2']);
+			$address->postcode = $row['postcode'];
+			$address->city = utf8_encode($row['city']);
+			$address->other = utf8_encode($row['other']);
+			$address->phone = is_numeric($row['phone']) ? $row['phone'] : null;
+			$address->phone_mobile = is_numeric($row['phone_mobile']) ? $row['phone_mobile'] : null;
+			$address->vat_number = $row['vat_number'];
+			$address->dni = $row['dni'];
+			$address->date_add = $row['date_add'];
+			$address->date_upd = $row['date_upd'];
+			$address->deleted = $row['deleted'];
+
+			$address->record($update);
+		}
+
 	}
 
 	/**
