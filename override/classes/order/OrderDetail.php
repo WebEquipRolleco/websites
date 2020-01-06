@@ -73,9 +73,13 @@ class OrderDetail extends OrderDetailCore {
         foreach ($product_list as $product)
             $this->create($order, $cart, $product, $id_order_state, $id_order_invoice, $use_taxes, $id_warehouse);
 
-        foreach(QuotationAssociation::find($cart->id) as $quotation)
+        foreach(QuotationAssociation::find($cart->id) as $quotation) {
             foreach($quotation->getProducts() as $line)
                 $this->createQuotationLine($order, $cart, $line, $id_order_invoice, $id_warehouse);
+
+            $quotation->state = Quotation::STATUS_VALIDATED;
+            $quotation->save();
+        }
 
         foreach(OrderOptionCart::findByCart($cart->id) as $option)
         	$this->createOption($order, $cart, $option, $id_order_invoice, $id_warehouse);
@@ -174,9 +178,6 @@ class OrderDetail extends OrderDetailCore {
         $details->original_product_price = $price_ttc;
 
         $details->save();
-
-        $line->getQuotation()->state = Quotation::STATUS_VALIDATED;
-        $line->getQuotation()->save();
     }
 
     /**
