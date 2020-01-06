@@ -220,7 +220,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                 // Liste de toutes les caractéristiques
                 foreach($attributes as $group)
-                    $data[] = Db::getInstance()->getValue("SELECT al.name FROM ps_attribute a, ps_attribute_lang al, ps_attribute_group ag, ps_product_attribute_combination pac WHERE a.id_attribute = al.id_attribute AND al.id_attribute = pac.id_product_attribute AND a.id_attribute_group = ".$group['id_attribute_group']." AND pac.id_product_attribute = ".$combination->id);
+                    $data[] = Db::getInstance()->getValue("SELECT al.name FROM ps_attribute a, ps_attribute_lang al, ps_attribute_group ag, ps_product_attribute_combination pac WHERE a.id_attribute = al.id_attribute AND al.id_attribute = pac.id_attribute AND a.id_attribute_group = ".$group['id_attribute_group']." AND pac.id_product_attribute = ".$combination->id);
 
                 $csv .= implode($this->separator, $data).self::END_OF_LINE;
             }
