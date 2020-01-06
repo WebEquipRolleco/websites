@@ -215,7 +215,7 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
-			$supplier = new supplier($row['id_supplier'], 1);
+			$supplier = new Supplier($row['id_supplier'], 1);
 			$update = !empty($supplier->id);
 			$split = explode('-', $row['name']);
 
@@ -237,34 +237,6 @@ class webequip_transfer extends Module {
 		   	$supplier->record($update);
 		}
 
-		/*
-		$sql = "SELECT * FROM ps_supplier";
-		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$split = explode('-', $row['name']);
-			if(count($split) == 2)
-				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", '".trim($split[0])."', '".trim(pSql(utf8_encode($split[1])))."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
-			else
-				Db::getInstance()->execute("INSERT INTO ps_supplier VALUES(".$row['id_supplier'].", NULL, '".pSql(utf8_encode($row['name']))."', '".$row['emails']."', NULL, '".$row['date_add']."', '".$row['date_upd']."', ".$row['active'].", ".$row['BC'].", ".$row['BL'].")");
-		}
-
-		$sql = "SELECT * FROM ps_supplier_lang";
-		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_supplier_lang VALUES(".$row['id_supplier'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['description']))."', '".$row['meta_title']."', '".$row['meta_keywords']."', '".$row['meta_description']."')");
-
-		$sql = "SELECT * FROM ps_supplier_shop";
-		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_supplier_shop VALUES(".$row['id_supplier'].", ".$row['id_shop'].")");
-		*/
 	}
 
 	/**
