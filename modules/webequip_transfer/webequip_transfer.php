@@ -292,6 +292,7 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_address";
 		if(isset($ids) and $ids) $sql .= " WHERE id_address NOT IN ($ids)";
+		$sql .= " ORDER BY id_address DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -341,63 +342,71 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_customer", "ps_customer");
 
+		$id_default_type = AccountType::getDefaultID();
+
 		$sql = "SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c";
 		if(isset($ids) and $ids) $sql .= " WHERE c.id_customer NOT IN ($ids)";
+		$sql .= " ORDER BY c.id_customer DESC";
 
 		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_customer VALUES(
-				".$row['id_customer'].",
-				".$row['id_shop_group'].",
-				".$row['id_shop'].",
-				".$row['id_gender'].",
-				".$row['id_default_group'].",
-				".$row['id_lang'].",
-				".$row['id_risk'].",
-				'".pSql(utf8_encode($row['reference_m3']))."',
-				'".pSql(utf8_encode($row['reference_chorus']))."',
-				'".$row['tva']."',
-				".$row['funding'].",
-				'".$row['date_funding']."',
-				1,
-				NULL,
-				NULL,
-				'".pSql(utf8_encode($row['company']))."',
-				'".pSql(utf8_encode($row['siret']))."',
-				'".$row['ape']."',
-				'".pSql(utf8_encode($row['firstname']))."',
-				'".pSql(utf8_encode($row['lastname']))."',
-				'".pSql(utf8_encode($row['email']))."',
-				'".$row['email_invoice']."',
-				'".$row['email_tracking']."',
-				".($row['rollcash'] ?? 0).",
-				0,
-				'".$row['passwd']."',
-				'".$row['last_passwd_gen']."',
-				'".$row['birthday']."',
-				".$row['newsletter'].",
-				'".$row['ip_registration_newsletter']."',
-				'".$row['newsletter_date_add']."',
-				".$row['optin'].",
-				'".$row['website']."',
-				".$row['outstanding_allow_amount'].",
-				".($row['shop_public_prices'] ?? 0).",
-				".$row['max_payment_days'].",
-				'".$row['secure_key']."',
-				'".pSql(utf8_encode($row['note']))."',
-				".$row['active'].",
-				".$row['is_guest'].",
-				".$row['deleted'].",
-				'".$row['date_add']."',
-				'".$row['date_upd']."',
-				NULL,
-				NULL
-			)");
+		while($row = $result->fetch_assoc()) {
 
-		Db::getInstance()->execute("DELETE FROM ps_customer_group");
-		$result = $this->old_db->query("SELECT * FROM ps_customer_group");
+			$customer = new Customer($row['id_customer']);
+			$update = !empty($customer->id);
+
+    		$customer->id = $row['id_customer'];
+    		$customer->id_shop = $row['id_shop'];
+    		$customer->id_shop_group = ['id_shop_group'];
+    		$customer->secure_key = $row['secure_key'];
+    		$customer->reference = $row['reference_m3'];
+    		$customer->chorus = utf8_encode($row['reference_chorus']);
+    		$customer->note = utf8_encode($row['note']);
+    		$customer->id_account_type = $id_default_type;
+    		$customer->id_gender = $row['id_gender'];
+    		$customer->id_default_group = $row['id_default_group'];
+    		$customer->id_lang = $row['id_lang'];
+    		$customer->lastname = utf8_encode($row['lastname']);
+    		$customer->firstname = utf8_encode($row['firstname']);
+    		$customer->birthday = $row['birthday'];
+    		$customer->email = utf8_encode($row['email']);
+    		$customer->email_invoice = $row['email_invoice'];
+    		$customer->email_tracking = $row['email_tracking'];
+    		$customer->rollcash = ($row['rollcash'] ?? 0);
+    		$customer->newsletter = $row['newsletter'];
+    		$customer->ip_registration_newsletter = $row['ip_registration_newsletter'];
+    		$customer->newsletter_date_add = $row['newsletter_date_add'];
+    		$customer->optin = $row['optin'];
+    		$customer->website = $row['website'];
+    		$customer->company = $row['company'];
+    		$customer->siret = $row['siret'];
+    		$customer->ape = $row['ape'];
+    		$customer->tva = $row['tva'];
+    		$customer->funding = $row['funding'];
+    		$customer->date_funding = $row['date_funding'];
+    		$customer->outstanding_allow_amount = $row['outstanding_allow_amount'];
+    		$customer->show_public_prices = ($row['shop_public_prices'] ?? 0);
+    		$customer->id_risk = $row['id_risk'];
+    		$customer->max_payment_days = $row['max_payment_days'];
+    		$customer->passwd = $row['passwd'];
+    		$customer->last_passwd_gen = $row['last_passwd_gen'];
+    		$customer->active = $row['active'];
+    		$customer->is_guest = $row['is_guest'];
+    		$customer->deleted = $row['deleted'];
+    		$customer->date_add = $row['date_add'];
+    		$customer->date_upd = $row['date_upd'];
+
+			$customer->record($update);
+		}
+
+		$customer->cleanGroups();
+		$ids = array();
+
+		$result = $this->old_db->query("SELECT * FROM ps_customer_group WHERE id_customer = ".$customer->id);
 		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_customer_group VALUES(".$row['id_customer'].", ".$row['id_group'].")");
+			$ids[] = $row['id_group'];
+
+		if(!empty($ids))
+			$customer->addGroups($ids);
 	}
 
 	/**

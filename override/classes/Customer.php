@@ -52,6 +52,8 @@ class Customer extends CustomerCore {
 		self::$definition['fields']['id_account_type'] = array('type' => self::TYPE_INT, 'validate' => 'isInt');
 		self::$definition['fields']['id_customer_state'] = array('type' => self::TYPE_INT, 'validate' => 'isInt');
 		self::$definition['fields']['comment'] = array('type' => self::TYPE_STRING);
+		self::$definition['fields']['email'] = array('type' => self::TYPE_STRING);
+		self::$definition['fields']['company'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['chorus'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['tva'] = array('type' => self::TYPE_STRING);
 		self::$definition['fields']['funding'] = array('type' => self::TYPE_BOOL);

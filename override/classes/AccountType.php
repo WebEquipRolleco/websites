@@ -50,4 +50,11 @@ class AccountTypeCore extends ObjectModel {
     	return $data;
     }
 
+    /**
+    * Retourne le type de compte par défaut
+    **/
+    public static function getDefaultID() {
+        return Db::getInstance()->getValue("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE default_value = 1");
+    }
+    
 }
