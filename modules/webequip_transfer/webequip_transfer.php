@@ -412,6 +412,9 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des commandes
 	**/
+	/**
+	* Transfert des commandes
+	**/
 	private function transfer_ps_orders() {
 
 		$this->connectToDB();
@@ -426,61 +429,62 @@ class webequip_transfer extends Module {
 		$sql .= " ORDER BY id_order DESC";
 
 		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) 
-			Db::getInstance()->execute("INSERT INTO ps_orders VALUES(
-				".$row['id_order'].",
-				'".$row['reference']."',
-				'".pSql(utf8_encode($row['internal_reference']))."', 
-				NULL,
-				NULL,
-				".$row['id_shop_group'].",
-				".$row['id_shop'].",
-				".$row['id_carrier'].",
-				".$row['id_lang'].",
-				".$row['id_customer'].",
-				".$row['id_cart'].",
-				".$row['id_currency'].",
-				".$row['id_address_delivery'].",
-				".$row['id_address_invoice'].",
-				".$row['current_state'].",
-				'".$row['secure_key']."',
-				'".$row['payment']."',
-				".$row['conversion_rate'].",
-				'".$row['module']."',
-				".$row['recyclable'].",
-				".$row['gift'].",
-				'".$row['gift_message']."',
-				".$row['mobile_theme'].",
-				'".$row['shipping_number']."',
-				".$row['total_discounts'].",
-				".$row['total_discounts_tax_incl'].",
-				".($row['total_discount_tax_excl'] ?? 0).",
-				".$row['total_paid'].",
-				".$row['total_paid_tax_incl'].",
-				".$row['total_paid_tax_excl'].",
-				".$row['total_paid_real'].",
-				".$row['total_products'].",
-				".$row['total_products_wt'].",
-				".$row['total_shipping'].",
-				".$row['total_shipping_tax_incl'].",
-				".$row['total_shipping_tax_excl'].",
-				".$row['carrier_tax_rate'].",
-				".$row['total_wrapping'].",
-				".$row['total_wrapping_tax_incl'].",
-				".$row['total_wrapping_tax_excl'].",
-				2,
-				1,
-				".$row['invoice_number'].",
-				NULL,
-				".$row['delivery_number'].",
-				'".$row['invoice_date']."',
-				'".$row['delivery_date']."',
-				".$row['valid'].",
-				0,
-				0,
-				'".$row['date_add']."',
-				'".$row['date_upd']."'
-			)");
+		while($row = $result->fetch_assoc()) {
+
+			$order = new Order($row['id_order']);
+			$update = !empty($order->id);
+
+			$order->id = $row['id_order'];
+			$order->id_address_delivery = $row['id_address_delivery'];
+			$order->id_address_invoice = $row['id_address_invoice'];
+			$order->id_shop_group = $row['id_shop_group'];
+			$order->id_shop = $row['id_shop'];
+			$order->id_cart = $row['id_cart'];
+			$order->id_currency = $row['id_currency'];
+			$order->id_lang = $row['id_lang'];
+			$order->id_customer = $row['id_customer'];
+			$order->id_carrier = $row['id_carrier'];
+			$order->current_state = $row['current_state'];
+			$order->secure_key = $row['secure_key'];
+			$order->payment = utf8_encode($row['payment']);
+			$order->module = $row['module'];
+			$order->conversion_rate = $row['conversion_rate'];
+			$order->recyclable = $row['recyclable'];
+			$order->gift = $row['gift'];
+			$order->gift_message = $row['gift_message'];
+			$order->mobile_theme = $row['mobile_theme'];
+			$order->shipping_number = $row['shipping_number'];
+			$order->total_discounts = $row['total_discounts'];
+			$order->total_discounts_tax_incl = $row['total_discounts_tax_incl'];
+			$order->total_discounts_tax_excl = ($row['total_discount_tax_excl'] ?? 0);
+			$order->total_paid = $row['total_paid'];
+			$order->total_paid_tax_incl = $row['total_paid_tax_incl'];
+			$order->total_paid_tax_excl = $row['total_paid_tax_excl'];
+			$order->total_paid_real = $row['total_paid_real'];
+			$order->total_products = $row['total_products'];
+			$order->total_products_wt = $row['total_products_wt'];
+			$order->total_shipping = $row['total_shipping'];
+			$order->total_shipping_tax_incl = $row['total_shipping_tax_incl'];
+			$order->total_shipping_tax_excl = $row['total_shipping_tax_excl'];
+			$order->carrier_tax_rate = $row['carrier_tax_rate'];
+			$order->total_wrapping = $row['total_wrapping'];
+			$order->total_wrapping_tax_incl = $row['total_wrapping_tax_incl'];
+			$order->total_wrapping_tax_excl = $row['total_wrapping_tax_excl'];
+			$order->invoice_number = $row['invoice_number'];
+			$order->delivery_number = $row['delivery_number'];
+			$order->invoice_date = $row['invoice_date'];
+			$order->delivery_date = $row['delivery_date'];
+			$order->valid = $row['valid'];
+			$order->date_add = $row['date_add'];
+			$order->date_upd = $row['date_upd'];
+			$order->reference = $row['reference'];
+			$order->internal_reference = utf8_encode($row['internal_reference']);
+			$order->round_mode = 2;
+			$order->round_type = 1;
+
+			$order->record($udpate);
+		}
+
 	}
 
 	/**
