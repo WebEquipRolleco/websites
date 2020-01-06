@@ -513,7 +513,39 @@ class webequip_transfer extends Module {
 		Db::getInstance()->execute("DELETE FROM ps_order_state");
 		Db::getInstance()->execute("DELETE FROM ps_order_state_lang");
 
-		$result = $this->old_db->query("SELECT * FROM ps_order_state");
+		$result = $this->old_db->query("SELECT * FROM ps_order_state os, ps_order_state_lang osl WHERE os.id_order_state = osl.id_order_state");
+		while($row = $result->fetch_assoc()) {
+
+			$state = new OrderState($row['id_order_state']);
+			$update = !empty($state->id);
+
+			$state->id = $row['id_order_state'];
+			$state->name = utf8_encode($row['name']);
+		    $state->template = $row['template'];
+		    $state->send_email = $row['send_email'];
+		    $state->module_name = $row['module_name'];
+		    $state->invoice = $row['invoice'];
+		    $state->color = $row['color'];
+		    $state->unremovable = $row['unremovable'];
+		    $state->logable = $row['logable'];
+		    $state->delivery = $row['delivery'];
+		    $state->hidden = $row['hidden'];
+		    $state->shipped = $row['shipped'];
+		    $state->paid = $row['paid'];
+		    $state->proforma = $row['proforma'];
+		    $state->pdf_invoice = false;
+		    $state->pdf_delivery = false;
+		    $state->deleted = $orw['deleted'];
+
+		    if($update)
+		    	$state->save();
+		    else {
+		    	$state->force_id = true;
+		    	$state->add();
+		    }
+		}
+
+		/*$result = $this->old_db->query("SELECT * FROM ps_order_state");
 		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_order_state VALUES(
 				".$row['id_order_state'].",
@@ -542,7 +574,7 @@ class webequip_transfer extends Module {
 				".$row['id_lang'].",
 				'".pSql(utf8_encode($row['name']))."',
 				'".$row['template']."'
-			)");
+			)");*/
 	}
 
 	/**
