@@ -209,6 +209,35 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_supplier", "ps_supplier");
 
+		$sql = "SELECT * FROM ps_supplier s, ps_supplier_lang sl WHERE s.id_supplier = sl.id_supplier AND sl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND id_supplier NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$supplier = new supplier($row['id_supplier'], 1);
+			$update = !empty($supplier->id);
+			$split = explode('-', $row['name']);
+
+			$supplier->id = $row['id_supplier'];
+			$supplier->reference = (count($split) == 2) ? $split[0] : null;
+		    $supplier->name = (count($split) == 2) ? utf8_encode($split[1]) : utf8_encode($row['name']);
+		    $supplier->description = utf8_encode($row['description']);
+		    $supplier->emails = $row['emails'];
+		    $supplier->date_add = $row['date_add'];
+		    $supplier->date_upd = $row['date_upd'];
+		    $supplier->link_rewrite;
+		    $supplier->meta_title = $row['meta_title'];
+		    $supplier->meta_keywords = $row['meta_keywords'];
+		    $supplier->meta_description = $row['meta_description'];
+		    $supplier->BC = $row['BC'];
+    		$supplier->BL = $row['BL'];
+		    $supplier->active = $row['active'];
+		    
+		   	$supplier->record($update);
+		}
+
+		/*
 		$sql = "SELECT * FROM ps_supplier";
 		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
 
@@ -233,9 +262,9 @@ class webequip_transfer extends Module {
 		if(isset($ids) and $ids) $sql .= " WHERE id_supplier NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
+		while($row = $result->fetch_assoc())
 			Db::getInstance()->execute("INSERT INTO ps_supplier_shop VALUES(".$row['id_supplier'].", ".$row['id_shop'].")");
-		}
+		*/
 	}
 
 	/**
@@ -537,12 +566,7 @@ class webequip_transfer extends Module {
 		    $state->pdf_delivery = false;
 		    $state->deleted = $orw['deleted'];
 
-		    if($update)
-		    	$state->save();
-		    else {
-		    	$state->force_id = true;
-		    	$state->add();
-		    }
+		    $state->record($update);
 		}
 
 	}
