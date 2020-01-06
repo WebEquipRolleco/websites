@@ -619,22 +619,16 @@ class webequip_transfer extends Module {
 		while($row = $result->fetch_assoc()) {
 
 			$history = new OrderHistory($row['id_order_history']);
+			$update = !empty($history->id);
 
+			$history->id = $row['id_order_history'];
 			$history->id_order = $row['id_order'];
 		    $history->id_order_state = $row['id_order_state'];
 		    $history->id_employee = $row['id_employee'];
 		    $history->date_add = $row['date_add'];
 		    $history->date_upd = date('Y-m-d H:i:s');
 
-		    if($history->id == $row['id_order_history']){
-		    	$history->update();
-		    }
-		    else {
-
-		    	$history->id = $row['id_order_history'];
-		    	$history->force_id = true;
-		    	$history->add();	
-		    }
+		    $history->record($update);	
 		}
 	}
 
