@@ -516,7 +516,7 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query("SELECT * FROM ps_order_state os, ps_order_state_lang osl WHERE os.id_order_state = osl.id_order_state");
 		while($row = $result->fetch_assoc()) {
 
-			$state = new OrderState($row['id_order_state']);
+			$state = new OrderState($row['id_order_state'], 1);
 			$update = !empty($state->id);
 
 			$state->id = $row['id_order_state'];
@@ -545,36 +545,6 @@ class webequip_transfer extends Module {
 		    }
 		}
 
-		/*$result = $this->old_db->query("SELECT * FROM ps_order_state");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_order_state VALUES(
-				".$row['id_order_state'].",
-				".$row['invoice'].",
-				".$row['send_email'].",
-				'".$row['module_name']."',
-				'".$row['color']."',
-				".$row['unremovable'].",
-				".$row['hidden'].",
-				".$row['logable'].",
-				".$row['delivery'].",
-				".$row['shipped'].",
-				".$row['paid'].",
-				".$row['proforma'].",
-				0,
-				0,
-				0,
-				0,
-				".$row['deleted']."
-			)");
-
-		$result = $this->old_db->query("SELECT * FROM ps_order_state_lang");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_order_state_lang VALUES(
-				".$row['id_order_state'].",
-				".$row['id_lang'].",
-				'".pSql(utf8_encode($row['name']))."',
-				'".$row['template']."'
-			)");*/
 	}
 
 	/**
