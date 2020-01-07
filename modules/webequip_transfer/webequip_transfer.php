@@ -90,7 +90,7 @@ class webequip_transfer extends Module {
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
-		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
+		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_order_history'] = array('name'=>"Commandes : historique des états", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME, 'updatable'=>true);
@@ -98,8 +98,6 @@ class webequip_transfer extends Module {
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		//$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group', 'updatable'=>true);
-		//$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute', 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -239,6 +237,7 @@ class webequip_transfer extends Module {
 		    $supplier->active = $row['active'];
 		    
 		   	$supplier->record($update);
+		   	$this->nb_rows++;
 		}
 
 	}
@@ -279,6 +278,7 @@ class webequip_transfer extends Module {
 			$manufacturer->active = $row['active'];
 
 			$manufacturer->record($update);
+			$this->nb_rows++;
 		}
 	}
 
@@ -330,6 +330,7 @@ class webequip_transfer extends Module {
 			$address->deleted = $row['deleted'];
 
 			$address->record($update);
+			$this->nb_rows++;
 		}
 
 	}
@@ -400,17 +401,19 @@ class webequip_transfer extends Module {
     		$customer->date_upd = $row['date_upd'];
 
 			$customer->record($update);
+			$this->nb_rows++;
+
+			$customer->cleanGroups();
+			$ids = array();
+
+			$result = $this->old_db->query("SELECT * FROM ps_customer_group WHERE id_customer = ".$customer->id);
+			while($row = $result->fetch_assoc())
+				$ids[] = $row['id_group'];
+
+			if(!empty($ids))
+				$customer->addGroups($ids);
 		}
 
-		$customer->cleanGroups();
-		$ids = array();
-
-		$result = $this->old_db->query("SELECT * FROM ps_customer_group WHERE id_customer = ".$customer->id);
-		while($row = $result->fetch_assoc())
-			$ids[] = $row['id_group'];
-
-		if(!empty($ids))
-			$customer->addGroups($ids);
 	}
 
 	/**
@@ -487,6 +490,7 @@ class webequip_transfer extends Module {
 			$order->round_type = 1;
 
 			$order->record($udpate);
+			$this->nb_rows++;
 		}
 
 	}
@@ -503,65 +507,73 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_order_detail", "ps_order_detail");
 
-		$sql = "SELECT * FROM ps_order_detail";
-		if(isset($ids) and $ids) $sql .= " WHERE id_order_detail NOT IN ($ids)";
-		$sql .= " ORDER BY id_order_detail DESC";
+		$sql = "SELECT * FROM ps_order_detail od, ps_activis_order_extends_detail oed WHERE od.id_order_detail = oed.id_order_detail";
+		if(isset($ids) and $ids) $sql .= " AND od.id_order_detail NOT IN ($ids)";
+		$sql .= " ORDER BY od.id_order_detail DESC";
 
 		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_order_detail VALUES(
-				".$row['id_order_detail'].",
-				".$row['id_order'].",
-				".($row['id_order_invoice'] ?? 0).",
-				".$row['id_warehouse'].",
-				".$row['id_shop'].",
-				".$row['product_id'].",
-				".($row['product_attribute_id'] ?? 0).",
-				NULL,
-				NULL,
-				0,
-				'".pSql(utf8_encode($row['product_name']))."',
-				".$row['product_quantity'].",
-				".$row['product_quantity_in_stock'].",
-				".$row['product_quantity_refunded'].",
-				".$row['product_quantity_return'].",
-				".$row['product_quantity_reinjected'].",
-				".$row['product_price'].",
-				".$row['reduction_percent'].",
-				".$row['reduction_amount'].",
-				".$row['reduction_amount_tax_incl'].",
-				".$row['reduction_amount_tax_excl'].",
-				".$row['group_reduction'].",
-				".$row['product_quantity_discount'].",
-				'".$row['product_ean13']."',
-				'".$row['product_isbn']."',
-				'".$row['product_upc']."',
-				'".$row['product_reference']."',
-				'".$row['product_supplier_reference']."',
-				".$row['product_weight'].",
-				0,
-				".$row['tax_computation_method'].",
-				'".$row['tax_name']."',
-				".$row['tax_rate'].",
-				".$row['ecotax'].",
-				".$row['ecotax_tax_rate'].",
-				".$row['discount_quantity_applied'].",
-				'".$row['download_hash']."',
-				".$row['download_nb'].",
-				'".$row['download_deadline']."',
-				".$row['total_price_tax_incl'].",
-				".$row['total_price_tax_excl'].",
-				".$row['unit_price_tax_incl'].",
-				".$row['unit_price_tax_excl'].",
-				".$row['total_shipping_price_tax_incl'].",
-				".$row['total_shipping_price_tax_excl'].",
-				".$row['purchase_supplier_price'].",
-				".$row['original_product_price'].",
-				0,
-				NULL,
-				NULL,
-				'".trim(pSql(utf8_encode($row['commentaire1'])).' '.pSql(utf8_encode($row['commentaire2'])))."'
-			)");
+		while($row = $result->fetch_assoc()) {
+
+			$detail = new OrderDetail($row['id_order_detail']);
+			$update = !empty($detail->id);
+
+			$detail->id = $row['id_order_detail'];
+			$detail->id_order = $row['id_order'];
+			$detail->id_order_invoice = ($row['id_order_invoice'] ?? 0);
+			$detail->product_id = $row['product_id'];
+			$detail->id_shop = $row['id_shop'];
+			$detail->product_attribute_id = ($row['product_attribute_id'] ?? 0);
+			$detail->id_customization = 0;
+			$detail->product_name = str_replace('?', ' ', utf8_encode($row['product_name']));
+			$detail->product_quantity = $row['product_quantity'];
+			$detail->product_quantity_in_stock = $row['product_quantity_in_stock'];
+			$detail->product_quantity_return = $row['product_quantity_return'];
+			$detail->product_quantity_refunded = $row['product_quantity_refunded'];
+			$detail->product_quantity_reinjected = $row['product_quantity_reinjected'];
+			$detail->product_price = (float)$row['product_price'];
+			$detail->original_product_price = $row['original_product_price'];
+			$detail->unit_price_tax_incl = $row['unit_price_tax_incl'];
+			$detail->unit_price_tax_excl = $row['unit_price_tax_excl'];
+			$detail->total_price_tax_incl = $row['total_price_tax_incl'];
+			$detail->total_price_tax_excl = $row['total_price_tax_excl'];
+			$detail->reduction_percent = $row['reduction_percent'];
+			$detail->reduction_amount = $row['reduction_amount'];
+			$detail->reduction_amount_tax_excl = $row['reduction_amount_tax_excl'];
+			$detail->reduction_amount_tax_incl = $row['reduction_amount_tax_incl'];
+			$detail->group_reduction = $row['group_reduction'];
+			$detail->product_quantity_discount = $row['product_quantity_discount'];
+			$detail->product_ean13 = $row['product_ean13'];
+			$detail->product_isbn = $row['product_isbn'];
+			$detail->product_upc = $row['product_upc'];
+			$detail->product_reference = utf8_encode($row['product_reference']);
+			$detail->product_supplier_reference = utf8_encode($row['product_supplier_reference']);
+			$detail->product_weight = $row['product_weight'];
+			$detail->ecotax = $row['ecotax'];
+			$detail->ecotax_tax_rate = $row['ecotax_tax_rate'];
+			$detail->discount_quantity_applied = $row['discount_quantity_applied'];
+			$detail->download_hash = $row['download_hash'];
+			$detail->download_nb = $row['download_nb'];
+			$detail->download_deadline = $row['download_deadline'];
+			$detail->tax_name = $row['tax_name'];
+			$detail->tax_rate = $row['tax_rate'];
+			$detail->tax_computation_method = $row['tax_computation_method'];
+			$detail->id_tax_rules_group;
+			$detail->id_warehouse = $row['id_warehouse'];
+			$detail->total_shipping_price_tax_excl = $row['total_shipping_price_tax_excl'];
+			$detail->total_shipping_price_tax_incl = $row['total_shipping_price_tax_incl'];
+			$detail->purchase_supplier_price = (float)$row['purchase_supplier_price'];
+			$detail->original_wholesale_price = $row['product_price'];
+			$detail->day = $row['day'];
+			$detail->week = $row['week'];
+			$detail->comment = utf8_encode($row['comment']);
+			$detail->comment_product_1 = utf8_encode($row['commentaire1']);
+			$detail->comment_product_2 = utf8_encode($row['commentaire2']);
+			$detail->notification_sent = $row['notified'];
+			$detail->prevent_notification = false;
+
+			$detail->record($update);
+			$this->nb_rows++;
+		}
 	}
 
 	/**

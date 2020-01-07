@@ -38,6 +38,9 @@ class OrderDetail extends OrderDetailCore {
 
 	public function __construct($id_order = null, $id_lang = null, $id_shop = null) {
 
+        self::$definition['fields']['product_name'] = array('type' => self::TYPE_STRING);
+        self::$definition['fields']['product_price'] = array('type' => self::TYPE_FLOAT);
+        self::$definition['fields']['purchase_supplier_price'] = array('type' => self::TYPE_FLOAT);
         self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT);
         self::$definition['fields']['id_quotation_line'] = array('type' => self::TYPE_INT);
 		self::$definition['fields']['id_product_supplier'] = array('type' => self::TYPE_INT);
