@@ -826,7 +826,8 @@ class webequip_transfer extends Module {
 			$quotation->new = 0;
 			$quotation->id_shop = ($row['id_shop'] ?? 1);
 			$quotation->secure_key = $row['hash'];
-
+			$quotation->mail_sent = $row['is_send'];
+			
 			$quotation->record($update);
 			$this->nb_rows++;
 		}
