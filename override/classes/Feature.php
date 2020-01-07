@@ -20,7 +20,7 @@ class Feature extends FeatureCore {
             'column' => array('type' => self::TYPE_INT, 'validate' => 'isInt'),
 
             /* Lang fields */
-            'public_name' => array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),
+            'public_name' => array('type' => self::TYPE_STRING, 'lang' => true),
             'name' => array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),
         ),
     );

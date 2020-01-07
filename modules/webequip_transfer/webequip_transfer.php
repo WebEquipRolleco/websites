@@ -98,7 +98,7 @@ class webequip_transfer extends Module {
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group');
+		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group', 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute');
 
 		return $data;
@@ -639,21 +639,30 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_attribute_group");
-		Db::getInstance()->execute("DELETE FROM ps_attribute_group_lang");
-		Db::getInstance()->execute("DELETE FROM ps_attribute_group_shop");
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_attribute_group");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_group_lang");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_group_shop");
+		}
+		else
+			$ids = $this->getSavedIds("id_feature", "ps_feature");
 
-		$result = $this->old_db->query("SELECT * FROM ps_feature");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_attribute_group VALUES(".$row['id_feature'].", 0, 0, 'select', ".$row['position'].")");
+		$sql = "SELECT * FROM ps_feature f, ps_feature_lang fl WHERE f.id_feature = fl.id_feature AND fl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND id_feature NOT IN ($ids)";
 
-		$result = $this->old_db->query("SELECT * FROM ps_feature_lang");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_attribute_group_lang VALUES(".$row['id_feature'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['name']))."', '".pSql(utf8_encode($row['name']))."')");
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
 
-		$result = $this->old_db->query("SELECT * FROM ps_feature_shop");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_attribute_group_shop VALUES(".$row['id_feature'].", ".$row['id_shop'].")");
+			$feature = new Feature($row['id_feature'], 1);
+			$update = !empty($feature->id);
+
+			$feature->name = utf8_encode($row['name']);
+			$feature->public_name = $feature->name;
+    		$feature->position = $row['position'];
+
+			$feature->record($update);
+		}
+
 	}
 
 	/**
