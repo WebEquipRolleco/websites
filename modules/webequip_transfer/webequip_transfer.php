@@ -40,7 +40,7 @@ class webequip_transfer extends Module {
 		$dbName 		= Configuration::get(self::$configurations['db']['name']);
 
 		$this->old_db = new mysqli($dbServerName, $dbUsername, $dbPassword, $dbName);
-		if($old_db->connect_error)
+		if($this->old_db->connect_error)
     		die("<div class='alert alert-danger'>".$old_db->connect_error."</div>");
 	}
 
@@ -880,56 +880,66 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des comptes employés
 	**/
-	private function transfer_ps_employee() {
+	public function transfer_ps_employee() {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_employee");
-		Db::getInstance()->execute("DELETE FROM ps_employee_shop");
-		Db::getInstance()->execute("DELETE FROM ps_employee_supplier");
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_employee");
+			Db::getInstance()->execute("DELETE FROM ps_employee_shop");
+			Db::getInstance()->execute("DELETE FROM ps_employee_supplier");
+		}
+		else
+			$ids = $this->getSavedIds("id_employee", "ps_employee");
 
-		$result = $this->old_db->query("SELECT * FROM ps_employee");
+		$sql = "SELECT * FROM ps_employee";
+		if(isset($ids) and $ids) $sql .= " WHERE id_employee NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
-			Db::getInstance()->execute("INSERT INTO ps_employee VALUES(
-				".$row['id_employee'].",
-				".$row['id_profile'].",
-				".$row['id_lang'].",
-				'".pSql(utf8_encode($row['lastname']))."',
-				'".pSql(utf8_encode($row['firstname']))."',
-				'".pSql(utf8_encode($row['email']))."',
-				'".pSql($row['passwd'])."',
-				'".pSql($row['last_passwd_gen'])."',
-				'".pSql($row['stats_date_from'])."',
-				'".pSql($row['stats_date_to'])."',
-				NULL,
-				NULL,
-				1,
-				NULL,
-				'".pSql(utf8_encode($row['bo_color']))."',
-				'".pSql(utf8_encode($row['bo_theme']))."',
-				NULL,
-				".$row['default_tab'].",
-				".$row['bo_width'].",
-				1,
-				".$row['active'].",
-				0,
-				1,
-				".$row['id_last_order'].",
-				".$row['id_last_customer_message'].",
-				".$row['id_last_customer'].",
-				NULL,
-				NULL,
-				NULL
-			)");
 
-			Db::getInstance()->execute("INSERT INTO ps_employee_shop VALUES(".$row['id_employee'].", 1)");
-			Db::getInstance()->execute("INSERT INTO ps_employee_shop VALUES(".$row['id_employee'].", 2)");
-			Db::getInstance()->execute("INSERT INTO ps_employee_shop VALUES(".$row['id_employee'].", 3)");
+			$employee = new Employee($row['id_employee']);
+			$update = !empty($employee->id);
+
+			$employee->id = $row['id_employee'];
+			$employee->id_profile = $row['id_profile'];
+			$employee->id_lang = $row['id_lang'];
+			$employee->lastname = utf8_encode($row['lastname']);
+			$employee->firstname = utf8_encode($row['firstname']);
+			$employee->email = utf8_encode($row['email']);
+			$employee->passwd = $row['passwd'];
+			$employee->last_passwd_gen = $row['last_passwd_gen'];
+			$employee->stats_date_from = $row['stats_date_from'];
+			$employee->stats_date_to = $row['stats_date_to'];
+			$employee->stats_compare_from;
+			$employee->stats_compare_to;
+			$employee->stats_compare_option = 1;
+			$employee->preselect_date_range;
+			$employee->bo_color = utf8_encode($row['bo_color']);
+			$employee->default_tab = $row['default_tab'];
+			$employee->bo_theme = utf8_encode($row['bo_theme']);
+			$employee->bo_css = 'theme.css';
+			$employee->bo_width = $row['bo_width'];
+			$employee->bo_menu = 1;
+			$employee->bo_show_screencast = false;
+			$employee->active = $row['active'];
+			$employee->optin = 1;
+			$employee->remote_addr;
+			$employee->id_last_order = $row['id_last_order'];
+			$employee->id_last_customer_message = $row['id_last_customer_message'];
+			$employee->id_last_customer = $row['id_last_customer'];
+			$employee->reset_password_token;
+			$employee->reset_password_validity;
+
+			$employee->record($update);
+			$this->nb_rows++;
+
+			Db::getInstance()->execute("DELETE FROM ps_employee_supplier WHERE id_employee = ".$employee->id);
+			$result = $this->old_db->query("SELECT * FROM ps_employee_supplier WHERE id_employee = ".$employee->id);
+			while($row = $result->fetch_assoc())
+				Db::getInstance()->execute("INSERT INTO ps_employee_supplier VALUES(NULL, ".$row['id_employee'].", ".$row['id_supplier'].")");
 		}
 
-		$result = $this->old_db->query("SELECT * FROM ps_employee_supplier");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_employee_supplier VALUES(".$row['id'].", ".$row['id_employee'].", ".$row['id_supplier'].")");
 	}
 
 	/**
