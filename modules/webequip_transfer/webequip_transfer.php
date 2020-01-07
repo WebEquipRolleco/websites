@@ -827,7 +827,7 @@ class webequip_transfer extends Module {
 			$quotation->id_shop = ($row['id_shop'] ?? 1);
 			$quotation->secure_key = $row['hash'];
 			$quotation->mail_sent = $row['is_send'];
-			
+
 			$quotation->record($update);
 			$this->nb_rows++;
 		}
@@ -852,26 +852,29 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
 
-			Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.QuotationLine::TABLE_NAME." VALUES(
-				".$row['id_activis_devis_line'].",
-				'".pSql(utf8_encode($row['reference']))."',
-				NULL,
-				'".pSql(utf8_encode($row['name']))."',
-				'".pSql(utf8_encode($row['information']))."',
-				NULL,
-				".$row['devis_buying_price'].",
-				0,
-				".$row['devis_selling_price'].",
-				".((float)$row['devis_dee'] + (float)$row['devis_m']).",
-				".$row['quantity'].",
-				1,
-				".$row['position'].",
-				".$row['id_activis_devis'].",
-				NULL
-			)");
+			$line = new QuotationLine($row['id_activis_devis_line']);
+			$update = !empty($line->id);
 
+			$line->id = $row['id_activis_devis_line'];
+			$line->reference = utf8_encode($row['reference']);
+			$line->reference_supplier;
+			$line->name = utf8_encode($row['name']);
+			$line->properties = utf8_encode($row['size']);
+			$line->information = utf8_encode($row['information']);
+			$line->comment = utf8_encode($row['comment']);
+			$line->id_product = $row['id_product'];
+			$line->buying_price = $row['devis_buying_price'];
+			$line->selling_price = $row['devis_selling_price'];
+			$line->eco_tax = ((float)$row['devis_dee'] + (float)$row['devis_m']);
+			$line->quantity = $row['quantity'];
+			$line->min_quantity = $row['packaging'];
+			$line->position = $row['position'];
+			$line->id_quotation = $row['id_activis_devis'];
+
+			$line->record($update);
 			$this->nb_rows++;
 		}
+
 	}
 
 	/**
