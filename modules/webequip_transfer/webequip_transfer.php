@@ -99,7 +99,7 @@ class webequip_transfer extends Module {
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group', 'updatable'=>true);
-		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute');
+		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute', 'updatable'=>true);
 
 		return $data;
 	}
@@ -640,15 +640,15 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_attribute_group");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_group_lang");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_group_shop");
+			Db::getInstance()->execute("DELETE FROM ps_feature");
+			Db::getInstance()->execute("DELETE FROM ps_feature_lang");
+			Db::getInstance()->execute("DELETE FROM ps_feature_shop");
 		}
 		else
 			$ids = $this->getSavedIds("id_feature", "ps_feature");
 
 		$sql = "SELECT * FROM ps_feature f, ps_feature_lang fl WHERE f.id_feature = fl.id_feature AND fl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND id_feature NOT IN ($ids)";
+		if(isset($ids) and $ids) $sql .= " AND f.id_feature NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -656,6 +656,7 @@ class webequip_transfer extends Module {
 			$feature = new Feature($row['id_feature'], 1);
 			$update = !empty($feature->id);
 
+			$feature->id = $row['id_feature'];
 			$feature->name = utf8_encode($row['name']);
 			$feature->public_name = $feature->name;
     		$feature->position = $row['position'];
@@ -672,21 +673,30 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_attribute");
-		Db::getInstance()->execute("DELETE FROM ps_attribute_lang");
-		Db::getInstance()->execute("DELETE FROM ps_attribute_shop");
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_attribute");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_lang");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_shop");
+		}
+		else
+			$ids = $this->getSavedIds("id_feature_value", "ps_feature_value");
 
-		$result = $this->old_db->query("SELECT * FROM ps_feature_value");
+		$sql = "SELECT * FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fv.id_feature_value = fvl.id_feature_value AND fvl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND fv.id_feature_value NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
-			Db::getInstance()->execute("INSERT INTO ps_attribute VALUES(".$row['id_feature_value'].", ".$row['id_feature'].", '', 1)");
-			Db::getInstance()->execute("INSERT INTO ps_attribute_shop VALUES(".$row['id_feature_value'].", 1)");
-			Db::getInstance()->execute("INSERT INTO ps_attribute_shop VALUES(".$row['id_feature_value'].", 2)");
-			Db::getInstance()->execute("INSERT INTO ps_attribute_shop VALUES(".$row['id_feature_value'].", 3)");
+
+			$value = new FeatureValue($row['id_feature_value'], 1);
+			$update = !empty($value->id);
+
+			$value->id = $row['id_feature_value'];
+			$value->id_feature = $row['id_feature'];
+    		$value->value = utf8_encode($row['value']);
+
+    		$value->record($update);
 		}
 
-		$result = $this->old_db->query("SELECT * FROM ps_feature_value_lang");
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_attribute_lang VALUES(".$row['id_feature_value'].", ".$row['id_lang'].", '".pSql(utf8_encode($row['value']))."')");
 	}
 
 	/**
