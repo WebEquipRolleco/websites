@@ -98,8 +98,12 @@ class webequip_transfer extends Module {
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group', 'updatable'=>true);
-		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute', 'updatable'=>true);
+		//$data['ps_feature'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_attribute_group', 'updatable'=>true);
+		//$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'new_table'=>'ps_attribute', 'updatable'=>true);
+		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
+		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
+		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
+		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 
 		return $data;
 	}
@@ -633,7 +637,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* Transfert des groupes d'attributs
+	* Transfert des caractéristiques
 	**/
 	private function transfer_ps_feature() {
 
@@ -667,7 +671,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* Transfert des valeurs d'attributs
+	* Transfert des valeurs de caractéristiques
 	**/
 	private function transfer_ps_feature_value() {
 
@@ -695,6 +699,79 @@ class webequip_transfer extends Module {
     		$value->value = utf8_encode($row['value']);
 
     		$value->record($update);
+		}
+
+	}
+
+	/**
+	* Transfert des groupes d'attributs
+	* INFOS : copie de la table des caractéristiques
+	**/
+	private function transfer_ps_attribute_group() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_attribute_group");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_group_lang");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_group_shop");
+		}
+		else
+			$ids = $this->getSavedIds("id_attribute_group", "ps_attribute_group");
+
+		$sql = "SELECT * FROM ps_feature f, ps_feature_lang fl WHERE f.id_feature = fl.id_feature AND fl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND f.id_feature NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$group = new AttributeGroup($row['id_feature'], 1);
+			$update = !empty($group->id);
+
+			$group->id = $row['id_feature'];
+			$group->name = utf8_encode($row['name']);
+			$group->public_name = $group->name;
+    		$group->is_color_group = false;
+    		$group->quotation = false;
+    		$group->group_type = "select";
+    		$group->position = $row['position'];
+
+			$group->record($update);
+		}
+
+	}
+
+	/**
+	* Transfert des valeurs d'attributs
+	* INFOS : copie de la table des valeurs de caractéristiques
+	**/
+	private function transfer_ps_attribute() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_attribute");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_lang");
+			Db::getInstance()->execute("DELETE FROM ps_attribute_shop");
+		}
+		else
+			$ids = $this->getSavedIds("id_feature_value", "ps_feature_value");
+
+		$sql = "SELECT * FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fv.id_feature_value = fvl.id_feature_value AND fvl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND fv.id_feature_value NOT IN ($ids)";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$attribute = new Attribute($row['id_feature_value'], 1);
+			$update = !empty($attribute->id);
+
+			$attribute->id = $row['id_feature_value'];
+			$attribute->id_attribute_group = $row['id_feature'];
+    		$attribute->name = utf8_encode($row['value']);
+    		$attribute->position = $row['position'];
+
+    		$attribute->record($update);
 		}
 
 	}
