@@ -599,6 +599,7 @@ class webequip_transfer extends Module {
 		    $state->deleted = $orw['deleted'];
 
 		    $state->record($update);
+		    $this->nb_rows++;
 		}
 
 	}
@@ -632,7 +633,8 @@ class webequip_transfer extends Module {
 		    $history->date_add = $row['date_add'];
 		    $history->date_upd = date('Y-m-d H:i:s');
 
-		    $history->record($update);	
+		    $history->record($update);
+		    $this->nb_rows++;
 		}
 	}
 
@@ -666,6 +668,7 @@ class webequip_transfer extends Module {
     		$feature->position = $row['position'];
 
 			$feature->record($update);
+			$this->nb_rows++;
 		}
 
 	}
@@ -699,6 +702,7 @@ class webequip_transfer extends Module {
     		$value->value = utf8_encode($row['value']);
 
     		$value->record($update);
+    		$this->nb_rows++;
 		}
 
 	}
@@ -737,6 +741,7 @@ class webequip_transfer extends Module {
     		$group->position = $row['position'];
 
 			$group->record($update);
+			$this->nb_rows++;
 		}
 
 	}
@@ -772,6 +777,7 @@ class webequip_transfer extends Module {
     		$attribute->position = $row['position'];
 
     		$attribute->record($update);
+    		$this->nb_rows++;
 		}
 
 	}
@@ -799,33 +805,29 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
 
-			if($row['hash'] != "Deleted")
-				Db::getInstance()->execute("INSERT INTO ps_quotation VALUES(
-					".$row['id_activis_devis'].",
-					'".pSql($row['hash'])."',
-					".(isset($states[$row['id_state']]) ? $states[$row['id_state']] : Quotation::STATUS_OVER).",
-					".$row['id_customer'].",
-					NULL,
-					NULL,
-					'".pSql(utf8_encode($row['email']))."',
-					'".pSql(utf8_encode($row['mail_cc']))."',
-					'".$row['date_add']."',
-					'".$row['date_from']."',
-					'".$row['date_to']."',
-					'".$row['date_recall']."',
-					'".pSql(utf8_encode($row['phone']))."',
-					'".$row['fax']."',
-					'".pSql(utf8_encode($row['comment']))."',
-					'".pSql(utf8_encode($row['contact']))."',
-					".$row['id_employee'].",
-					".$row['active'].",
-					0,
-					0,
-					NULL,
-					".($row['id_shop'] ?? 1).",
-					'".pSql($row['hash'])."'
-				)");
+			$quotation = new Quotation($row['id_activis_devis']);
+			$update = !empty($quotation->id);
 
+			$quotation->id = $row['id_activis_devis'];
+			$quotation->reference = $row['hash'];
+			$quotation->status = (isset($states[$row['id_state']]) ? $states[$row['id_state']] : Quotation::STATUS_OVER);
+			$quotation->id_customer = Customer::customerExists($row['email'], true);
+			$quotation->email = $row['mail_cc'];
+			$quotation->phone = utf8_encode($row['phone']);
+			$quotation->fax = utf8_encode($row['fax']);
+			$quotation->date_begin = $row['date_from'];
+			$quotation->date_add = $row['date_add'];
+			$quotation->date_end = $row['date_to'];
+			$quotation->date_recall = $row['date_recall'];
+			$quotation->comment = utf8_encode($row['comment']);
+			$quotation->details = $row['contact'];
+			$quotation->id_employee = $row['id_employee'];
+			$quotation->active = $row['active'];
+			$quotation->new = 0;
+			$quotation->id_shop = ($row['id_shop'] ?? 1);
+			$quotation->secure_key = $row['hash'];
+
+			$quotation->record($update);
 			$this->nb_rows++;
 		}
 	}
