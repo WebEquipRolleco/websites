@@ -4,7 +4,7 @@
 * Classe utilisée pour les transfert de données entre l'ancienne BDD et la nouvelle BDD
 * afin de garder une trace entre les anciens ID produits et leurs nouvelles valeurs
 **/
-class ProductMatching {
+class ProductMatching extends ObjectModel {
 
 	const TABLE_NAME = "product_matching";
 	const TABLE_PRIMARY = "id_product_matching";
@@ -55,5 +55,5 @@ class ProductMatching {
 	public static function erazeContent() {
 		Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME);
 	}
-	
+
 }
