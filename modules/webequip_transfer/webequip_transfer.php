@@ -97,14 +97,15 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simple", 'preview'=>false, 'updatable'=>true);
+		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simples", 'preview'=>false, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [2] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [3] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
-		$data['ps_feature_product'] = array('name'=>'Produits [4] Récupération des propriétés de déclinaisons', 'new_table'=>'ps_product_attribute_combination');
-		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
-		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
+		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits [4] Récupération des propriétés de produits simples', 'preview'=>false);
+		$data['ps_feature_product'] = array('name'=>'Produits [5] Récupération des propriétés de déclinaisons', 'preview'=>false);
+		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
+		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'preview'=>false, 'updatable'=>true);
+		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'preview'=>false, 'updatable'=>true);
+		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'preview'=>false, 'updatable'=>true);
 
 		return $data;
 	}
@@ -124,7 +125,7 @@ class webequip_transfer extends Module {
 
 		$data['updatable'] = $infos['updatable'] ?? false;
 
-		if(!isset($data['preview']) or $data['preview']) {
+		if(!isset($infos['preview']) or $infos['preview']) {
 
 			$data['data'][0][] = $infos['name'];
 			$data['data'][0][] = $result->fetch_object()->nb;
@@ -146,7 +147,7 @@ class webequip_transfer extends Module {
 				$data['data'][2][] = Db::getInstance()->getValue($query.$new_table."_shop");
 			}
 		}
-		
+
 		return $data;
 	}
 
@@ -1054,7 +1055,32 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 4] : Récupération des propriétés de déclinaisons
+	* [Etape 4] : Récupération des propriétés de produits simples
+	**/
+	private function transfer_ps_feature_product_SIMPLE() {
+
+		$sql = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc())
+			$ids[] = $row['id_product_bundle'];
+
+		$sql = "SELECT DISTINCT(id_product_item) FROM ps_bundle";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc())
+			$ids[] = $row['id_product_item'];
+
+		Db::getInstance()->execute("DELETE FROM ps_feature_product");
+		$query = "SELECT * FROM ps_feature_product WHERE id_product NOT IN (".implode(',', $ids).")";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("INSERT IGNORE INTO ps_feature_product VALUES (".$row['id_feature'].", ".$row['id_product'].", ".$row['id_feature_value'].")");
+			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* [Etape 5] : Récupération des propriétés de déclinaisons
 	**/
 	private function transfer_ps_feature_product() {
 
