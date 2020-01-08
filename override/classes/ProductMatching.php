@@ -37,7 +37,7 @@ class ProductMatching extends ObjectModel {
 	* @param int $new_id_product
 	* @param int $new_id_combination
 	**/
-	public static function record($old_id_product, $new_id_product, $new_id_combination = null) {
+	public static function recordRow($old_id_product, $new_id_product, $new_id_combination = null) {
 
 		$matching = new self();
 
