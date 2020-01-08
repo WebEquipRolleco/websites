@@ -1082,7 +1082,7 @@ class webequip_transfer extends Module {
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
-			Db::getInstance()->execute("INSERT INTO ps_product_attribute_combination VALUES(".$row['id_feature_value'].", ".$row['id_product'].")");
+			Db::getInstance()->execute("INSERT IGNORE INTO ps_product_attribute_combination VALUES(".$row['id_feature_value'].", ".$row['id_product'].")");
 			$this->nb_rows++;
 		}
 	}
