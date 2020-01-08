@@ -97,7 +97,8 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_product'] = array('name'=>"Produits [1] Transition des bundles en produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
+		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_product', 'updatable'=>true);
+		$data['ps_product'] = array('name'=>"Produits [2] Transition des produits en déclinaisons", 'lang'=>true, 'shop'=>true, 'new_table'=>'product_attribute', 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -239,7 +240,6 @@ class webequip_transfer extends Module {
 		   	$supplier->record($update);
 		   	$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -332,7 +332,6 @@ class webequip_transfer extends Module {
 			$address->record($update);
 			$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -413,12 +412,8 @@ class webequip_transfer extends Module {
 			if(!empty($ids))
 				$customer->addGroups($ids);
 		}
-
 	}
 
-	/**
-	* Transfert des commandes
-	**/
 	/**
 	* Transfert des commandes
 	**/
@@ -492,7 +487,6 @@ class webequip_transfer extends Module {
 			$order->record($udpate);
 			$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -612,7 +606,6 @@ class webequip_transfer extends Module {
 		    $state->record($update);
 		    $this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -681,7 +674,6 @@ class webequip_transfer extends Module {
 			$feature->record($update);
 			$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -715,7 +707,6 @@ class webequip_transfer extends Module {
     		$value->record($update);
     		$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -754,7 +745,6 @@ class webequip_transfer extends Module {
 			$group->record($update);
 			$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -790,7 +780,6 @@ class webequip_transfer extends Module {
     		$attribute->record($update);
     		$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -885,7 +874,6 @@ class webequip_transfer extends Module {
 			$line->record($update);
 			$this->nb_rows++;
 		}
-
 	}
 
 	/**
@@ -950,13 +938,12 @@ class webequip_transfer extends Module {
 			while($row = $result->fetch_assoc())
 				Db::getInstance()->execute("INSERT INTO ps_employee_supplier VALUES(NULL, ".$row['id_employee'].", ".$row['id_supplier'].")");
 		}
-
 	}
 
 	/**
-	* Transfert des produits
+	* [Etape 1] : Transformation des bundles en produits
 	**/
-	private function transfer_ps_product() {
+	private function transfer_ps_bundle() {
 
 		$this->connectToDB();
 
@@ -1030,72 +1017,58 @@ class webequip_transfer extends Module {
 			$product->cache_has_attachments = $row['cache_has_attachments'];
 			$product->is_virtual = $row['is_virtual'];
 			$product->cache_default_attribute = $row['cache_default_attribute'];
-
+			$product->batch = $row['packaging'];
+			
 			$product->record($update);
 			$this->nb_rows++;
 		}
-
-		/*$query = 'SELECT * FROM ps_product_shop';
-		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
-
-		$result = $this->old_db->query($query);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_product_shop VALUES (
-				".$row['id_product'].",
-				".$row['id_shop'].",
-				".$row['id_category_default'].",
-				".$row['id_tax_rules_group'].",
-				".$row['on_sale'].",
-				".$row['online_only'].",
-				".$row['ecotax'].",
-				".$row['minimal_quantity'].",
-				NULL,
-				0,
-				".$row['price'].",
-				".$row['wholesale_price'].",
-				'".$row['unity']."',
-				".$row['unit_price_ratio'].",
-				".$row['additional_shipping_cost'].",
-				".$row['customizable'].",
-				".$row['uploadable_files'].",
-				".$row['text_fields'].",
-				".$row['active'].",
-				'".$row['redirect_type']."',
-				".$row['id_type_redirected'].",
-				".$row['available_for_order'].",
-				'".$row['available_date']."',
-				0,
-				'".$row['condition']."',
-				".$row['show_price'].",
-				".$row['indexed'].",
-				'".$row['visibility']."',
-				".$row['cache_default_attribute'].",
-				".$row['advanced_stock_management'].",
-				'".$row['date_add']."',
-				'".$row['date_upd']."',
-				3
-			)");
-
-		$query = 'SELECT * FROM ps_product_lang';
-		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
-
-		$result = $this->old_db->query($query);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_product_lang VALUES (
-				".$row['id_product'].",
-				".$row['id_shop'].",
-				".$row['id_lang'].",
-				'".pSql(utf8_encode($row['description']))."',
-				'".pSql(utf8_encode($row['description_short']))."',
-				'".pSql(utf8_encode($row['link_rewrite']))."',
-				'".pSql(utf8_encode($row['meta_description']))."',
-				'".pSql(utf8_encode($row['meta_keywords']))."',
-				'".pSql(utf8_encode($row['meta_title']))."',
-				'".pSql(utf8_encode($row['name']))."',
-				'".pSql(utf8_encode($row['available_now']))."',
-				'".pSql(utf8_encode($row['available_later']))."',
-				NULL,
-				NULL
-			)");*/
 	}
+
+	/**
+	* [Etape 2] : Transformation des produits en déclinaisons
+	**/
+	private function transfer_ps_product() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_product_attribute");
+			Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination");
+			Db::getInstance()->execute("DELETE FROM ps_product_attribute_image");
+			Db::getInstance()->execute("DELETE FROM ps_product_shop");
+		}
+		else
+			$ids = $this->getSavedIds("id_product_attribute", "ps_product_attribute");
+
+		$query = "SELECT * FROM ps_bundle b, ps_product p, ps_product_lang pl WHERE b.id_product_item = p.id_product AND p.id_product = pl.id_product AND pl.id_lang = 1";
+		if(isset($ids) and $ids) $query .= " AND b.id_product_item NOT IN ($ids)";
+		$query .= " ORDER BY p.id_product DESC";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+
+			$combination = new Combination($row['id_product_item'], 1);
+			$update = !empty($combination->id);
+
+			$combination->id = $row['id_product_item'];
+			$combination->id_product = $row['id_product_bundle'];
+			$combination->reference = str_replace('BUNDLE-', '', utf8_encode($row['reference']));
+			$combination->supplier_reference = utf8_encode($row['supplier_reference']);
+			$combination->location = utf8_encode($row['location']);
+			$combination->ean13 = utf8_encode($row['ean13']);
+			$combination->upc = utf8_encode($row['upc']);
+			$combination->wholesale_price = $row['wholesale_price'];
+			$combination->price = $row['price'];
+			$combination->unit_price_impact;
+			$combination->ecotax = $row['ecotax'];
+			$combination->minimal_quantity = $row['minimal_quantity'];
+			$combination->quantity = $row['quantity'];
+			$combination->weight = $row['weight'];
+			$combination->batch = $row['packaging'];
+
+			$combination->record($update);
+			$this->nb_rows++;
+		}
+	}
+
 }
