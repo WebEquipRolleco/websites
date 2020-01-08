@@ -98,7 +98,7 @@ class webequip_transfer extends Module {
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_product', 'updatable'=>true);
-		$data['ps_product'] = array('name'=>"Produits [2] Transition des produits en déclinaisons", 'lang'=>true, 'shop'=>true, 'new_table'=>'product_attribute', 'updatable'=>true);
+		$data['ps_product'] = array('name'=>"Produits [2] Transition des produits en déclinaisons", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_product_attribute', 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -1018,7 +1018,7 @@ class webequip_transfer extends Module {
 			$product->is_virtual = $row['is_virtual'];
 			$product->cache_default_attribute = $row['cache_default_attribute'];
 			$product->batch = $row['packaging'];
-			
+
 			$product->record($update);
 			$this->nb_rows++;
 		}
