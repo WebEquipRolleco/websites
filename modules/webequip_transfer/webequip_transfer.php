@@ -964,6 +964,7 @@ class webequip_transfer extends Module {
 		$ids = implode(",", $ids);
 
 		if(Tools::getValue('eraze')) {
+			ProductMatching::erazeContent();
 			Db::getInstance()->execute("DELETE FROM ps_product");
 			Db::getInstance()->execute("DELETE FROM ps_product_shop");
 			Db::getInstance()->execute("DELETE FROM ps_product_lang");
@@ -1050,6 +1051,7 @@ class webequip_transfer extends Module {
 			$combination->batch = $row['packaging'];
 
 			$combination->record($update);
+			Product::record($row['id_product_bundle'], $row['id_product_bundle'], $row['id_product_item']);
 			$this->nb_rows++;
 		}
 	}
@@ -1157,6 +1159,7 @@ class webequip_transfer extends Module {
 		$product->batch = $row['packaging'];
 
 		$product->record($update);
+		Product::record($row['id_product'], $row['id_product']);
 		$this->nb_rows++;
 	}
 

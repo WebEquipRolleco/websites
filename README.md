@@ -99,6 +99,13 @@ ALTER TABLE `ps_feature` ADD `column` INT(2) DEFAULT NULL AFTER `position`;
 
 ALTER TABLE `ps_feature_lang` ADD `public_name` VARCHAR(255) DEFAULT NULL AFTER `name`;
 
+CREATE TABLE IF NOT EXISTS `ps_product_matching` (
+    `id_product_matching` INT NOT NULL AUTO_INCREMENT,
+    `id_product` INT(11) DEFAULT NULL, 
+    `id_combination` INT(11) DEFAULT NULL, 
+    PRIMARY KEY (`id_product_matching`)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `id_product_icon` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) DEFAULT NULL, 
