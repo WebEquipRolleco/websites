@@ -945,7 +945,7 @@ class webequip_transfer extends Module {
 	/**
 	* [Etape 1] : Récupération des produits simples
 	**/
-	private function transfert_ps_product_lang() {
+	private function transfer_ps_product_lang() {
 
 		if(Tools::getValue('eraze')) {
 			Db::getInstance()->execute("DELETE FROM ps_product");
