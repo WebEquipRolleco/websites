@@ -99,6 +99,7 @@ class webequip_transfer extends Module {
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'new_table'=>'ps_product', 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [2] Transition des produits en déclinaisons", 'shop'=>true, 'new_table'=>'ps_product_attribute', 'updatable'=>true);
+		$data['ps_feature_product'] = array('name'=>'Produits [3] Récupération des propriétés de déclinaisons', 'new_table'=>'ps_product_attribute_combination');
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -1071,4 +1072,18 @@ class webequip_transfer extends Module {
 		}
 	}
 
+	/**
+	* [Etape 3] : Récupération des propriétés de déclinaisons
+	**/
+	private function transfer_ps_feature_product() {
+
+		Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination");
+		$query = "SELECT fp.* FROM ps_feature_product fp, ps_bundle b WHERE fp.id_product = b.id_product_item";	
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("INSERT INTO ps_product_attribute_combination VALUES(".$row['id_feature_value'].", ".$row['id_product'].")");
+			$this->nb_rows++;
+		}
+	}
 }
