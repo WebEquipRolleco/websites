@@ -97,7 +97,7 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_product'] = array('name'=>"Produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
+		$data['ps_product'] = array('name'=>"Produits [1] Transition des bundles en produits", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -557,7 +557,6 @@ class webequip_transfer extends Module {
 			$detail->tax_name = $row['tax_name'];
 			$detail->tax_rate = $row['tax_rate'];
 			$detail->tax_computation_method = $row['tax_computation_method'];
-			$detail->id_tax_rules_group;
 			$detail->id_warehouse = $row['id_warehouse'];
 			$detail->total_shipping_price_tax_excl = $row['total_shipping_price_tax_excl'];
 			$detail->total_shipping_price_tax_incl = $row['total_shipping_price_tax_incl'];
@@ -972,68 +971,71 @@ class webequip_transfer extends Module {
 		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
 		if(isset($ids) and $ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
 
-		$query = "SELECT * FROM ps_product WHERE id_product IN ($sub_query)";
+		$query = "SELECT * FROM ps_product p, product_lang pl WHERE p.id_product_ = pl.id_product AND pl.id_lang = 1 AND p.id_product IN ($sub_query)";
 
 		$result = $this->old_db->query($query);
-		while($row = $result->fetch_assoc())
-			Db::getInstance()->execute("INSERT INTO ps_product VALUES(
-				".$row['id_product'].",
-				".$row['id_supplier'].",
-				".$row['id_manufacturer'].",
-				".$row['id_category_default'].",
-				".$row['id_shop_default'].",
-				".$row['id_tax_rules_group'].",
-				".$row['on_sale'].",
-				".$row['online_only'].",
-				'".pSql(utf8_encode($row['ean13']))."',
-				NULL,
-				'".pSql(utf8_encode($row['upc']))."',
-				".$row['ecotax'].",
-				".$row['quantity'].",
-				".$row['minimal_quantity'].",
-				NULL,
-				0,
-				".$row['price'].",
-				".$row['wholesale_price'].",
-				'".pSql(utf8_encode($row['unity']))."',
-				".$row['unit_price_ratio'].",
-				".$row['additional_shipping_cost'].",
-				'".pSql(utf8_encode($row['reference']))."',
-				'".pSql(utf8_encode($row['supplier_reference']))."',
-				'".pSql(utf8_encode($row['location']))."',
-				".$row['width'].",
-				".$row['height'].",
-				".$row['depth'].",
-				".$row['weight'].",
-				".$row['out_of_stock'].",
-				0.00,
-				".$row['quantity_discount'].",
-				".$row['customizable'].",
-				".$row['uploadable_files'].",
-				".$row['text_fields'].",
-				".$row['active'].",
-				'".pSql(utf8_encode($row['redirect_type']))."',
-				0,
-				".$row['available_for_order'].",
-				'".pSql(utf8_encode($row['available_date']))."',
-				0,
-				'".pSql(utf8_encode($row['condition']))."',
-				".$row['show_price'].",
-				".$row['indexed'].",
-				'".pSql(utf8_encode($row['visibility']))."',
-				".$row['cache_is_pack'].",
-				".$row['cache_has_attachments'].",
-				".$row['is_virtual'].",
-				".$row['cache_default_attribute'].",
-				'".pSql(utf8_encode($row['date_add']))."',
-				'".pSql(utf8_encode($row['date_upd']))."',
-				".$row['advanced_stock_management'].",
-				3,
-				1,
-				0
-			)");
+		while($row = $result->fetch_assoc()) {
 
-		$query = 'SELECT * FROM ps_product_shop';
+			$product = new Product($row['id_product'], true, 1);
+			$update = !empty($product->id);
+
+			$product->id = $row['id_product'];
+			$product->id_manufacturer = $row['id_manufacturer'];
+			$product->id_supplier = $row['id_supplier'];
+			//$product->id_category_default = $row['id_category_default'];
+			$product->id_shop_default = $row['id_shop_default'];
+			$product->name = $row['name'];
+			$product->description = $row['description'];
+			$product->description_short = $row['description_short'];
+			$product->quantity = $row['quantity'];
+			$product->minimal_quantity = $row['minimal_quantity'];
+			$product->price = $row['price'];
+			$product->additional_shipping_cost = $row['additional_shipping_cost'];
+			$product->wholesale_price = $row['wholesale_price'];
+			$product->on_sale = $row['on_sale'];
+			$product->online_only = $row['online_only'];
+			$product->unity = utf8_encode($row['unity']);
+			$product->unit_price = $row['price'];
+			$product->unit_price_ratio = $row['unit_price_ratio'];
+			$product->ecotax = $row['ecotax'];
+			$product->reference = utf8_encode($row['reference']);
+			$product->supplier_reference = utf8_encode($row['supplier_reference']);
+			$product->location = utf8_encode($row['location']);
+			$product->width = $row['width'];
+			$product->height = $row['height'];
+			$product->depth = $row['depth'];
+			$product->weight = $row['weight'];
+			$product->ean13 = utf8_encode($row['ean13']);
+			$product->upc = utf8_encode($row['upc']);
+			$product->link_rewrite = $row['ling_rewrite'];
+			$product->meta_description = $row['meta_description'];
+			$product->meta_keywords = $row['meta_keywords'];
+			$product->meta_title = $row['meta_title'];
+			$product->quantity_discount = $row['quantity_discount'];
+			$product->customizable = $row['customizable'];
+			$product->uploadable_files = $row['uploadable_files'];
+			$product->text_fields = $row['text_fields'];
+			$product->active = $row['active'];
+			$product->redirect_type = utf8_encode($row['redirect_type']);
+			$product->available_for_order = $row['available_for_order'];
+			$product->available_date = $row['available_date'];
+			$product->condition = $row['condition'];
+			$product->visibility = $row['visibility'];
+			$product->date_add = $row['date_add'];
+			$product->date_upd = $row['date_upd'];
+			$product->id_tax_rules_group = $row['id_tax_rules_group'];
+			$product->advanced_stock_management = $row['advanced_stock_management'];
+			$product->out_of_stock = $row['out_of_stock'];
+			$product->cache_is_pack = $row['cache_is_pack'];
+			$product->cache_has_attachments = $row['cache_has_attachments'];
+			$product->is_virtual = $row['is_virtual'];
+			$product->cache_default_attribute = $row['cache_default_attribute'];
+
+			$product->record($update);
+			$this->nb_rows++;
+		}
+
+		/*$query = 'SELECT * FROM ps_product_shop';
 		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
 
 		$result = $this->old_db->query($query);
@@ -1094,7 +1096,6 @@ class webequip_transfer extends Module {
 				'".pSql(utf8_encode($row['available_later']))."',
 				NULL,
 				NULL
-			)");
-
+			)");*/
 	}
 }
