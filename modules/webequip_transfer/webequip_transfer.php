@@ -1035,7 +1035,7 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("DELETE FROM ps_product_attribute");
 			Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination");
 			Db::getInstance()->execute("DELETE FROM ps_product_attribute_image");
-			Db::getInstance()->execute("DELETE FROM ps_product_shop");
+			Db::getInstance()->execute("DELETE FROM ps_product_attribute_shop");
 		}
 		else
 			$ids = $this->getSavedIds("id_product_attribute", "ps_product_attribute");

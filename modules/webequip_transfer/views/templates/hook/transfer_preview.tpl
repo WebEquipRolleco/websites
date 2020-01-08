@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-lg-4">
+	<div class="col-lg-5">
 		<table class="table">
 			<thead>
 				<tr class="bg-primary">
