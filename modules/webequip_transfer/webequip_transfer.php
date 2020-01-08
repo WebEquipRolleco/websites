@@ -302,7 +302,6 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_address";
 		if(isset($ids) and $ids) $sql .= " WHERE id_address NOT IN ($ids)";
-		$sql .= " ORDER BY id_address DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -356,7 +355,6 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c";
 		if(isset($ids) and $ids) $sql .= " WHERE c.id_customer NOT IN ($ids)";
-		$sql .= " ORDER BY c.id_customer DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -434,7 +432,6 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_orders";
 		if(isset($ids) and $ids) $sql .= " WHERE id_order NOT IN ($ids)";
-		$sql .= " ORDER BY id_order DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -509,7 +506,6 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_order_detail od, ps_activis_order_extends_detail oed WHERE od.id_order_detail = oed.id_order_detail";
 		if(isset($ids) and $ids) $sql .= " AND od.id_order_detail NOT IN ($ids)";
-		$sql .= " ORDER BY od.id_order_detail DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -628,7 +624,6 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_order_history WHERE id_order IN (".$this->getSavedIds('id_order', 'ps_orders').")";
 		if(isset($ids) and $ids) $sql .= " AND id_order_history NOT IN ($ids)";
-		$sql .= " ORDER BY id_order_history DESC";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -806,7 +801,7 @@ class webequip_transfer extends Module {
 
 		$query = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
 		if(isset($ids) and $ids) $query .= " WHERE d.id_activis_devis NOT IN ($ids)";
-		$query .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis ORDER BY d.id_activis_devis DESC";
+		$query .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
@@ -853,7 +848,6 @@ class webequip_transfer extends Module {
 
 		$query = "SELECT * FROM ps_activis_devis_line";
 		if(isset($ids) and $ids) $query .= " WHERE id_activis_devis_line NOT IN ($ids)";
-		$query .= " ORDER BY id_activis_devis DESC";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
@@ -974,7 +968,7 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1";
 		if(!empty($ids)) $sql .= " AND p.id_product NOT IN ($ids)";
-		$sql .= " ORDER BY p.id_product DESC";
+		$sql .= " GROUP BY p.id_product";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -1000,7 +994,7 @@ class webequip_transfer extends Module {
 		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
 		if(isset($ids) and $ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
 
-		$query = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN ($sub_query) ORDER BY p.id_product DESC";
+		$query = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN ($sub_query) GROUP BY p.id_product";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
@@ -1026,7 +1020,6 @@ class webequip_transfer extends Module {
 
 		$query = "SELECT * FROM ps_bundle b, ps_product p, ps_product_lang pl WHERE b.id_product_item = p.id_product AND p.id_product = pl.id_product AND pl.id_lang = 1";
 		if(isset($ids) and $ids) $query .= " AND b.id_product_item NOT IN ($ids)";
-		$query .= " ORDER BY p.id_product DESC";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
