@@ -1,31 +1,32 @@
-<div class="row">
-	<div class="col-lg-5">
-		<table class="table">
-			<thead>
-				<tr class="bg-primary">
-					<th></th>
-					<th class="text-center"><b>{l s="Ancienne BDD" mod='webequip_transfer'}</b></th>
-					<th class="text-center"><b>{l s="Nouvelle BDD" mod='webequip_transfer'}</b></th>
-				</tr>
-			</thead>
-			<tbody>
-				{foreach from=$data_list.data item=row}
-					<tr>
-						{foreach from=$row item=data name=line}
-							{if $smarty.foreach.line.first}
-								<td><b>{$data}</b></td>
-							{else}
-								<td class="text-center">{$data}</td>
-							{/if}
-						{/foreach}
+{if isset($data_list.data)}
+	<div class="row">
+		<div class="col-lg-5">
+			<table class="table">
+				<thead>
+					<tr class="bg-primary">
+						<th></th>
+						<th class="text-center"><b>{l s="Ancienne BDD" mod='webequip_transfer'}</b></th>
+						<th class="text-center"><b>{l s="Nouvelle BDD" mod='webequip_transfer'}</b></th>
 					</tr>
-				{/foreach}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{foreach from=$data_list.data item=row}
+						<tr>
+							{foreach from=$row item=data name=line}
+								{if $smarty.foreach.line.first}
+									<td><b>{$data}</b></td>
+								{else}
+									<td class="text-center">{$data}</td>
+								{/if}
+							{/foreach}
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
-
-<br />
+	<br />
+{/if}
 
 <form id="transfer_form" method="post">
 	<input type="hidden" name="ajax" value="1">

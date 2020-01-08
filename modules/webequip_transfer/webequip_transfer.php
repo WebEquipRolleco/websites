@@ -97,9 +97,9 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_product_lang'] = array('name'=>"Produits [1] Récupération des produits simple", 'new_table'=>'ps_product', 'updatable'=>true);
-		$data['ps_bundle'] = array('name'=>"Produits [2] Transition des bundles en produits", 'new_table'=>'ps_product', 'updatable'=>true);
-		$data['ps_product'] = array('name'=>"Produits [3] Transition des produits en déclinaisons", 'shop'=>true, 'new_table'=>'ps_product_attribute', 'updatable'=>true);
+		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simple", 'preview'=>false, 'updatable'=>true);
+		$data['ps_bundle'] = array('name'=>"Produits [2] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
+		$data['ps_product'] = array('name'=>"Produits [3] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
 		$data['ps_feature_product'] = array('name'=>'Produits [4] Récupération des propriétés de déclinaisons', 'new_table'=>'ps_product_attribute_combination');
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
@@ -124,26 +124,29 @@ class webequip_transfer extends Module {
 
 		$data['updatable'] = $infos['updatable'] ?? false;
 
-		$data['data'][0][] = $infos['name'];
-		$data['data'][0][] = $result->fetch_object()->nb;
-		$data['data'][0][] = Db::getInstance()->getValue($query.$new_table);
+		if(!isset($data['preview']) or $data['preview']) {
 
-		if($infos['lang']) {
-			$result = $this->old_db->query($query.$table."_lang");
+			$data['data'][0][] = $infos['name'];
+			$data['data'][0][] = $result->fetch_object()->nb;
+			$data['data'][0][] = Db::getInstance()->getValue($query.$new_table);
 
-			$data['data'][1][] = "Gestion des langues";
-			$data['data'][1][] = $result->fetch_object()->nb;
-			$data['data'][1][] = Db::getInstance()->getValue($query.$new_table."_lang");
+			if($infos['lang']) {
+				$result = $this->old_db->query($query.$table."_lang");
+
+				$data['data'][1][] = "Gestion des langues";
+				$data['data'][1][] = $result->fetch_object()->nb;
+				$data['data'][1][] = Db::getInstance()->getValue($query.$new_table."_lang");
+			}
+
+			if($infos['shop']) {
+				$result = $this->old_db->query($query.$table."_shop");
+
+				$data['data'][2][] = "Gestion des boutiques";
+				$data['data'][2][] = $result->fetch_object()->nb;
+				$data['data'][2][] = Db::getInstance()->getValue($query.$new_table."_shop");
+			}
 		}
-
-		if($infos['shop']) {
-			$result = $this->old_db->query($query.$table."_shop");
-
-			$data['data'][2][] = "Gestion des boutiques";
-			$data['data'][2][] = $result->fetch_object()->nb;
-			$data['data'][2][] = Db::getInstance()->getValue($query.$new_table."_shop");
-		}
-
+		
 		return $data;
 	}
 
@@ -945,7 +948,19 @@ class webequip_transfer extends Module {
 	/**
 	* [Etape 1] : Récupération des produits simples
 	**/
-	private function transfer_ps_product_lang() {
+	private function transfer_ps_product_SIMPLE() {
+		
+		$sql = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc())
+			$ids[] = $row['id_product_bundle'];
+
+		$sql = "SELECT DISTINCT(id_product_item) FROM ps_bundle";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc())
+			$ids[] = $row['id_product_item'];
+
+		$ids = implode(",", $ids);
 
 		if(Tools::getValue('eraze')) {
 			Db::getInstance()->execute("DELETE FROM ps_product");
@@ -953,13 +968,13 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("DELETE FROM ps_product_lang");
 		}
 		else
-			$ids = $this->getSavedIds("id_product", "ps_product");
+			$ids .= $this->getSavedIds("id_product", "ps_product");
 
-		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE NOT EXISTS (SELECT 1 FROM ps_bundle b WHERE p.id_product = b.id_product_bundle OR p.id_product = b.id_product_item) AND p.id_product = pl.id_product AND pl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND p.id_product NOT IN ($ids)";
-		$sql .= " GROUP BY p.id_product ORDER BY p.id_product DESC";
+		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1";
+		if(!empty($ids)) $sql .= " AND p.id_product NOT IN ($ids)";
+		$sql .= " ORDER BY p.id_product DESC";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			$this->recordProduct($row);
 		}
