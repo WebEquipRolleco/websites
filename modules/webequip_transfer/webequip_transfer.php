@@ -97,7 +97,7 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'lang'=>true, 'shop'=>true, 'new_table'=>'ps_product', 'updatable'=>true);
+		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'new_table'=>'ps_product', 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [2] Transition des produits en déclinaisons", 'shop'=>true, 'new_table'=>'ps_product_attribute', 'updatable'=>true);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
