@@ -22,6 +22,9 @@ class Product extends ProductCore {
 
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
+		self::$definition['fields']['name'] = array('type' => self::TYPE_STRING, 'lang'=>true);
+		self::$definition['fields']['meta_description'] = array('type' => self::TYPE_STRING, 'lang'=>true);
+		self::$definition['fields']['meta_keywords'] = array('type' => self::TYPE_STRING, 'lang'=>true);
 		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
 		self::$definition['fields']['comment_1'] = array('type' => self::TYPE_STRING, 'shop'=>true);
 		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);

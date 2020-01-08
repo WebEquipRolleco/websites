@@ -971,7 +971,7 @@ class webequip_transfer extends Module {
 		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
 		if(isset($ids) and $ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
 
-		$query = "SELECT * FROM ps_product p, product_lang pl WHERE p.id_product_ = pl.id_product AND pl.id_lang = 1 AND p.id_product IN ($sub_query)";
+		$query = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN ($sub_query) ORDER BY p.id_product DESC";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
@@ -984,9 +984,9 @@ class webequip_transfer extends Module {
 			$product->id_supplier = $row['id_supplier'];
 			//$product->id_category_default = $row['id_category_default'];
 			$product->id_shop_default = $row['id_shop_default'];
-			$product->name = $row['name'];
-			$product->description = $row['description'];
-			$product->description_short = $row['description_short'];
+			$product->name = str_replace("?", " ", utf8_encode($row['name']));
+			$product->description = utf8_encode($row['description']);
+			$product->description_short = utf8_encode($row['description_short']);
 			$product->quantity = $row['quantity'];
 			$product->minimal_quantity = $row['minimal_quantity'];
 			$product->price = $row['price'];
@@ -998,7 +998,7 @@ class webequip_transfer extends Module {
 			$product->unit_price = $row['price'];
 			$product->unit_price_ratio = $row['unit_price_ratio'];
 			$product->ecotax = $row['ecotax'];
-			$product->reference = utf8_encode($row['reference']);
+			$product->reference = str_replace('BUNDLE-', '', utf8_encode($row['reference']));
 			$product->supplier_reference = utf8_encode($row['supplier_reference']);
 			$product->location = utf8_encode($row['location']);
 			$product->width = $row['width'];
@@ -1008,9 +1008,9 @@ class webequip_transfer extends Module {
 			$product->ean13 = utf8_encode($row['ean13']);
 			$product->upc = utf8_encode($row['upc']);
 			$product->link_rewrite = $row['ling_rewrite'];
-			$product->meta_description = $row['meta_description'];
-			$product->meta_keywords = $row['meta_keywords'];
-			$product->meta_title = $row['meta_title'];
+			$product->meta_description = utf8_encode($row['meta_description']);
+			$product->meta_keywords = utf8_encode($row['meta_keywords']);
+			$product->meta_title = utf8_encode($row['meta_title']);
 			$product->quantity_discount = $row['quantity_discount'];
 			$product->customizable = $row['customizable'];
 			$product->uploadable_files = $row['uploadable_files'];
@@ -1021,8 +1021,8 @@ class webequip_transfer extends Module {
 			$product->available_date = $row['available_date'];
 			$product->condition = $row['condition'];
 			$product->visibility = $row['visibility'];
-			$product->date_add = $row['date_add'];
-			$product->date_upd = $row['date_upd'];
+			$product->date_add = ($row['date_add'] != "0000-00-00 00:00:00") ? $row['date_add'] : date('Y-m-d H:i:s');
+			$product->date_upd = ($row['date_upd'] != "0000-00-00 00:00:00") ? $row['date_upd'] : date('Y-m-d H:i:s');
 			$product->id_tax_rules_group = $row['id_tax_rules_group'];
 			$product->advanced_stock_management = $row['advanced_stock_management'];
 			$product->out_of_stock = $row['out_of_stock'];
