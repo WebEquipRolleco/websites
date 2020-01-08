@@ -97,9 +97,10 @@ class webequip_transfer extends Module {
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME, 'updatable'=>true);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'new_table'=>'ps_product', 'updatable'=>true);
-		$data['ps_product'] = array('name'=>"Produits [2] Transition des produits en déclinaisons", 'shop'=>true, 'new_table'=>'ps_product_attribute', 'updatable'=>true);
-		$data['ps_feature_product'] = array('name'=>'Produits [3] Récupération des propriétés de déclinaisons', 'new_table'=>'ps_product_attribute_combination');
+		$data['ps_product_lang'] = array('name'=>"Produits [1] Récupération des produits simple", 'new_table'=>'ps_product', 'updatable'=>true);
+		$data['ps_bundle'] = array('name'=>"Produits [2] Transition des bundles en produits", 'new_table'=>'ps_product', 'updatable'=>true);
+		$data['ps_product'] = array('name'=>"Produits [3] Transition des produits en déclinaisons", 'shop'=>true, 'new_table'=>'ps_product_attribute', 'updatable'=>true);
+		$data['ps_feature_product'] = array('name'=>'Produits [4] Récupération des propriétés de déclinaisons', 'new_table'=>'ps_product_attribute_combination');
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'lang'=>true, 'shop'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -942,7 +943,30 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 1] : Transformation des bundles en produits
+	* [Etape 1] : Récupération des produits simples
+	**/
+	private function transfert_product_lang() {
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_product");
+			Db::getInstance()->execute("DELETE FROM ps_product_shop");
+			Db::getInstance()->execute("DELETE FROM ps_product_lang");
+		}
+		else
+			$ids = $this->getSavedIds("id_product", "ps_product");
+
+		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE NOT EXISTS (SELECT 1 FROM ps_bundle b WHERE p.id_product = b.id_product_bundle OR p.id_product = b.id_product_item) AND p.id_product = pl.id_product AND pl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND p.id_product NOT IN ($ids)";
+		$sql .= " GROUP BY p.id_product ORDER BY p.id_product DESC";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+			$this->recordProduct($row);
+		}
+	}
+
+	/**
+	* [Etape 2] : Transformation des bundles en produits
 	**/
 	private function transfer_ps_bundle() {
 
@@ -963,70 +987,12 @@ class webequip_transfer extends Module {
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
-
-			$product = new Product($row['id_product'], true, 1);
-			$update = !empty($product->id);
-
-			$product->id = $row['id_product'];
-			$product->id_manufacturer = $row['id_manufacturer'];
-			$product->id_supplier = $row['id_supplier'];
-			//$product->id_category_default = $row['id_category_default'];
-			$product->id_shop_default = $row['id_shop_default'];
-			$product->name = str_replace("?", " ", utf8_encode($row['name']));
-			$product->description = utf8_encode($row['description']);
-			$product->description_short = utf8_encode($row['description_short']);
-			$product->quantity = $row['quantity'];
-			$product->minimal_quantity = $row['minimal_quantity'];
-			$product->price = $row['price'];
-			$product->additional_shipping_cost = $row['additional_shipping_cost'];
-			$product->wholesale_price = $row['wholesale_price'];
-			$product->on_sale = $row['on_sale'];
-			$product->online_only = $row['online_only'];
-			$product->unity = utf8_encode($row['unity']);
-			$product->unit_price = $row['price'];
-			$product->unit_price_ratio = $row['unit_price_ratio'];
-			$product->ecotax = $row['ecotax'];
-			$product->reference = str_replace('BUNDLE-', '', utf8_encode($row['reference']));
-			$product->supplier_reference = utf8_encode($row['supplier_reference']);
-			$product->location = utf8_encode($row['location']);
-			$product->width = $row['width'];
-			$product->height = $row['height'];
-			$product->depth = $row['depth'];
-			$product->weight = $row['weight'];
-			$product->ean13 = utf8_encode($row['ean13']);
-			$product->upc = utf8_encode($row['upc']);
-			$product->link_rewrite = $row['ling_rewrite'];
-			$product->meta_description = utf8_encode($row['meta_description']);
-			$product->meta_keywords = utf8_encode($row['meta_keywords']);
-			$product->meta_title = utf8_encode($row['meta_title']);
-			$product->quantity_discount = $row['quantity_discount'];
-			$product->customizable = $row['customizable'];
-			$product->uploadable_files = $row['uploadable_files'];
-			$product->text_fields = $row['text_fields'];
-			$product->active = $row['active'];
-			$product->redirect_type = utf8_encode($row['redirect_type']);
-			$product->available_for_order = $row['available_for_order'];
-			$product->available_date = $row['available_date'];
-			$product->condition = $row['condition'];
-			$product->visibility = $row['visibility'];
-			$product->date_add = ($row['date_add'] != "0000-00-00 00:00:00") ? $row['date_add'] : date('Y-m-d H:i:s');
-			$product->date_upd = ($row['date_upd'] != "0000-00-00 00:00:00") ? $row['date_upd'] : date('Y-m-d H:i:s');
-			$product->id_tax_rules_group = $row['id_tax_rules_group'];
-			$product->advanced_stock_management = $row['advanced_stock_management'];
-			$product->out_of_stock = $row['out_of_stock'];
-			$product->cache_is_pack = $row['cache_is_pack'];
-			$product->cache_has_attachments = $row['cache_has_attachments'];
-			$product->is_virtual = $row['is_virtual'];
-			$product->cache_default_attribute = $row['cache_default_attribute'];
-			$product->batch = $row['packaging'];
-
-			$product->record($update);
-			$this->nb_rows++;
+			$this->recordProduct($row);
 		}
 	}
 
 	/**
-	* [Etape 2] : Transformation des produits en déclinaisons
+	* [Etape 3] : Transformation des produits en déclinaisons
 	**/
 	private function transfer_ps_product() {
 
@@ -1073,7 +1039,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 3] : Récupération des propriétés de déclinaisons
+	* [Etape 4] : Récupération des propriétés de déclinaisons
 	**/
 	private function transfer_ps_feature_product() {
 
@@ -1086,4 +1052,71 @@ class webequip_transfer extends Module {
 			$this->nb_rows++;
 		}
 	}
+
+	/**
+	* Transforme un resultat SQL en produit
+	* @param array
+	**/
+	private function recordProduct($row) {
+
+		$product = new Product($row['id_product'], true, 1);
+		$update = !empty($product->id);
+
+		$product->id = $row['id_product'];
+		$product->id_manufacturer = $row['id_manufacturer'];
+		$product->id_supplier = $row['id_supplier'];
+		//$product->id_category_default = $row['id_category_default'];
+		$product->id_shop_default = $row['id_shop_default'];
+		$product->name = str_replace("?", " ", utf8_encode($row['name']));
+		$product->description = utf8_encode($row['description']);
+		$product->description_short = utf8_encode($row['description_short']);
+		$product->quantity = $row['quantity'];
+		$product->minimal_quantity = $row['minimal_quantity'];
+		$product->price = $row['price'];
+		$product->additional_shipping_cost = $row['additional_shipping_cost'];
+		$product->wholesale_price = $row['wholesale_price'];
+		$product->on_sale = $row['on_sale'];
+		$product->online_only = $row['online_only'];
+		$product->unity = utf8_encode($row['unity']);
+		$product->unit_price = $row['price'];
+		$product->unit_price_ratio = $row['unit_price_ratio'];
+		$product->ecotax = $row['ecotax'];
+		$product->reference = str_replace('BUNDLE-', '', utf8_encode($row['reference']));
+		$product->supplier_reference = utf8_encode($row['supplier_reference']);
+		$product->location = utf8_encode($row['location']);
+		$product->width = $row['width'];
+		$product->height = $row['height'];
+		$product->depth = $row['depth'];
+		$product->weight = $row['weight'];
+		$product->ean13 = utf8_encode($row['ean13']);
+		$product->upc = utf8_encode($row['upc']);
+		$product->link_rewrite = $row['ling_rewrite'];
+		$product->meta_description = utf8_encode($row['meta_description']);
+		$product->meta_keywords = utf8_encode($row['meta_keywords']);
+		$product->meta_title = utf8_encode($row['meta_title']);
+		$product->quantity_discount = $row['quantity_discount'];
+		$product->customizable = $row['customizable'];
+		$product->uploadable_files = $row['uploadable_files'];
+		$product->text_fields = $row['text_fields'];
+		$product->active = $row['active'];
+		$product->redirect_type = utf8_encode($row['redirect_type']);
+		$product->available_for_order = $row['available_for_order'];
+		$product->available_date = $row['available_date'];
+		$product->condition = $row['condition'];
+		$product->visibility = $row['visibility'];
+		$product->date_add = ($row['date_add'] != "0000-00-00 00:00:00") ? $row['date_add'] : date('Y-m-d H:i:s');
+		$product->date_upd = ($row['date_upd'] != "0000-00-00 00:00:00") ? $row['date_upd'] : date('Y-m-d H:i:s');
+		$product->id_tax_rules_group = $row['id_tax_rules_group'];
+		$product->advanced_stock_management = $row['advanced_stock_management'];
+		$product->out_of_stock = $row['out_of_stock'];
+		$product->cache_is_pack = $row['cache_is_pack'];
+		$product->cache_has_attachments = $row['cache_has_attachments'];
+		$product->is_virtual = $row['is_virtual'];
+		$product->cache_default_attribute = $row['cache_default_attribute'];
+		$product->batch = $row['packaging'];
+
+		$product->record($update);
+		$this->nb_rows++;
+	}
+	
 }
