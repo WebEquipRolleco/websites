@@ -1154,7 +1154,7 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze')) {
+		if(Tools::getValue('eraze'))
 			Db::getInstance()->execute("DELETE FROM ps_specific_price WHERE from_quantity = 1");
 		else {
 			$ids = Db::getInstance()->executeS("SELECT pm.id_product_matching FROM ps_product_matching pm, ps_specific_price sp WHERE sp.from_quantity = 1 AND pm.id_product = sp.id_product AND pm.id_combination = sp.id_product_attribute");
