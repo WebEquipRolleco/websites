@@ -101,6 +101,7 @@ class webequip_transfer extends Module {
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
 		$data['ps_specific_price'] = array('name'=>"Produits [1+] Récupération des prix spécifiques", 'updatable'=>true);
+		$data['ps_specific_price_ONE'] = array('name'=>"Produits [2+] Création des prix spécifiques de quantité 1", 'updatable'=>true);
 		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
 		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
@@ -1139,6 +1140,43 @@ class webequip_transfer extends Module {
 				$price->delivery_fees = $row['shipping_price'];
 				$price->comment_1 = utf8_encode($row['first_comment']);
 				$price->comment_2 = utf8_encode($row['second_comment']);
+
+				$price->record($update);
+				$this->nb_rows++;
+			}
+		}
+	}
+
+	/**
+	* [Etape 2+]
+	**/
+	private function transfer_ps_specific_price_ONE() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_specific_price WHERE from_quantity = 1");
+		else {
+			$ids = Db::getInstance()->executeS("SELECT pm.id_product_matching FROM ps_product_matching pm, ps_specific_price sp WHERE sp.from_quantity = 1 AND pm.id_product = sp.id_product AND pm.id_combination = sp.id_product_attribute");
+			$ids = array_map(function($e) { return $e['id_product_matching']; }, $ids);
+			$ids = trim(implode(",", $ids));
+		}
+
+		$query = "SELECT id_product, price FROM ps_product";
+		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+
+			// Ne récupérer que les prix des produits importés (+ récupération des nouvelles données)
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				$price->id_product = $matching->id_product;
+				$price->id_product_attribute = $matching->id_combination;
+				$price->price = $row['price'];
+				$price->from_quantity = 1;
+				$price->reduction_type = 'amount';
 
 				$price->record($update);
 				$this->nb_rows++;
