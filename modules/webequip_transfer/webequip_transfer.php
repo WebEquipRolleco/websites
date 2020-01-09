@@ -98,10 +98,11 @@ class webequip_transfer extends Module {
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
 		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simples", 'preview'=>false, 'updatable'=>true);
-		$data['ps_bundle'] = array('name'=>"Produits [2] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
-		$data['ps_product'] = array('name'=>"Produits [3] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
-		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits [4] Récupération des propriétés de produits simples', 'preview'=>false);
-		$data['ps_feature_product'] = array('name'=>'Produits [5] Récupération des propriétés de déclinaisons', 'preview'=>false);
+		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
+		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
+		$data['ps_specific_price'] = array('name'=>"Produits [1+] Récupération des prix spécifiques", 'updatable'=>true);
+		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
+		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'preview'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'preview'=>false, 'updatable'=>true);
@@ -977,7 +978,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 2] : Transformation des bundles en produits
+	* [Etape 1] : Transformation des bundles en produits
 	**/
 	private function transfer_ps_bundle() {
 
@@ -1002,7 +1003,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 3] : Transformation des produits en déclinaisons
+	* [Etape 1] : Transformation des produits en déclinaisons
 	**/
 	private function transfer_ps_product() {
 
@@ -1049,7 +1050,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 4] : Récupération des propriétés de produits simples
+	* Produits : Récupération des propriétés de produits simples
 	**/
 	private function transfer_ps_feature_product_SIMPLE() {
 
@@ -1074,7 +1075,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 5] : Récupération des propriétés de déclinaisons
+	* Produits : Récupération des propriétés de déclinaisons
 	**/
 	private function transfer_ps_feature_product() {
 
@@ -1085,6 +1086,63 @@ class webequip_transfer extends Module {
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("INSERT IGNORE INTO ps_product_attribute_combination VALUES(".$row['id_feature_value'].", ".$row['id_product'].")");
 			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* [Etape 1+] : Récupération des prix spécifiques
+	**/
+	private function transfer_ps_specific_price() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_specific_price");
+			Db::getInstance()->execute("DELETE FROM ps_specific_price_price_priority");
+			Db::getInstance()->execute("DELETE FROM ps_specific_price_rule");
+			Db::getInstance()->execute("DELETE FROM ps_specific_price_rule_condition_group");
+		}
+		else
+			$ids = $this->getSavedIds("id_specific_price", "ps_specific_price");
+
+		$query = "SELECT * FROM ps_specific_price";
+		if(isset($ids) and $ids) $query .= " WHERE id_specific_price NOT IN ($ids)";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+
+			// Ne récupérer que les prix des produits importés (+ récupération des nouvelles données)
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				$price = new SpecificPrice($row['id_specific_price']);
+				$update = !empty($price->id);
+
+				$price->id = $row['id_specific_price'];
+				$price->id_product = $matching->id_product;
+				$price->id_specific_price_rule = $row['id_specific_price_rule'];
+				$price->id_cart = $row['id_cart'];
+				$price->id_product_attribute = $matching->id_combination;
+				$price->id_shop = $row['id_shop'];
+				$price->id_shop_group = $row['id_shop_group'];
+				$price->id_currency = $row['id_currency'];
+				$price->id_country = $row['id_country'];
+				$price->id_group = $row['id_group'];
+				$price->id_customer = $row['id_customer'];
+				$price->price = $row['price'];
+				$price->from_quantity = $row['from_quantity'];
+				$price->reduction = $row['reduction'];
+				$price->reduction_type = $row['reduction_type'];
+				$price->from = $row['from'];
+				$price->to = $row['to'];
+				$price->buying_price = $row['purchasing_price_ws'];
+				$price->delivery_fees = $row['shipping_price'];
+				$price->comment_1 = utf8_encode($row['first_comment']);
+				$price->comment_2 = utf8_encode($row['second_comment']);
+
+				$price->record($update);
+				$this->nb_rows++;
+			}
 		}
 	}
 
