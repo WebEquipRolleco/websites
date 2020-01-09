@@ -102,6 +102,7 @@ class webequip_transfer extends Module {
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
 		$data['ps_specific_price'] = array('name'=>"Produits [1+] Récupération des prix spécifiques", 'updatable'=>true);
 		$data['ps_specific_price_ONE'] = array('name'=>"Produits [2+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
+		$data['ps_image'] = array('name'=>"Produits [1+] Récupération des données d'images", 'updatable'=>true);
 		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
 		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
@@ -1189,6 +1190,47 @@ class webequip_transfer extends Module {
 				$price->to = "0000-00-00 00:00:00";
 
 				$price->record($update);
+				$this->nb_rows++;
+			}
+		}
+	}
+
+	/**
+	* [Etape 1+] Copie des informations relatives aux images
+	**/
+	private function transfer_ps_image() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze')) {
+			Db::getInstance()->execute("DELETE FROM ps_image");
+			Db::getInstance()->execute("DELETE FROM ps_image_lang");
+			Db::getInstance()->execute("DELETE FROM ps_image_shop");
+		}
+		else
+			$ids = $this->getSavedIds("id_image", "ps_image");
+
+		$sql = "SELECT * FROM ps_image i, ps_image_lang il WHERE i.id_image = il.id_image";
+		if(isset($ids) and $ids) $sql .= " AND i.id_image NOT IN ($ids)";
+
+		$result = $this->old_db->query($query);
+		while($row = $result->fetch_assoc()) {
+
+			// N'importer les images que des produits importés
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				$image = new Image($row['id_image']);
+				$update = !empty($image->id);
+
+				$image->id = $row['id_image'];
+				$image->id_product = $matching->id_product;
+				$image->position = $row['position'];
+				$image->cover = $row['cover'];
+				$image->legend = $row['title'] ?? $row['legend'];
+				$image->image_format = 'jpg';
+
+				$image->record($update);
 				$this->nb_rows++;
 			}
 		}
