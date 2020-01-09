@@ -1227,7 +1227,7 @@ class webequip_transfer extends Module {
 				$image->id_product = $matching->id_product;
 				$image->position = $row['position'];
 				$image->cover = $row['cover'];
-				$image->legend = $row['title'] ?? $row['legend'];
+				$image->legend = utf8_encode($row['title'] ?? $row['legend']);
 				$image->image_format = 'jpg';
 
 				$image->record($update);

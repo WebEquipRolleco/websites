@@ -3,6 +3,21 @@
 class Image extends ImageCore {
 
 	/**
+    * @see ObjectModel::$definition
+    **/
+    public static $definition = array(
+        'table' => 'image',
+        'primary' => 'id_image',
+        'multilang' => true,
+        'fields' => array(
+            'id_product' => array('type' => self::TYPE_INT, 'shop' => 'both', 'validate' => 'isUnsignedId', 'required' => true),
+            'position' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedInt'),
+            'cover' => array('type' => self::TYPE_BOOL, 'allow_null' => true, 'validate' => 'isBool', 'shop' => true),
+            'legend' => array('type' => self::TYPE_STRING, 'lang' => true),
+        ),
+    );
+
+	/**
 	* Retourne le chemin du fichier 
 	* @param string $type cart/home/small/medium/large
 	* @return string
