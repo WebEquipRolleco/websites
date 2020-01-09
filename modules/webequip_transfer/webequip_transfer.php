@@ -101,7 +101,7 @@ class webequip_transfer extends Module {
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
 		$data['ps_specific_price'] = array('name'=>"Produits [1+] Récupération des prix spécifiques", 'updatable'=>true);
-		$data['ps_specific_price_ONE'] = array('name'=>"Produits [2+] Création des prix spécifiques de quantité 1", 'updatable'=>true);
+		$data['ps_specific_price_ONE'] = array('name'=>"Produits [2+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
 		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
 		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
