@@ -1098,7 +1098,7 @@ class webequip_transfer extends Module {
 
 		if(Tools::getValue('eraze')) {
 			Db::getInstance()->execute("DELETE FROM ps_specific_price");
-			Db::getInstance()->execute("DELETE FROM ps_specific_price_price_priority");
+			Db::getInstance()->execute("DELETE FROM ps_specific_price_priority");
 			Db::getInstance()->execute("DELETE FROM ps_specific_price_rule");
 			Db::getInstance()->execute("DELETE FROM ps_specific_price_rule_condition_group");
 		}
