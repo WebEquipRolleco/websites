@@ -123,8 +123,8 @@ class webequip_transfer extends Module {
 		$infos = $this->getTransferList()[$table];
 		$new_table = isset($infos['new_table']) ? $infos['new_table'] : $table;
 
-		$query = "SELECT COUNT(*) AS nb FROM ";
-		$result = $this->old_db->query($query.$table);
+		$sql = "SELECT COUNT(*) AS nb FROM ";
+		$result = $this->old_db->query($sql.$table);
 
 		$data['updatable'] = $infos['updatable'] ?? false;
 
@@ -132,22 +132,22 @@ class webequip_transfer extends Module {
 
 			$data['data'][0][] = $infos['name'];
 			$data['data'][0][] = $result->fetch_object()->nb;
-			$data['data'][0][] = Db::getInstance()->getValue($query.$new_table);
+			$data['data'][0][] = Db::getInstance()->getValue($sql.$new_table);
 
 			if($infos['lang']) {
-				$result = $this->old_db->query($query.$table."_lang");
+				$result = $this->old_db->query($sql.$table."_lang");
 
 				$data['data'][1][] = "Gestion des langues";
 				$data['data'][1][] = $result->fetch_object()->nb;
-				$data['data'][1][] = Db::getInstance()->getValue($query.$new_table."_lang");
+				$data['data'][1][] = Db::getInstance()->getValue($sql.$new_table."_lang");
 			}
 
 			if($infos['shop']) {
-				$result = $this->old_db->query($query.$table."_shop");
+				$result = $this->old_db->query($sql.$table."_shop");
 
 				$data['data'][2][] = "Gestion des boutiques";
 				$data['data'][2][] = $result->fetch_object()->nb;
-				$data['data'][2][] = Db::getInstance()->getValue($query.$new_table."_shop");
+				$data['data'][2][] = Db::getInstance()->getValue($sql.$new_table."_shop");
 			}
 		}
 
@@ -802,11 +802,11 @@ class webequip_transfer extends Module {
 		$states[2] = Quotation::STATUS_WAITING;
 		$states[3] = Quotation::STATUS_VALIDATED;
 
-		$query = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
-		if(isset($ids) and $ids) $query .= " WHERE d.id_activis_devis NOT IN ($ids)";
-		$query .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis";
+		$sql = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
+		if(isset($ids) and $ids) $sql .= " WHERE d.id_activis_devis NOT IN ($ids)";
+		$sql .= "AND d.hash <> 'Deleted' GROUP BY d.id_activis_devis";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			$quotation = new Quotation($row['id_activis_devis']);
@@ -849,10 +849,10 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds(QuotationLine::TABLE_PRIMARY, _DB_PREFIX_.QuotationLine::TABLE_NAME);
 
-		$query = "SELECT * FROM ps_activis_devis_line";
-		if(isset($ids) and $ids) $query .= " WHERE id_activis_devis_line NOT IN ($ids)";
+		$sql = "SELECT * FROM ps_activis_devis_line";
+		if(isset($ids) and $ids) $sql .= " WHERE id_activis_devis_line NOT IN ($ids)";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			$line = new QuotationLine($row['id_activis_devis_line']);
@@ -994,11 +994,11 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_product", "ps_product");
 
-		$query = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN (SELECT DISTINCT(id_product_bundle) FROM ps_bundle)";
-		if(isset($ids) and $ids) $query .= " AND p.id_product NOT IN ($ids)";
-		$query .= "  GROUP BY p.id_product";
+		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN (SELECT DISTINCT(id_product_bundle) FROM ps_bundle)";
+		if(isset($ids) and $ids) $sql .= " AND p.id_product NOT IN ($ids)";
+		$sql .= "  GROUP BY p.id_product";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			$this->recordProduct($row);
 		}
@@ -1020,10 +1020,10 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_product_attribute", "ps_product_attribute");
 
-		$query = "SELECT * FROM ps_bundle b, ps_product p, ps_product_lang pl WHERE b.id_product_item = p.id_product AND p.id_product = pl.id_product AND pl.id_lang = 1";
-		if(isset($ids) and $ids) $query .= " AND b.id_product_item NOT IN ($ids)";
+		$sql = "SELECT * FROM ps_bundle b, ps_product p, ps_product_lang pl WHERE b.id_product_item = p.id_product AND p.id_product = pl.id_product AND pl.id_lang = 1";
+		if(isset($ids) and $ids) $sql .= " AND b.id_product_item NOT IN ($ids)";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			$combination = new Combination($row['id_product_item'], 1);
@@ -1067,9 +1067,9 @@ class webequip_transfer extends Module {
 			$ids[] = $row['id_product_item'];
 
 		Db::getInstance()->execute("DELETE FROM ps_feature_product");
-		$query = "SELECT * FROM ps_feature_product WHERE id_product NOT IN (".implode(',', $ids).")";
+		$sql = "SELECT * FROM ps_feature_product WHERE id_product NOT IN (".implode(',', $ids).")";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("INSERT IGNORE INTO ps_feature_product VALUES (".$row['id_feature'].", ".$row['id_product'].", ".$row['id_feature_value'].")");
 			$this->nb_rows++;
@@ -1082,9 +1082,9 @@ class webequip_transfer extends Module {
 	private function transfer_ps_feature_product() {
 
 		Db::getInstance()->execute("DELETE FROM ps_product_attribute_combination");
-		$query = "SELECT fp.* FROM ps_feature_product fp, ps_bundle b WHERE fp.id_product = b.id_product_item";	
+		$sql = "SELECT fp.* FROM ps_feature_product fp, ps_bundle b WHERE fp.id_product = b.id_product_item";	
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("INSERT IGNORE INTO ps_product_attribute_combination VALUES(".$row['id_feature_value'].", ".$row['id_product'].")");
 			$this->nb_rows++;
@@ -1107,10 +1107,10 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_specific_price", "ps_specific_price");
 
-		$query = "SELECT * FROM ps_specific_price";
-		if(isset($ids) and $ids) $query .= " WHERE id_specific_price NOT IN ($ids)";
+		$sql = "SELECT * FROM ps_specific_price";
+		if(isset($ids) and $ids) $sql .= " WHERE id_specific_price NOT IN ($ids)";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			// Ne récupérer que les prix des produits importés (+ récupération des nouvelles données)
@@ -1163,10 +1163,10 @@ class webequip_transfer extends Module {
 			$ids = trim(implode(",", $ids));
 		}
 
-		$query = "SELECT id_product, price FROM ps_product";
-		if(isset($ids) and $ids) $query .= " WHERE id_product NOT IN ($ids)";
+		$sql = "SELECT id_product, price FROM ps_product";
+		if(isset($ids) and $ids) $sql .= " WHERE id_product NOT IN ($ids)";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			// Ne récupérer que les prix des produits importés (+ récupération des nouvelles données)
@@ -1213,7 +1213,7 @@ class webequip_transfer extends Module {
 		$sql = "SELECT * FROM ps_image i, ps_image_lang il WHERE i.id_image = il.id_image";
 		if(isset($ids) and $ids) $sql .= " AND i.id_image NOT IN ($ids)";
 
-		$result = $this->old_db->query($query);
+		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			// N'importer les images que des produits importés
