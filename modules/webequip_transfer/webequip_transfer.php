@@ -955,8 +955,6 @@ class webequip_transfer extends Module {
 		while($row = $result->fetch_assoc())
 			$ids[] = $row['id_product_item'];
 
-		$ids = implode(",", $ids);
-
 		if(Tools::getValue('eraze')) {
 			ProductMatching::erazeContent();
 			Db::getInstance()->execute("DELETE FROM ps_product");
@@ -964,7 +962,9 @@ class webequip_transfer extends Module {
 			Db::getInstance()->execute("DELETE FROM ps_product_lang");
 		}
 		else
-			$ids .= $this->getSavedIds("id_product", "ps_product");
+			$ids[] = $this->getSavedIds("id_product", "ps_product");
+
+		$ids = implode(",", $ids);
 
 		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1";
 		if(!empty($ids)) $sql .= " AND p.id_product NOT IN ($ids)";
@@ -991,10 +991,9 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_product", "ps_product");
 
-		$sub_query = "SELECT DISTINCT(id_product_bundle) FROM ps_bundle";
-		if(isset($ids) and $ids) $sub_query .= " WHERE id_product_bundle NOT IN ($ids)";
-
-		$query = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN ($sub_query) GROUP BY p.id_product";
+		$query = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN (SELECT DISTINCT(id_product_bundle) FROM ps_bundle)";
+		if(isset($ids) and $ids) $query .= " AND p.id_product NOT IN ($ids)";
+		$query .= "  GROUP BY p.id_product";
 
 		$result = $this->old_db->query($query);
 		while($row = $result->fetch_assoc()) {
