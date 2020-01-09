@@ -1179,6 +1179,14 @@ class webequip_transfer extends Module {
 				$price->price = $row['price'];
 				$price->from_quantity = 1;
 				$price->reduction_type = 'amount';
+				$price->id_shop = 0;
+				$price->id_currency = 1;
+				$price->id_country = 8;
+				$price->id_group = 0;
+				$price->id_customer = 0;
+				$price->reduction = 0;
+				$price->from = "0000-00-00 00:00:00";
+				$price->to = "0000-00-00 00:00:00";
 
 				$price->record($update);
 				$this->nb_rows++;
