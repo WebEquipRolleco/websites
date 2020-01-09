@@ -1172,6 +1172,8 @@ class webequip_transfer extends Module {
 			$matching = new ProductMatching($row['id_product']);
 			if($matching->id) {
 
+				$price = new SpecificPrice();
+				
 				$price->id_product = $matching->id_product;
 				$price->id_product_attribute = $matching->id_combination;
 				$price->price = $row['price'];
