@@ -29,16 +29,15 @@
         {if $product.cover}
           <a href="{$product.url}" class="thumbnail product-thumbnail">
             <img
-              src = "{$product.cover.bySize.home_default.url}"
+              src = "{$product.cover.bySize.large_default.url}"
               alt = "{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name|truncate:30:'...'}{/if}"
               data-full-size-image-url = "{$product.cover.large.url}"
+              class="col-lg-12"
             >
           </a>
         {else}
           <a href="{$product.url}" class="thumbnail product-thumbnail">
-            <img
-              src = "{$urls.no_picture_image.bySize.home_default.url}"
-            >
+            <img src="{$urls.no_picture_image.bySize.large_default.url}" class="col-lg-12">
           </a>
         {/if}
       {/block}
