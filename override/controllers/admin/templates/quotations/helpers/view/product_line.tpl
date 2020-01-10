@@ -19,6 +19,9 @@
 
 	{* DESIGNATION / DIMENSIONS / INFORMATIONS COMPLEMENTAIRES *}
 	<td width="20%">
+		{if !$line->isStillActive()}
+			<div class="alert alert-danger bold">{l s="Ce produit a été désactivé ou supprimé" d="Admin.Notifications.Error"}</div>
+		{/if}
 		<div class="form-group">
 			<div class="text-muted"><em>{l s="Désignation" d="Admin.Labels"}</em></div>
 			<textarea rows="1" class="form-control" name="lines[{$line->id}][name]" style="resize:vertical">{$line->name}</textarea>

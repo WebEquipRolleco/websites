@@ -290,4 +290,15 @@ class QuotationLine extends ObjectModel {
 		return $rows;
 	}
 
+	/**
+	* Vérifie que le produit lié est toujours actif
+	**/
+	public function isStillActive() {
+
+		if($this->id_product)
+			return (bool)Db::getInstance()->getValue("SELECT active FROM ps_product WHERE id_product = ".$this->id_product);
+
+		return true;
+	}
+	
 }
