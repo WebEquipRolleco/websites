@@ -5,6 +5,8 @@ class webequip_transfer extends Module {
 	private $old_db;
 	private $nb_rows;
 
+	private $active_only = 1;
+
 	public static $configurations = array(
         'host' 	=> array('name'=>"WEBEQUIP_OLD_DB_HOST", "label"=>"Hôte", "type"=>"text"),
         'db' 	=> array('name'=>"WEBEQUIP_OLD_DB_NAME", "label"=>"BDD", "type"=>"text"),
@@ -810,31 +812,34 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
-			$quotation = new Quotation($row['id_activis_devis']);
-			$update = !empty($quotation->id);
+			if($row['hash'] != "Deleted") {
 
-			$quotation->id = $row['id_activis_devis'];
-			$quotation->reference = $row['hash'];
-			$quotation->status = (isset($states[$row['id_state']]) ? $states[$row['id_state']] : Quotation::STATUS_OVER);
-			$quotation->id_customer = Customer::customerExists($row['email'], true);
-			$quotation->email = $row['mail_cc'];
-			$quotation->phone = utf8_encode($row['phone']);
-			$quotation->fax = utf8_encode($row['fax']);
-			$quotation->date_begin = $row['date_from'];
-			$quotation->date_add = $row['date_add'];
-			$quotation->date_end = $row['date_to'];
-			$quotation->date_recall = $row['date_recall'];
-			$quotation->comment = utf8_encode($row['comment']);
-			$quotation->details = $row['contact'];
-			$quotation->id_employee = $row['id_employee'];
-			$quotation->active = $row['active'];
-			$quotation->new = 0;
-			$quotation->id_shop = ($row['id_shop'] ?? 1);
-			$quotation->secure_key = $row['hash'];
-			$quotation->mail_sent = $row['is_send'];
+				$quotation = new Quotation($row['id_activis_devis']);
+				$update = !empty($quotation->id);
 
-			$quotation->record($update);
-			$this->nb_rows++;
+				$quotation->id = $row['id_activis_devis'];
+				$quotation->reference = $row['hash'];
+				$quotation->status = (isset($states[$row['id_state']]) ? $states[$row['id_state']] : Quotation::STATUS_OVER);
+				$quotation->id_customer = Customer::customerExists($row['email'], true);
+				$quotation->email = $row['mail_cc'];
+				$quotation->phone = utf8_encode($row['phone']);
+				$quotation->fax = utf8_encode($row['fax']);
+				$quotation->date_begin = $row['date_from'];
+				$quotation->date_add = $row['date_add'];
+				$quotation->date_end = $row['date_to'];
+				$quotation->date_recall = $row['date_recall'];
+				$quotation->comment = utf8_encode($row['comment']);
+				$quotation->details = $row['contact'];
+				$quotation->id_employee = $row['id_employee'];
+				$quotation->active = $row['active'];
+				$quotation->new = 0;
+				$quotation->id_shop = ($row['id_shop'] ?? 1);
+				$quotation->secure_key = $row['hash'];
+				$quotation->mail_sent = $row['is_send'];
+
+				$quotation->record($update);
+				$this->nb_rows++;
+			}
 		}
 	}
 
@@ -971,6 +976,7 @@ class webequip_transfer extends Module {
 		$ids = implode(",", $ids);
 
 		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1";
+		if($this->active_only) $sql .= " AND p.active = 1";
 		if(!empty($ids)) $sql .= " AND p.id_product NOT IN ($ids)";
 		$sql .= " GROUP BY p.id_product";
 
@@ -996,6 +1002,7 @@ class webequip_transfer extends Module {
 			$ids = $this->getSavedIds("id_product", "ps_product");
 
 		$sql = "SELECT * FROM ps_product p, ps_product_lang pl WHERE p.id_product = pl.id_product AND pl.id_lang = 1 AND p.id_product IN (SELECT DISTINCT(id_product_bundle) FROM ps_bundle)";
+		if($this->active_only) $sql .= " AND p.active = 1";
 		if(isset($ids) and $ids) $sql .= " AND p.id_product NOT IN ($ids)";
 		$sql .= "  GROUP BY p.id_product";
 
@@ -1022,6 +1029,7 @@ class webequip_transfer extends Module {
 			$ids = $this->getSavedIds("id_product_attribute", "ps_product_attribute");
 
 		$sql = "SELECT * FROM ps_bundle b, ps_product p, ps_product_lang pl WHERE b.id_product_item = p.id_product AND p.id_product = pl.id_product AND pl.id_lang = 1";
+		if($this->active_only) $sql .= " AND p.active = 1";
 		if(isset($ids) and $ids) $sql .= " AND b.id_product_item NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
