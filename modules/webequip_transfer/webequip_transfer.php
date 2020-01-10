@@ -102,6 +102,8 @@ class webequip_transfer extends Module {
 		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simples", 'preview'=>false, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
+		$data['transfer_ps_product_supplier_PRODUCT'] = array('name'=>"Produits [2+] Transition des données fournisseurs", 'preview'=>false, 'updatable'=>true);
+		$data['transfer_ps_product_supplier_COMBINATION'] = array('name'=>"Produits [2+] Transition des données fournisseurs", 'preview'=>false, 'updatable'=>true);
 		$data['ps_specific_price'] = array('name'=>"Produits [2+] Récupération des prix spécifiques", 'updatable'=>true);
 		$data['ps_specific_price_ONE'] = array('name'=>"Produits [3+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
 		$data['ps_image'] = array('name'=>"Produits [2+] Récupération des données d'images", 'updatable'=>true);
@@ -1097,6 +1099,68 @@ class webequip_transfer extends Module {
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("INSERT IGNORE INTO ps_product_attribute_combination VALUES(".$row['id_feature_value'].", ".$row['id_product'].")");
 			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* [Etape 2+] Transfert des infos fournisseurs
+	**/
+	private function transfer_ps_product_supplier_PRODUCT() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze'))
+			Db::getInstance()->execute("DELETE FROM ps_product_supplier WHERE id_product_attribute = 0");
+		else
+			$ids = $this->getSavedIds("id_product", "ps_product_supplier");
+
+		$sql = "SELECT id_product, id_supplier, supplier_reference FROM ps_product WHERE supplier_reference IS NOT NULL";
+		if(isset($ids) and $ids) $sql .= " AND id_product NOT IN ($ids)";
+
+		foreach(Db::getInstance()->executeS($sql) as $row) {
+
+			$data = new ProductSupplier();
+
+			$data->id_product = $row['id_product'];
+			$data->id_product_attribute = 0;
+			$data->id_supplier = $row['id_supplier'];
+			$data->product_supplier_reference = $row['supplier_reference'];
+			$data->id_currency = 1;
+			$data->product_supplier_price_te = 0;
+
+			$data->save();
+		}
+	}
+
+	/**
+	* [Etape 2+] Transfert des infos fournisseurs
+	**/
+	private function transfer_ps_product_supplier_COMBINATION() {
+
+		$this->connectToDB();
+
+		if(Tools::getValue('eraze'))
+			Db::getInstance()->execute("DELETE FROM ps_product_supplier WHERE id_product_attribute <> 0");
+		else
+			$ids = $this->getSavedIds("id_product_attribute", "ps_product_supplier");
+
+		$sql = "SELECT id_product_attribute, supplier_reference FROM ps_product WHERE supplier_reference IS NOT NULL";
+		if(isset($ids) and $ids) $sql .= " AND id_product NOT IN ($ids)";
+
+		foreach(Db::getInstance()->executeS($sql) as $row) {
+			if($id_supplier = Db::getInstance()->getValue("SELECT id_supplier FROM ps_product WHERE id_product = ".$row['id_product'])) {
+
+				$data = new ProductSupplier();
+
+				$data->id_product = $row['id_product'];
+				$data->id_product_attribute = $row['id_product_attribute'];
+				$data->id_supplier = $id_supplier;
+				$data->product_supplier_reference = $row['supplier_reference'];
+				$data->id_currency = 1;
+				$data->product_supplier_price_te = 0;
+
+				$data->save();
+			}
 		}
 	}
 
