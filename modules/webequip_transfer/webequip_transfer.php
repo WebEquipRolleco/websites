@@ -1144,8 +1144,8 @@ class webequip_transfer extends Module {
 		else
 			$ids = $this->getSavedIds("id_product_attribute", "ps_product_supplier");
 
-		$sql = "SELECT id_product_attribute, supplier_reference FROM ps_product_attribute WHERE supplier_reference IS NOT NULL";
-		if(isset($ids) and $ids) $sql .= " AND id_product NOT IN ($ids)";
+		$sql = "SELECT id_product, id_product_attribute, supplier_reference FROM ps_product_attribute WHERE supplier_reference IS NOT NULL";
+		if(isset($ids) and $ids) $sql .= " AND id_product_attribute NOT IN ($ids)";
 
 		foreach(Db::getInstance()->executeS($sql) as $row) {
 			if($id_supplier = Db::getInstance()->getValue("SELECT id_supplier FROM ps_product WHERE id_product = ".$row['id_product'])) {
