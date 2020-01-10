@@ -102,6 +102,8 @@ class webequip_transfer extends Module {
 		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simples", 'preview'=>false, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
+		$data['ps_category_product'] = array('name'=>"Produits [2+] Affectations des catégories");
+		$data['ps_category_product_DEFAULT'] = array('name'=>"Produits [2+] Récupération de la catégorie par défaut des produits", 'preview'=>false);
 		$data['ps_product_supplier_PRODUCT'] = array('name'=>"Produits [2+] Transition des données fournisseurs des produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product_supplier_COMBINATION'] = array('name'=>"Produits [2+] Transition des données fournisseurs des déclinaisons", 'preview'=>false, 'updatable'=>true);
 		$data['ps_specific_price'] = array('name'=>"Produits [2+] Récupération des prix spécifiques", 'updatable'=>true);
@@ -1103,6 +1105,40 @@ class webequip_transfer extends Module {
 	}
 
 	/**
+	* [Etape 2+] Récupération des affectations de catégories
+	**/
+	private function transfer_ps_category_product() {
+
+		Db::getInstance()->execute("DELETE FROM ps_category_product");
+		$sql = "SELECT cp.*, c.new_id FROM ps_category_product cp, ps_category c WHERE cp.id_category = c.id_category AND c.new_id IS NOT NULL";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id){
+				Db::getInstance()->execute("INSERT IGNORE INTO ps_category_product VALUES (".$row['new_id'].", ".$matching->id_product.", ".$row['position'].")");
+				$this->nb_rows++;
+			}
+		}
+	}
+
+	/**
+	* [Etape 2+] Récupération des catégories par défaut
+	**/
+	private function transfer_ps_category_product_DEFAULT() {
+
+		$ids = $this->getSavedIds("id_product", _DB_PREFIX_.ProductMatching::TABLE_NAME);
+		$sql = "SELECT p.id_product, c.new_id FROM ps_product p, ps_category WHERE p.id_default_category = c.id_category AND p.id_default_category AND p.id_product IN ($ids)";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("UPDATE ps_product SET id_default_category = ".$row['new_id']." WHERE id_product = ".$row['id_product']);
+			$this->nb_rows++;
+		}
+	}
+
+	/**
 	* [Etape 2+] Transfert des infos fournisseurs
 	**/
 	private function transfer_ps_product_supplier_PRODUCT() {
@@ -1318,8 +1354,12 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query("SELECT * FROM ps_accessory");
 		while($row = $result->fetch_assoc()) {
 
-			Db::getInstance()->execute("INSERT INTO ps_accessory VALUES (".$row['id_product_1'].", ".$row['id_product_2'].")");
-			$this->nb_rows++;
+			$matching_1 = new ProductMatching($row['id_product_1']);
+			$matching_2 = new ProductMatching($row['id_product_2']);
+			if($matching_1->id and $matching_2->id) {
+				Db::getInstance()->execute("INSERT INTO ps_accessory VALUES (".$matching_1->id_product.", ".$matching_2->id_product.")");
+				$this->nb_rows++;
+			}
 		}
 	}
 	
