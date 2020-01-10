@@ -100,9 +100,10 @@ class webequip_transfer extends Module {
 		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simples", 'preview'=>false, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
-		$data['ps_specific_price'] = array('name'=>"Produits [1+] Récupération des prix spécifiques", 'updatable'=>true);
-		$data['ps_specific_price_ONE'] = array('name'=>"Produits [2+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
-		$data['ps_image'] = array('name'=>"Produits [1+] Récupération des données d'images", 'updatable'=>true);
+		$data['ps_specific_price'] = array('name'=>"Produits [2+] Récupération des prix spécifiques", 'updatable'=>true);
+		$data['ps_specific_price_ONE'] = array('name'=>"Produits [3+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
+		$data['ps_image'] = array('name'=>"Produits [2+] Récupération des données d'images", 'updatable'=>true);
+		$data['ps_accessory'] = array('name'=>"Produits [2+] Récupération des accessoires");
 		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
 		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
@@ -1092,7 +1093,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 1+] : Récupération des prix spécifiques
+	* [Etape 2+] : Récupération des prix spécifiques
 	**/
 	private function transfer_ps_specific_price() {
 
@@ -1149,7 +1150,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 2+]
+	* [Etape 3+]
 	**/
 	private function transfer_ps_specific_price_ONE() {
 
@@ -1196,7 +1197,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [Etape 1+] Copie des informations relatives aux images
+	* [Etape 2+] Copie des informations relatives aux images
 	**/
 	private function transfer_ps_image() {
 
@@ -1236,6 +1237,20 @@ class webequip_transfer extends Module {
 		}
 	}
 
+	/**
+	* [Etape 2+] Récupération des accessoires
+	**/
+	private function transfer_ps_accessory() {
+
+		Db::getInstance()->execute("DELETE FROM ps_accessory");
+		$result = $this->old_db->query("SELECT * FROM ps_accessory");
+		while($row = $result->fetch_assoc()) {
+
+			Db::getInstance()->execute("INSERT INTO ps_accessory VALUES (".$row['id_product_1'].", ".$row['id_product_2'].")");
+			$this->nb_rows++;
+		}
+	}
+	
 	/**
 	* Transforme un resultat SQL en produit
 	* @param array
