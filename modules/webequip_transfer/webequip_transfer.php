@@ -102,8 +102,8 @@ class webequip_transfer extends Module {
 		$data['ps_product_SIMPLE'] = array('name'=>"Produits [1] Récupération des produits simples", 'preview'=>false, 'updatable'=>true);
 		$data['ps_bundle'] = array('name'=>"Produits [1] Transition des bundles en produits", 'preview'=>false, 'updatable'=>true);
 		$data['ps_product'] = array('name'=>"Produits [1] Transition des produits en déclinaisons", 'preview'=>false, 'updatable'=>true);
-		$data['transfer_ps_product_supplier_PRODUCT'] = array('name'=>"Produits [2+] Transition des données fournisseurs", 'preview'=>false, 'updatable'=>true);
-		$data['transfer_ps_product_supplier_COMBINATION'] = array('name'=>"Produits [2+] Transition des données fournisseurs", 'preview'=>false, 'updatable'=>true);
+		$data['transfer_ps_product_supplier_PRODUCT'] = array('name'=>"Produits [2+] Transition des données fournisseurs des produits", 'preview'=>false, 'updatable'=>true);
+		$data['transfer_ps_product_supplier_COMBINATION'] = array('name'=>"Produits [2+] Transition des données fournisseurs des déclinaisons", 'preview'=>false, 'updatable'=>true);
 		$data['ps_specific_price'] = array('name'=>"Produits [2+] Récupération des prix spécifiques", 'updatable'=>true);
 		$data['ps_specific_price_ONE'] = array('name'=>"Produits [3+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
 		$data['ps_image'] = array('name'=>"Produits [2+] Récupération des données d'images", 'updatable'=>true);
