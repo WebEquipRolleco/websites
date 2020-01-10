@@ -54,7 +54,7 @@
   {/if}
 {/function}
 
-<div class="col-sm-10">
+<div class="col-sm-12 text-center">
   <div class="menu js-top-menu position-static hidden-lg-down" id="_desktop_top_menu">
       {menu nodes=$menu.children}
       <div class="clearfix"></div>
