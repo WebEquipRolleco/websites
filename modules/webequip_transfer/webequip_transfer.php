@@ -811,7 +811,7 @@ class webequip_transfer extends Module {
 
 		$sql = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
 		if(isset($ids) and $ids) $sql .= " WHERE d.id_activis_devis NOT IN ($ids)";
-		$sql .= "AND d.hash <> 'Deleted' AND d.date_add >= "2016-01-01 00:00:00" GROUP BY d.id_activis_devis";
+		$sql .= "AND d.hash <> 'Deleted' AND d.date_add >= '2016-01-01 00:00:00' GROUP BY d.id_activis_devis";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
