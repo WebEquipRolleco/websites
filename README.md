@@ -3,6 +3,7 @@ Multiboutique Prestashop 1.7
 
 # Installation des remotes GIT
 git remote add preprod root@ns336802.cubeo.fr:/var/www/devrolleco/rolleco.git
+git remote add prod root@ns336802.cubeo.fr:/var/www/dev2rolleco/webequip.git
 
 # Modification de la BDD 
 ALTER TABLE `ps_order_detail` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `product_price`;
