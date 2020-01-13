@@ -58,7 +58,7 @@ ALTER TABLE `ps_orders` ADD `invoice_comment` TEXT NULL AFTER `invoice_number`;
 
 ALTER TABLE `ps_category_lang` ADD `bottom_description` TEXT NULL AFTER `description`;
 
-ALTER TABLE `ps_product` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
+ALTER TABLE `ps_product` ADD `rollcash` FLOAT DEFAULT '0' AFTER `state`;
 ALTER TABLE `ps_product` ADD `destocking` TINYINT DEFAULT '0' AFTER `rollcash`;
 ALTER TABLE `ps_product` ADD `comment_1` TEXT DEFAULT NULL AFTER `destocking`;
 ALTER TABLE `ps_product` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
@@ -69,9 +69,9 @@ ALTER TABLE `ps_product_shop` ADD `comment_1` TEXT DEFAULT NULL AFTER `delivery_
 ALTER TABLE `ps_product_shop` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 ALTER TABLE `ps_product_shop` ADD `batch` INT DEFAULT NULL AFTER `comment_2`;
 
-ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
+ALTER TABLE `ps_product_attribute` ADD `rollcash` FLOAT DEFAULT '0' AFTER `price`;
 ALTER TABLE `ps_product_attribute` ADD `position` FLOAT DEFAULT '0' AFTER `rollcash`;
-ALTER TABLE `ps_product_attribute` ADD `batch` INT '1' NULL AFTER `position`;
+ALTER TABLE `ps_product_attribute` ADD `batch` INT DEFAULT '1' AFTER `position`;
 ALTER TABLE `ps_product_attribute` ADD `comment_1` TEXT DEFAULT NULL AFTER `batch`;
 ALTER TABLE `ps_product_attribute` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `position` INT(2) DEFAULT 1, 
     `location` INT(2) DEFAULT 1, 
     `active` TINYINT DEFAULT 1,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_product_icon`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_product_icon_shop` (
