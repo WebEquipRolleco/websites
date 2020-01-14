@@ -43,7 +43,7 @@ class webequip_transfer extends Module {
 
 		$this->old_db = new mysqli($dbServerName, $dbUsername, $dbPassword, $dbName);
 		if($this->old_db->connect_error)
-    		die("<div class='alert alert-danger'>".$old_db->connect_error."</div>");
+    		die("<div class='alert alert-danger'>".$this->old_db->connect_error."</div>");
 	}
 
 	/**
