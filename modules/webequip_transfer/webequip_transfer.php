@@ -1374,12 +1374,12 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		$ids = $this->getSavedIds("id_product", "ps_product");
-		$sql = "SELECT id_product, link_rewrite FROM ps_shop_lang WHERE id_product IN ($ids) GROUP BY id_product";
+		$sql = "SELECT id_product, link_rewrite FROM ps_product_lang WHERE id_product IN ($ids) GROUP BY id_product";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
-			Db::getInstance()->execute("UPDATE ps_product_shop SET link_rewrite = '".utf8_encode($row['link_rewrite'])."' WHERE id_product = ".$row['id_product']);
+			Db::getInstance()->execute("UPDATE ps_product SET link_rewrite = '".utf8_encode($row['link_rewrite'])."' WHERE id_product = ".$row['id_product']);
 			$this->nb_rows++;
 		}
 	}
