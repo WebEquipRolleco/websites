@@ -1379,7 +1379,7 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
-			Db::getInstance()->execute("UPDATE ps_product SET link_rewrite = '".utf8_encode($row['link_rewrite'])."' WHERE id_product = ".$row['id_product']);
+			Db::getInstance()->execute("UPDATE ps_product_lang SET link_rewrite = '".utf8_encode($row['link_rewrite'])."' WHERE id_product = ".$row['id_product']);
 			$this->nb_rows++;
 		}
 	}
