@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `ps_order_option_cart` (
 CREATE TABLE IF NOT EXISTS `ps_order_option_history` (
     `id` INT NOT NULL AUTO_INCREMENT, 
     `id_order` INT NOT NULL, 
-    `name` VARCHAR(255) NOT DEFAULT NULL, 
+    `name` VARCHAR(255) DEFAULT NULL, 
     `description` TEXT DEFAULT NULL,
     `value` FLOAT DEFAULT NULL, 
     PRIMARY KEY (`id`)
@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `ps_quotation` (
     `id_shop` INT(1) DEFAULT NULL,
     `secure_key` VARCHAR(255) DEFAULT NULL, 
     `mail_sent` TINYINT(1) DEFAULT 0,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_quotation`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_quotation_line` (
