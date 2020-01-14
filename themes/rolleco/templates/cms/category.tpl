@@ -54,7 +54,7 @@
             </div>
           {/if}
           <div class="col-lg-{if $has_file}4{else}6{/if} margin-top-15">
-              {if !$has_file}<div class="bold">{$cms_page.meta_title}</div>{/if}
+              <div class="bold">{$cms_page.meta_title}</div>
               <a href="{$cms_page.link}">{$cms_page.description|replace:'|':'<br />' nofilter}</a>
           </div>
         {if $smarty.foreach.pages.index is odd or $smarty.foreach.pages.last}</div>{/if}
