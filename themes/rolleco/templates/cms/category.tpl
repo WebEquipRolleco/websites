@@ -45,15 +45,16 @@
       {*<p>{l s='List of pages in %category_name%:' d='Shop.Theme.Global' sprintf=['%category_name%' => $cms_category.name]}</p>*}
         {foreach from=$cms_pages name=pages item=cms_page}
           {assign var=has_file value=is_file("{getcwd()}{"/img/"}{CMS::DIR}{$cms_page.id_cms}{'.png'}")}
-          {if $smarty.foreach.pages.index is even}<div class="row margin-top-15">{/if}
+          {if $smarty.foreach.pages.index is even}<div class="row">{/if}
           {if $has_file}
-            <div class="col-lg-2">
+            <div class="col-lg-2 margin-top-15">
                 <a href="{$cms_page.link}">
                   <img src="{$urls.img_ps_url}{CMS::DIR}{$cms_page.id_cms}.png" style="max-width: 100%">
                 </a>
             </div>
           {/if}
-          <div class="col-lg-{if $has_file}4{else}6{/if}">
+          <div class="col-lg-{if $has_file}4{else}6{/if} margin-top-15">
+              {if !$has_file}<div class="bold">{$cms_page.meta_title}</div>{/if}
               <a href="{$cms_page.link}">{$cms_page.description|replace:'|':'<br />' nofilter}</a>
           </div>
         {if $smarty.foreach.pages.index is odd or $smarty.foreach.pages.last}</div>{/if}
