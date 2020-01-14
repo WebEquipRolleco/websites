@@ -116,6 +116,7 @@ class webequip_transfer extends Module {
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'preview'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'preview'=>false, 'updatable'=>true);
 		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'preview'=>false, 'updatable'=>true);
+		$data['LINK_REWRITE'] = array('name'=>"[***] Récupération des url", 'preview'=>false, 'updatable'=>false);
 
 		return $data;
 	}
@@ -1350,6 +1351,8 @@ class webequip_transfer extends Module {
 	**/
 	private function transfer_ps_accessory() {
 
+		$this->connectToDB();
+
 		Db::getInstance()->execute("DELETE FROM ps_accessory");
 		$result = $this->old_db->query("SELECT * FROM ps_accessory");
 		while($row = $result->fetch_assoc()) {
@@ -1363,6 +1366,24 @@ class webequip_transfer extends Module {
 		}
 	}
 	
+	/**
+	* [***] FIX : link_rewrite
+	**/
+	private function transfer_LINK_REWRITE() {
+		
+		$this->connectToDB();
+
+		$ids = $this->getSavedIds("id_product", "ps_product");
+		$sql = "SELECT id_product, link_rewrite FROM ps_shop_lang GROUP BY id_product";
+
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			Db::getInstance()->execute("UPDATE ps_product_shop SET link_rewrite = '".utf8_encode($row['link_rewrite'])."' WHERE id_product = ".$row['id_product']);
+			$this->nb_rows++;
+		}
+	}
+
 	/**
 	* Transforme un resultat SQL en produit
 	* @param array
