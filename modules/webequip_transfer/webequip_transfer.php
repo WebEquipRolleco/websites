@@ -1374,7 +1374,7 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		$ids = $this->getSavedIds("id_product", "ps_product");
-		$sql = "SELECT id_product, link_rewrite FROM ps_shop_lang GROUP BY id_product";
+		$sql = "SELECT id_product, link_rewrite FROM ps_shop_lang WHERE id_product IN ($ids) GROUP BY id_product";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
