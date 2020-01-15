@@ -45,6 +45,7 @@ class ProductMatching extends ObjectModel {
 		$matching->id_product = $new_id_product;
 		if($new_id_combination) $matching->id_combination = $new_id_combination;
 		
+		$matching->force_id = true;
 		$matching->save();
 	}
 

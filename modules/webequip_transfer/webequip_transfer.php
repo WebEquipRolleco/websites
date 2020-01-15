@@ -116,10 +116,11 @@ class webequip_transfer extends Module {
 		$data['ps_feature_value'] = array('name'=>"Produits : liste des valeurs de caractéristiques", 'preview'=>false, 'updatable'=>true);
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'preview'=>false, 'updatable'=>true);
 		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'preview'=>false, 'updatable'=>true);
-		$data['LINK_REWRITE'] = array('name'=>"[***] Récupération des url", 'preview'=>false, 'updatable'=>false);
-		$data['DESCRIPTION'] = array('name'=>"[***] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
-		$data['REF_ROLLECO'] = array('name'=>"[***] Récupération des références ROLLECO", 'preview'=>false, 'updatable'=>false);
-		$data['COMMENTS_ROLLECO'] = array('name'=>"[***] Récupération des commentaires ROLLECO", 'preview'=>false, 'updatable'=>false);
+		$data['LINK_REWRITE'] = array('name'=>"[FIX] Récupération des url", 'preview'=>false, 'updatable'=>false);
+		$data['DESCRIPTION'] = array('name'=>"[FIX] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
+		$data['REF_ROLLECO'] = array('name'=>"[FIX] Récupération des références ROLLECO", 'preview'=>false, 'updatable'=>false);
+		$data['COMMENTS_ROLLECO'] = array('name'=>"[FIX] Récupération des commentaires ROLLECO", 'preview'=>false, 'updatable'=>false);
+		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
 
 		return $data;
 	}
@@ -1063,7 +1064,7 @@ class webequip_transfer extends Module {
 			$combination->batch = $row['packaging'];
 
 			$combination->record($update);
-			ProductMatching::recordRow($row['id_product_bundle'], $row['id_product_bundle'], $row['id_product_item']);
+			ProductMatching::recordRow($row['id_product_item'], $row['id_product_bundle'], $row['id_product_item']);
 			$this->nb_rows++;
 		}
 	}
@@ -1370,7 +1371,7 @@ class webequip_transfer extends Module {
 	}
 	
 	/**
-	* [***] FIX : link_rewrite
+	* [FIX] link_rewrite
 	**/
 	private function transfer_LINK_REWRITE() {
 		
@@ -1388,7 +1389,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [***] FIX : description
+	* [FIX] Description
 	**/
 	private function transfer_DESCRIPTION() {
 
@@ -1411,7 +1412,7 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* [***] FIX : références Rolléco
+	* [FIX] Références Rolléco
 	**/
 	private function transfer_REF_ROLLECO() {
 
@@ -1437,6 +1438,9 @@ class webequip_transfer extends Module {
 		}
 	}
 
+	/**
+	* [FIX] Transfert les commentaires de Rolléco
+	**/
 	private function transfer_COMMENTS_ROLLECO() {
 
 		$this->connectToDB();
@@ -1458,6 +1462,40 @@ class webequip_transfer extends Module {
 					$this->nb_rows++;
 				}
 			}
+		}
+	}
+
+	/**
+	* [FIX] Répare ou met à jour la table de matching
+	**/
+	private function transfer_FIX_MATCHING() {
+
+		ProductMatching::erazeContent();
+
+		// Produits
+		foreach(Db::getInstance()->executeS("SELECT id_product FROM ps_product") as $row) {
+			$matching = new ProductMatching($row['id_product']);
+
+			$matching->id_product_matching = $row['id_product'];
+			$matching->id_product = $row['id_product'];
+			$matching->id_combination = 0;
+
+			$matching->force_id = true;
+			$matching->save();
+			$this->nb_rows++;
+		}
+
+		// Déclinaisons
+		foreach(Db::getInstance()->executeS("SELECT id_product_attribute, id_product FROM ps_product_attribute") as $row) {
+			$matching = new ProductMatching($row['id_product_attribute']);
+
+			$matching->id_product_matching = $row['id_product_attribute'];
+			$matching->id_product = $row['id_product'];
+			$matching->id_combination = $row['id_product_attribute'];
+
+			$matching->force_id = true;
+			$matching->save();
+			$this->nb_rows++;
 		}
 	}
 
