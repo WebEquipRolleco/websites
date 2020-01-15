@@ -868,6 +868,10 @@ li.product-flag.destocking {
   color: #4c4c4c;
   margin-left: 30px;
 }
+#full_description ul {
+  list-style: disc;
+  padding-left: 30px;
+}
 .page-my-account #content .links a:hover i {
   color: #1e4688;
 }
