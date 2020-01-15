@@ -119,6 +119,7 @@ class webequip_transfer extends Module {
 		$data['LINK_REWRITE'] = array('name'=>"[***] Récupération des url", 'preview'=>false, 'updatable'=>false);
 		$data['DESCRIPTION'] = array('name'=>"[***] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
 		$data['REF_ROLLECO'] = array('name'=>"[***] Récupération des références ROLLECO", 'preview'=>false, 'updatable'=>false);
+		$data['COMMENTS_ROLLECO'] = array('name'=>"[***] Récupération des commentaires ROLLECO", 'preview'=>false, 'updatable'=>false);
 
 		return $data;
 	}
@@ -1432,6 +1433,28 @@ class webequip_transfer extends Module {
 					Db::getInstance()->execute("UPDATE ps_product SET reference = '$reference' WHERE id_product = ".$matching->id_product);
 					Db::getInstance()->execute("UPDATE ps_product_shop SET reference = '$reference' WHERE id_shop = 1 AND id_product = ".$matching->id_product);
 				}
+			}
+		}
+	}
+
+	private function transfer_COMMENTS_ROLLECO() {
+
+		$this->connectToDB();
+
+		$sql = "SELECT id_product, commentaire1, commentaire_2 FROM ps_product_lang WHERE id_shop = 1 GROUP BY id_product";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id_combination) {
+				Db::getInstance()->execute("UPDATE ps_product_attribute SET comment_1 = '".pSql(utf8_encode($row['commentaire1']))."', comment_2 = '".pSql(utf8_encode($row['commentaire2']))."' WHERE id_product_attribute = ".$matching->id_combination);
+				Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET comment_1 = '".pSql(utf8_encode($row['commentaire1']))."', comment_2 = '".pSql(utf8_encode($row['commentaire2']))."' WHERE id_shop = 1 AND id_product_attribute = ".$matching->id_combination);
+				$this->nb_rows++;
+			}
+			else {
+				Db::getInstance()->execute("UPDATE ps_product SET comment_1 = '".pSql(utf8_encode($row['commentaire1']))."', comment_2 = '".pSql(utf8_encode($row['commentaire2']))."' WHERE id_product = ".$matching->id_product);
+				Db::getInstance()->execute("UPDATE ps_product_shop SET comment_1 = '".pSql(utf8_encode($row['commentaire1']))."', comment_2 = '".pSql(utf8_encode($row['commentaire2']))."' WHERE id_shop = 1 AND id_product = ".$matching->id_product);
+				$this->nb_rows++;
 			}
 		}
 	}
