@@ -1441,7 +1441,7 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		$sql = "SELECT id_product, commentaire1, commentaire_2 FROM ps_product_lang WHERE id_shop = 1 GROUP BY id_product";
+		$sql = "SELECT id_product, commentaire1, commentaire2 FROM ps_product_lang WHERE id_shop = 1 GROUP BY id_product";
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
