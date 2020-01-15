@@ -323,8 +323,10 @@ class AdminImportExportControllerCore extends AdminController {
                             Db::getInstance()->execute("DELETE FROM ps_category_product WHERE id_product = ".$product->id);
 
                             foreach($ids as $id) {
-                                Db::getInstance()->execute("INSERT INTO ps_category_product VALUES (".$id.", ".$product->id.", ".$position.")");
-                                $position++;
+                                if($id) {
+                                    Db::getInstance()->execute("INSERT INTO ps_category_product VALUES (".$id.", ".$product->id.", ".$position.")");
+                                    $position++;
+                                }
                             }
                         }
                     }
