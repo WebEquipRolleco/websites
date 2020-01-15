@@ -118,6 +118,7 @@ class webequip_transfer extends Module {
 		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'preview'=>false, 'updatable'=>true);
 		$data['LINK_REWRITE'] = array('name'=>"[***] Récupération des url", 'preview'=>false, 'updatable'=>false);
 		$data['DESCRIPTION'] = array('name'=>"[***] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
+		$data['REF_ROLLECO'] = array('name'=>"[***] Récupération des références ROLLECO", 'preview'=>false, 'updatable'=>false);
 
 		return $data;
 	}
@@ -1405,6 +1406,33 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("UPDATE ps_product_lang SET description_short = '".pSql(utf8_encode($row['description_short']), true)."' WHERE id_product = ".$row['id_product']);
+		}
+	}
+
+	/**
+	* [***] FIX : références Rolléco
+	**/
+	private function transfer_REF_ROLLECO() {
+
+		$this->connectToDB();
+
+		$sql = "SELECT id_product, reference FROM ps_product_shop WHERE id_shop = 1";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$reference = str_replace('BUNDLE-', '', $row['reference']);
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				if($matching->id_combination) {
+					Db::getInstance()->execute("UPDATE ps_product_attribute SET reference = '$reference' WHERE id_product_attribute = ".$matching->id_combination);
+					//Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET reference = '$reference' WHERE id_shop = 1 AND id_product_attribute = ".$matching->id_combination);
+				}
+				else {
+					Db::getInstance()->execute("UPDATE ps_product SET reference = '$reference' WHERE id_product = ".$matching->id_product);
+					Db::getInstance()->execute("UPDATE ps_product_shop SET reference = '$reference' WHERE id_shop = 1 AND id_product = ".$matching->id_product);
+				}
+			}
 		}
 	}
 
