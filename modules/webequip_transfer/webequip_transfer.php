@@ -117,6 +117,7 @@ class webequip_transfer extends Module {
 		$data['ps_attribute_group'] = array('name'=>"Produits : liste des groupes d'attributs", 'preview'=>false, 'updatable'=>true);
 		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'preview'=>false, 'updatable'=>true);
 		$data['LINK_REWRITE'] = array('name'=>"[***] Récupération des url", 'preview'=>false, 'updatable'=>false);
+		$data['DESCRIPTION'] = array('name'=>"[***] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
 
 		return $data;
 	}
@@ -1381,6 +1382,28 @@ class webequip_transfer extends Module {
 
 			Db::getInstance()->execute("UPDATE ps_product_lang SET link_rewrite = '".utf8_encode($row['link_rewrite'])."' WHERE id_product = ".$row['id_product']);
 			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* [***] FIX : description
+	**/
+	private function transfer_DESCRIPTION() {
+
+		$this->connectToDB();
+
+		$ids = $this->getSavedIds("id_product", "ps_product");
+
+		$sql = "SELECT id_product, description FROM ps_product_lang WHERE id_product IN ($ids) AND description IS NOT NULL AND description <> ''";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("UPDATE ps_product_lang SET description = '".utf8_encode($row['description'])."' WHERE id_product = ".$row['id_product']);
+		}
+
+		$sql = "SELECT id_product, description_short FROM ps_product_lang WHERE id_product IN ($ids) AND description_short IS NOT NULL AND description_short <> ''";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+			Db::getInstance()->execute("UPDATE ps_product_lang SET description_short = '".utf8_encode($row['description_short'])."' WHERE id_product = ".$row['id_product']);
 		}
 	}
 
