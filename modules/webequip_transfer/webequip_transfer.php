@@ -1394,13 +1394,14 @@ class webequip_transfer extends Module {
 
 		$ids = $this->getSavedIds("id_product", "ps_product");
 
-		$sql = "SELECT id_product, description FROM ps_product_lang WHERE id_product IN ($ids) AND description IS NOT NULL AND description <> ''";
+		$sql = "SELECT id_product, description FROM ps_product_lang WHERE id_product IN ($ids) AND description IS NOT NULL AND description <> '' GROUP BY id_product";
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("UPDATE ps_product_lang SET description = '".utf8_encode($row['description'])."' WHERE id_product = ".$row['id_product']);
+			$this->nb_rows++;
 		}
 
-		$sql = "SELECT id_product, description_short FROM ps_product_lang WHERE id_product IN ($ids) AND description_short IS NOT NULL AND description_short <> ''";
+		$sql = "SELECT id_product, description_short FROM ps_product_lang WHERE id_product IN ($ids) AND description_short IS NOT NULL AND description_short <> '' GROUP BY id_product";
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 			Db::getInstance()->execute("UPDATE ps_product_lang SET description_short = '".utf8_encode($row['description_short'])."' WHERE id_product = ".$row['id_product']);
