@@ -42,7 +42,7 @@
 {/block}
 
 {block name='product_list_footer'}
-  <div class="row">
+  <div class="row margin-top-15">
     <div class="col-lg-12">
       {$category.bottom_description nofilter}
     </div>
