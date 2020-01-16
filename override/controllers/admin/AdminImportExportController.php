@@ -311,7 +311,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                         // Récupération des caractéristiques à ajouter
                         $ids = array();
-                        $sql = "SELECT DISTINCT(f.id_feature) FROM ps_feature f ".Shop::addSqlAssociation('feature', 'f')." LEFT JOIN ps_feature_lang fl ON (f.id_feature = fl.id_feature AND fl.id_lang = 1) ORDER BY ag.id_feature ASC";
+                        $sql = "SELECT DISTINCT(f.id_feature) FROM ps_feature f ".Shop::addSqlAssociation('feature', 'f')." LEFT JOIN ps_feature_lang fl ON (f.id_feature = fl.id_feature AND fl.id_lang = 1) ORDER BY f.id_feature ASC";
                         foreach(Db::getInstance()->executeS($sql) as $id)
                             if(isset($row[$id['id_feature']]) and !empty($row[$id['id_feature']])) {
 
