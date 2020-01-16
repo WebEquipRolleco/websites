@@ -116,7 +116,7 @@
 
       {/if*}
 
-      {if !$form_has_continue_button}
+      {*if !$form_has_continue_button*}
         <div class="clearfix">
           <div class="well text-right">
             <button type="submit" class="btn btn-success bold continue" name="confirm-addresses" value="1">
@@ -125,7 +125,7 @@
             <input type="hidden" id="not-valid-addresses" value="{$not_valid_addresses}">
           </div>
         </div>
-      {/if}
+      {*/if*}
 
     </form>
   </div>
