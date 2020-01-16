@@ -90,9 +90,12 @@
             </div>
             <a href="#full_description" class="description-link">{l s="Voir la description complète"}</a>
 
-            <a href="#content-wrapper" class="btn btn-block btn-info text-center margin-top-10">
-              <b>{l s="Sélectionnez le modèle"}</b>
-            </a>
+            {if $combinations|count > 0}
+              <a href="#content-wrapper" class="btn btn-block btn-info text-center margin-top-10">
+                <b>{l s="Sélectionnez le modèle"}</b>
+              </a>
+            {/if}
+            
           {/block}
 
           {block name='product_prices'}
