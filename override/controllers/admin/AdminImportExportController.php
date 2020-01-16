@@ -2,21 +2,21 @@
 
 class AdminImportExportControllerCore extends AdminController {
 
-	const SEPARATOR = "@";
-	const DELIMITER = "|";
-	const END_OF_LINE = "\n";
+    const SEPARATOR = "@";
+    const DELIMITER = "|";
+    const END_OF_LINE = "\n";
 
-	const TYPE_PRODUCT = "Produit";
-	const TYPE_COMBINATION = "Déclinaison";
+    const TYPE_PRODUCT = "Produit";
+    const TYPE_COMBINATION = "Déclinaison";
 
     const ACTIVE_PRODUCTS_ONLY = 1;
     const INACTIVE_PRODUCTS_ONLY = 2;
 
-	private $separator;
-	private $delimiter;
+    private $separator;
+    private $delimiter;
     private $current_id_product;
 
-	public function __construct() {
+    public function __construct() {
         
         $this->bootstrap = true;
         $this->separator = Tools::getValue('separator', self::SEPARATOR);
@@ -26,14 +26,14 @@ class AdminImportExportControllerCore extends AdminController {
     }
 
     public function initContent() {
-    	$this->context->controller->addjQueryPlugin('select2');
+        $this->context->controller->addjQueryPlugin('select2');
 
-    	$this->context->smarty->assign('separator', self::SEPARATOR);
-    	$this->context->smarty->assign('delimiter', self::DELIMITER);
-    	$this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
-    	$this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1));
+        $this->context->smarty->assign('separator', self::SEPARATOR);
+        $this->context->smarty->assign('delimiter', self::DELIMITER);
+        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
+        $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1));
 
-    	parent::initContent();
+        parent::initContent();
     }
 
     public function postProcess() {
@@ -311,11 +311,11 @@ class AdminImportExportControllerCore extends AdminController {
 
                         // Récupération des caractéristiques à ajouter
                         $ids = array();
-                        $sql = "SELECT DISTINCT(f.id_feature) FROM ps_feature f ".Shop::addSqlAssociation('feature', 'f')." LEFT JOIN ps_feature_lang fl ON (f.id_feature = fl.id_feature AND fl.id_lang = 1) ORDER BY f.id_feature ASC";
+                        $sql = "SELECT DISTINCT(f.id_feature) FROM ps_feature f LEFT JOIN ps_feature_lang fl ON (f.id_feature = fl.id_feature AND fl.id_lang = 1) ORDER BY f.id_feature ASC";
                         foreach(Db::getInstance()->executeS($sql) as $id)
                             if(isset($row[$id['id_feature']]) and !empty($row[$id['id_feature']])) {
 
-                                $ids[] = Db::getInstance()->getRow("SELECT fv.id_feature AS id, fv.id_feature_value FROM ps_feature_value fv, ps_feature_value_lang fv WHERE f.id_feature_value = fv.id_feature_value AND fv.id_lang = 1 AND fvl.value = '".$row[$id['id_feature']]."' AND fv.id_feature = ".$id['id_feature']);
+                                $ids[] = Db::getInstance()->getRow("SELECT fv.id_feature AS id, fv.id_feature_value FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fvl.id_feature_value = fv.id_feature_value AND fvl.id_lang = 1 AND fvl.value = '".$row[$id['id_feature']]."' AND fv.id_feature = ".$id['id_feature']);
                             }
 
                         // Ajout des nouveaux attributs
