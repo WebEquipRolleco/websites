@@ -304,7 +304,9 @@ class AdminImportExportControllerCore extends AdminController {
                         foreach(Db::getInstance()->executeS($sql) as $id)
                             if(isset($row[$id['id_feature']]) and !empty($row[$id['id_feature']])) {
 
-                                $ids[] = Db::getInstance()->getRow("SELECT fv.id_feature AS id, fv.id_feature_value FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fvl.id_feature_value = fv.id_feature_value AND fvl.id_lang = 1 AND fvl.value = '".$row[$id['id_feature']]."' AND fv.id_feature = ".$id['id_feature']);
+
+                                $result = Db::getInstance()->getRow("SELECT fv.id_feature AS id, fv.id_feature_value FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fvl.id_feature_value = fv.id_feature_value AND fvl.id_lang = 1 AND fvl.value = '".$row[$id['id_feature']]."' AND fv.id_feature = ".$id['id_feature']);
+                                if($result) $ids[] = $result;
                             }
 
                         // Ajout des nouveaux attributs
