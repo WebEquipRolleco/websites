@@ -319,7 +319,7 @@ class AdminImportExportControllerCore extends AdminController {
                             }
 
                         // Ajout des nouveaux attributs
-                        $combination->setAttributes($ids);
+                        $product->setAttributes($ids);
 
                         // Gestion des fournisseurs
                         ProductSupplier::removeProduct($product->id);
