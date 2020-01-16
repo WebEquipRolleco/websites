@@ -17,10 +17,10 @@
         <div class="current-price">
           <span class="pre-price">{l s="A partir de"}</span>
           <span class="main-price">
-            {Tools::displayPrice(Product::getPriceStatic($product.id_product, false))}
+            {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, Tools::getValue('quantity_wanted', 1)))}
             <small>HT</small>
           </span>
-          <span class="full-price" itemprop="price" content="{$product.price_amount}">{$product.price} {$product.labels.tax_long}</span>
+          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice(Product::getPriceStatic($product.id_product, true, null, 2, null, false, true, Tools::getValue('quantity_wanted', 1)))} {$product.labels.tax_long}</span>
 
           {if $product.has_discount}
             {if $product.discount_type === 'percentage'}
