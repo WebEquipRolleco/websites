@@ -231,10 +231,6 @@ class AdminImportExportControllerCore extends AdminController {
             }
         }
 
-        /*header('Content-Type: application/csv; charset=UTF-16LE');
-        header('Content-Disposition: attachment; filename="produits_'.date('d-m_h-i').'.csv";');
-        die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));*/
-
         $file_name = "produits_".date('d-m_h-i').".csv";
         header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
@@ -274,13 +270,9 @@ class AdminImportExportControllerCore extends AdminController {
                     // Produit
                     if($row["type"] == self::TYPE_PRODUCT) {
                         $product = new Product($row["id_product"], true, 1, $this->context->shop->id);
-                        $update = (bool)$product->id;
+                        $update = !empty($product->id);
 
-                        if($row["id_product"]) {
-                            $product->force_id = true;
-                            $product->id = $row["id_product"];
-                        }
-
+                        $product->id = $row["id_product"];
                         $product->reference = $row["reference"];
                         $product->supplier_reference = $row["supplier_reference"];
                         $product->id_category_default = (int)$row["id_main_category"];
@@ -301,10 +293,7 @@ class AdminImportExportControllerCore extends AdminController {
                         $product->comment_2 = $row["comment_2"];
                         $product->price = $product->price ?? 0;
 
-                        if($update)
-                            $product->save();
-                        else
-                            $product->add();
+                        $product->record($update);
 
                         // Sauvegqrder l'ID du produit pour la création de déclinaisons
                         $this->current_id_product = $product->id;
@@ -354,14 +343,10 @@ class AdminImportExportControllerCore extends AdminController {
                     // Déclinaison
                     if($row["type"] == self::TYPE_COMBINATION) {
                         $combination = new Combination($row["id_product_attribute"]);
-                        $update = (bool)$combination->id;
+                        $update = !empty($combination->id);
 
-                        if($row["id_product_attribute"]) {
-                            $combination->force_id = true;
-                            $combination->id = ($row["id_product_attribute"] ?? $this->current_id_product);
-                        }
-
-                        $combination->id_product = $row["id_product"];
+                        $combination->id = $row["id_product_attribute"];
+                        $combination->id_product = ($row["id_product"] ? $row["id_product"] : $this->current_id_product);
                         $combination->reference = $row["reference"];
                         $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
                         $combination->comment_1 = $row["comment_1"];
@@ -370,10 +355,7 @@ class AdminImportExportControllerCore extends AdminController {
                         $combination->low_stock_threshold = 0;
                         $combination->low_stock_alert = false;  
 
-                        if($update)
-                            $combination->save();
-                        else
-                            $combination->add();
+                        $combination->record($update);
 
                         // Gestion des fournisseurs
                         ProductSupplier::removeCombination($combination->id);
@@ -583,10 +565,6 @@ class AdminImportExportControllerCore extends AdminController {
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }
 
-        /*header('Content-Type: application/csv; charset=UTF-16LE');
-        header('Content-Disposition: attachment; filename="prix_'.date('d-m_h-i').'.csv";');
-        die(mb_convert_encoding($csv, 'UTF-16LE', 'UTF-8'));*/
-
         $file_name = "prix_".date('d-m_h-i').".csv";
         header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
@@ -618,13 +596,9 @@ class AdminImportExportControllerCore extends AdminController {
 
                     // Mise à jour du prix spécifique
                     $price = new SpecificPrice($row['id_specific_price']);
-                    $update = (bool)$price->id;
+                    $update = !empty($price->id);
 
-                    if($row['id_specific_price']) {
-                        $price->id = $row['id_specific_price'];
-                        $price->force_id = true;
-                    }
-
+                    $price->id = $row['id_specific_price'];
                     $price->id_product = $row['id_product'];
                     $price->id_product_attribute = $row['id_combination'];
                     $price->from_quantity = $row['min_quantity'];
@@ -633,7 +607,7 @@ class AdminImportExportControllerCore extends AdminController {
                     $price->from = Tools::isEmptyDate($row['from']) ? date('Y-01-01 00:00:00') : $row['from'];
                     $price->to = Tools::isEmptyDate($row['to']) ? date('Y-01-01 00:00:00') : $row['to'];
                     $price->id_shop = $row['id_shop'] ?? 0;
-                    $price->id_group = (int)$row['id_group']; //die(var_dump($price->id_group));
+                    $price->id_group = (int)$row['id_group'];
                     $price->id_customer = (int)$row['id_customer'];
                     $price->price = $row['reduced_price'];
                     $price->buying_price = $row['buying_price'];
@@ -643,10 +617,7 @@ class AdminImportExportControllerCore extends AdminController {
                     $price->reduction = 0;
                     $price->reduction_type = "amount";
 
-                    if($update)
-                        $price->save();
-                    else
-                        $price->add();
+                    $price->record($update);
 
                     // Mise à jour du produit ou de la déclinaison
                     if($price->getTarget()) {
