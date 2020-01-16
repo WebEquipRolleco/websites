@@ -14,6 +14,7 @@ class AdminImportExportControllerCore extends AdminController {
 
 	private $separator;
 	private $delimiter;
+    private $current_id_product;
 
 	public function __construct() {
         
@@ -155,7 +156,7 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "Commentaire 2";
 
         // Liste de toutes les caractéristiques
-        $sql = "SELECT agl.id_attribute_group, agl.name FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
+        $sql = "SELECT agl.id_attribute_group, agl.name FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) GROUP BY agl.id_attribute_group ORDER BY ag.id_attribute_group ASC";
         $attributes = Db::getInstance()->executeS($sql);
         foreach($attributes as $group)
             $header[] = $group['name'];
@@ -192,6 +193,10 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->comment_1;
             $data[] = $product->comment_2;
 
+            // Liste de toutes les caractéristiques
+                foreach($attributes as $group)
+                    $data[] = Db::getInstance()->getValue("SELECT fvl.value FROM ps_feature_value_lang fvl, ps_feature_product fp WHERE fvl.id_feature_value = fp.id_feature_value AND id_feature = ".$group['id_attribute_group']." AND fp.id_product = ".$product->id);
+
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
 
             // Déclinaisons du produit
@@ -218,7 +223,7 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->comment_1;
                 $data[] = $combination->comment_2;
 
-                // Liste de toutes les caractéristiques
+                // Liste de toutes les attributs
                 foreach($attributes as $group)
                     $data[] = Db::getInstance()->getValue("SELECT al.name FROM ps_attribute a, ps_attribute_lang al, ps_attribute_group ag, ps_product_attribute_combination pac WHERE a.id_attribute = al.id_attribute AND al.id_attribute = pac.id_attribute AND a.id_attribute_group = ".$group['id_attribute_group']." AND pac.id_product_attribute = ".$combination->id);
 
@@ -301,6 +306,21 @@ class AdminImportExportControllerCore extends AdminController {
                         else
                             $product->add();
 
+                        // Sauvegqrder l'ID du produit pour la création de déclinaisons
+                        $this->current_id_product = $product->id;
+
+                        // Récupération des caractéristiques à ajouter
+                        $ids = array();
+                        $sql = "SELECT DISTINCT(f.id_feature) FROM ps_feature f ".Shop::addSqlAssociation('feature', 'f')." LEFT JOIN ps_feature_lang fl ON (f.id_feature = fl.id_feature AND fl.id_lang = 1) ORDER BY ag.id_feature ASC";
+                        foreach(Db::getInstance()->executeS($sql) as $id)
+                            if(isset($row[$id['id_feature']]) and !empty($row[$id['id_feature']])) {
+
+                                $ids[] = Db::getInstance()->getRow("SELECT fv.id_feature AS id, fv.id_feature_value FROM ps_feature_value fv, ps_feature_value_lang fv WHERE f.id_feature_value = fv.id_feature_value AND fv.id_lang = 1 AND fvl.value = '".$row[$id['id_feature']]."' AND fv.id_feature = ".$id['id_feature']);
+                            }
+
+                        // Ajout des nouveaux attributs
+                        $combination->setAttributes($ids);
+
                         // Gestion des fournisseurs
                         ProductSupplier::removeProduct($product->id);
                         if($row['id_supplier'] and $row["supplier_reference"]) {
@@ -338,7 +358,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                         if($row["id_product_attribute"]) {
                             $combination->force_id = true;
-                            $combination->id = $row["id_product_attribute"];
+                            $combination->id = ($row["id_product_attribute"] ?? $this->current_id_product);
                         }
 
                         $combination->id_product = $row["id_product"];
