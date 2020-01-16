@@ -1,5 +1,9 @@
 {block name='cart_detailed_totals'}
   {assign var=nb_products value=Context::getContext()->cart->nbProducts()}
+  {assign var=options_ht value=OrderOptionCart::getCartTotal()}
+  {assign var=options_ttc value=$options_ht * 1.2}
+  {assign var=total_ht value=$cart.totals.total_excluding_tax.amount + $options_ht}
+  {assign var=total_ttc value=$cart.totals.total_including_tax.amount + $options_ttc}
   {if $nb_products}
     <div class="cart-detailed-totals">
 
@@ -7,7 +11,7 @@
           <thead>
             <tr>
               <th class="text-center">{l s="Total produits et options HT" d='Shop.Theme.Checkout'}</th>
-              <th class="text-center">{Tools::displayPrice(Context::getContext()->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS) + OrderOptionCart::getCartTotal())}</th>
+              <th class="text-center">{Tools::displayPrice(Context::getContext()->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS) + $options_ht)}</th>
           </thead>
           <tbody>
             <tr>
@@ -31,15 +35,15 @@
           <tbody>
             <tr class="cart-summary-line">
               <td class="bold">{l s='Total HT' d='Shop.Theme.Checkout'}</td>
-              <td class="bold text-right" style="border-left: 0px">{$cart.totals.total_excluding_tax.value}</td>
+              <td class="bold text-right" style="border-left: 0px">{Tools::displayPrice($total_ht)}</td>
             </tr>
             <tr class="cart-summary-line">
               <td class="bold">{l s='TVA' d='Shop.Theme.Checkout'}</td>
-              <td class="bold text-right" style="border-left: 0px">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
+              <td class="bold text-right" style="border-left: 0px">{Tools::displayPrice($total_ttc - $total_ht)}</td>
             </tr>
             <tr class="cart-total">
               <td class="bg-blue">{l s='Total TTC' d='Shop.Theme.Checkout'}</td>
-              <td class="bg-blue value text-right" style="border-left: 0px">{$cart.totals.total_including_tax.value}</td>
+              <td class="bg-blue value text-right" style="border-left: 0px">{Tools::displayPrice($total_ttc)}</td>
             </tr>
             <tr class="cart-summary-line">
               <td class="text-muted" style="padding:5px;">{l s='Dont éco-particiation' d='Shop.Theme.Checkout'}</td>
