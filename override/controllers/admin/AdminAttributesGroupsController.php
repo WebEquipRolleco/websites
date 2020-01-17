@@ -23,6 +23,10 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
                 'align' => 'center',
                 'class' => 'fixed-width-xs'
             ),
+            'reference' => array(
+                'title' => $this->trans('Référence', array(), 'Admin.Global'),
+                'align' => 'center',
+            ),
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global'),
                 'filter_key' => 'b!name',
@@ -103,6 +107,12 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
                     'required' => true,
                     'col' => '4',
                     'hint' => $this->trans('Your internal name for this attribute.', array(), 'Admin.Catalog.Help').'&nbsp;'.$this->trans('Invalid characters:', array(), 'Admin.Notifications.Info').' <>;=#{}'
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Référence', array(), 'Admin.Global'),
+                    'name' => 'reference',
+                    'col' => '4'
                 ),
                 array(
                     'type' => 'text',
