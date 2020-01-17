@@ -18,10 +18,16 @@ class AdminFeaturesController extends AdminFeaturesControllerCore {
                 'align' => 'center',
                 'class' => 'fixed-width-xs'
             ),
+            'reference' => array(
+                'title' => $this->trans('Référence', array(), 'Admin.Global'),
+                'width' => 'auto',
+                'align' => 'center'
+            ),
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global'),
                 'width' => 'auto',
-                'filter_key' => 'b!name'
+                'filter_key' => 'b!name',
+                'align' => 'center'
             ),
             'value' => array(
                 'title' => $this->trans('Values', array(), 'Admin.Global'),
@@ -66,6 +72,11 @@ class AdminFeaturesController extends AdminFeaturesControllerCore {
                 'icon' => 'icon-info-sign'
             ),
             'input' => array(
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('Référence', array(), 'Admin.Global'),
+                    'name' => 'reference'
+                ),
                 array(
                     'type' => 'text',
                     'label' => $this->trans('Name', array(), 'Admin.Global'),

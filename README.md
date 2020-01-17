@@ -99,6 +99,7 @@ ALTER TABLE `ps_cms` ADD `display_raw` TINYINT DEFAULT '0' AFTER `active`;
 
 ALTER TABLE `ps_cms_lang` ADD `description` TEXT DEFAULT NULL AFTER `meta_keywords`;
 
+ALTER TABLE `ps_feature` ADD `reference` VARCHAR(10) DEFAULT NULL AFTER `id_feature`;
 ALTER TABLE `ps_feature` ADD `column` INT(2) DEFAULT NULL AFTER `position`;
 
 ALTER TABLE `ps_feature_lang` ADD `public_name` VARCHAR(255) DEFAULT NULL AFTER `name`;
