@@ -77,6 +77,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminSpecificPrices"))
             $check .= $this->installTab('Prix', "AdminSpecificPrices", "AdminCatalog");
 
+        if(!isTabInstalled("AdminSku"))
+            $check .= $this->installTab("SKU", "AdminSku", 'AdminCatalog');
+
         if(!isTabInstalled("AdminOrderStateRules"))
             $check .= $this->installTab("Régles de redirection", 'AdminOrderStateRules', "AdminParentOrders");
         
@@ -187,6 +190,10 @@ class Webequip_Configuration extends Module {
                 $this->installTab('Prix', "AdminSpecificPrices", "AdminCatalog");
             break;
 
+            case 'SKU':
+                $this->installTab("SKU", "AdminSku", 'AdminCatalog');
+            break;
+
             case 'DOCUMENTS':
                 $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'description');
             break;
@@ -223,7 +230,8 @@ class Webequip_Configuration extends Module {
         $tabs[3]['children'][] = array('name'=>"Options de commande", 'id'=>$this->isTabInstalled("AdminOrderOptions"), 'action'=>'ORDER_OPTIONS');
         $tabs[3]['children'][] = array('name'=>"Iconographie", 'id'=>$this->isTabInstalled("AdminIconography"), 'action'=>'ICONOGRAPHY');
         $tabs[3]['children'][] = array('name'=>"Prix", 'id'=>$this->isTabInstalled("AdminSpecificPrices"), 'action'=>'SPECIFIC_PRICES');
-
+        $tabs[3]['children'][] = array('name'=>"SKU", 'id'=>$this->isTabInstalled("AdminSku"), 'action'=>'SKU');
+        
         // Configuration footer
         $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ', 'MENU_FORCED_FONT_SIZE');
         foreach($links as $name) {

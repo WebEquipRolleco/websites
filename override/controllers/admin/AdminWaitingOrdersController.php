@@ -32,7 +32,7 @@ class AdminWaitingOrdersController extends AdminController {
 	}
 
 	/**
-	* Récupère la configuration et laliste des commandes
+	* Récupère la configuration et la liste des commandes
 	**/
 	public function initContent() {
 

@@ -108,8 +108,8 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = '_combination_reference';
         $data[] = '_name';
         $data[] = 'min_quantity';
+        $data[] = "price_full";
         $data[] = "price";
-        $data[] = "reduced_price";
         $data[] = "buying_price";
         $data[] = 'delivery_fees';
         $data[] = '_margin';
@@ -231,7 +231,7 @@ class AdminImportExportControllerCore extends AdminController {
             }
         }
 
-        $file_name = "produits_".date('d-m_h-i').".csv";
+        $file_name = "produits_".date('d-m_H-i').".csv";
         header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
         header("Content-Disposition: attachment; filename=$file_name");
@@ -414,8 +414,8 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = 'Reference declinaison *';
         $header[] = 'Designation *';
         $header[] = 'Quantite de depart';
-        $header[] = "Prix de vente / barre";
-        $header[] = "Prix degressif / remise";
+        $header[] = "Prix avant réduction";
+        $header[] = "Prix de vente";
         $header[] = "Prix d'achat unitaire HT";
         $header[] = 'Frais de port unitaire HT';
         $header[] = 'Marge *';
@@ -462,18 +462,18 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->getCombination() ? $price->getCombination()->reference : null;
             $data[] = $price->getProduct() ? $price->getProduct()->name : null;
             $data[] = $price->from_quantity;
-            $data[] = $price->getTarget() ? $price->getTarget()->price : 0;
-            $data[] = (float)$price->price;
-            $data[] = $price->buying_price;
-            $data[] = $price->delivery_fees;
+            $data[] = 0;
+            $data[] = str_replace('.', ',', $price->price);
+            $data[] = str_replace('.', ',', $price->buying_price);
+            $data[] = str_replace('.', ',', $price->delivery_fees);
             $data[] = Tools::getMarginRate($price->buying_price + $price->delivery_fees, $price->price)."%";
-            $data[] = $price->getTarget() ? $price->getTarget()->rollcash : null;
+            $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->rollcash) : 0;
             $data[] = $price->comment_1;
             $data[] = $price->comment_2;
             $data[] = $price->getProduct() ? $price->getProduct()->id_supplier : null;
             $data[] = Product::getSupplierReference($price->id_product, $price->id_product_attribute);
             $data[] = $price->getTarget() ? $price->getTarget()->batch : null;
-            $data[] = $price->getTarget() ? $price->getTarget()->ecotax : 0;
+            $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->ecotax) : 0;
             $data[] = ($price->getProduct() and $price->getProduct()->active) ? 'oui' : 'non';
             $data[] = $price->from;
             $data[] = $price->to;
@@ -511,13 +511,13 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = 0;
             $data[] = 0;
             $data[] = null;
-            $data[] = $combination->rollcash;
+            $data[] = str_replace('.', ',', $combination->rollcash);
             $data[] = null;
             $data[] = null;
             $data[] = $combination->getProduct()->id_supplier;
             $data[] = Product::getSupplierReference($combination->id_product, $combination->id);
             $data[] = $combination->batch;
-            $data[] = $combination->ecotax;
+            $data[] = str_replace('.', ',', $combination->ecotax);
             $data[] = $combination->getProduct()->active ? 'oui' : 'non';
             $data[] = null;
             $data[] = null;
@@ -550,13 +550,13 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = 0;
             $data[] = 0;
             $data[] = null;
-            $data[] = $product->rollcash;
+            $data[] = str_replace('.', ',', $product->rollcash);
             $data[] = null;
             $data[] = null;
             $data[] = $product->id_supplier;
             $data[] = Product::getSupplierReference($product->id);
             $data[] = $product->batch;
-            $data[] = $product->ecotax;
+            $data[] = str_replace('.', ',', $product->ecotax);
             $data[] = $product->active ? 'oui' : 'non';
             $data[] = null;
             $data[] = null;
@@ -567,7 +567,7 @@ class AdminImportExportControllerCore extends AdminController {
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }
 
-        $file_name = "prix_".date('d-m_h-i').".csv";
+        $file_name = "prix_".date('d-m_H-i').".csv";
         header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
         header("Content-Disposition: attachment; filename=$file_name");
@@ -611,9 +611,9 @@ class AdminImportExportControllerCore extends AdminController {
                     $price->id_shop = $row['id_shop'] ?? 0;
                     $price->id_group = (int)$row['id_group'];
                     $price->id_customer = (int)$row['id_customer'];
-                    $price->price = $row['reduced_price'];
-                    $price->buying_price = $row['buying_price'];
-                    $price->delivery_fees = $row['delivery_fees'];
+                    $price->price = str_replace(',', '.', $row['price']);
+                    $price->buying_price = str_replace(',', '.', $row['buying_price']);
+                    $price->delivery_fees = str_replace(',', '.', $row['delivery_fees']);
                     $price->id_currency = 0;
                     $price->id_country = 0;
                     $price->reduction = 0;
@@ -624,10 +624,9 @@ class AdminImportExportControllerCore extends AdminController {
                     // Mise à jour du produit ou de la déclinaison
                     if($price->getTarget()) {
 
-                        $price->getTarget()->price = $row['price'];
-                        $price->getTarget()->rollcash = $row['rollcash'];
-                        $price->getTarget()->batch = $row['batch'];
-                        $price->getTarget()->ecotax = $row['ecotax'];
+                        $price->getTarget()->rollcash = str_replace(',', '.', $row['rollcash']);
+                        $price->getTarget()->batch = (int)$row['batch'];
+                        $price->getTarget()->ecotax = str_replace(',', '.', $row['ecotax']);
 
                         $price->getTarget()->save();
                     }
@@ -728,7 +727,7 @@ class AdminImportExportControllerCore extends AdminController {
             }
         }
 
-        $file_name = "commandes_".date('d-m_h-i').".csv";
+        $file_name = "commandes_".date('d-m_H-i').".csv";
         header("Content-Type: application/vnd.ms-excel; name=$file_name; charset=UTF-8");
         header("Content-Transfer-Encoding: binary");
         header("Content-Disposition: attachment; filename=$file_name");
