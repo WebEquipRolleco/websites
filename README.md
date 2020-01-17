@@ -102,6 +102,8 @@ ALTER TABLE `ps_cms_lang` ADD `description` TEXT DEFAULT NULL AFTER `meta_keywor
 ALTER TABLE `ps_feature` ADD `reference` VARCHAR(10) DEFAULT NULL AFTER `id_feature`;
 ALTER TABLE `ps_feature` ADD `column` INT(2) DEFAULT NULL AFTER `position`;
 
+ALTER TABLE `ps_feature_value` ADD `reference` VARCHAR(10) DEFAULT NULL AFTER `id_feature_value`;
+
 ALTER TABLE `ps_feature_lang` ADD `public_name` VARCHAR(255) DEFAULT NULL AFTER `name`;
 
 CREATE TABLE IF NOT EXISTS `ps_product_matching` (

@@ -69,7 +69,7 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
     }
 
     /**
-    * @OVERRIDE : Ajout référence
+    * OVERRIDE : Ajout référence
     **/
     public function renderView() {
 
