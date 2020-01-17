@@ -15,10 +15,10 @@ class AttributeGroup extends AttributeGroupCore {
     * @see ObjectModel::$definition
     **/
     public static $definition = array(
-        'table' => 'attribute_group',
-        'primary' => 'id_attribute_group',
+        'table'     => 'attribute_group',
+        'primary'   => 'id_attribute_group',
         'multilang' => true,
-        'fields' => array(
+        'fields'    => array(
             'reference'         => array('type'=>self::TYPE_STRING),
             'is_color_group'    => array('type'=>self::TYPE_BOOL, 'validate'=>'isBool'),
             'quotation'         => array('type'=>self::TYPE_BOOL, 'validate'=>'isBool'),
