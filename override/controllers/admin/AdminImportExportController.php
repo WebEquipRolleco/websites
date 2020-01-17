@@ -365,7 +365,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                             $supplier = new ProductSupplier();
                             $supplier->id_product = $combination->id_product;
-                            $supplier->id_product_attribute = $row['id_product_attribute'];
+                            $supplier->id_product_attribute = $combination->id;
                             $supplier->id_supplier = $row['id_supplier'];
                             $supplier->product_supplier_reference = $row["supplier_reference"];
                             $supplier->id_currency = 1;
