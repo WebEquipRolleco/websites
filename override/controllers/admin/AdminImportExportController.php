@@ -108,7 +108,7 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = '_combination_reference';
         $data[] = '_name';
         $data[] = 'min_quantity';
-        $data[] = "price_full";
+        $data[] = "full_price";
         $data[] = "price";
         $data[] = "buying_price";
         $data[] = 'delivery_fees';
@@ -462,7 +462,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->getCombination() ? $price->getCombination()->reference : null;
             $data[] = $price->getProduct() ? $price->getProduct()->name : null;
             $data[] = $price->from_quantity;
-            $data[] = 0;
+            $data[] = str_replace('.', ',', $price->full_price);
             $data[] = str_replace('.', ',', $price->price);
             $data[] = str_replace('.', ',', $price->buying_price);
             $data[] = str_replace('.', ',', $price->delivery_fees);
@@ -611,6 +611,7 @@ class AdminImportExportControllerCore extends AdminController {
                     $price->id_shop = $row['id_shop'] ?? 0;
                     $price->id_group = (int)$row['id_group'];
                     $price->id_customer = (int)$row['id_customer'];
+                    $price->full_price = str_replace(',', '.', $row['full_price']);
                     $price->price = str_replace(',', '.', $row['price']);
                     $price->buying_price = str_replace(',', '.', $row['buying_price']);
                     $price->delivery_fees = str_replace(',', '.', $row['delivery_fees']);

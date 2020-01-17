@@ -2,6 +2,9 @@
 
 class SpecificPrice extends SpecificPriceCore {
 
+	/** @var float Full price */
+	public $full_price;
+
 	/** @var float Buying price */
 	public $buying_price;
 
@@ -23,6 +26,7 @@ class SpecificPrice extends SpecificPriceCore {
 	**/
 	public function __construct($id_specific_price = null, $id_lang = null, $id_shop = null) {
 
+		self::$definition['fields']['full_price'] = array('type' => self::TYPE_FLOAT);
 		self::$definition['fields']['buying_price'] = array('type' => self::TYPE_FLOAT);
 		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT);
 		self::$definition['fields']['comment_1'] = array('type' => self::TYPE_STRING);

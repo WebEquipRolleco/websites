@@ -82,6 +82,7 @@ ALTER TABLE `ps_product_attribute_shop` ADD `batch` INT DEFAULT NULL AFTER `posi
 ALTER TABLE `ps_product_attribute_shop` ADD `comment_1` TEXT DEFAULT NULL AFTER `batch`;
 ALTER TABLE `ps_product_attribute_shop` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
+ALTER TABLE `ps_specific_price` ADD `full_price` FLOAT NULL AFTER `price`;
 ALTER TABLE `ps_specific_price` ADD `buying_price` FLOAT NULL AFTER `to`;
 ALTER TABLE `ps_specific_price` ADD `delivery_fees` FLOAT NULL AFTER `buying_price`;
 ALTER TABLE `ps_specific_price` ADD `comment_1` TEXT NULL AFTER `delivery_fees`;
