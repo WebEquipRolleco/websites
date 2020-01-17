@@ -37,10 +37,10 @@
 	<form id="run_test">
 		<div class="row">
 			<div class="col-lg-4">
-				<input type="text" id="sku" placeholder="Sku à tester">
+				<input type="text" id="sku" placeholder="Sku à tester" required>
 			</div>
 			<div class="col-lg-2">
-				<button type="button" class="btn btn-success">
+				<button type="submit" class="btn btn-success">
 					<b>Tester</b>
 				</button>
 			</div>

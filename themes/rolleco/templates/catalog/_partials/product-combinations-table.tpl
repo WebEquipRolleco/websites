@@ -173,71 +173,73 @@
 			</thead>
 			<tbody>
 				{foreach from=$accessories item=product}
-					<td class="text-center">{$product.reference}</td>
-					<td>{$product.name}</td>
-					<td class="text-center">
-						{foreach from=Product::loadColumn($product.id_product, 1) item=row name=column_1}
-							<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-						{/foreach}
-					</td>
-					<td>
-						{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
-						{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
-					</td>
-					<td class="text-center">
-						{foreach from=Product::loadColumn($product.id_product, 2) item=row}
-							{$row.value} 
-						{/foreach}
-					</td>
-					<td>
-						<table id="prices_{$product.id_product}" class="prices-table">
-							{assign var=prices value=SpecificPrice::getByProductId($product.id_product)}
-							{if $prices|count > 1}
-								{assign var='loop_from_quantity' value=0}
-								{assign var='loop_price' value=0}
-								{foreach from=$prices item=specific_price name=loop_prices}
-									{if !$smarty.foreach.loop_prices.first}
-										<tr class="specific_prices_{$product.id_product} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
+					<tr>
+						<td class="text-center">{$product.reference}</td>
+						<td>{$product.name}</td>
+						<td class="text-center">
+							{foreach from=Product::loadColumn($product.id_product, 1) item=row name=column_1}
+								<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+							{/foreach}
+						</td>
+						<td>
+							{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
+							{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+						</td>
+						<td class="text-center">
+							{foreach from=Product::loadColumn($product.id_product, 2) item=row}
+								{$row.value} 
+							{/foreach}
+						</td>
+						<td>
+							<table id="prices_{$product.id_product}" class="prices-table">
+								{assign var=prices value=SpecificPrice::getByProductId($product.id_product)}
+								{if $prices|count > 1}
+									{assign var='loop_from_quantity' value=0}
+									{assign var='loop_price' value=0}
+									{foreach from=$prices item=specific_price name=loop_prices}
+										{if !$smarty.foreach.loop_prices.first}
+											<tr class="specific_prices_{$product.id_product} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
+												<td class="hidden-sm-down text-left">
+													{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
+												</td>
+												<td class="hidden-sm-down text-right">{Tools::displayPrice($loop_price)}</td>
+												<td class="hidden-md-up text-center">
+													{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
+													<br />
+													{Tools::displayPrice($loop_price)}
+													<hr />
+												</td>
+											</tr>
+										{/if}
+										{assign var='loop_from_quantity' value=$specific_price.from_quantity}
+										{assign var='loop_price' value=$specific_price.price}
+									{/foreach}
+									{if $loop_price}
+										<tr class="specific_prices_{$product.id_product}" data-min='{$loop_from_quantity}' data-price="{$loop_price}">
 											<td class="hidden-sm-down text-left">
-												{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
+												{$loop_from_quantity} {l s='et +'}
 											</td>
 											<td class="hidden-sm-down text-right">{Tools::displayPrice($loop_price)}</td>
 											<td class="hidden-md-up text-center">
-												{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
+												{$loop_from_quantity} {l s='et +'}
 												<br />
 												{Tools::displayPrice($loop_price)}
-												<hr />
 											</td>
 										</tr>
 									{/if}
-									{assign var='loop_from_quantity' value=$specific_price.from_quantity}
-									{assign var='loop_price' value=$specific_price.price}
-								{/foreach}
-								{if $loop_price}
-									<tr class="specific_prices_{$product.id_product}" data-min='{$loop_from_quantity}' data-price="{$loop_price}">
-										<td class="hidden-sm-down text-left">
-											{$loop_from_quantity} {l s='et +'}
-										</td>
-										<td class="hidden-sm-down text-right">{Tools::displayPrice($loop_price)}</td>
-										<td class="hidden-md-up text-center">
-											{$loop_from_quantity} {l s='et +'}
-											<br />
-											{Tools::displayPrice($loop_price)}
-										</td>
-									</tr>
+								{else}
+									{foreach from=$prices item=specific_price}
+										<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
+									{/foreach}
 								{/if}
-							{else}
-								{foreach from=$prices item=specific_price}
-									<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
-								{/foreach}
-							{/if}
-						</table>
-					</td>
-					<td class="text-center">
-						<div class="qty">
-		          			<input type="text" name="qty" id="quantity_wanted_{$product.id_product}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-step="{$product.batch}" data-id-product="{$product.id_product}" data-id-combination="{$product.id_product}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
-		        		</div>
-					</td>
+							</table>
+						</td>
+						<td class="text-center">
+							<div class="qty">
+			          			<input type="text" name="qty" id="quantity_wanted_{$product.id_product}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-step="{$product.batch}" data-id-product="{$product.id_product}" data-id-combination="{$product.id_product}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
+			        		</div>
+						</td>
+					</tr>
 				{/foreach}
 			</tbody>
   		</table>
