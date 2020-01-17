@@ -364,7 +364,7 @@ class AdminImportExportControllerCore extends AdminController {
                         if($row['id_supplier'] and $row["supplier_reference"]) {
 
                             $supplier = new ProductSupplier();
-                            $supplier->id_product = $row['id_product'];
+                            $supplier->id_product = $combination->id_product;
                             $supplier->id_product_attribute = $row['id_product_attribute'];
                             $supplier->id_supplier = $row['id_supplier'];
                             $supplier->product_supplier_reference = $row["supplier_reference"];
