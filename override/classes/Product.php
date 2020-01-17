@@ -173,10 +173,14 @@ class Product extends ProductCore {
     **/
     public static function getSupplierReference($id_product, $id_product_attribute = null) {
 
-    	if($id_product_attribute)
-    		return Db::getInstance()->getValue("SELECT product_supplier_reference FROM ps_product_supplier WHERE id_product = $id_product AND id_product_attribute = $id_product_attribute");
-    	else
-    		return Db::getInstance()->getValue("SELECT product_supplier_reference FROM ps_product_supplier WHERE id_product = $id_product");
+    	if($id_product) {
+	    	if($id_product_attribute)
+	    		return Db::getInstance()->getValue("SELECT product_supplier_reference FROM ps_product_supplier WHERE id_product = $id_product AND id_product_attribute = $id_product_attribute");
+	    	else
+	    		return Db::getInstance()->getValue("SELECT product_supplier_reference FROM ps_product_supplier WHERE id_product = $id_product");
+	    }
+
+	    return null;
     }
 
     /**
