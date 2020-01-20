@@ -485,10 +485,8 @@ class AdminImportExportControllerCore extends AdminController {
         }
 
         // Déclinaisons sans prix
-        $sql = "SELECT pa.id_product_attribute FROM ps_product_attribute pa, ps_product p WHERE pa.id_product = p.id_product AND p.id_product";
+        $sql = "SELECT pa.id_product_attribute FROM ps_product_attribute pa, ps_product p WHERE p.id_product IN ($sub_sql) AND pa.id_product = p.id_product AND p.id_product";
         if(!empty($ids_combination)) $sql .= " AND pa.id_product_attribute NOT IN (".implode(',', $ids_combination).")";
-        if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 1";
-        if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 0";
 
         foreach(Db::getInstance()->executeS($sql) as $row) {
 
@@ -529,10 +527,8 @@ class AdminImportExportControllerCore extends AdminController {
         }
 
         // Produits sans prix
-        $sql = "SELECT p.id_product FROM ps_product p WHERE 1";
+        $sql = "SELECT p.id_product FROM ps_product p WHERE p.id_product IN ($sub_sql)";
         if(!empty($ids_product)) $sql .= " AND p.id_product NOT IN (".implode(',', $ids_product).")";
-        if($status_type == self::ACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 1";
-        if($status_type == self::INACTIVE_PRODUCTS_ONLY) $sql .= " AND p.active = 0";
 
         foreach(Db::getInstance()->executeS($sql) as $row) {
             $product = new Product($row['id_product'], true, 1, $this->context->shop->id);
