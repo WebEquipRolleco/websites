@@ -212,13 +212,13 @@
 							{if $quotation->getCustomer()}
 								<b>{$quotation->getCustomer()->firstname} {$quotation->getCustomer()->lastname}</b>
 								{if $quotation->getCustomer()->getType()}
-									<em class="text-muted"> - {$quotation->getCustomer()->getType()->name}</em>
+									<em class="text-muted"> - {$quotation->getCustomer()->getType()->name} {if $quotation->getCustomer()->company} {l s="chez" d='Admin.Labels'} {$quotation->getCustomer()->company}{/if}</em>
 								{/if}
 								<br /> 
 								<a href="mailto:{$quotation->getCustomer()->email}">{$quotation->getCustomer()->email}</a>
 							{else}
 								<span class="label label-default" style="line-height:21px">
-									<b>{l s="Le devis n'est rattaché a aucun compte client"}</b>
+									<b>{l s="Le devis n'est rattaché a aucun compte client" d='Admin.Notifications.Info'}</b>
 								</span>
 							{/if}
 						</div>
