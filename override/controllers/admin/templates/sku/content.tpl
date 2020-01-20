@@ -60,7 +60,7 @@
 				data: { ajax:true, action:"test_sku", sku:$('#sku').val() },
 				dataType: "json",
 				success : function(response) {
-
+					$('#test_result').html(response.view);
 				}
 			});
 

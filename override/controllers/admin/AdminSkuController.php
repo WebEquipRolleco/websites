@@ -56,6 +56,11 @@ class AdminSkuController extends AdminController {
 	* @return array
 	**/
 	private function testSku($sku) {
-		return null;
+
+		$this->context->smarty->assign('manager', new SkuManager($sku));
+		$tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/sku/properties.tpl");
+        $data['view'] = $tpl->fetch();
+
+        return $data;
 	}
 }
