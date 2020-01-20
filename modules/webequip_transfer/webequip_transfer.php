@@ -1134,12 +1134,17 @@ class webequip_transfer extends Module {
 	private function transfer_ps_category_product_DEFAULT() {
 
 		$ids = $this->getSavedIds("id_product", _DB_PREFIX_.ProductMatching::TABLE_NAME);
-		$sql = "SELECT p.id_product, c.new_id FROM ps_product p, ps_category WHERE p.id_default_category = c.id_category AND p.id_default_category AND p.id_product IN ($ids)";
-
+		$sql = "SELECT p.id_product, c.new_id FROM ps_product p, ps_category c WHERE p.id_category_default = c.id_category AND c.new_id IS NOT NULL AND p.id_product IN ($ids)";
+		if($this->active_only) $sql .= " AND p.active = 1";
+		
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
-			Db::getInstance()->execute("UPDATE ps_product SET id_default_category = ".$row['new_id']." WHERE id_product = ".$row['id_product']);
-			$this->nb_rows++;
+
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+				Db::getInstance()->execute("UPDATE ps_product SET id_category_default = ".$row['new_id']." WHERE id_product = ".$matching->id_product);
+				$this->nb_rows++;
+			}
 		}
 	}
 
