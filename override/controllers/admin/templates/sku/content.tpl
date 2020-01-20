@@ -55,7 +55,15 @@
 		$('#run_test').on('submit', function(e) {
 			e.preventDefault();
 
-			alert('not on my watch');
+			$.ajax({
+				url: "{$link->getAdminLink('AdminSku')}",
+				data: { ajax:true, action:"test_sku", sku:$('#sku').val() },
+				dataType: "json",
+				success : function(response) {
+
+				}
+			});
+
 		});
 
 	});

@@ -38,4 +38,24 @@ class AdminSkuController extends AdminController {
 				Configuration::updateValue($name, Tools::getValue($name));
 	}
 	
+	/**
+	* Gestion AJAX
+	**/
+	public function displayAjax() {
+
+		switch (Tools::getValue('action')) {
+			case 'test_sku':
+				die(json_encode($this->testSku(Tools::getValue('sku'))));
+			break;
+		}
+	}
+
+	/**
+	* Test d'un SKU
+	* @param string $sku
+	* @return array
+	**/
+	private function testSku($sku) {
+		return null;
+	}
 }

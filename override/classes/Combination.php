@@ -26,7 +26,7 @@ class Combination extends CombinationCore {
 	public function __construct($id_product_attribute = null, $id_lang = null, $id_shop = null) {
 
 		// C'est pas beau mais ça marche...
-		foreach(array('rollcash', 'position', 'batch', 'comment-1', 'comment-2') as $name) {
+		foreach(array('custom_ecotax', 'rollcash', 'position', 'batch', 'comment-1', 'comment-2') as $name) {
 			if($id_shop) {
 				if(Tools::getIsset($name."_".$id_product_attribute))
 					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET ".str_replace('-', "_", $name)." = '".Tools::getValue($name."_".$id_product_attribute)."' WHERE id_product_attribute = $id_product_attribute AND id_shop = $id_shop");

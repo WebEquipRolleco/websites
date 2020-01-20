@@ -414,8 +414,8 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = 'Reference declinaison *';
         $header[] = 'Designation *';
         $header[] = 'Quantite de depart';
-        $header[] = "Prix avant réduction";
-        $header[] = "Prix de vente";
+        $header[] = "Prix avant réduction (ecotaxe comprise)";
+        $header[] = "Prix de vente (ecotaxe comprise)";
         $header[] = "Prix d'achat unitaire HT";
         $header[] = 'Frais de port unitaire HT';
         $header[] = 'Marge *';

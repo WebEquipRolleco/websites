@@ -8,12 +8,21 @@
 	        <input type="text" id="batch" name="batch" class="form-control" value="{$product->batch}">
 		</div>
 		<div class="col-xl-2 col-lg-3 form-group">
+			<label form="custom_ecotax" class="form-control-label">{l s="Ecotaxe" mod='webequip_configuration'}</label>
+			<div class="input-group money-type">
+                <input type="text" id="custom_ecotax" name="custom_ecotax" class="form-control" value="{$product->custom_ecotax}">
+	            <div class="input-group-append">
+	                <span class="input-group-text"> €</span>
+	            </div>
+            </div>
+		</div>
+		<div class="col-xl-2 col-lg-3 form-group">
 			<label form="rollcash" class="form-control-label">{l s="Rollcash" mod='webequip_configuration'}</label>
 			<div class="input-group money-type">
                 <input type="text" id="rollcash" name="rollcash" class="form-control" value="{$product->rollcash}">
-              <div class="input-group-append">
-                <span class="input-group-text"> %</span>
-            </div>
+	            <div class="input-group-append">
+	                <span class="input-group-text"> %</span>
+	            </div>
             </div>
 		</div>
 	</div>
