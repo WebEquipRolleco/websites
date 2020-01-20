@@ -21,8 +21,10 @@ class AdminSpecificPricesController extends AdminController {
             )
         );
 
-        $this->_select = "a.*, l.name, s.name AS shop, g.name AS group_name";
-        $this->_join = ' LEFT JOIN '._DB_PREFIX_.'product_lang l ON (a.id_product = l.id_product)';
+        $this->_select = "a.*, l.name, s.name AS shop, g.name AS group_name, p.reference AS product_reference, pa.reference AS combination_reference";
+        $this->_join = ' LEFT JOIN '._DB_PREFIX_.'product p ON (a.id_product = p.id_product)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'product_lang l ON (a.id_product = l.id_product)';
+        $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'product_attribute pa ON (a.id_product_attribute = pa.id_product_attribute)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'shop s ON (a.id_shop = s.id_shop)';
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'group_lang g ON (a.id_group = g.id_group)';
 
@@ -35,7 +37,11 @@ class AdminSpecificPricesController extends AdminController {
             'name' => array(
                 'title' => $this->trans('Produit', array(), 'Admin.Global'),
             ),
-            'id_product_attribute' => array(
+            'product_reference' => array(
+                'title' => $this->trans('Référence produit', array(), 'Admin.Globabl'),
+                'align' => 'text-center'
+            ),
+            'combination_reference' => array(
                 'title' => $this->trans('Déclinaison', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
@@ -54,10 +60,6 @@ class AdminSpecificPricesController extends AdminController {
             ),
             'price' => array(
                 'title' => $this->trans('Impact (prix)', array(), 'Admin.Global'),
-                'align' => 'text-center',
-            ),
-            'reduction' => array(
-                'title' => $this->trans('Réduction (taux)', array(), 'Admin.Global'),
                 'align' => 'text-center',
             ),
             'group_name' => array(
