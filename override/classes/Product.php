@@ -2,6 +2,9 @@
 
 class Product extends ProductCore {
 
+	/** @var float Custom Ecotax **/
+	public $custom_ecotax;
+	
 	/** @var float Rollcash **/
 	public $rollcash;
 
@@ -31,6 +34,8 @@ class Product extends ProductCore {
 		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);
 		self::$definition['fields']['batch'] = array('type' => self::TYPE_INT, 'shop'=>true);
 		self::$definition['fields']['destocking'] = array('type' => self::TYPE_BOOL);
+		self::$definition['fields']['custom_ecotax'] = array('type' => self::TYPE_FLOAT, 'shop'=>true, 'validate'=>'isPrice');
+
 		parent::__construct($id_product, $full, $id_lang, $id_shop, $context);
 	}
 	

@@ -497,7 +497,7 @@ class AdminQuotationsController extends AdminController {
             $line->id_supplier = $product->id_supplier;
     		$line->reference = $product->reference;
     		$line->name = $product->name;
-            $line->eco_tax = $product->ecotax;
+            $line->eco_tax = $product->custom_ecotax;
 
             $line->min_quantity = $product->minimal_quantity;
             if($line->min_quantity) $line->quantity = $line->min_quantity;
@@ -519,7 +519,7 @@ class AdminQuotationsController extends AdminController {
 
                 $line->id_combination = $combination->id;
                 $line->reference = $combination->reference;
-                $line->eco_tax = $combination->ecotax;
+                $line->eco_tax = $combination->custom_ecotax;
                 
                 $line->min_quantity = $combination->minimal_quantity;
                 $line->quantity = $line->min_quantity;

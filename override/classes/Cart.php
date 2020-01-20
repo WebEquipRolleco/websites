@@ -394,7 +394,7 @@ class Cart extends CartCore {
 
         if (Combination::isFeatureActive()) {
             $sql->select('
-                product_attribute_shop.`price` AS price_attribute, product_attribute_shop.`ecotax` AS ecotax_attr, product_attribute_shop.`rollcash` AS rollcash_attr,
+                product_attribute_shop.`price` AS price_attribute, product_attribute_shop.`ecotax` AS ecotax_attr, product_attribute_shop.`custom_ecotax` AS custom_ecotax_attr, product_attribute_shop.`rollcash` AS rollcash_attr,
                 IF (IFNULL(pa.`reference`, \'\') = \'\', p.`reference`, pa.`reference`) AS reference,
                 (p.`weight`+ pa.`weight`) weight_attribute,
                 IF (IFNULL(pa.`ean13`, \'\') = \'\', p.`ean13`, pa.`ean13`) AS ean13,
@@ -541,6 +541,10 @@ class Cart extends CartCore {
 
         if (isset($row['ecotax_attr']) && $row['ecotax_attr'] > 0) {
             $row['ecotax'] = (float)$row['ecotax_attr'];
+        }
+
+        if (isset($row['custom_ecotax_attr']) && $row['custom_ecotax_attr'] > 0) {
+            $row['custom_ecotax'] = (float)$row['custom_ecotax_attr'];
         }
 
         if(isset($row['rollcash_attr']) && $row['rollcash_attr'] > 0)

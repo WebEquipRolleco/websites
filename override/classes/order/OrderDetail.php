@@ -55,6 +55,33 @@ class OrderDetail extends OrderDetailCore {
 		parent::__construct($id_order, $id_lang, $id_shop);
 	}
 
+    /**
+    * Apply tax to the product
+    * Override : Modification ecotaxe
+    *
+    * @param object $order
+    * @param array $product
+    **/
+    protected function setProductTax(Order $order, $product) {
+
+        $this->ecotax = Tools::convertPrice(floatval($product['custom_ecotax']), intval($order->id_currency));
+
+        // Exclude VAT
+        if(!Tax::excludeTaxeOption()) {
+            
+            $this->setContext((int)$product['id_shop']);
+            $this->id_tax_rules_group = (int)Product::getIdTaxRulesGroupByIdProduct((int)$product['id_product'], $this->context);
+
+            $tax_manager = TaxManagerFactory::getManager($this->vat_address, $this->id_tax_rules_group);
+            $this->tax_calculator = $tax_manager->getTaxCalculator();
+            $this->tax_computation_method = (int)$this->tax_calculator->computation_method;
+        }
+
+        $this->ecotax_tax_rate = 0;
+        if(!empty($product['ecotax']))
+            $this->ecotax_tax_rate = Tax::getProductEcotaxRate($order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
+    }
+
 	/**
     * Create a list of order detail for a specified id_order using cart
     * Override : ajout des options de commandes et des lignes devis

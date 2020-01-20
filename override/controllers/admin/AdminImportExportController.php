@@ -473,7 +473,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->getProduct() ? $price->getProduct()->id_supplier : null;
             $data[] = Product::getSupplierReference($price->id_product, $price->id_product_attribute);
             $data[] = $price->getTarget() ? $price->getTarget()->batch : null;
-            $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->ecotax) : 0;
+            $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->custom_ecotax) : 0;
             $data[] = ($price->getProduct() and $price->getProduct()->active) ? 'oui' : 'non';
             $data[] = $price->from;
             $data[] = $price->to;
@@ -517,7 +517,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $combination->getProduct()->id_supplier;
             $data[] = Product::getSupplierReference($combination->id_product, $combination->id);
             $data[] = $combination->batch;
-            $data[] = str_replace('.', ',', $combination->ecotax);
+            $data[] = str_replace('.', ',', $combination->custom_ecotax);
             $data[] = $combination->getProduct()->active ? 'oui' : 'non';
             $data[] = null;
             $data[] = null;
@@ -556,7 +556,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $product->id_supplier;
             $data[] = Product::getSupplierReference($product->id);
             $data[] = $product->batch;
-            $data[] = str_replace('.', ',', $product->ecotax);
+            $data[] = str_replace('.', ',', $product->custom_ecotax);
             $data[] = $product->active ? 'oui' : 'non';
             $data[] = null;
             $data[] = null;
@@ -627,7 +627,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                         $price->getTarget()->rollcash = str_replace(',', '.', $row['rollcash']);
                         $price->getTarget()->batch = (int)$row['batch'];
-                        $price->getTarget()->ecotax = str_replace(',', '.', $row['ecotax']);
+                        $price->getTarget()->custom_ecotax = str_replace(',', '.', $row['ecotax']);
 
                         $price->getTarget()->save();
                     }

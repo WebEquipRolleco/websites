@@ -2,6 +2,9 @@
 
 class Combination extends CombinationCore {
 
+	/** @var float Full price */
+	public $full_price;
+
 	/** @var float Rollcash */
 	public $rollcash;
 
@@ -42,6 +45,8 @@ class Combination extends CombinationCore {
 		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);
 		self::$definition['fields']['batch'] = array('type' => self::TYPE_INT, 'shop'=>true);
 		self::$definition['fields']['position'] = array('type' => self::TYPE_FLOAT);
+		self::$definition['fields']['custom_ecotax'] = array('type' => self::TYPE_FLOAT, 'shop'=>true, 'validate'=>'isPrice');
+		
 		parent::__construct($id_product_attribute, $id_lang, $id_shop);
 		
 	}
