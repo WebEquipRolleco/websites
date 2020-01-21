@@ -25,7 +25,7 @@
 <tr class="combination loaded" id="attribute_{{ form.vars.value.id_product_attribute }}" data="{{ form.vars.value.id_product_attribute }}" data-index="{{ form.vars.value.id_product_attribute }}">
   <td width="1%"><input class="js-combination" type="checkbox" data-id="{{ form.vars.value.id_product_attribute }}" data-index="{{ form.vars.value.id_product_attribute }}"></td>
   <td class="img"><div class="fake-img"></div></td>
-    <td>{{ form.vars.value.name }}</td>
+    <td>{{ form.vars.value.name }} {% if form.vars.value.attribute_reference %} <br /> {{ form.vars.value.attribute_reference }} {% endif %}</td>
     <td class="attribute-price">
         <div class="input-group">
             <div class="input-group-prepend">
