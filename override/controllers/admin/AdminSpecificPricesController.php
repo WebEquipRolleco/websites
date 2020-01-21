@@ -39,11 +39,13 @@ class AdminSpecificPricesController extends AdminController {
             ),
             'product_reference' => array(
                 'title' => $this->trans('Référence produit', array(), 'Admin.Globabl'),
-                'align' => 'text-center'
+                'align' => 'text-center',
+                'filter_key' => 'p!reference'
             ),
             'combination_reference' => array(
                 'title' => $this->trans('Déclinaison', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'pa!reference'
             ),
             'shop' => array(
                 'title' => $this->trans('Boutique', array(), 'Admin.Global'),
