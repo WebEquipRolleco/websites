@@ -1,14 +1,15 @@
 {assign var=quantity_wanted value=Tools::getValue('quantity_wanted', 1)}
+{assign var=specific_price value=specificPrice::getSpecificPrice($product.id_product, 1, 1, 8, 0, $quantity_wanted)}
 {if $product.show_price}
   <div class="product-prices text-center">
-    {block name='product_discount'}
+    {*block name='product_discount'}
       {if $product.has_discount}
         <div class="product-discount">
           {hook h='displayProductPriceBlock' product=$product type="old_price"}
           <span class="regular-price">{$product.regular_price}</span>
         </div>
       {/if}
-    {/block}
+    {/block*}
 
     {block name='product_price'}
       <div class="product-price h5 {if $product.has_discount}has-discount{/if}" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
@@ -17,7 +18,14 @@
 
         <div class="current-price">
           <span class="pre-price">{l s="A partir de"}</span>
-          <span class="main-price">
+          {if $specific_price and $specific_price.full_price > 0}
+            <div class="crossed-price text-muted">
+              <span style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
+              &nbsp;
+              <span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
+            </div>
+          {/if}
+          <span class="main-price {if $specific_price and $specific_price.full_price > 0}text-danger{/if}">
             {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, $quantity_wanted))}
             <small>HT</small>
           </span>

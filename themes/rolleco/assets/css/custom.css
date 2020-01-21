@@ -876,6 +876,11 @@ li.product-flag.destocking {
   list-style: disc;
   padding-left: 30px;
 }
+.crossed-price {
+  margin-top: 10px;
+  margin-bottom: 0px !important;
+  font-size: 18px;
+}
 .page-my-account #content .links a:hover i {
   color: #1e4688;
 }

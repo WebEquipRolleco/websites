@@ -125,7 +125,7 @@
 									{if $loop_full_price > 0}
 										<tr class='active'>
 											<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)}%</td>
-											<td class="text-right"><strike>{Tools::displayPrice($loop_full_price)}</strike></td>
+											<td class="text-right" style="text-decoration:line-through;">{Tools::displayPrice($loop_full_price)}</td>
 										</tr>
 									{/if}
 								{/if}
@@ -153,7 +153,7 @@
 									<div class="text-center">
 										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
 										&nbsp;
-										<strike class="text-info">{Tools::displayPrice($specific_price.full_price)}</strike>
+										<span class="text-info" style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
 									</div>
 								{/if}
 							{/foreach}
