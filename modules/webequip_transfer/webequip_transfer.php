@@ -1337,7 +1337,7 @@ class webequip_transfer extends Module {
 
 			// N'importer les images que des produits importés
 			$matching = new ProductMatching($row['id_product']);
-			if($matching->id) {
+			if($matching->id and $matching->id == $matching->id_product) {
 
 				$image = new Image($row['id_image']);
 				$update = !empty($image->id);
