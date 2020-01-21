@@ -6,7 +6,7 @@
 					<img src="{$link->getCatImageLink($category->name, $category->id)}">
 					<p class="title">
 						{$category->name}
-						{assign var=nb_products value=count($category->getProductsWs())}
+						{assign var=nb_products value=$category->getNbActiveProducts()}
 						{if $nb_products > 0}
 							<span class="nb-products">({$nb_products} références)</span>
 						{/if}

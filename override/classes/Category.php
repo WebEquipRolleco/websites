@@ -11,4 +11,12 @@ class Category extends CategoryCore {
 		parent::__construct($id_category, $id_lang, $id_shop);
 	}
 
+	/**
+	* Calcule le nombre de produits actifs
+	* @return int
+	**/
+	public function getNbActiveProducts() {
+		return (int)Db::getInstance()->getValue("SELECT COUNT(p.id_product) FROM ps_product p, ps_category_product cp WHERE cp.id_product = p.id_product AND p.active = 1 AND cp.id_category = ".$this->id);
+	}
+	
 }
