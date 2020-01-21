@@ -1,3 +1,4 @@
+{assign var=quantity_wanted value=Tools::getValue('quantity_wanted', 1)}
 {if $product.show_price}
   <div class="product-prices text-center">
     {block name='product_discount'}
@@ -17,10 +18,10 @@
         <div class="current-price">
           <span class="pre-price">{l s="A partir de"}</span>
           <span class="main-price">
-            {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, Tools::getValue('quantity_wanted', 1)))}
+            {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, $quantity_wanted))}
             <small>HT</small>
           </span>
-          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice(Product::getPriceStatic($product.id_product, true, null, 2, null, false, true, Tools::getValue('quantity_wanted', 1)))} {$product.labels.tax_long}</span>
+          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice(Product::getPriceStatic($product.id_product, true, null, 2, null, false, true, $quantity_wanted))} {$product.labels.tax_long}</span>
 
           {if $product.has_discount}
             {if $product.discount_type === 'percentage'}
@@ -67,8 +68,8 @@
     {/block}
 
     {block name='product_ecotax'}
-      {if $product.ecotax.amount > 0}
-        <p class="price-ecotax">{l s='Including %amount% for ecotax' d='Shop.Theme.Catalog' sprintf=['%amount%' => $product.ecotax.value]}
+      {if $product.custom_ecotax > 0}
+        <p class="price-ecotax">{l s='Including %amount% for ecotax' d='Shop.Theme.Catalog' sprintf=['%amount%' => Tools::displayPrice($product.custom_ecotax)]}
           {if $product.has_discount}
             {l s='(not impacted by the discount)' d='Shop.Theme.Catalog'}
           {/if}
