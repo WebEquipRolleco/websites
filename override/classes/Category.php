@@ -16,7 +16,7 @@ class Category extends CategoryCore {
 	* @return int
 	**/
 	public function getNbActiveProducts() {
-		return (int)Db::getInstance()->getValue("SELECT COUNT(p.id_product) FROM ps_product p, ps_category_product cp WHERE cp.id_product = p.id_product AND p.active = 1 AND cp.id_category = ".$this->id);
+		return (int)Db::getInstance()->getValue("SELECT COUNT(DISTINCT(p.id_product)) FROM ps_product p, ps_category_product cp WHERE cp.id_product = p.id_product AND p.active = 1 AND cp.id_category = ".$this->id);
 	}
 	
 }

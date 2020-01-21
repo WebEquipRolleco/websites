@@ -105,8 +105,9 @@
 					<table id="prices_{$product.id_product}" class="prices-table">
 						{assign var=prices value=SpecificPrice::getByProductId($product.id_product)}
 						{if $prices|count > 1}
-							{assign var='loop_from_quantity' value=0}
-							{assign var='loop_price' value=0}
+							{assign var=loop_from_quantity value=0}
+							{assign var=loop_price value=0}
+							{assign var=loop_full_price value=0}
 							{foreach from=$prices item=specific_price name=loop_prices}
 								{if !$smarty.foreach.loop_prices.first}
 									<tr class="specific_prices_{$product.id_product} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
@@ -121,9 +122,16 @@
 											<hr />
 										</td>
 									</tr>
+									{if $loop_full_price > 0}
+										<tr class='active'>
+											<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)}%</td>
+											<td class="text-right"><strike>{Tools::displayPrice($loop_full_price)}</strike></td>
+										</tr>
+									{/if}
 								{/if}
-								{assign var='loop_from_quantity' value=$specific_price.from_quantity}
-								{assign var='loop_price' value=$specific_price.price}
+								{assign var=loop_from_quantity value=$specific_price.from_quantity}
+								{assign var=loop_price value=$specific_price.price}
+								{assign var=loop_full_price value=$specific_price.full_price}
 							{/foreach}
 							{if $loop_price}
 								<tr class="specific_prices_{$product.id_product}" data-min='{$loop_from_quantity}' data-price="{$loop_price}">
@@ -141,6 +149,13 @@
 						{else}
 							{foreach from=$prices item=specific_price}
 								<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
+								{if $specific_price.full_price > 0}
+									<div class="text-center">
+										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
+										&nbsp;
+										<strike class="text-info">{Tools::displayPrice($specific_price.full_price)}</strike>
+									</div>
+								{/if}
 							{/foreach}
 						{/if}
 					</table>
