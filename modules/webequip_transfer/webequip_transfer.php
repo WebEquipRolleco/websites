@@ -109,7 +109,7 @@ class webequip_transfer extends Module {
 		$data['ps_specific_price'] = array('name'=>"Produits [2+] Récupération des prix spécifiques", 'updatable'=>true);
 		$data['ps_specific_price_ONE'] = array('name'=>"Produits [3+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
 		$data['ps_image'] = array('name'=>"Produits [2+] Récupération des données d'images", 'updatable'=>true);
-		$data['ps_accessory'] = array('name'=>"Produits [2+] Récupération des accessoires");
+		$data['ps_accessory'] = array('name'=>"Produits [2+] Récupération des accessoires", 'preview'=>false);
 		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
 		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
@@ -1363,13 +1363,13 @@ class webequip_transfer extends Module {
 		$this->connectToDB();
 
 		Db::getInstance()->execute("DELETE FROM ps_accessory");
-		$result = $this->old_db->query("SELECT * FROM ps_accessory");
+		$result = $this->old_db->query("SELECT * FROM ps_activis_product_accessories");
 		while($row = $result->fetch_assoc()) {
 
 			$matching_1 = new ProductMatching($row['id_product_1']);
 			$matching_2 = new ProductMatching($row['id_product_2']);
 			if($matching_1->id and $matching_2->id) {
-				Db::getInstance()->execute("INSERT INTO ps_accessory VALUES (".$matching_1->id_product.", ".$matching_2->id_product.")");
+				Db::getInstance()->execute("INSERT IGNORE INTO ps_accessory VALUES (".$matching_1->id_product.", ".$matching_2->id_product.")");
 				$this->nb_rows++;
 			}
 		}
