@@ -15,7 +15,6 @@ class CMS extends CMSCore {
 		self::$definition['fields']['meta_description'] = array('type' => self::TYPE_STRING, 'lang'=>true, 'validate'=>'isGenericName');
 		self::$definition['fields']['meta_keywords'] = array('type' => self::TYPE_STRING, 'lang'=>true, 'validate'=>'isGenericName');
 		self::$definition['fields']['description'] = array('type' => self::TYPE_STRING, 'lang'=>true);
-		self::$definition['fields']['description'] = array('type' => self::TYPE_STRING, 'lang'=>true);
 		self::$definition['fields']['display_raw'] = array('type' => self::TYPE_BOOL);
 
 		parent::__construct($id_cms, $id_lang, $id_shop);
