@@ -1421,6 +1421,19 @@ class webequip_transfer extends Module {
 	/**
 	* [FIX] Références Rolléco
 	**/
+	private function transfer_REF_ERAZE() {
+
+		$this->connectToDB();
+
+		Db::getInstance()->execute("UPDATE ps_product SET reference = NULL)");
+		Db::getInstance()->execute("UPDATE ps_product_shop SET reference = NULL)");
+		Db::getInstance()->execute("UPDATE ps_product_attribute SET reference = NULL)");
+		Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET reference = NULL)");
+	}
+
+	/**
+	* [FIX] Références Rolléco
+	**/
 	private function transfer_REF_ROLLECO() {
 
 		$this->connectToDB();
