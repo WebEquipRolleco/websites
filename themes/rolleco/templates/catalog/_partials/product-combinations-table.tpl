@@ -1,4 +1,4 @@
-<table id="product_selection" class="table combinations-table vertical-align">
+<table id="product_selection" class="table combinations-table margin-top-sm vertical-align">
 	<thead>
 		<tr>
 			<th width="10%">{l s="Réf."}</th>
