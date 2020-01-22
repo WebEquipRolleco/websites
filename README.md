@@ -78,6 +78,7 @@ ALTER TABLE `ps_product_attribute` ADD `batch` INT DEFAULT '1' AFTER `position`;
 ALTER TABLE `ps_product_attribute` ADD `comment_1` TEXT DEFAULT NULL AFTER `batch`;
 ALTER TABLE `ps_product_attribute` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 
+ALTER TABLE `ps_product_attribute_shop` ADD `reference` VARCHAR(255) DEFAULT NULL AFTER `id_shop`;
 ALTER TABLE `ps_product_attribute_shop` ADD `custom_ecotax` FLOAT DEFAULT '0' AFTER `ecotax`;
 ALTER TABLE `ps_product_attribute_shop` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `price`;
 ALTER TABLE `ps_product_attribute_shop` ADD `rollcash` FLOAT DEFAULT '0' AFTER `delivery_fees`;
