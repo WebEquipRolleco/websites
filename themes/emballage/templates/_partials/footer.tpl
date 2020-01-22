@@ -19,7 +19,7 @@
 
       {* BLOC PAIEMENTS *}
       <div class="col-xs-12 col-lg-4 margin-top-sm">
-        <h3 class="margin-top-15"><i class="fa fa-lock"></i> {l s="Paiement sécurité"}</h3>
+        <h3 class="margin-top-15"><i class="fa fa-lock"></i> {l s="Paiement sécurisé"}</h3>
         <div class="text-center margin-top-15">
           <img src="/img/paiement.png">
         </div>
