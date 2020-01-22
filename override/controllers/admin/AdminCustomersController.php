@@ -231,6 +231,24 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     )
                 ),
                 array(
+                    'type' => 'text',
+                    'label' => $this->trans('Company', array(), 'Admin.Global'),
+                    'name' => 'company',
+                    'col' => 4
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('SIRET', array(), 'Admin.Orderscustomers.Feature'),
+                    'name' => 'siret',
+                    'col' => 4
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->trans('TVA interne', array(), 'Admin.Global'),
+                    'name' => 'tva',
+                    'col' => 4
+                ),
+                array(
                     'type' => 'select',
                     'label' => $this->trans('Statut du client', array(), 'Admin.Orderscustomers.Feature'),
                     'name' => 'id_customer_state',
@@ -283,12 +301,6 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                     'type' => 'text',
                     'label' => $this->trans('Chorus', array(), 'Admin.Global'),
                     'name' => 'chorus',
-                    'col' => 4
-                ),
-                array(
-                    'type' => 'text',
-                    'label' => $this->trans('TVA interne', array(), 'Admin.Global'),
-                    'name' => 'tva',
                     'col' => 4
                 ),
                 array(
@@ -450,16 +462,6 @@ class AdminCustomersController extends AdminCustomersControllerCore {
                 $list_risks[$key]['name'] = $risk->name;
             }
 
-            $this->fields_form['input'][] = array(
-                'type' => 'text',
-                'label' => $this->trans('Company', array(), 'Admin.Global'),
-                'name' => 'company'
-            );
-            $this->fields_form['input'][] = array(
-                'type' => 'text',
-                'label' => $this->trans('SIRET', array(), 'Admin.Orderscustomers.Feature'),
-                'name' => 'siret'
-            );
             $this->fields_form['input'][] = array(
                 'type' => 'text',
                 'label' => $this->trans('APE', array(), 'Admin.Orderscustomers.Feature'),
