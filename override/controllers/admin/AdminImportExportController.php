@@ -23,6 +23,7 @@ class AdminImportExportControllerCore extends AdminController {
         $this->delimiter = Tools::getValue('delimiter', self::DELIMITER);
 
         parent::__construct();
+        set_time_limit(0);
     }
 
     public function initContent() {
