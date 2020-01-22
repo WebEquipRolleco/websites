@@ -787,6 +787,15 @@ table .description-cell {
 li.product-flag.destocking {
   background-color: #d5121d !important;
 }
+.products .thumbnail-container {
+  height: 333px !important;
+}
+.products .product-description {
+  height: 85px !important;
+}
+.products .product-description .product-title {
+  height: 38px !important;
+}
 .awesome-star-rating .awesome-star {
   margin-left: -14px;
   color: lightgrey;
