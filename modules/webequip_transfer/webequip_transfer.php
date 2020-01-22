@@ -118,6 +118,7 @@ class webequip_transfer extends Module {
 		$data['ps_attribute'] = array('name'=>"Produits : liste des valeurs d'attributs", 'preview'=>false, 'updatable'=>true);
 		$data['LINK_REWRITE'] = array('name'=>"[FIX] Récupération des url", 'preview'=>false, 'updatable'=>false);
 		$data['DESCRIPTION'] = array('name'=>"[FIX] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
+		$data['REF_ERAZE'] = array('name'=>"[FIX] Suppression des références", 'preview'=>false, 'updatable'=>false);
 		$data['REF_ROLLECO'] = array('name'=>"[FIX] Récupération des références ROLLECO", 'preview'=>false, 'updatable'=>false);
 		$data['REF_SIGNALISATION'] = array('name'=>"[FIX] Récupération des références PRO SIGNALISATION", 'preview'=>false, 'updatable'=>false);
 		$data['REF_ATOUT'] = array('name'=>"[FIX] Récupération des références ATOUT CONTENANT", 'preview'=>false, 'updatable'=>false);
