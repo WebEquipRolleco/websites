@@ -119,6 +119,8 @@ class webequip_transfer extends Module {
 		$data['LINK_REWRITE'] = array('name'=>"[FIX] Récupération des url", 'preview'=>false, 'updatable'=>false);
 		$data['DESCRIPTION'] = array('name'=>"[FIX] Récupération des descriptions", 'preview'=>false, 'updatable'=>false);
 		$data['REF_ROLLECO'] = array('name'=>"[FIX] Récupération des références ROLLECO", 'preview'=>false, 'updatable'=>false);
+		$data['REF_SIGNALISATION'] = array('name'=>"[FIX] Récupération des références PRO SIGNALISATION", 'preview'=>false, 'updatable'=>false);
+		$data['REF_ATOUT'] = array('name'=>"[FIX] Récupération des références ATOUT CONTENANT", 'preview'=>false, 'updatable'=>false);
 		$data['COMMENTS_ROLLECO'] = array('name'=>"[FIX] Récupération des commentaires ROLLECO", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
 
@@ -1433,12 +1435,58 @@ class webequip_transfer extends Module {
 
 				if($matching->id_combination) {
 					Db::getInstance()->execute("UPDATE ps_product_attribute SET reference = '$reference' WHERE id_product_attribute = ".$matching->id_combination);
-					//Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET reference = '$reference' WHERE id_shop = 1 AND id_product_attribute = ".$matching->id_combination);
+					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET reference = '$reference' WHERE id_shop = 1 AND id_product_attribute = ".$matching->id_combination);
 				}
 				else {
 					Db::getInstance()->execute("UPDATE ps_product SET reference = '$reference' WHERE id_product = ".$matching->id_product);
 					Db::getInstance()->execute("UPDATE ps_product_shop SET reference = '$reference' WHERE id_shop = 1 AND id_product = ".$matching->id_product);
 				}
+			}
+		}
+	}
+
+	/**
+	* [FIX] Références Pro-signalisation
+	**/
+	private function transfer_REF_SIGNALISATION() {
+
+		$this->connectToDB();
+
+		$sql = "SELECT id_product, reference FROM ps_product_shop WHERE id_shop = 2";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$reference = str_replace('BUNDLE-', '', $row['reference']);
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				if($matching->id_combination)
+					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET reference = '$reference' WHERE id_shop = 2 AND id_product_attribute = ".$matching->id_combination);
+				else
+					Db::getInstance()->execute("UPDATE ps_product_shop SET reference = '$reference' WHERE id_shop = 2 AND id_product = ".$matching->id_product);
+			}
+		}
+	}
+
+	/**
+	* [FIX] Références Atout-contenant
+	**/
+	private function transfer_REF_ATOUT() {
+
+		$this->connectToDB();
+
+		$sql = "SELECT id_product, reference FROM ps_product_shop WHERE id_shop = 3";
+		$result = $this->old_db->query($sql);
+		while($row = $result->fetch_assoc()) {
+
+			$reference = str_replace('BUNDLE-', '', $row['reference']);
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				if($matching->id_combination)
+					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET reference = '$reference' WHERE id_shop = 3 AND id_product_attribute = ".$matching->id_combination);
+				else
+					Db::getInstance()->execute("UPDATE ps_product_shop SET reference = '$reference' WHERE id_shop = 3 AND id_product = ".$matching->id_product);
 			}
 		}
 	}
