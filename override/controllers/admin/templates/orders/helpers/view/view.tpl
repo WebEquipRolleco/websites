@@ -929,9 +929,9 @@
                 <hr />{$addresses.invoice->other}<br />
               {/if}
             </div>
-            <div class="col-sm-6 hidden-print">
+            {*<div class="col-sm-6 hidden-print">
               <div id="map-invoice-canvas" style="height: 190px"></div>
-            </div>
+            </div>*}
           </div>
         </div>
       </div>
@@ -975,9 +975,9 @@
                   <hr />{$addresses.delivery->other}<br />
                 {/if}
               </div>
-              <div class="col-sm-6 hidden-print">
+              {*<div class="col-sm-6 hidden-print">
                 <div id="map-delivery-canvas" style="height: 190px"></div>
-              </div>
+              </div>*}
             </div>
           </div>
         {/if}
