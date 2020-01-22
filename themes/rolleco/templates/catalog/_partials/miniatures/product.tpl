@@ -30,7 +30,7 @@
           <a href="{$product.url}" class="thumbnail product-thumbnail">
             <img
               src = "{$product.cover.bySize.large_default.url}"
-              alt = "{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name|truncate:30:'...'}{/if}"
+              alt = "{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
               data-full-size-image-url = "{$product.cover.large.url}"
               class="col-lg-12"
             >
