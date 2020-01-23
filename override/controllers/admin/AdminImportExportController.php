@@ -73,21 +73,21 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = "id_product_attribute";
         $data[] = "type";
         $data[] = "reference";
+        $data[] = "id_supplier";
         $data[] = "supplier_reference";
         $data[] = "ids_category";
         $data[] = "id_main_category";
         $data[] = "name";
         $data[] = "min_quantity";
         $data[] = "state";
-        $data[] = "short_description";
-        $data[] = "description";
+        //$data[] = "short_description";
+        //$data[] = "description";
         $data[] = "link_rewrite";
-        $data[] = "meta_title";
-        $data[] = "meta_description";
-        $data[] = "meta_keywords";
-        $data[] = "id_supplier";
-        $data[] = "comment_1";
-        $data[] = "comment_2";
+        //$data[] = "meta_title";
+        //$data[] = "meta_description";
+        //$data[] = "meta_keywords";
+        //$data[] = "comment_1";
+        //$data[] = "comment_2";
 
         // Liste de toutes les caractéristiques
         $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
@@ -140,21 +140,21 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = "Déclinaison ID";
         $header[] = "Type";
         $header[] = "Référence";
+        $header[] = "ID Fournisseur";
         $header[] = "Référence fournisseur";
         $header[] = "Ids catégories";
         $header[] = "ID catégorie principale";
         $header[] = "Désignation";
         $header[] = "Quantité minimale";
         $header[] = "Etat";
-        $header[] = "Description courte";
-        $header[] = "Description longue";
+        //$header[] = "Description courte";
+        //$header[] = "Description longue";
         $header[] = "Lien";
-        $header[] = "META : titre";
-        $header[] = "META : description";
-        $header[] = "META : mots clés";
-        $header[] = "ID Fournisseur";
-        $header[] = "Commentaire 1";
-        $header[] = "Commentaire 2";
+        //$header[] = "META : titre";
+        //$header[] = "META : description";
+        //$header[] = "META : mots clés";
+        //$header[] = "Commentaire 1";
+        //$header[] = "Commentaire 2";
 
         // Liste de toutes les caractéristiques
         $sql = "SELECT agl.id_attribute_group, agl.name FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) GROUP BY agl.id_attribute_group ORDER BY ag.id_attribute_group ASC";
@@ -178,21 +178,21 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = self::TYPE_PRODUCT;
             $data[] = $product->reference;
+            $data[] = $product->id_supplier;
             $data[] = ProductSupplier::getProductSupplierReference($product->id, 0, $product->id_supplier);
             $data[] = $row['id_categories'];
             $data[] = $product->id_category_default;
             $data[] = $product->name;
             $data[] = $product->minimal_quantity;
             $data[] = (int)$product->active;
-            $data[] = pSql($product->description_short, true);
-            $data[] = pSql($product->description, true);
+            //$data[] = pSql($product->description_short, true);
+            //$data[] = pSql($product->description, true);
             $data[] = $product->link_rewrite;
-            $data[] = $product->meta_title;
-            $data[] = $product->meta_description;
-            $data[] = $product->meta_keywords;
-            $data[] = $product->id_supplier;
-            $data[] = $product->comment_1;
-            $data[] = $product->comment_2;
+            //$data[] = $product->meta_title;
+            //$data[] = $product->meta_description;
+            //$data[] = $product->meta_keywords;
+            //$data[] = $product->comment_1;
+            //$data[] = $product->comment_2;
 
             // Liste de toutes les caractéristiques
                 foreach($attributes as $group)
@@ -208,21 +208,21 @@ class AdminImportExportControllerCore extends AdminController {
                 $data[] = $combination->id;
                 $data[] = self::TYPE_COMBINATION;
                 $data[] = $combination->reference;
+                $data[] = $product->id_supplier;
                 $data[] = ProductSupplier::getProductSupplierReference($product->id, $combination->id, $product->id_supplier);
                 $data[] = $row['id_categories'];
                 $data[] = null;
                 $data[] = null;
                 $data[] = $combination->minimal_quantity;
                 $data[] = null;
+                //$data[] = null;
+                //$data[] = null;
                 $data[] = null;
-                $data[] = null;
-                $data[] = null;
-                $data[] = null;
-                $data[] = null;
-                $data[] = null;
-                $data[] = $product->id_supplier;
-                $data[] = $combination->comment_1;
-                $data[] = $combination->comment_2;
+                //$data[] = null;
+                //$data[] = null;
+                //$data[] = null;
+                //$data[] = $combination->comment_1;
+                //$data[] = $combination->comment_2;
 
                 // Liste de toutes les attributs
                 foreach($attributes as $group)
@@ -275,6 +275,7 @@ class AdminImportExportControllerCore extends AdminController {
 
                         $product->id = $row["id_product"];
                         $product->reference = $row["reference"];
+                        $product->id_supplier = (int)$row["id_supplier"];
                         $product->supplier_reference = $row["supplier_reference"];
                         $product->id_category_default = (int)$row["id_main_category"];
                         $product->name = $row["name"];
@@ -283,16 +284,16 @@ class AdminImportExportControllerCore extends AdminController {
                         $product->low_stock_threshold = 0;
                         $product->low_stock_alert = false;
                         $product->active = (bool)$row["state"];
-                        $product->description_short = $row["short_description"];
-                        $product->description = $row["description"];
+                        //$product->description_short = $row["short_description"];
+                        //$product->description = $row["description"];
                         $product->link_rewrite = $row["link_rewrite"];
-                        $product->meta_title = $row["meta_title"];
-                        $product->meta_description = $row["meta_description"];
-                        $product->meta_keywords = $row["meta_keywords"];
-                        $product->id_supplier = (int)$row["id_supplier"];
-                        $product->comment_1 = $row["comment_1"];
-                        $product->comment_2 = $row["comment_2"];
-                        $product->price = $product->price ?? 0;
+                        //$product->meta_title = $row["meta_title"];
+                        //$product->meta_description = $row["meta_description"];
+                        //$product->meta_keywords = $row["meta_keywords"];
+                        //$product->comment_1 = $row["comment_1"];
+                        //$product->comment_2 = $row["comment_2"];
+                        $product->price = 0;
+                        $product->ecotax = 0;
 
                         $product->record($update);
 
@@ -352,12 +353,13 @@ class AdminImportExportControllerCore extends AdminController {
                         $combination->id_product = ($row["id_product"] ? $row["id_product"] : $this->current_id_product);
                         $combination->reference = $row["reference"];
                         $combination->minimal_quantity = (int)$row["min_quantity"] ?? 1;
-                        $combination->comment_1 = $row["comment_1"];
-                        $combination->comment_2 = $row["comment_2"];
+                        //$combination->comment_1 = $row["comment_1"];
+                        //$combination->comment_2 = $row["comment_2"];
                         $combination->quantity = 99999;
                         $combination->low_stock_threshold = 0;
                         $combination->low_stock_alert = false;  
-
+                        $combination->ecotax = 0;
+                        
                         $combination->record($update);
 
                         // Gestion des fournisseurs
