@@ -104,6 +104,16 @@
   background-color: #b00015;
   border-color: inherit !important;
 }
+.btn-alt {
+  color: white !important;
+  background-color: #BB7CE8;
+  border-color: inherit !important;
+  transition: all 0.5s ease;
+}
+.btn-alt:hover {
+  background-color: #9B59CA;
+  border-color: inherit !important;
+}
 body {
   background-image: url('/img/bg-grey.png');
   font-family: Arial, Tahoma, sans-serif;
@@ -224,6 +234,13 @@ table .icon-cell {
 }
 .user-info a:hover {
   color: #8bc44e !important;
+}
+#main p {
+  color: initial !important;
+}
+#main .page-cms ul {
+  list-style: disc;
+  padding-left: 30px;
 }
 .col-slim {
   padding-left: 5px !important;
@@ -597,6 +614,7 @@ table .icon-cell {
   padding-top: 20px;
   margin-bottom: 20px;
   color: #8bc44e;
+  vertical-align: top;
 }
 .megamenu_level_2 li img {
   height: 175px;
@@ -971,6 +989,15 @@ a:hover .miniature .btn {
   background-color: #efefef;
   color: #00924b;
   font-weight: bold;
+}
+#full_description ul {
+  list-style: disc;
+  padding-left: 30px;
+}
+.crossed-price {
+  margin-top: 10px;
+  margin-bottom: 0px !important;
+  font-size: 18px;
 }
 .page-my-account #content .links a:hover i {
   color: #1e4688;
