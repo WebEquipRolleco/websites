@@ -15,6 +15,7 @@ class AdminImportExportControllerCore extends AdminController {
     private $separator;
     private $delimiter;
     private $current_id_product;
+    private $nb_lines = 0;
 
     public function __construct() {
         
@@ -117,7 +118,7 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = 'rollcash';
         $data[] = 'comment_1';
         $data[] = 'comment_2';
-        $data[] = 'id_supplier';
+        $data[] = '_name_supplier';
         $data[] = '_supplier_reference';
         $data[] = "batch";
         $data[] = "ecotax";
@@ -127,6 +128,7 @@ class AdminImportExportControllerCore extends AdminController {
         $data[] = 'id_group';
         $data[] = 'id_customer';
         $data[] = 'id_shop';
+        $data[] = "delete";
 
         return $data;
     }
@@ -296,6 +298,7 @@ class AdminImportExportControllerCore extends AdminController {
                         $product->ecotax = 0;
 
                         $product->record($update);
+                        $this->nb_lines++;
 
                         // Sauvegqrder l'ID du produit pour la création de déclinaisons
                         $this->current_id_product = $product->id;
@@ -359,8 +362,9 @@ class AdminImportExportControllerCore extends AdminController {
                         $combination->low_stock_threshold = 0;
                         $combination->low_stock_alert = false;  
                         $combination->ecotax = 0;
-                        
+
                         $combination->record($update);
+                        $this->nb_lines++;
 
                         // Gestion des fournisseurs
                         ProductSupplier::removeCombination($combination->id);
@@ -391,7 +395,7 @@ class AdminImportExportControllerCore extends AdminController {
                         }  
                     }
 
-                    $this->confirmations[] = "Import terminé";
+                    $this->confirmations[] = "Import terminé : ".$this->nb_lines." impactées";
                 }
                 else
                    $this->errors = "Erreur lors de l'import du fichier. Merci de vérifier le type de fichier, l'encodage et les séparateurs utilisés"; 
@@ -409,6 +413,7 @@ class AdminImportExportControllerCore extends AdminController {
 
         $ids_product = array();
         $ids_combination = array();
+        $suppliers = array();
 
         $header[] = 'prix ID';
         $header[] = 'Produit ID';
@@ -425,7 +430,7 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = 'Rollcash';
         $header[] = 'Commentaire 1';
         $header[] = 'Commentaire 2';
-        $header[] = 'ID fournisseur';
+        $header[] = 'Nom fournisseur *';
         $header[] = 'Reference fournisseur *';
         $header[] = "Lot";
         $header[] = "Ecotaxe";
@@ -435,6 +440,7 @@ class AdminImportExportControllerCore extends AdminController {
         $header[] = 'Groupe client ID';
         $header[] = 'Client ID';
         $header[] = 'Boutique ID';
+        $header[] = "Supprimer";
 
         $csv = implode($this->separator, $header).self::END_OF_LINE;
 
@@ -457,6 +463,9 @@ class AdminImportExportControllerCore extends AdminController {
             if($price->id_product) $ids_product[$price->id_product] = $price->id_product;
             if($price->id_product_attribute) $ids_combination[$price->id_product_attribute] = $price->id_product_attribute;
 
+            $id_supplier = $price->getProduct() ? $price->getProduct()->id_supplier : null;
+            if($id_supplier and !isset($suppliers[$id_supplier])) $suppliers[$id_supplier] = new Supplier($id_supplier, 1);
+
             $data = array();
             $data[] = $price->id;
             $data[] = $price->id_product ?? 0;
@@ -473,7 +482,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->rollcash) : 0;
             $data[] = $price->comment_1;
             $data[] = $price->comment_2;
-            $data[] = $price->getProduct() ? $price->getProduct()->id_supplier : null;
+            $data[] = isset($suppliers[$id_supplier]) ? $suppliers[$id_supplier]->name : null;
             $data[] = Product::getSupplierReference($price->id_product, $price->id_product_attribute);
             $data[] = $price->getTarget() ? $price->getTarget()->batch : null;
             $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->custom_ecotax) : 0;
@@ -483,6 +492,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = $price->id_group;
             $data[] = $price->id_customer;
             $data[] = $price->id_shop ?? 0;
+            $data[] = 0;
 
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
         }
@@ -498,6 +508,9 @@ class AdminImportExportControllerCore extends AdminController {
                 $combination->getProduct($this->context->shop->id);
                 $ids_product[$combination->id_product] = $combination->id_product;
             }
+
+            $id_supplier = $combination->getProduct()->id_supplier;
+            if($id_supplier and !isset($suppliers[$id_supplier])) $suppliers[$id_supplier] = new Supplier($id_supplier, 1);
 
             $data = array();
             $data[] = null;
@@ -515,7 +528,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = str_replace('.', ',', $combination->rollcash);
             $data[] = null;
             $data[] = null;
-            $data[] = $combination->getProduct()->id_supplier;
+            $data[] = isset($suppliers[$id_supplier]) ? $suppliers[$id_supplier]->name : null;
             $data[] = Product::getSupplierReference($combination->id_product, $combination->id);
             $data[] = $combination->batch;
             $data[] = str_replace('.', ',', $combination->custom_ecotax);
@@ -524,6 +537,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = null;
             $data[] = null;
+            $data[] = 0;
             $data[] = 0;
 
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
@@ -534,7 +548,9 @@ class AdminImportExportControllerCore extends AdminController {
         if(!empty($ids_product)) $sql .= " AND p.id_product NOT IN (".implode(',', $ids_product).")";
 
         foreach(Db::getInstance()->executeS($sql) as $row) {
+            
             $product = new Product($row['id_product'], true, 1, $this->context->shop->id);
+            if($product->id_supplier and !isset($suppliers[$product->id_supplier])) $suppliers[$product->id_supplier] = new Supplier($product->id_supplier, 1);
 
             $data = array();
             $data[] = null;
@@ -552,7 +568,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = str_replace('.', ',', $product->rollcash);
             $data[] = null;
             $data[] = null;
-            $data[] = $product->id_supplier;
+            $data[] = isset($suppliers[$id_supplier]) ? $suppliers[$id_supplier]->name : null;
             $data[] = Product::getSupplierReference($product->id);
             $data[] = $product->batch;
             $data[] = str_replace('.', ',', $product->custom_ecotax);
@@ -561,6 +577,7 @@ class AdminImportExportControllerCore extends AdminController {
             $data[] = null;
             $data[] = null;
             $data[] = null;
+            $data[] = 0;
             $data[] = 0;
 
             $csv .= implode($this->separator, $data).self::END_OF_LINE;
@@ -599,46 +616,46 @@ class AdminImportExportControllerCore extends AdminController {
                     $price = new SpecificPrice($row['id_specific_price']);
                     $update = !empty($price->id);
 
-                    $price->id = $row['id_specific_price'];
-                    $price->id_product = $row['id_product'];
-                    $price->id_product_attribute = $row['id_combination'];
-                    $price->from_quantity = $row['min_quantity'];
-                    $price->comment_1 = $row['comment_1'];
-                    $price->comment_2 = $row['comment_2'];
-                    $price->from = Tools::isEmptyDate($row['from']) ? date('Y-01-01 00:00:00') : $row['from'];
-                    $price->to = Tools::isEmptyDate($row['to']) ? date('Y-01-01 00:00:00') : $row['to'];
-                    $price->id_shop = $row['id_shop'] ?? 0;
-                    $price->id_group = (int)$row['id_group'];
-                    $price->id_customer = (int)$row['id_customer'];
-                    $price->full_price = str_replace(',', '.', $row['full_price']);
-                    $price->price = str_replace(',', '.', $row['price']);
-                    $price->buying_price = str_replace(',', '.', $row['buying_price']);
-                    $price->delivery_fees = str_replace(',', '.', $row['delivery_fees']);
-                    $price->id_currency = 0;
-                    $price->id_country = 0;
-                    $price->reduction = 0;
-                    $price->reduction_type = "amount";
-
-                    $price->record($update);
-
-                    // Mise à jour du produit ou de la déclinaison
-                    if($price->getTarget()) {
-
-                        $price->getTarget()->rollcash = str_replace(',', '.', $row['rollcash']);
-                        $price->getTarget()->batch = (int)$row['batch'];
-                        $price->getTarget()->custom_ecotax = str_replace(',', '.', $row['ecotax']);
-
-                        $price->getTarget()->save();
+                    if($price->id and $row['delete']) {
+                        $price->delete();
+                        $this->nb_lines++;
                     }
+                    else {
 
-                    // Mise à jour du produit
-                    if($price->getProduct()) {
+                        $price->id = $row['id_specific_price'];
+                        $price->id_product = $row['id_product'];
+                        $price->id_product_attribute = $row['id_combination'];
+                        $price->from_quantity = $row['min_quantity'];
+                        $price->comment_1 = $row['comment_1'];
+                        $price->comment_2 = $row['comment_2'];
+                        $price->from = Tools::isEmptyDate($row['from']) ? date('Y-01-01 00:00:00') : $row['from'];
+                        $price->to = Tools::isEmptyDate($row['to']) ? date('Y-01-01 00:00:00') : $row['to'];
+                        $price->id_shop = $row['id_shop'] ?? 0;
+                        $price->id_group = (int)$row['id_group'];
+                        $price->id_customer = (int)$row['id_customer'];
+                        $price->full_price = str_replace(',', '.', $row['full_price']);
+                        $price->price = str_replace(',', '.', $row['price']);
+                        $price->buying_price = str_replace(',', '.', $row['buying_price']);
+                        $price->delivery_fees = str_replace(',', '.', $row['delivery_fees']);
+                        $price->id_currency = 0;
+                        $price->id_country = 0;
+                        $price->reduction = 0;
+                        $price->reduction_type = "amount";
 
-                        $price->getProduct()->id_supplier = $row['id_supplier'];
-                        $price->getProduct()->save();
+                        $price->record($update);
+                        $this->nb_lines++;
+
+                        // Mise à jour du produit ou de la déclinaison
+                        if($price->getTarget()) {
+
+                            $price->getTarget()->rollcash = str_replace(',', '.', $row['rollcash']);
+                            $price->getTarget()->batch = (int)$row['batch'];
+                            $price->getTarget()->custom_ecotax = str_replace(',', '.', $row['ecotax']);
+
+                            $price->getTarget()->save();
+                        }
                     }
-
-                    $this->confirmations[] = "Import terminé";
+                    $this->confirmations[] = "Import terminé : ".$this->nb_lines." lignes impactées";
                 }
                 else
                     $this->errors = "Erreur lors de l'import du fichier. Merci de vérifier le type de fichier, l'encodage et les séparateurs utilisés";
