@@ -395,7 +395,7 @@ class AdminImportExportControllerCore extends AdminController {
                         }  
                     }
 
-                    $this->confirmations[] = "Import terminé : ".$this->nb_lines." impactées";
+                    $this->confirmations[1] = "Import terminé : ".$this->nb_lines." impactées";
                 }
                 else
                    $this->errors = "Erreur lors de l'import du fichier. Merci de vérifier le type de fichier, l'encodage et les séparateurs utilisés"; 
@@ -655,7 +655,7 @@ class AdminImportExportControllerCore extends AdminController {
                             $price->getTarget()->save();
                         }
                     }
-                    $this->confirmations[] = "Import terminé : ".$this->nb_lines." lignes impactées";
+                    $this->confirmations[1] = "Import terminé : ".$this->nb_lines." lignes impactées";
                 }
                 else
                     $this->errors = "Erreur lors de l'import du fichier. Merci de vérifier le type de fichier, l'encodage et les séparateurs utilisés";
