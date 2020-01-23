@@ -370,6 +370,21 @@ class Webequip_Configuration extends Module {
                 die($product->destocking ? "1" : "0");
             }
 
+            // Suppression des prix
+            if(Tools::getValue('action') == 'delete_price') {
+                if($id = Tools::getValue('id_price')) {
+                    $price = new SpecificPrice($id);
+                    if($price->id) {
+                        $price->delete();
+                        die($id);
+                    }
+
+                }
+
+                die(0);
+            }
+
+            // Sauvegarde de prix
             if(Tools::getValue('action') == 'save_prices') {
                 
                 $form = array();

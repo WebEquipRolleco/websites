@@ -45,11 +45,12 @@
 						<th class="text-center">{l s="Prix de vente"}</th>
 						<th class="text-center">{l s="Commentaire 1"}</th>
 						<th class="text-center">{l s="Commentaire 2"}</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					{foreach from=$prices item=price}
-						<tr>
+						<tr id="price_{$price->id}">
 							<td width="20%">
 								<div><b>{l s="Référence : "}</b> {$price->getProduct()->reference|default:'-'}</div>
 
@@ -67,13 +68,14 @@
 							<td><input type="text" class="form-control" name="prices[{$price->id}][price]" value="{$price->price}"></td>
 							<td><input type="text" class="form-control" name="prices[{$price->id}][comment_1]" value="{$price->comment_1}"></td>
 							<td><input type="text" class="form-control" name="prices[{$price->id}][comment_2]" value="{$price->comment_2}"></td>
+							<td class="text-center"><a href="" class="delete-price tooltip-link" data-id="{$price->id}"><i class="material-icons">delete</i></a></td>
 						</tr>
 					{/foreach}
 				</tbody>
 				<tfoot>
 					<tr>
 						<td colspan="7" class="text-right">
-							<button type="submit" id="save_prices" class="btn btn-success">
+							<button type="button" id="save_prices" class="btn btn-success">
 								<b>{l s="Enregistrer les prix"}</b>
 							</button>
 						</td>
@@ -88,7 +90,7 @@
 	$(document).ready(function() {
 
 		$('#save_prices').on('click', function() {
-			$.post( {
+			$.post({
 					url: "{$link->getAdminLink('AdminModules')}&configure=webequip_configuration",
 					data: { ajax:true, action:'save_prices', form:$('#table_prices :input').serialize() },
 					dataType: "json",
@@ -97,5 +99,21 @@
 				}
 			});
 		});
+
+		$('.delete-price').on('click', function(e) {
+			e.preventDefault();
+
+			if(confirm("Etes-vous sur de supprimer ce prix ?")) {
+				$.post({
+					url: "{$link->getAdminLink('AdminModules')}&configure=webequip_configuration",
+						data: { ajax:true, action:'delete_price', id_price:$(this).data('id') },
+						dataType: "json",
+						success : function(response) {
+							$('#price_'+response).fadeOut('fast');
+							showSuccessMessage("Prix supprimé");
+					}
+				});
+			}
+		})
 	});
 </script>
