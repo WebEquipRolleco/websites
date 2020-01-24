@@ -243,10 +243,10 @@
 					</div>
 				</div>
 				<div class="panel-footer text-right">
-					<button type="submit" class="btn btn-success" name="action" value="import_attribute_groups">
+					<button type="submit" class="btn btn-success" name="action" value="import_attribute-groups">
 						<i class="process-icon-upload"></i> <b>Attributs (déclinaisons)</b>
 					</button>
-					<button type="submit" class="btn btn-info" name="action" value="import_feature_groups">
+					<button type="submit" class="btn btn-info" name="action" value="import_feature-groups">
 						<i class="process-icon-upload"></i> <b>Caractéristiques (produits)</b>
 					</button>
 				</div>
