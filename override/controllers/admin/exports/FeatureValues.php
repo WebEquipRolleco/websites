@@ -12,6 +12,7 @@ class ExportFeatureValues extends Export {
         $header[] = "ID groupe";
         $header[] = "SKU";
         $header[] = "Valeur";
+        $header[] = "Nb utilisation";
         $header[] = "supprimer";
 
         return $header;
@@ -31,6 +32,7 @@ class ExportFeatureValues extends Export {
             $data[] = $value['id_feature'];
             $data[] = $value['reference'];
             $data[] = $value['value']; 
+            $data[] = (int)Db::getInstance()->getValue("SELECT COUNT(*) FROM ps_feature_product WHERE id_feature_value = ".$value['id_feature_value']);
             $data[] = 0;
 
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  

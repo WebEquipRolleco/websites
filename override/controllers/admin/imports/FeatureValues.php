@@ -12,6 +12,7 @@ class ImportFeatureValues extends Import {
         $data[] = "id_feature";
         $data[] = "reference";
         $data[] = "value";
+        $data[] = "_nb_use";
         $data[] = "delete";
 
         return $data;
