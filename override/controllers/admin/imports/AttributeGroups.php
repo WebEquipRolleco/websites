@@ -40,10 +40,11 @@ class ImportAttributeGroups extends Import {
 
 	        		$group->id = $row['id_attribute_group'];
 	        		$group->reference = strtoupper(substr($row['reference'], 0, 3));
-	        		$group->name = utf8_encode($row['name']);
-	        		$group->public_name = utf8_encode($row['public_name']);
+	        		$group->name = $row['name'];
+	        		$group->public_name = $row['public_name'];
 	        		$group->quotation = (bool)$row['quotation'];
 	        		$group->column = ($row['column'] ? $row['column'] : null);
+	        		$group->group_type = "select";
 
 	        		$group->record($update);
 	        	}

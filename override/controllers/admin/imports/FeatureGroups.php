@@ -39,8 +39,8 @@ class ImportFeatureGroups extends Import {
 
 	        		$feature->id = $row['id_feature'];
 	        		$feature->reference = strtoupper(substr($row['reference'], 0, 3));
-	        		$feature->name = utf8_encode($row['name']);
-	        		$feature->public_name = utf8_encode($row['public_name']);
+	        		$feature->name = $row['name'];
+	        		$feature->public_name = $row['public_name'];
 	        		$feature->column = ($row['column'] ? $row['column'] : null);
 
 	        		$feature->record($update);
