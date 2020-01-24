@@ -5,6 +5,8 @@ require_once("Prices.php");
 require_once("Orders.php");
 require_once("AttributeGroups.php");
 require_once("FeatureGroups.php");
+require_once("AttributeValues.php");
+require_once("FeatureValues.php");
 
 class Export {
 

@@ -70,6 +70,14 @@ class AdminImportExportControllerCore extends AdminController {
                 case 'feature-groups':
                     $export = new ExportFeatureGroups();
                 break;
+
+                case 'attribute-values':
+                    $export = new ExportAttributeValues();
+                break;
+
+                case 'feature-values':
+                    $export = new ExportFeatureValues();
+                break;
             }
 
             if(isset($export)) {
@@ -96,6 +104,14 @@ class AdminImportExportControllerCore extends AdminController {
      
                 case 'feature-groups':
                     $import = new ImportFeatureGroups();
+                break;
+
+                case 'attribute-values':
+                    $import = new ImportAttributeValues();
+                break;
+
+                case 'feature-values':
+                    $import = new ImportFeatureValues();
                 break;
             }
 

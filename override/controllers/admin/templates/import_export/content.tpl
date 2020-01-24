@@ -221,21 +221,19 @@
 					<i class="icon-upload"></i> <b>Import des groupes</b>
 				</div>
 				<div class="row">
-					<div class="col-lg-12">
+					<div class="col-lg-6">
 						<div class="form-group">
 							<label>Fichier CSV</label>
 							<input type="file" class="form-control" name="import_file" required>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label>Nombre de lignes à ignorer</label>
 							<input type="number" class="form-control" min="0" step="1" name="skip" value="1">
 						</div>
 					</div>
-					<div class="col-lg-6">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label>Séparateur de colonnes</label>
 							<input type="text" class="form-control" name="separator" value="{$separator}" required>
@@ -254,6 +252,80 @@
 		</form>
 	</div>
 
+</div>
+
+<div class="row">
+
+	<div class="col-lg-6">
+		<form method="post">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-download"></i> <b>Export des valeurs</b>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Séparateur de colonnes</label>
+							<input type="text" class="form-control" name="separator" value="{$separator}" required>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Délimiter de valeurs</label>
+							<input type="text" class="form-control" name="delimiter" value="{$delimiter}" required>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer text-right">
+					<button type="submit" class="btn btn-success" name="action" value="export_attribute-values">
+						<i class="process-icon-download"></i> <b>Attributs (déclinaisons)</b>
+					</button>
+					<button type="submit" class="btn btn-info" name="action" value="export_feature-values">
+						<i class="process-icon-download"></i> <b>Caractéristiques (produits)</b>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="col-lg-6">
+		<form method="post" enctype="multipart/form-data">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-upload"></i> <b>Import des groupes</b>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Fichier CSV</label>
+							<input type="file" class="form-control" name="import_file" required>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label>Nombre de lignes à ignorer</label>
+							<input type="number" class="form-control" min="0" step="1" name="skip" value="1">
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label>Séparateur de colonnes</label>
+							<input type="text" class="form-control" name="separator" value="{$separator}" required>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer text-right">
+					<button type="submit" class="btn btn-success" name="action" value="import_attribute-values">
+						<i class="process-icon-upload"></i> <b>Attributs (déclinaisons)</b>
+					</button>
+					<button type="submit" class="btn btn-info" name="action" value="import_feature-values">
+						<i class="process-icon-upload"></i> <b>Caractéristiques (produits)</b>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	
 </div>
 
 <script>

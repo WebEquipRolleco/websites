@@ -40,7 +40,7 @@ class ExportAttributeGroups extends Export {
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  
         }
 
-        $this->renderCSV("attributs_groups_".date('d-m_H-i').".csv", $csv);
+        $this->renderCSV("attributes_groups_".date('d-m_H-i').".csv", $csv);
     }
 
 }

@@ -22,4 +22,11 @@ class FeatureValue extends FeatureValueCore {
         ),
     );
     
+    /**
+    * Retourne toutes les valeurs
+    **/
+    public static function getAllValues($id_lang) {
+
+        Return Db::getInstance()->executeS("SELECT fv.id_feature_value, fv.id_feature, fv.reference, fvl.value FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fv.id_feature_value = fvl.id_feature_value AND fvl.id_lang = $id_lang");
+    }
 }
