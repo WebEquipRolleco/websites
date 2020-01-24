@@ -13,6 +13,7 @@ class ImportFeatureGroups extends Import {
         $data[] = "public_name";
         $data[] = "reference";
         $data[] = "column";
+        $data[] = "_nb_use";
         $data[] = "delete";
 
         return $data;

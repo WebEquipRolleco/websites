@@ -14,6 +14,7 @@ class ImportAttributeGroups extends Import {
         $data[] = "reference";
         $data[] = "quotation";
         $data[] = "column";
+        $data[] = "_nb_use";
         $data[] = "delete";
 
         return $data;

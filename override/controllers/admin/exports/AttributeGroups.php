@@ -14,6 +14,7 @@ class ExportAttributeGroups extends Export {
         $header[] = "SKU";
         $header[] = "devis";
         $header[] = "colonne";
+        $header[] = "Nb utilisation";
         $header[] = "supprimer";
 
         return $header;
@@ -35,6 +36,7 @@ class ExportAttributeGroups extends Export {
             $data[] = $group['reference'];
             $data[] = $group['quotation'];
             $data[] = $group['column'];   
+            $data[] = (int)Db::getInstance()->getValue("SELECT COUNT(DISTINCT(pac.id_product_attribute)) FROM ps_product_attribute_combination pac, ps_attribute a WHERE pac.id_attribute = a.id_attribute AND  a.id_attribute_group = ".$group['id_attribute_group']);
             $data[] = 0;
 
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  

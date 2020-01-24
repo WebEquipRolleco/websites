@@ -13,6 +13,7 @@ class ExportFeatureGroups extends Export {
         $header[] = "Nom public";
         $header[] = "SKU";
         $header[] = "colonne";
+        $header[] = "Nb utilisation";
         $header[] = "supprimer";
 
         return $header;
@@ -33,6 +34,7 @@ class ExportFeatureGroups extends Export {
             $data[] = $group['public_name'];
             $data[] = $group['reference'];
             $data[] = $group['column'];   
+            $data[] = (int)Db::getInstance()->getValue("SELECT COUNT(DISTINCT(id_product)) FROM ps_feature_product WHERE id_feature = ".$group['id_feature']);
             $data[] = 0;
 
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  
