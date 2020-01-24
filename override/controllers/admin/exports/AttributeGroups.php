@@ -30,8 +30,8 @@ class ExportAttributeGroups extends Export {
 
             $data = array();
             $data[] = $group['id_attribute_group'];
-            $data[] = utf8_encode($group['name']);
-            $data[] = utf8_encode($group['public_name']);
+            $data[] = $group['name'];
+            $data[] = $group['public_name'];
             $data[] = $group['reference'];
             $data[] = $group['quotation'];
             $data[] = $group['column'];   
