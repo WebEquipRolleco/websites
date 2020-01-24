@@ -12,6 +12,7 @@ class ImportAttributeValues extends Import {
         $data[] = "id_attribute_group";
         $data[] = "reference";
         $data[] = "value";
+        $data[] = "_nb_use";
         $data[] = "delete";
 
         return $data;
