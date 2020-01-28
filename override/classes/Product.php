@@ -25,16 +25,17 @@ class Product extends ProductCore {
 
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
-		self::$definition['fields']['name'] = array('type' => self::TYPE_STRING, 'lang'=>true);
-		self::$definition['fields']['description'] = array('type' => self::TYPE_HTML, 'lang'=>true);
-		self::$definition['fields']['meta_description'] = array('type' => self::TYPE_STRING, 'lang'=>true);
-		self::$definition['fields']['meta_keywords'] = array('type' => self::TYPE_STRING, 'lang'=>true);
-		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
-		self::$definition['fields']['comment_1'] = array('type' => self::TYPE_STRING, 'shop'=>true);
-		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING, 'shop'=>true);
-		self::$definition['fields']['batch'] = array('type' => self::TYPE_INT, 'shop'=>true);
-		self::$definition['fields']['destocking'] = array('type' => self::TYPE_BOOL);
-		self::$definition['fields']['custom_ecotax'] = array('type' => self::TYPE_FLOAT, 'shop'=>true, 'validate'=>'isPrice');
+		self::$definition['fields']['reference'] = array('type'=>self::TYPE_STRING, 'validate'=>'isReference', 'size'=>32, 'shop'=>true);
+		self::$definition['fields']['name'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
+		self::$definition['fields']['description'] = array('type'=>self::TYPE_HTML, 'lang'=>true);
+		self::$definition['fields']['meta_description'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
+		self::$definition['fields']['meta_keywords'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
+		self::$definition['fields']['rollcash'] = array('type'=>self::TYPE_FLOAT);
+		self::$definition['fields']['comment_1'] = array('type'=>self::TYPE_STRING, 'shop'=>true);
+		self::$definition['fields']['comment_2'] = array('type'=>self::TYPE_STRING, 'shop'=>true);
+		self::$definition['fields']['batch'] = array('type'=>self::TYPE_INT, 'shop'=>true);
+		self::$definition['fields']['destocking'] = array('type'=>self::TYPE_BOOL);
+		self::$definition['fields']['custom_ecotax'] = array('type'=>self::TYPE_FLOAT, 'shop'=>true, 'validate'=>'isPrice');
 
 		parent::__construct($id_product, $full, $id_lang, $id_shop, $context);
 	}

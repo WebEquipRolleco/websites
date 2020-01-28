@@ -65,6 +65,7 @@ ALTER TABLE `ps_product` ADD `comment_1` TEXT DEFAULT NULL AFTER `destocking`;
 ALTER TABLE `ps_product` ADD `comment_2` TEXT DEFAULT NULL AFTER `comment_1`;
 ALTER TABLE `ps_product` ADD `batch` INT DEFAULT '1' AFTER `comment_2`;
 
+ALTER TABLE `ps_product_shop` ADD `reference` VARCHAR(32) DEFAULT NULL AFTER `on_sale`;
 ALTER TABLE `ps_product_shop` ADD `custom_ecotax` FLOAT DEFAULT '0' AFTER `ecotax`;
 ALTER TABLE `ps_product_shop` ADD `delivery_fees` FLOAT DEFAULT '0' AFTER `pack_stock_type`;
 ALTER TABLE `ps_product_shop` ADD `comment_1` TEXT DEFAULT NULL AFTER `delivery_fees`;
