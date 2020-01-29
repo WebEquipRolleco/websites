@@ -96,4 +96,12 @@ class Accessory extends ObjectModel {
         return $data;
     }
 
+    /**
+    * Efface le contenu de la table
+    * @return boolean
+    **/
+    public static function erazeContent() {
+        return Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME);
+    }
+
 }

@@ -1365,7 +1365,7 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		Db::getInstance()->execute("DELETE FROM ps_accessory");
+		Accessory::erazeContent();
 		$result = $this->old_db->query("SELECT * FROM ps_activis_product_accessories");
 		while($row = $result->fetch_assoc()) {
 
