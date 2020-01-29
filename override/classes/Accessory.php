@@ -85,9 +85,8 @@ class Accessory extends ObjectModel {
     * @return array
     **/
     public static function find($id_product, $active = true) {
-        $id_shop = Context::getContext()->shop->id;
 
-        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." a, ps_product_shop p WHERE p.id_shop = $id_product AND a.id_product = p.id_product AND a.id_product = $id_product";
+        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." a, ps_product p WHERE a.id_product = p.id_product AND a.id_product = $id_product";
         if($active) $sql .= " AND p.active = 1";
 
         $data = array();
