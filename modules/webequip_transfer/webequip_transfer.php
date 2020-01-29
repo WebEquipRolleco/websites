@@ -1379,6 +1379,9 @@ class webequip_transfer extends Module {
 					$accessory->id_product = $matching_1->id_product;
 					$accessory->id_product_accessory = $matching_2->id_product;
 					$accessory->id_combination_accessory = (int)$matching_2->id_combination;
+
+					$accessory->save();
+					$this->nb_rows++;
 				}
 			}
 		}
