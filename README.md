@@ -113,6 +113,14 @@ ALTER TABLE `ps_feature_value` ADD `reference` VARCHAR(10) DEFAULT NULL AFTER `i
 
 ALTER TABLE `ps_feature_lang` ADD `public_name` VARCHAR(255) DEFAULT NULL AFTER `name`;
 
+CREATE TABLE IF NOT EXISTS `ps_webequip_accessory` (
+    `id_accessory` INT NOT NULL AUTO_INCREMENT,
+    `id_product` INT(11) DEFAULT NULL, 
+    `id_product_accessory` INT(11) DEFAULT NULL, 
+    `id_combination_accessory` INT(11) DEFAULT NULL, 
+    PRIMARY KEY (`id_accessory`)
+) ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `ps_product_matching` (
     `id_product_matching` INT NOT NULL AUTO_INCREMENT,
     `id_product` INT(11) DEFAULT NULL, 

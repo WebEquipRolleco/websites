@@ -413,6 +413,60 @@ class Webequip_Configuration extends Module {
                     }
                 }
             }
+
+            // Recherche de références (accessoires)
+            if(Tools::getValue('action') == 'find_reference') {
+
+                $this->context->smarty->assign('products', Product::searchByReference(Tools::getValue('reference')));
+                $this->context->smarty->assign('link', new Link());
+
+                $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/modules/webequip_configuration/views/templates/hook/accessory_search.tpl");
+                die($tpl->fetch());
+            }
+
+            // Ajout d'un accessoire
+            if(Tools::getValue('action') == 'add_accessory' and $id_product = Tools::getValue('id_product') and $data = Tools::getValue('data')) {
+                $data = explode('_', $data);
+
+                if(!Accessory::exists($id_product, $data[0], $data[1])) {
+
+                    $accessory = new Accessory();
+                    $accessory->id_product = $id_product;
+                    $accessory->id_product_accessory = $data[0];
+                    $accessory->id_combination_accessory = $data[1];
+                    $accessory->save();
+
+                }
+
+                $this->loadAccessories($id_product);
+            }
+
+            // Chargement de la liste des accessoires
+            if(Tools::getValue('action') == 'load_accessories' and $id_product = Tools::getValue('id_product')) {
+                $this->loadAccessories($id_product);
+            }
+
+            // Suppression d'un accessoire
+            if(Tools::getValue('action') == 'remove_accessory' and $id = Tools::getValue('id')) {
+
+                $accessory = new Accessory($id);
+                $accessory->delete();
+
+                $this->loadAccessories($accessory->id_product);
+            }
         }
+    }
+
+    /**
+    * Charge le tableau des accessoires d'un produit
+    * @param int $id_product
+    **/
+    private function loadAccessories($id_product) {
+
+        $this->context->smarty->assign('accessories', Accessory::find($id_product, false));
+        $this->context->smarty->assign('link', new Link());
+        
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/modules/webequip_configuration/views/templates/hook/accessory_list.tpl");
+        die($tpl->fetch());
     }
 }

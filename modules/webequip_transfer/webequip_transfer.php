@@ -1372,8 +1372,14 @@ class webequip_transfer extends Module {
 			$matching_1 = new ProductMatching($row['id_product_1']);
 			$matching_2 = new ProductMatching($row['id_product_2']);
 			if($matching_1->id and $matching_2->id) {
-				Db::getInstance()->execute("INSERT IGNORE INTO ps_accessory VALUES (".$matching_1->id_product.", ".$matching_2->id_product.")");
-				$this->nb_rows++;
+				
+				if(!Accessory::exists($matching_1->id_product, $matching_2->id_product, $matching_1->id_combination)) {
+					$accessory = new Accessory();
+
+					$accessory->id_product = $matching_1->id_product;
+					$accessory->id_product_accessory = $matching_2->id_product;
+					$accessory->id_combination_accessory = (int)$matching_2->id_combination;
+				}
 			}
 		}
 	}

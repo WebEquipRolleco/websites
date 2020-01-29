@@ -174,7 +174,8 @@
 
 {* ACCESSOIRES *}
 {block name='product_accessories'}
-  	{if $accessories}
+	{assign var=product_accessories value=Accessory::find($product.id_product)}
+  	{if !empty($product_accessories)}
   		<h3 class="text-primary uppercase margin-top-sm">{l s="Accessoires"}</h3>
   		<table class="table combinations-table vertical-align">
   			<thead>
@@ -189,33 +190,45 @@
 				</tr>
 			</thead>
 			<tbody>
-				{foreach from=$accessories item=product}
+				{foreach from=$product_accessories item=accessory}
 					<tr>
-						<td class="text-center">{$product.reference}</td>
-						<td>{$product.name}</td>
+						<td class="text-center">{$accessory->getTarget()->reference}</td>
+						<td>{$accessory->getProduct()->name}</td>
 						<td class="text-center">
-							{foreach from=Product::loadColumn($product.id_product, 1) item=row name=column_1}
-								<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-							{/foreach}
+							{if $accessory->getCombination()}
+								{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 1) item=row name=column_1}
+									<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+								{/foreach}
+							{else}
+								{foreach from=Product::loadColumn($accessory->id_product_accessory, 1) item=row name=column_1}
+									<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+								{/foreach}
+							{/if}
 						</td>
 						<td>
-							{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
-							{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+							{if $accessory->getTarget()->comment_1}<div>{$accessory->getTarget()->comment_1}</div>{/if}
+							{if $accessory->getTarget()->comment_2}<div>{$accessory->getTarget()->comment_2}</div>{/if}
 						</td>
 						<td class="text-center">
-							{foreach from=Product::loadColumn($product.id_product, 2) item=row}
-								{$row.value} 
-							{/foreach}
+							{if $accessory->getCombination()}
+								{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 2) item=row}
+									{$row.value} 
+								{/foreach}
+							{else}
+								{foreach from=Product::loadColumn($accessory->id_product_accessory, 2) item=row}
+									{$row.value} 
+								{/foreach}
+							{/if}
 						</td>
 						<td>
 							<table id="prices_{$product.id_product}" class="prices-table">
-								{assign var=prices value=SpecificPrice::getByProductId($product.id_product)}
+								{assign var=prices value=SpecificPrice::getByProductId($accessory->id_product_accessory, $accessory->id_combination_accessory)}
 								{if $prices|count > 1}
 									{assign var='loop_from_quantity' value=0}
 									{assign var='loop_price' value=0}
 									{foreach from=$prices item=specific_price name=loop_prices}
 										{if !$smarty.foreach.loop_prices.first}
-											<tr class="specific_prices_{$product.id_product} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
+											<tr class="specific_prices_{$accessory->getTarget()->id} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
 												<td class="hidden-sm-down text-left">
 													{$loop_from_quantity} {l s='à'} {$specific_price.from_quantity-1}
 												</td>
@@ -232,7 +245,7 @@
 										{assign var='loop_price' value=$specific_price.price}
 									{/foreach}
 									{if $loop_price}
-										<tr class="specific_prices_{$product.id_product}" data-min='{$loop_from_quantity}' data-price="{$loop_price}">
+										<tr class="specific_prices_{$accessory->getTarget()->id}" data-min='{$loop_from_quantity}' data-price="{$loop_price}">
 											<td class="hidden-sm-down text-left">
 												{$loop_from_quantity} {l s='et +'}
 											</td>
@@ -246,14 +259,14 @@
 									{/if}
 								{else}
 									{foreach from=$prices item=specific_price}
-										<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
+										<div class="specific_prices_{$accessory->getTarget()->id} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
 									{/foreach}
 								{/if}
 							</table>
 						</td>
 						<td class="text-center">
 							<div class="qty">
-			          			<input type="text" name="qty" id="quantity_wanted_{$product.id_product}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-step="{$product.batch}" data-id-product="{$product.id_product}" data-id-combination="{$product.id_product}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
+			          			<input type="text" name="qty" id="quantity_wanted_{$accessory->getTarget()->id}" value="0" class="input-group combination-quantity" min="{$accessory->getTarget()->minimal_quantity}" data-step="{$product.batch}" data-id-product="{$accessory->getTarget()->id}" data-id-combination="{$accessory->getTarget()->id}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
 			        		</div>
 						</td>
 					</tr>

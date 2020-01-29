@@ -35,7 +35,6 @@
 					$('#test_result').html(response);
 				}
 			});
-
 		});
 
 	});
