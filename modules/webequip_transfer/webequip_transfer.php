@@ -1373,7 +1373,7 @@ class webequip_transfer extends Module {
 			$matching_2 = new ProductMatching($row['id_product_2']);
 			if($matching_1->id and $matching_2->id) {
 				
-				if(!Accessory::exists($matching_1->id_product, $matching_2->id_product, $matching_1->id_combination)) {
+				if(!Accessory::exists($matching_1->id_product, $matching_2->id_product, $matching_2->id_combination)) {
 					$accessory = new Accessory();
 
 					$accessory->id_product = $matching_1->id_product;
