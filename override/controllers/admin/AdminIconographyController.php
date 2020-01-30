@@ -1,5 +1,8 @@
 <?php
 
+require_once("exports/Export.php");
+require_once("imports/Import.php");
+
 class AdminIconographyControllerCore extends AdminController {
 
 	public function __construct() {
@@ -60,8 +63,19 @@ class AdminIconographyControllerCore extends AdminController {
 
     	if(Tools::getIsset('updateproduct_icon') or Tools::getIsset('addproduct_icon'))
     		$this->displayForm();
-        else
-    	   $this->displayList();
+        else {
+            $export = new ExportIconography();
+            $this->context->smarty->assign("columns", $export->getHeader());
+            $this->displayList();
+        }
+    }
+
+    public function postProcess() {
+        if(Tools::getIsset('exportproduct_icon')) {
+
+            $export = new ExportIconography();
+            $export->export();
+        }
     }
 
     /**
@@ -88,60 +102,11 @@ class AdminIconographyControllerCore extends AdminController {
 
         // Import
         if(Tools::isSubmit('import')) {
-            if(isset($_FILES['file'])) {
+            $import = new ImportIconography();
+            $import->import();
 
-                $zip = new ZipArchive;
-                if($zip->open($_FILES['file']['tmp_name'])) {
-
-                    $dir = _PS_ROOT_DIR_.'/upload/'.uniqid()."/";
-                    mkdir($dir);
-
-                    $zip->extractTo($dir);
-                    foreach(glob($dir.'*.csv') as $path_csv) {
-
-                        $handle = fopen($path_csv, 'r');
-
-                        if(Tools::getValue('skip'))
-                            fgetcsv($handle, 0, ";");
-
-                        while($row = fgetcsv($handle, 0, ";")) {
-
-                            $icon = new ProductIcon($row[0]);
-                            $icon->name = $row[1];
-                            $icon->title = $row[2];
-                            $icon->url = $row[3];
-                            $icon->height = $row[5];
-                            $icon->width = $row[6];
-                            $icon->product_white_list = $row[7];
-                            $icon->product_black_list = $row[8];
-                            $icon->position = $row[9];
-                            $icon->active = (bool)$row[10];
-                            $icon->save();
-
-                            // Gestion image
-                            if($row[4] and is_file($dir.$row[4])) {
-
-                                $icon->extension = pathinfo($dir.$row[4], PATHINFO_EXTENSION);
-                                $icon->save();
-
-                                rename($dir.$row[4], _PS_ROOT_DIR_._PS_IMG_."icons/".$icon->id.".".$icon->extension);
-                            }
-
-                            // Gestion boutiques
-                            if($row[11])
-                                $icon->eraseShops();
-
-                            foreach(explode(',', $row[11]) as $id_shop)
-                                if(!$icon->hasShop($id_shop, false))
-                                    $icon->addShop($id_shop);
-                        }
-
-                        fclose($handle);
-                    }
-                    Tools::erazeDirectory($dir);
-                }  
-            }
-            
+            if($import->nb_lines)
+                $this->confirmations[] = "Import terminé : ".$import->nb_lines." lignes impactées";
         }
     
         $this->getList(1);

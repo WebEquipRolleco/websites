@@ -6,6 +6,7 @@ require_once("FeatureGroups.php");
 require_once("AttributeGroups.php");
 require_once("FeatureValues.php");
 require_once("AttributeValues.php");
+require_once("Iconography.php");
 
 class Import {
 
@@ -23,6 +24,13 @@ class Import {
     const TYPE_PRODUCT = "Produit";
     const TYPE_COMBINATION = "Declinaison";
 
+    /**
+    * Initialiser les valeurs par défaut
+    **/
+    public function __construct() {
+        $this->setOptions();
+    }
+    
     /**
     * Renseigne les options de séparation du CSV
     **/

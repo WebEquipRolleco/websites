@@ -12,15 +12,15 @@
 	      <div class="modal-body">
 	      	<div class="alert alert-info">
 	      		<b>Le fichier fourni doit :</b>
-	      		<br /><br />
-	      		- Etre compréssé au format <b>ZIP</b> <br /> 
-	      		- Comprendre un fichier de type <b>CSV</b> <br />
-	      		- Les colones du fichier doivent être séparés par un <b>point-virgule</b> <br />
-	      		- Les images doivent également être contenues dans l'archive
+	      		<br />
+	      		<ul>
+	      		<li>Etre au format <b>CSV</b> encodé en <b>UTF-8</b></li>
+	      		<li>Les colones du fichier doivent être séparées par un <b>point-virgule</b></li>
+	      		<li>Les valeurs doivent être séparées par une <b>virgule</b></li>
 	      	</div>
 	      	<div class="form-group">
-	      		<label>{l s="Fichier ZIP"}</label>
-	        	<input type="file" class="form-control" name="file" required>
+	      		<label>{l s="Fichier CSV"}</label>
+	        	<input type="file" class="form-control" name="import_file" required>
 	        </div>
 	        <div class="form-group">
 	        	<label>{l s="Sauter la 1ère ligne"}</label>
@@ -34,20 +34,10 @@
 	        </div>
 	        <div class="alert alert-info">
 	        	<p><b>Les colonnes du fichier doivent suivre le schéma suivant :</b></p>
-	        	<br />
 	        	<ul>
-                	<li><b>0</b> - ID <small class="text-muted">Facultatif, pour la modification uniquement</small></li>
-                	<li><b>1</b> - Nom</li>
-                	<li><b>2</b> - Titre</li>
-                	<li><b>3</b> - URL</li>
-                	<li><b>4</b> - Nom de l'image</li>
-                	<li><b>5</b> - Hauteur image</li>
-                	<li><b>6</b> - Largeur image</li>
-                	<li><b>7</b> - IDs liste blanche (x,y,z...)</li>
-                	<li><b>8</b> - IDs liste noire (x,y,z...)</li>
-                	<li><b>9</b> - Position</li>
-                	<li><b>10</b> - statut</li>
-                	<li><b>11</b> - IDs Boutique (x,y,z...)</li>
+	        		{foreach from=$columns item=column}
+                		<li>{$column}</li>
+                	{/foreach}
             	</ul>
 	        </div>
 	      </div>

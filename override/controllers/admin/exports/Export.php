@@ -7,6 +7,7 @@ require_once("AttributeGroups.php");
 require_once("FeatureGroups.php");
 require_once("AttributeValues.php");
 require_once("FeatureValues.php");
+require_once("Iconography.php");
 
 class Export {
 
@@ -21,6 +22,13 @@ class Export {
     const ACTIVE_PRODUCTS_ONLY = 1;
     const INACTIVE_PRODUCTS_ONLY = 2;
 
+    /**
+    * Initialiser les valeurs par défaut
+    **/
+    public function __construct() {
+        $this->setOptions();
+    }
+    
     /**
     * Renseigne les options de séparation du CSV
     **/
