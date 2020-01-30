@@ -10,14 +10,25 @@
     <a class="label" href="{$product.url}" data-id_customization="{$product.id_customization|intval}">
       {$product.name}
     </a>
-    {foreach from=$product.attributes key="attribute" item="value"}
+    {if $product.id_product_attribute}
+      <div class="product-line-info">
+        {foreach from=Combination::loadColumn($product.id_product_attribute, 1) item=row name=column_1}
+          <b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+        {/foreach}
+      </div>
+      {assign var=data value=Combination::loadComments($product.id_product_attribute)}
+      {if $data.comment_1}<div class="product-line-info">{$data.comment_1}</div>{/if}
+      {if $data.comment_2}<div class="product-line-info">{$data.comment_2}</div>{/if}
+    {else}
+      {if $product.comment_1}<div>{$product.comment_1|replace:'|':"<br />" nofilter}{/if}
+      {if $product.comment_2}<div>{$product.comment_2|replace:'|':"<br />" nofilter}{/if}
+    {/if}
+    {*foreach from=$product.attributes key="attribute" item="value"}
       <div class="product-line-info">
         <span class="label">{$attribute}:</span>
         <span class="value">{$value}</span>
       </div>
-    {/foreach}
-    {if $product.comment_1}<div>{$product.comment_1|replace:'|':"<br />" nofilter}{/if}
-      {if $product.comment_2}<div>{$product.comment_2|replace:'|':"<br />" nofilter}{/if}
+    {/foreach*}
     {foreach from=OrderOptionCart::findByCart() item=option}
       {if !$option->isValid($product.id_product)}
         <div class="text-danger"><i class="fa fa-exclamation-triangle"></i> {$option->warning}</div>
