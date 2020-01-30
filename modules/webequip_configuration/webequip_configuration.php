@@ -352,7 +352,7 @@ class Webequip_Configuration extends Module {
     **/
     public function hookDisplayAdminProductsMainStepLeftColumnBottom($params) {
         $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
-        return $this->display(__FILE__, 'product_comments.tpl');
+        return $this->display(__FILE__, 'product_essential.tpl');
     }
 
     /**
@@ -454,6 +454,55 @@ class Webequip_Configuration extends Module {
 
                 $this->loadAccessories($accessory->id_product);
             }
+
+            // Chargement de la liste des icones
+            if(Tools::getValue('action') == 'load_icons' and $id_product = Tools::getValue('id_product')) {
+                $this->loadIcons($id_product);
+            }
+
+            // Autoriser une icone
+            if(Tools::getValue('action') == 'enable_icon' and $id_icon = Tools::getValue('id_icon') and $id_product = Tools::getValue('id_product')) {
+                
+                $icon = new ProductIcon($id_icon);
+                if($icon->id) {
+
+                    $ids = $icon->getBlackList();
+                    if(($key = array_search($id_product, $ids)) !== false) {
+                        unset($ids[$key]);
+                        $icon->product_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                    }
+
+                    $ids = $icon->getWhiteList();
+                    $ids[] = $id_product;
+
+                    $icon->product_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                    $icon->save();
+                }
+
+                $this->loadIcons($id_product);
+            }
+
+            // Bloquer une icone
+            if(Tools::getValue('action') == 'disable_icon' and $id_icon = Tools::getValue('id_icon') and $id_product = Tools::getValue('id_product')) {
+                
+                $icon = new ProductIcon($id_icon);
+                if($icon->id) {
+
+                    $ids = $icon->getWhiteList();
+                    if(($key = array_search($id_product, $ids)) !== false) {
+                        unset($ids[$key]);
+                        $icon->product_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                    }
+
+                    $ids = $icon->getBlackList();
+                    $ids[] = $id_product;
+
+                    $icon->product_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                    $icon->save();
+                }
+
+                $this->loadIcons($id_product);
+            }
         }
     }
 
@@ -467,6 +516,21 @@ class Webequip_Configuration extends Module {
         $this->context->smarty->assign('link', new Link());
         
         $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/modules/webequip_configuration/views/templates/hook/accessory_list.tpl");
+        die($tpl->fetch());
+    }
+
+    /**
+    * Charge le table des icones d'un produit
+    * @param int $id_product
+    **/
+    private function loadIcons($id_product) {
+
+        $this->context->smarty->assign('icons', ProductIcon::getList(false, false));
+        $this->context->smarty->assign('product', Db::getInstance()->getRow('SELECT p.id_product, ps.id_category_default, p.id_supplier FROM ps_product p LEFT JOIN ps_product_shop ps ON (p.id_product = ps.id_product AND ps.id_shop = '.$this->context->shop->id.")"));
+        $this->context->smarty->assign('id_shop', $this->context->shop->id);
+        $this->context->smarty->assign('link', new Link());
+
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/modules/webequip_configuration/views/templates/hook/icons_list.tpl");
         die($tpl->fetch());
     }
 }
