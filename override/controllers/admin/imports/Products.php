@@ -50,11 +50,11 @@ class ImportProducts extends Import {
                 $row = array_combine($this->getColumns(), $row);
 
                 // Produit
-                if($row["type"] == self::TYPE_PRODUCT)
+                if(strtolower($row["type"]) == strtolower(self::TYPE_PRODUCT))
                    	$this->handleProduct($row);
 
                 // Déclinaison
-                if($row["type"] == self::TYPE_COMBINATION)
+                if(strtolower($row["type"]) == strtolower(self::TYPE_COMBINATION))
                     $this->handleCombination($row);  
 
             }

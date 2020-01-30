@@ -112,8 +112,8 @@ class AdminIconographyControllerCore extends AdminController {
                             $icon->url = $row[3];
                             $icon->height = $row[5];
                             $icon->width = $row[6];
-                            $icon->white_list = $row[7];
-                            $icon->black_list = $row[8];
+                            $icon->product_white_list = $row[7];
+                            $icon->product_black_list = $row[8];
                             $icon->position = $row[9];
                             $icon->active = (bool)$row[10];
                             $icon->save();
@@ -200,7 +200,7 @@ class AdminIconographyControllerCore extends AdminController {
                 $ids = $icon->getWhiteList();
                 $ids[] = $id;
 
-                $icon->white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                $icon->product_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
                 $icon->save();
             }
 
@@ -210,7 +210,55 @@ class AdminIconographyControllerCore extends AdminController {
                 $ids = $icon->getBlackList();
                 $ids[] = $id;
                 
-                $icon->black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                $icon->product_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+        }
+
+        // Ajout catégorie dans une des listes
+        if($id = Tools::getValue('category')) {
+
+            // Liste blanche
+            if(Tools::isSubmit('add_white_list')) {
+
+                $ids = $icon->getCategoryWhiteList();
+                $ids[] = $id;
+
+                $icon->category_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+
+            // Liste noire
+            if(Tools::isSubmit('add_black_list')) {
+
+                $ids = $icon->getCategoryBlackList();
+                $ids[] = $id;
+                
+                $icon->category_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+        }
+
+        // Ajout fournisseur dans une des listes
+        if($id = Tools::getValue('supplier')) {
+
+            // Liste blanche
+            if(Tools::isSubmit('add_white_list')) {
+
+                $ids = $icon->getSupplierWhiteList();
+                $ids[] = $id;
+
+                $icon->supplier_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+
+            // Liste noire
+            if(Tools::isSubmit('add_black_list')) {
+
+                $ids = $icon->getSupplierBlackList();
+                $ids[] = $id;
+                
+                $icon->supplier_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
                 $icon->save();
             }
         }
@@ -223,7 +271,7 @@ class AdminIconographyControllerCore extends AdminController {
             if($key !== false) {
 
                 unset($ids[$key]);
-                $icon->white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
+                $icon->product_white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
                 $icon->save();
             }
         }
@@ -236,13 +284,67 @@ class AdminIconographyControllerCore extends AdminController {
             if($key !== false) {
 
                 unset($ids[$key]);
-                $icon->black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
+                $icon->product_black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+        }
+
+        // Suppression catégorie de la liste blanche
+        if(Tools::isSubmit('remove_category_white_list') and $id = Tools::getValue('remove_category_white_list')) {
+
+            $ids = $icon->getCategoryWhiteList();
+            $key = array_search($id, $ids);
+            if($key !== false) {
+
+                unset($ids[$key]);
+                $icon->category_white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+        }
+
+        // Suppression catégorie de la liste noire
+        if(Tools::isSubmit('remove_category_black_list') and $id = Tools::getValue('remove_category_black_list')) {
+
+            $ids = $icon->getCategoryBlackList();
+            $key = array_search($id, $ids);
+            if($key !== false) {
+
+                unset($ids[$key]);
+                $icon->category_black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+        }
+
+        // Suppression fournisseur de la liste blanche
+        if(Tools::isSubmit('remove_supplier_white_list') and $id = Tools::getValue('remove_supplier_white_list')) {
+
+            $ids = $icon->getSupplierWhiteList();
+            $key = array_search($id, $ids);
+            if($key !== false) {
+
+                unset($ids[$key]);
+                $icon->supplier_white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
+                $icon->save();
+            }
+        }
+
+        // Suppression fournisseur de la liste noire
+        if(Tools::isSubmit('remove_supplier_black_list') and $id = Tools::getValue('remove_supplier_black_list')) {
+
+            $ids = $icon->getSupplierBlackList();
+            $key = array_search($id, $ids);
+            if($key !== false) {
+
+                unset($ids[$key]);
+                $icon->supplier_black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
                 $icon->save();
             }
         }
 
     	$this->context->smarty->assign('icon', $icon);
     	$this->context->smarty->assign('products', Product::getSimpleProducts(1));
+        $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1));
+        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
 
     	$this->setTemplate('details.tpl');
     }

@@ -16,7 +16,7 @@ class Export {
 	const END_OF_LINE = "\n";
 
     const TYPE_PRODUCT = "Produit";
-    const TYPE_COMBINATION = "Déclinaison";
+    const TYPE_COMBINATION = "Declinaison";
 
     const ACTIVE_PRODUCTS_ONLY = 1;
     const INACTIVE_PRODUCTS_ONLY = 2;

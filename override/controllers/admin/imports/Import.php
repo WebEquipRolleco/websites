@@ -21,7 +21,7 @@ class Import {
 	const END_OF_LINE = "\n";
 
     const TYPE_PRODUCT = "Produit";
-    const TYPE_COMBINATION = "Déclinaison";
+    const TYPE_COMBINATION = "Declinaison";
 
     /**
     * Renseigne les options de séparation du CSV

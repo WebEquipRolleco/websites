@@ -26,9 +26,9 @@
 	        	<label>{l s="Sauter la 1ère ligne"}</label>
 	        	<span class="switch prestashop-switch fixed-width-lg">
 				<input type="radio" name="skip" id="skip_on" value="1" checked>
-				<label for="skip_on">{l s='Yes' d='Shop.Theme.Labels'}</label>
+				<label for="skip_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
 				<input type="radio" name="skip" id="skip_off" value="0">
-				<label for="skip_off">{l s='No' d='Shop.Theme.Labels'}</label>
+				<label for="skip_off">{l s='Non' d='Shop.Theme.Labels'}</label>
 				<a class="slide-button btn"></a>
 			</span>
 	        </div>
@@ -36,18 +36,18 @@
 	        	<p><b>Les colonnes du fichier doivent suivre le schéma suivant :</b></p>
 	        	<br />
 	        	<ul>
-                	<li><b>0</b> - ID <small class="text-muted">Facultatif, pour la modification uniquement</small><li>
-                	<li><b>1</b> - Nom<li>
-                	<li><b>2</b> - Titre<li>
-                	<li><b>3</b> - URL<li>
-                	<li><b>4</b> - Nom de l'image<li>
-                	<li><b>5</b> - Hauteur image<li>
-                	<li><b>6</b> - Largeur image<li>
-                	<li><b>7</b> - IDs liste blanche (x,y,z...)<li>
-                	<li><b>8</b> - IDs liste noire (x,y,z...)<li>
-                	<li><b>9</b> - Position<li>
-                	<li><b>10</b> - statut<li>
-                	<li><b>11</b> - IDs Boutique (x,y,z...)<li>
+                	<li><b>0</b> - ID <small class="text-muted">Facultatif, pour la modification uniquement</small></li>
+                	<li><b>1</b> - Nom</li>
+                	<li><b>2</b> - Titre</li>
+                	<li><b>3</b> - URL</li>
+                	<li><b>4</b> - Nom de l'image</li>
+                	<li><b>5</b> - Hauteur image</li>
+                	<li><b>6</b> - Largeur image</li>
+                	<li><b>7</b> - IDs liste blanche (x,y,z...)</li>
+                	<li><b>8</b> - IDs liste noire (x,y,z...)</li>
+                	<li><b>9</b> - Position</li>
+                	<li><b>10</b> - statut</li>
+                	<li><b>11</b> - IDs Boutique (x,y,z...)</li>
             	</ul>
 	        </div>
 	      </div>
