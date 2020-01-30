@@ -179,8 +179,9 @@ class ImportProducts extends Import {
         $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
         foreach(Db::getInstance()->executeS($sql) as $id)
             if(isset($row[$id['id_attribute_group']]) and !empty($row[$id['id_attribute_group']]))
-                $ids[] = Db::getInstance()->getValue("SELECT a.id_attribute FROM ps_attribute a, ps_attribute_lang al WHERE a.id_attribute = al.id_attribute AND al.id_lang = 1 AND al.name = '".$row[$id['id_attribute_group']]."' AND a.id_attribute_group = ".$id['id_attribute_group']);
-
+                if($id = Db::getInstance()->getValue("SELECT a.id_attribute FROM ps_attribute a, ps_attribute_lang al WHERE a.id_attribute = al.id_attribute AND al.id_lang = 1 AND al.name = '".$row[$id['id_attribute_group']]."' AND a.id_attribute_group = ".$id['id_attribute_group']))
+                    $ids[] = $id;
+                
         // Ajout des nouveaux attributs
         if(!empty($ids))
             $combination->setAttributes($ids);
