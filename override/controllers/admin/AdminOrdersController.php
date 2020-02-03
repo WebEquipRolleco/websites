@@ -153,6 +153,108 @@ class AdminOrdersController extends AdminOrdersControllerCore {
     }
 
     /**
+    * Gestion AJAX
+    **/
+    public function displayAjax() {
+        switch (Tools::getValue('action')) {
+            
+            case 'load_oa':
+                $this->loadOA();
+            break;
+
+            case 'new_oa':
+                $this->addOA();
+            break;
+
+            case 'save_oa':
+                $this->saveOA();
+            break;
+
+            case 'delete_oa':
+                $this->deleteOA();
+            break;
+        }
+    }
+
+    /**
+    * Gestion des OA
+    **/
+    public function loadOA() {
+
+        // Vérification des OA
+        $rows = Db::getInstance()->executeS("SELECT id_product_supplier FROM ps_order_detail WHERE id_order = ".$this->current_id);
+        foreach($rows as $row) {
+
+            if($row['id_product_supplier']) {
+                $oa = OA::find($this->current_id, $row['id_product_supplier']);
+                if(!$oa->id)
+                    $oa->save();
+            }
+        }
+
+        $this->context->smarty->assign('order', $this->getCurrentOrder());
+        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
+        $this->context->smarty->assign('BLBC_state_id', Configuration::getForOrder('BLBC_ORDER_STATE', $this->getCurrentOrder()));
+
+        $tpl = $this->context->smarty->createTemplate(_PS_ROOT_DIR_."/override/controllers/admin/templates/orders/obligations_content.tpl");
+        $data['view'] = $tpl->fetch();
+
+        die(json_encode($data));
+    }
+
+    /**
+    * Ajout d'un OA
+    **/
+    public function addOA() {
+        if($this->current_id and $id_supplier = Tools::getValue('id_supplier') and $code = Tools::getValue('code')) {
+        
+            $oa = OA::find($this->current_id, $id_supplier);
+            $oa->code = $code;
+            $oa->save();
+
+            $this->context->smarty->assign('confirmation', "OA ajouté");
+        }
+
+        $this->loadOA();
+    }
+
+    /**
+    * Modifie un OA
+    **/
+    public function saveOA() {
+        if($id_oa = Tools::getValue('id_oa') and $id_supplier = Tools::getValue('id_supplier')) {
+            $code = Tools::getValue('code');
+
+            $oa = new OA($id_oa);
+            if($oa->id) {
+                $oa->id_supplier = $id_supplier;
+                $oa->code = $code;
+                $oa->save();
+
+                $this->context->smarty->assign('confirmation', "OA enregistré");
+            }
+        }
+
+        $this->loadOA();
+    }
+
+    /**
+    * Suppression OA
+    **/
+    public function deleteOA() {
+        if($this->current_id and $id_oa = Tools::getValue('id_oa')) {
+
+            $oa = new OA($id_oa);
+            if($oa->id){
+                $oa->delete();
+                $this->context->smarty->assign('confirmation', "OA supprimé");
+            }
+        }
+
+        $this->loadOA();
+    }
+
+    /**
     * Ajoute la modal import à la page liste
     **/
     public function renderList() {
@@ -216,41 +318,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
             $this->getCurrentOrder()->internal_reference = Tools::getValue('new_internal_reference');
             $this->getCurrentOrder()->save();
-        }
-
-        // Supprimer un OA
-        if($id = Tools::getValue('remove_oa')) {
-            $oa = new OA($id);
-            $oa->delete();
-        }
-
-        // Enregistrer un nouvel OA
-        if(Tools::isSubmit('save_new_oa')) {
-            $form = Tools::getValue('new_oa');
-
-            $oa = OA::find($this->current_id, $form['id_supplier']);
-            $oa->code = $form['code'];
-            $oa->save();
-        }
-
-        // Modifier un OA existant
-        if(Tools::getValue('save_oa')) {
-
-            $oa = new OA(Tools::getValue('save_oa'));
-            $oa->id_supplier = Tools::getValue('id_supplier');
-            $oa->code = Tools::getValue('code');
-            $oa->save();
-        }
-        
-        // Vérification des OA
-        $rows = Db::getInstance()->executeS("SELECT id_product_supplier FROM ps_order_detail WHERE id_order = ".$this->current_id);
-        foreach($rows as $row) {
-
-            if($row['id_product_supplier']) {
-                $oa = OA::find($this->current_id, $row['id_product_supplier']);
-                if(!$oa->id)
-                    $oa->save();
-            }
         }
         
         // Supprimer un historique
