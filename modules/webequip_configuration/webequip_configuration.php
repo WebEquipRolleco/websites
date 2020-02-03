@@ -525,7 +525,7 @@ class Webequip_Configuration extends Module {
     **/
     private function loadIcons($id_product) {
 
-        $this->context->smarty->assign('icons', ProductIcon::getList(false, false));
+        $this->context->smarty->assign('icons', ProductIcon::getList());
         $this->context->smarty->assign('product', Db::getInstance()->getRow('SELECT p.id_product, ps.id_category_default, p.id_supplier FROM ps_product p LEFT JOIN ps_product_shop ps ON (p.id_product = ps.id_product AND ps.id_shop = '.$this->context->shop->id.")"));
         $this->context->smarty->assign('id_shop', $this->context->shop->id);
         $this->context->smarty->assign('link', new Link());

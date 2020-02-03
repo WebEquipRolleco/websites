@@ -150,7 +150,7 @@ class OrderDetail extends OrderDetailCore {
         $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
 
-        $this->delivery_fees = isset($product['specific_prices']) ? $pproduct['specific_prices']['delivery_fees'] : 0;
+        $this->delivery_fees = isset($product['specific_prices']) ? $product['specific_prices']['delivery_fees'] : 0;
         $this->ecotax = $product['ecotax'];
 
         $this->comment_product_1 = $product['comment_1'];
