@@ -7,16 +7,16 @@
 *}
 <div class="col-lg-12">
     <div class="bootstrap panel everpscustomerconnect">
-        <div class="panel-heading">
-            {if $logged && isset($logged)}
+        {if $logged && isset($logged)}
             <p><strong style="color:red;">{l s='You are currently logged as' mod='everpscustomerconnect'} {$firstname|escape:'htmlall':'UTF-8'} {$lastname|escape:'htmlall':'UTF-8'}</strong> <a href="{if $base_uri && isset($base_uri)}{$base_uri|escape:'htmlall':'UTF-8'}{/if}" target="_blank">{l s='go to shop' mod='everpscustomerconnect'}</a></p>
-            {/if}
-            {if $id_customer && isset($id_customer)}
+        {/if}
+        {if $id_customer && isset($id_customer)}
             <form method="post" action="">
                 <input type="hidden" name="id_customer" value="{$id_customer|escape:'htmlall':'UTF-8'}" />
-                <input type="submit" name="submitSuperUser" value="{l s='Connect as this customer' mod='everpscustomerconnect'}" class="btn btn-success button" />
+                <button type="submit" name="submitSuperUser" value="1" class="btn btn-success button">
+                    <i class="icon-user"></i> &nbsp; <b>{l s='Connect as this customer' mod='everpscustomerconnect'}</b>
+                </button>
             </form>
-            {/if}
-        </div>
+        {/if}
     </div>
 </div>
