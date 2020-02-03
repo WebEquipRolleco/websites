@@ -186,6 +186,20 @@ class Order extends OrderCore {
 	}
 
 	/**
+	* Override : forcer les frais de ports de la commande
+	* @return array
+	**/
+	public function getProductsDetail() {
+
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        	SELECT *, od.delivery_fees
+        	FROM `'._DB_PREFIX_.'order_detail` od
+        	LEFT JOIN `'._DB_PREFIX_.'product` p ON (p.id_product = od.product_id)
+        	LEFT JOIN `'._DB_PREFIX_.'product_shop` ps ON (ps.id_product = p.id_product AND ps.id_shop = od.id_shop)
+        	WHERE od.`id_order` = '.(int)$this->id);
+    }
+
+	/**
 	* Override : Si j'ai des produtis dans ma foutue commande, tu me retournes mes produits bordel de merde
     * @return array
     **/
