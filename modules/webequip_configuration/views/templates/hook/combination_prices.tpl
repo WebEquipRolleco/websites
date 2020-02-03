@@ -28,11 +28,15 @@
 		<label form="combination_{$combination->id}_attribute_position" class="form-control-label">{l s="Ordre d'affichage"}</label>
         <input type="number" id="combination_{$combination->id}_attribute_position" name="position_{$combination->id}" class="form-control" value="{$combination->position}">
 	</div>
-	<div class="col-xs-12 col-sm-6 form-group">
+	<div class="col-xs-12 col-sm-2 form-group">
+		<label class="form-control-label">Fournisseur</label>
+		<input type="text"  class="form-control" value="{Product::getSupplierReference($combination->id_product, $combination->id)}" disabled>
+	</div>
+	<div class="col-xs-12 col-sm-5 form-group">
 		<label form="combination_{$combination->id}_attribute_comment-1" class="form-control-label">{l s="Commentaire 1"}</label>
         <input type="text" id="combination_{$combination->id}_attribute_comment-1" name="comment-1_{$combination->id}" class="form-control" value="{$combination->comment_1}">
 	</div>
-	<div class="col-xs-12 col-sm-6 form-group">
+	<div class="col-xs-12 col-sm-5 form-group">
 		<label form="combination_{$combination->id}_attribute_comment-2" class="form-control-label">{l s="Commentaire 2"}</label>
         <input type="text" id="combination_{$combination->id}_attribute_comment-2" name="comment-2_{$combination->id}" class="form-control" value="{$combination->comment_2}">
 	</div>
