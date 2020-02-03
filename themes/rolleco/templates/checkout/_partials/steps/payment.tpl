@@ -23,6 +23,9 @@
             {assign var=address value=$context->cart->getAddressInvoice()}
             <div class="bold">{$address->alias}</div>
             <br />
+            {$address->firstname} {$address->lastname} <br />
+            {if $address->company}{$address->company} <br />{/if}
+            <br />
             {$address->address1} <br />
             {if $address->address2}{$address->address2} <br />{/if}
             {$address->postcode} {$address->city} <br />
@@ -42,6 +45,9 @@
           <td class="bg-grey text-muted">
             {assign var=address value=$context->cart->getAddressDelivery()}
             <div class="bold">{$address->alias}</div>
+            <br />
+            {$address->firstname} {$address->lastname} <br />
+            {if $address->company}{$address->company} <br />{/if}
             <br />
             {$address->address1} <br />
             {if $address->address2}{$address->address2} <br />{/if}
