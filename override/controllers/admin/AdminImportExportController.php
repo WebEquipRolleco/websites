@@ -78,6 +78,9 @@ class AdminImportExportControllerCore extends AdminController {
                 case 'feature-values':
                     $export = new ExportFeatureValues();
                 break;
+
+                case 'url':
+                    $export = new ExportProductURL();
             }
 
             if(isset($export)) {

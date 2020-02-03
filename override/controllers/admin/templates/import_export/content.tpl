@@ -66,6 +66,9 @@
 					<button type="submit" class="btn btn-info" name="action" value="export_prices" style="width:69px">
 						<i class="process-icon-download"></i> <b>Prix</b>
 					</button>
+					<button type="submit" class="btn btn-warning" name="action" value="export_url" style="width:69px">
+						<i class="process-icon-download"></i> <b>URL</b>
+					</button>
 				</div>
 			</div>
 		</form>
