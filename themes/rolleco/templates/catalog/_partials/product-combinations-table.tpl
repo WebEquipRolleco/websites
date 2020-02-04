@@ -73,7 +73,10 @@
 								</table>
 							{else}
 								{foreach from=$prices item=specific_price}
-									<span class="specific_prices_{$id_combination} text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</span>
+									<span class="specific_prices_{$id_combination} text-info" data-price="{$specific_price.price}">
+									{if $specific_price.from_quantity > 1}{$specific_price.from_quantity} {l s='et +'} &nbsp;&nbsp;&nbsp;&nbsp;{/if}
+									{Tools::displayPrice($specific_price.price)}
+								</span>
 								{/foreach}
 							{/if}
 						</td>
@@ -150,7 +153,10 @@
 							{/if}
 						{else}
 							{foreach from=$prices item=specific_price}
-								<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">{Tools::displayPrice($specific_price.price)}</div>
+								<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">
+									{if $specific_price.from_quantity > 1}{$specific_price.from_quantity} {l s='et +'} &nbsp;&nbsp;&nbsp;&nbsp;{/if}
+									{Tools::displayPrice($specific_price.price)}
+								</div>
 								{if $specific_price.full_price > 0}
 									<div class="text-center">
 										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
