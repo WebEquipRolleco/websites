@@ -94,13 +94,18 @@ class SkuManager {
 
 		$sku = $this->prefix_product.$this->separator;
 
-		$rows = Db::getInstance()->executeS("SELECT CONCAT(f.reference, fv.reference) AS sku FROM ps_feature_product fp, ps_feature f, ps_feature_value fv WHERE fp.id_feature = f.id_feature AND fp.id_feature_value = fv.id_feature_value AND fp.id_product = $id AND f.reference IS NOT NULL, fv.reference IS NOT NULL ORDER BY f.position");
+		$rows = Db::getInstance()->executeS("SELECT CONCAT(f.reference, fv.reference) AS sku FROM ps_feature_product fp, ps_feature f, ps_feature_value fv WHERE fp.id_feature = f.id_feature AND fp.id_feature_value = fv.id_feature_value AND fp.id_product = $id AND f.reference IS NOT NULL AND fv.reference IS NOT NULL ORDER BY f.position");
 		if($rows){
 			$rows = array_map(function($e) { return $e['sku']; }, $rows);
 			$sku .= implode($this->separator, $rows);
 		}
 
 		return $sku;
+	}
+
+	public static function getStaticProductSku($id) {
+		$manager = new SkuManager();
+		return $manager->getProductSku($id);
 	}
 
 	/**
@@ -120,4 +125,10 @@ class SkuManager {
 
 		return $sku;
 	}
+
+	public static function getStaticCombinationSku($id) {
+		$manager = new SkuManager();
+		return $manager->getCombinationSku($id);
+	}
+
 }

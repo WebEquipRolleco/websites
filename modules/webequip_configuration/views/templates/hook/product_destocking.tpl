@@ -5,6 +5,11 @@
 </h2>
 <button id="change_destocking" class="btn btn-outline-secondary"> Afficher/cacher le bandeau</button>
 
+{if !$product->hasCombinations()}
+<h2>SKU</h2>
+<input type="text" class="form-control" value="{SkuManager::getStaticProductSku($product->id)}" disabled>
+{/if}
+
 <script>
 	$(document).ready(function() {
 
