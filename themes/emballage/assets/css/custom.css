@@ -726,7 +726,7 @@ table .icon-cell {
   margin-left: 25px;
 }
 #nav_categories .category.level-3:before {
-  color: #e0001b;
+  color: #8bc44e;
   font-weight: bold;
   content: ">>";
 }
