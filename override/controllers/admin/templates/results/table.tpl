@@ -84,7 +84,8 @@
 		</tr>
 		<tr>
 			<td><b>{l s="Marges totale"}</b></td>
-			<td colspan="2" class="text-center">{$current.margin.full|round:2} %</td>
+			<td class="text-center">{convertPrice price=$current.margin_value.full}</td>
+			<td class="text-center">{$current.margin.full|round:2} %</td>
 			<td class="text-center">{$last.margin.full|round:2} %</td>
 			{if $best.margin.full}
 				<td class="text-center text-success">+{$rate.margin.full|round:2} %</td>
@@ -94,7 +95,8 @@
 		</tr>
 		<tr>
 			<td><b>{l s="Marges naturelles"}</b></td>
-			<td colspan="2" class="text-center">{$current.margin.products|round:2} %</td>
+			<td class="text-center">{convertPrice price=$current.margin_value.products}</td>
+			<td class="text-center">{$current.margin.products|round:2} %</td>
 			<td class="text-center">{$last.margin.products|round:2} %</td>
 			{if $best.margin.products}
 				<td class="text-center text-success">+{$rate.margin.products|round:2} %</td>
@@ -194,7 +196,8 @@
 		</tr>
 		<tr>
 			<td><b>{l s="Marges devis"}</b></td>
-			<td colspan="2" class="text-center">{$current.margin.quotations|round:2} %</td>
+			<td class="text-center">{convertPrice price=$current.margin_value.quotations}</td>
+			<td class="text-center">{$current.margin.quotations|round:2} %</td>
 			<td class="text-center">{$last.margin.quotations|round:2} %</td>
 			{if $best.margin.quotations}
 				<td class="text-center text-success">+{$rate.margin.quotations|round:2} %</td>

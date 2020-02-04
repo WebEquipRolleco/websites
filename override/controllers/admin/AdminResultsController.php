@@ -83,6 +83,10 @@ class AdminResultsController extends AdminController {
 			$periods[$index]['current']['margin']['products'] = Tools::getMarginRate($margin_products, $turnover_products);
 			$periods[$index]['current']['margin']['quotations'] = Tools::getMarginRate($margin_quotations, $turnover_quotations);
 
+			$periods[$index]['current']['margin_value']['full'] = $margin_full;
+			$periods[$index]['current']['margin_value']['products'] = $margin_products;
+			$periods[$index]['current']['margin_value']['quotations'] = $margin_quotations;
+
 			/**** RESULTATS GLOBAUX PERIODE PRECEDENTE ****/
 			$date_begin = clone($period['dates']['begin']);
 			$date_end = clone($period['dates']['end']);
@@ -116,6 +120,10 @@ class AdminResultsController extends AdminController {
 			$periods[$index]['last']['margin']['full'] = Tools::getMarginRate($margin_full, $periods[$index]['last']['turnover']);
 			$periods[$index]['last']['margin']['products'] = Tools::getMarginRate($margin_products, $turnover_products);
 
+			$periods[$index]['last']['margin_value']['full'] = $margin_full;
+			$periods[$index]['last']['margin_value']['products'] = $margin_products;
+			$periods[$index]['last']['margin_value']['quotations'] = $margin_quotations;
+			
 			/**** RESULTATS DEVIS PERIODE COURANTE *****/
 			$options = array();
 			$options['date_begin'] = $period['dates']['begin']->format('Y-m-d 00:00:00');
