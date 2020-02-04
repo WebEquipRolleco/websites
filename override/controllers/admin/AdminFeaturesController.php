@@ -21,7 +21,8 @@ class AdminFeaturesController extends AdminFeaturesControllerCore {
             'reference' => array(
                 'title' => $this->trans('Référence', array(), 'Admin.Global'),
                 'width' => 'auto',
-                'align' => 'center'
+                'align' => 'center',
+                'filter_key' => 'a!reference'
             ),
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global'),
@@ -88,7 +89,8 @@ class AdminFeaturesController extends AdminFeaturesControllerCore {
                 ),
                 'reference' => array(
                     'title' => $this->trans('Référence', array(), 'Admin.Global'),
-                    'align' => 'center'
+                    'align' => 'center',
+                    'filter_key' => 'a!reference'
                 ),
                 'value' => array(
                     'title' => $this->trans('Value', array(), 'Admin.Global'),

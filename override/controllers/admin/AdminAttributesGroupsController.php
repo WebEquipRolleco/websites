@@ -26,6 +26,7 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
             'reference' => array(
                 'title' => $this->trans('Référence', array(), 'Admin.Global'),
                 'align' => 'center',
+                'filter_key' => 'a!reference'
             ),
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global'),
@@ -104,7 +105,7 @@ class AdminAttributesGroupsController extends AdminAttributesGroupsControllerCor
                     'title' => $this->trans('Référence', array(), 'Admin.Catalog.Feature'),
                     'width' => 'auto',
                     'align' => 'center',
-                    'filter_key' => 'b!reference'
+                    'filter_key' => 'a!reference'
                 ),
                 'name' => array(
                     'title' => $this->trans('Value', array(), 'Admin.Catalog.Feature'),
