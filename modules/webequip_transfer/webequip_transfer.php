@@ -1414,18 +1414,21 @@ class webequip_transfer extends Module {
 
 		$ids = $this->getSavedIds("id_product", "ps_product");
 
-		$sql = "SELECT id_product, description FROM ps_product_lang WHERE id_product IN ($ids) AND description IS NOT NULL AND description <> '' GROUP BY id_product";
+		$sql = "SELECT id_product, id_shop, description_short, description FROM ps_product_lang WHERE id_product IN ($ids) AND id_lang = 1";
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
-			if(!Db::getInstance()->execute("UPDATE ps_product_lang SET description = '".pSql(utf8_encode($row['description']), true)."' WHERE id_product = ".$row['id_product']))
+
+			$product = new Product($row['id_product'], true, 1, $row['id_shop']);
+			if($product->id) {
+
+				$product->description = utf8_encode($row['description']);
+				$product->description_short = utf8_encode($row['description_short']);
+
+				$product->save();
 				$this->nb_rows++;
+			}
 		}
 
-		$sql = "SELECT id_product, description_short FROM ps_product_lang WHERE id_product IN ($ids) AND description_short IS NOT NULL AND description_short <> '' GROUP BY id_product";
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-			Db::getInstance()->execute("UPDATE ps_product_lang SET description_short = '".pSql(utf8_encode($row['description_short']), true)."' WHERE id_product = ".$row['id_product']);
-		}
 	}
 
 	/**
