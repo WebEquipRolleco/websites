@@ -52,16 +52,25 @@
       </div>
     {/block}
 
+    {if Product::hasDegressivePrices($product.id_product)}
+      <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
+        <a href="#prix dégressifs" title="{l s="Profitez des prix dégressifs"}">
+          <img class="img-thumbnail" src="/img/prices.jpeg" title="{l s="Profitez des prix dégressifs"}">
+          {l s="Profitez des prix dégressifs"}
+        </a>
+      </div>
+    {/if}
+
     {foreach from=ProductIcon::getList(2) item=icon}
-          {if $icon->display($product)}
-            <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
-              <a href="{$icon->url}" title="{$icon->title}">
-                <img class="img-thumbnail" src="{$icon->getImgPath()}" {if $icon->height}height="{$icon->height}px"{/if} {if $icon->width}width="{$icon->width}px"{/if}>
-                {$icon->title}
-              </a>
-            </div>
-          {/if}
-        {/foreach}
+      {if $icon->display($product)}
+        <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
+          <a href="{$icon->url}" title="{$icon->title}">
+            <img class="img-thumbnail" src="{$icon->getImgPath()}" {if $icon->height}height="{$icon->height}px"{/if} {if $icon->width}width="{$icon->width}px"{/if}>
+            {$icon->title}
+          </a>
+        </div>
+      {/if}
+    {/foreach}
 
     {block name='product_without_taxes'}
       {if $priceDisplay == 2}

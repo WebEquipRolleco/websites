@@ -26,8 +26,8 @@ class Product extends ProductCore {
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
 		self::$definition['fields']['reference'] = array('type'=>self::TYPE_STRING, 'validate'=>'isReference', 'size'=>32, 'shop'=>true);
-		self::$definition['fields']['name'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
-		self::$definition['fields']['description'] = array('type'=>self::TYPE_HTML, 'lang'=>true);
+		self::$definition['fields']['name'] = array('type'=>self::TYPE_STRING, 'validate'=>'isCatalogName', 'lang'=>true);
+		self::$definition['fields']['description'] = array('type'=>self::TYPE_HTML, 'validate'=>'isCleanHtml', 'lang'=>true);
 		self::$definition['fields']['meta_description'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
 		self::$definition['fields']['meta_keywords'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
 		self::$definition['fields']['rollcash'] = array('type'=>self::TYPE_FLOAT);
@@ -225,5 +225,17 @@ class Product extends ProductCore {
 	public static function searchByReference($search) {
 		$id_shop = Context::getContext()->shop->id;
     	return Db::getInstance()->executeS("SELECT p.id_product, pas.id_product_attribute, ps.reference, pp.product_supplier_reference, pl.name, pas.reference AS combination_reference FROM ps_product p LEFT JOIN ps_product_lang pl ON (p.id_product = pl.id_product AND pl.id_lang = 1) LEFT JOIN ps_product_supplier pp ON (p.id_product = pp.id_product AND pp.product_supplier_reference LIKE '%$search%') LEFT JOIN ps_product_shop ps ON (p.id_product = ps.id_product AND ps.reference LIKE '%$search%' AND ps.id_shop = $id_shop) LEFT JOIN ps_product_attribute_shop pas ON (p.id_product = pas.id_product AND pas.reference LIKE '%$search%' AND pas.id_shop = $id_shop) WHERE (ps.reference IS NOT NULL or pp.product_supplier_reference IS NOT NULL OR pas.reference IS NOT NULL) GROUP BY pas.id_product_attribute");
+    }
+
+    /**
+    * Vérifie si un produit possède des prix spécifiques
+    **/
+    public static function hasDegressivePrices($id_product) {
+
+    	$nb_combinations = Db::getInstance()->getValue("SELECT COUNT(*) FROM ps_product_attribute WHERE id_product = $id_product");
+    	if(!$nb_combinations) $nb_combinations = 1;
+
+    	$nb_prices = Db::getInstance()->getValue("SELECT COUNT(*) FROM ps_specific_price WHERE id_product = $id_product");
+    	return $nb_prices > $nb_combinations;
     }
 }
