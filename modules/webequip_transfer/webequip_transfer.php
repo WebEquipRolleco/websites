@@ -1423,7 +1423,8 @@ class webequip_transfer extends Module {
 
 				$product->description = utf8_encode($row['description']);
 				$product->description_short = utf8_encode($row['description_short']);
-
+				if(!$product->price) $product->price = 0;
+				
 				$product->save();
 				$this->nb_rows++;
 			}
