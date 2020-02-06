@@ -1,0 +1,45 @@
+a:hover .miniature {
+	border: 1px solid @mainColor;
+	.btn {
+		background-color: @mainColor;
+	}
+}
+
+#reassurance_bottom {
+	border-top: 4px solid @lightGrey;
+	border-bottom:4px solid @lightGrey;
+	.title {
+		font-size: 16px;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+	.reassurance {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+}
+
+#table_products {
+	tr {
+		border-bottom: 1px solid @lightGrey;
+	}
+	.product-miniature {
+		vertical-align: middle;
+	}
+	.product-options {
+		vertical-align: bottom;
+	}
+	.description a {
+		font-weight: bold;
+		color: @mainDarkColor;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	.price {
+		font-family: Exo,Arial,Verdana,sans-serif;
+		font-weight: 700;
+		font-size: 26px;
+		white-space: nowrap;
+	}
+}

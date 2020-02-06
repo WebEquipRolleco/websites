@@ -10,7 +10,7 @@
 	<div>
 	   	<form method="post" class="form-inline text-center" name="register_newsletter">
 	   		<input type="text" class="form-control" name="email" placeholder="{l s='Mon e-mail...'}" autocomplete="off" required>
-	   		<button type="submit" class="btn">{l s='OK'}</button>
+	   		<button type="submit" class="btn btn-primary">{l s='OK'}</button>
 	  	</form>
 	</div>
 	<div id="ajax_modal_newsletter" class="iziModal">

@@ -13,7 +13,7 @@
             
             {* BLOC DEVIS *}
             <a href="{$link->getPageLink('QuotationRegistration')}" id="_desktop_nav_quotation" class="nav-link">
-              <i class="fa fa-calculator"></i>
+              <i class="fa fa-calculator periodic-buzz"></i>
               {l s="Devis gratuit"}
             </a>
             {assign var=nb_quotations value=Quotation::countNew(Context::getContext()->customer->id)}

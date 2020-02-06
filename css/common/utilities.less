@@ -1,0 +1,73 @@
+.text-left		{ text-align: left; }
+.text-center	{ text-align: center; }
+.text-right		{ text-align: right; }
+.inner-space	{ padding: 10px; }
+
+.bold 		{ font-weight: bold; }
+.uppercase 	{ text-transform: uppercase; }
+.pull-right { float: right; }
+
+.text-info		{ color: @mainBlue !important; }
+.text-primary	{ color: @darkBlue !important; }
+.text-success	{ color: @mainGreen !important; }
+.text-warning	{ color: @mainOrange !important; }
+.text-danger	{ color: @mainRed !important; }
+
+.no-bottom 			{ margin-bottom: 0px; }
+.margin-top-10 		{ margin-top: 10px; }
+.margin-top-15 		{ margin-top: 15px; }
+.margin-top-sm 		{ margin-top: 25px; }
+.top-space 			{ margin-top: 50px; }
+.margin-bottom-10 	{ margin-bottom: 10px; }
+.margin-bottom-15	{ margin-bottom: 15px; }
+.padding-left-15 	{ padding-left: 15px !important; }
+.padding-left-20 	{ padding-left: 20px !important; }
+
+.background(@text-color, @background-color) {
+	background-color: @background-color !important;
+	* {
+		color: @text-color !important;
+	}
+}
+
+.bg-light		{ background-color: @lightGrey !important; }
+.bg-grey 		{ .background(@lightText, @mainGrey); }
+.bg-darkgrey	{ background-color:@darkGrey !important; }
+.bg-green 		{ .background(@lightText, @mainGreen); }
+.bg-darkgreen 	{ .background(@lightText, @darkGreen); }
+.bg-blue 		{ .background(@lightText, @mainBlue); font-weight: bold; }
+.bg-red 		{ .background(@lightText, @mainRed); font-weight: bold; }
+.bg-danger		{ .background(@lightText, @mainRed); }
+.bg-warning		{ .background(@lightText, @mainYellow); }
+
+.label(@text-color, @background-color) {
+	.background(@text-color, @background-color);
+	padding: 5px 10px 5px 10px;
+}
+
+.label-info 	{ .label(@lightText, @lightBlue); }
+.label-success 	{ .label(@lightText, @mainGreen); }
+.label-default 	{ .label(@lightText, @mainGrey); }
+
+.well {
+	display: block;
+	background-color: @lightGrey;
+	padding: 10px;
+	a {
+		color: @mainColor !important;
+	}
+}
+
+.col-slim {
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+}
+
+a.btn:hover { text-decoration: none !important; }
+.badge 		{ border-radius: 10px;}
+
+.bootstrap-touchspin {
+	float: none !important;
+	margin-left: auto;
+	margin-right: auto;
+}

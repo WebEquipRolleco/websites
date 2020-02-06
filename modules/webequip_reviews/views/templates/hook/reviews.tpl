@@ -5,7 +5,7 @@
 		</h3>
 		<table id="table_reviews" class="table">
 			<thead>
-				<tr class="bg-grey">
+				<tr class="bg-light">
 					<td colspan="2" class="padding-left-20">
 						<b>{$product_name}</b>
 						<br />

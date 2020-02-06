@@ -1,0 +1,164 @@
+#header {
+	box-shadow: 0px 5px 15px 1px lightgrey;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 100;
+	.header-nav {
+		margin-bottom: 0px !important;
+    	border-bottom: 1px solid @lightGrey;
+		.user-info {
+			margin-left: 0.75rem;
+			margin-right: 0.75rem;
+			.logged {
+				color: @mainColor;
+			}
+		}
+		.blockcart {
+			margin-left: 0px !important;
+		}
+		.cart-preview.active {
+			background-color: @mainColor;
+		}
+	}
+	.header-top {
+		padding-bottom: 0px !important;
+		background-color: @mainColor;
+		.menu {
+			margin-bottom: 0px !important;
+		}
+	}
+	a {
+		color: @darkText;
+	}
+	a:hover {
+		color: @mainColor;
+		.fa-power-off {
+			color: @lightText;
+		}
+	}
+	#nav_contact {
+		padding-left: 15px;
+		line-height: 46px;
+		font-size: 14px;
+		font-style: italic;
+		.phone {
+			color: @mainColor;
+			font-weight: bold;
+			font-size: 20px;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+	}
+}
+
+#_mobile_cart {
+	margin-right: 15px;
+}
+#menu-icon {
+	height: 48px;
+}
+
+#iziModal-menu-icon {
+	margin-left: 25px;
+    margin-top: 10px;
+    cursor: pointer;
+    &:hover {
+    	color: @mainColor;
+    }
+}
+
+#brand_box {
+	margin-bottom: @mainMarginBottom;	
+}
+
+#brand {
+	margin-bottom: 0px;
+	font-weight: bold;
+	font-size: 48px;
+	color: @mainBlue;
+	span {
+		color: @mainRed;
+	}
+}
+
+#brand_description {
+	margin-bottom: 0px;
+	font-size: 14px;
+	font-style: oblique;
+}
+
+#reassurance_top div {
+	padding-left: 40px;
+	padding-top: 40px;
+	font-size: 12px;
+	line-height: 14px;
+	.rassurance-icon {
+		position: absolute;
+		color: @mainColor;
+		top: 42px;
+		left: 0px;
+	}
+	a {
+		color: @darkText;
+		transition: 0.25s linear all;
+		&:hover {
+			color: @mainColor;
+			font-size: 14px;
+			transition: 0.25s linear all;
+		}
+	}
+}
+
+.nav-button {
+	display:inline; 
+	padding:10px; 
+	padding-top:15px; 
+	border-left:1px solid @lightGrey;
+}
+
+#logout {
+	background-color: @mainRed;
+	color: @darkText !important;
+}
+#logout:hover {
+	background-color: @darkRed;
+}
+
+.nav-link {
+	line-height:48px;
+	padding: 0px 15px 0px 15px;
+	border-right: 1px solid @lightGrey;
+}
+.nav-link-right {
+	line-height:48px;
+	padding: 0px 15px 0px 15px;
+	border-left: 1px solid @lightGrey;
+	float: right;
+}
+
+.nav-block {
+	display: inline-block;
+	vertical-align: top;
+	margin-right:40px;
+}
+
+#_desktop_nav_quotation {
+	border-left: 0px !important;
+	background-color: @mainColor;
+	color: @darkText !important;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.label-cart {
+	position: absolute;
+	background-color: @mainRed;
+	color: @lightText;
+	font-weight: bold;
+	font-size: 14px;
+	border-radius: 10px;
+	padding: 0px 3px 0px 3px;
+	top: -5px;
+	right: 15px;
+}

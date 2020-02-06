@@ -73,7 +73,7 @@
           {hook h='displayProductListReviews' product=$product}
         {/block}
 
-        <span class="btn btn-success margin-top-15 margin-bottom-15 bold">
+        <span class="btn btn-primary margin-top-15 margin-bottom-15 bold">
           {l s="Voir le produit"}
         </span>
 

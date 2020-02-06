@@ -1,0 +1,107 @@
+body {
+	font-family: Arial,Tahoma,sans-serif;
+	background-attachment: fixed;
+}
+
+.container {
+	background-color: @lightBg;
+}
+
+#wrapper {
+	background-color: transparent !important;
+	box-shadow: none !important; 
+	.breadcrumb {
+		margin-bottom: @mainMarginBottom;
+		li a {
+			font-size: 12px;
+			color: @darkText;
+			&.active {
+				font-weight: bold;
+				color: @mainColor;
+			}
+		}
+		li:after {
+			color: @mainColor;
+			content: ">";
+		}
+	}
+	.container {
+		background-color: @lightBg;
+		padding-top: 180px;
+		padding-bottom: 15px;
+	}
+}
+
+.user-info a:hover {
+	color: @mainColor !important;
+}
+
+a {
+	color: @mainColor;
+	&:hover {
+		color: @mainDarkColor;
+	}
+}
+
+table {
+	.description-cell {
+		font-size: 14px;
+		padding-left: 15px;
+	}
+	.icon-cell {
+		vertical-align: top;
+	}
+}
+
+h3.section-title, h1.page-title, h1.product-title {
+	border-bottom: 1px solid @darkGrey;
+	margin-bottom: @mainMarginBottom;
+	padding-bottom: 5px;
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+	color: @mainColor;
+}
+
+.tabs .nav-tabs .nav-link {
+	&.active {
+		color: @mainColor;
+		border-bottom: 3px solid @mainColor;
+	}
+	&:hover {
+		border-bottom: 3px solid @mainColor;	
+	}
+}
+
+.custom-radio input[type=radio]:checked+span {
+	background-color: @mainColor;
+}
+
+.quickview .modal-content {
+	background-color: white;
+}
+
+#main p {
+	color:initial !important;
+}
+
+#main .page-cms {
+	ul {
+		list-style: disc;
+		padding-left: 30px;
+	}
+}
+
+.remove-link {
+	color: @darkText;
+	&:hover, &:focus {
+		color: @mainRed;
+	}
+}
+
+.dotted-line {
+	border-top: 4px dotted @mainGrey;
+	margin-top: 3px !important;
+	margin-bottom: 0px !important;
+}

@@ -1,0 +1,92 @@
+#top-menu {
+	margin-bottom: 0px !important;
+}
+
+#megamenu {
+	margin: 0px;
+	padding-left: 0px;
+	border-left: 1px solid @lightBg;
+	font-size: 0px;
+	li {
+		display: inline-block;
+		border-right: 1px solid @lightBg;
+		list-style: none;
+		line-height: 50px;
+		padding-left: 20px;
+		padding-right: 20px;
+		text-transform: uppercase;
+		font-weight: bold;
+		&.main-category a {
+			vertical-align: middle;
+			color: @lightText;
+			&:hover {
+				color: @lightText;
+			}
+		}
+		&.main-category:hover {
+			background-color: @mainDarkColor;
+		}
+	}
+}
+
+.megamenu_level_2 {
+	box-shadow: 0px 5px 15px 1px lightgrey;
+	position: fixed;
+	width: 100%;
+	top: 188px;
+	left: 0px;
+	z-index: 200;
+	margin-top:0px;
+	padding-top: 15px;
+	padding-bottom: 10px;
+	background: @lightBg;
+	border-bottom:3px solid @mainColor;
+	.main-menu {
+		height: 40px;
+	}
+	div a {
+		font-size: 14px;
+		font-weight: bold;
+		color: @mainColor !important; 
+	}
+	ul li a {
+		font-size: 12px;
+		text-transform: none;
+		font-weight: normal;
+		color: @darkText !important;
+		&:hover {
+			text-decoration: underline !important;
+		}
+	}	
+
+	li {
+		box-shadow: 0px 5px 15px 1px lightgrey;
+		padding-top: 20px;
+		margin-bottom: 20px;
+		color: @mainColor;
+		vertical-align: top;
+		img {
+			height: @pictureSize;
+			width: @pictureSize;
+			margin-bottom: 15px;
+		}
+		.title {
+			line-height: 16px;
+			margin-bottom: 15px;
+			height: 32px;
+			font-size: 12px;
+			width: @pictureSize;
+			color: @darkText;
+		}
+		&:hover .title{
+			color: @mainColor;
+		}
+		&:not(:last-child) {
+			margin-right: 20px;
+		}
+	}
+}
+
+#search_widget form {
+	margin-bottom: 0px !important;
+}

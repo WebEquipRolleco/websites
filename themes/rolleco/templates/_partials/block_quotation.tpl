@@ -8,6 +8,6 @@
 			<br />
 			{l s="N’hésitez pas à nous demander un devis"}
 		</p>
-		<a href="{$link->getPageLink('quotationregistration')}" class="btn">{l s="Demander votre devis"}</a>
+		<a href="{$link->getPageLink('quotationregistration')}" class="btn btn-primary">{l s="Demander votre devis"}</a>
 	</div>
 </div>
