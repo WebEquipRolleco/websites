@@ -124,6 +124,7 @@ class webequip_transfer extends Module {
 		$data['REF_ATOUT'] = array('name'=>"[FIX] Récupération des références ATOUT CONTENANT", 'preview'=>false, 'updatable'=>false);
 		$data['COMMENTS_ROLLECO'] = array('name'=>"[FIX] Récupération des commentaires ROLLECO", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
+		$data['FIX_QUOTATIONS'] = array('name'=>"[FIX] Correction des fournisseurs produits devis", 'preview'=>false, 'updatable'=>false);
 
 		return $data;
 	}
@@ -1577,6 +1578,18 @@ class webequip_transfer extends Module {
 			$matching->save();
 			$this->nb_rows++;
 		}
+	}
+
+	/**
+	* [FIX] Récupère les fournisseurs des lignes devis
+	**/
+	private function transfer_FIX_QUOTATIONS() {
+
+		$ids = Db::getInstance()->executeS("SELECT DISTINCT(id_product) FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME." WHERE id_product IS NOT NULL AND id_product <> 0");
+		$ids = implode(',', array_map(function($e) { return $e['id_product']; }, $ids));
+
+		foreach(Db::getInstance()->executeS("SELECT id_product, id_supplier FROM ps_product WHERE id_product IN($ids) AND id_supplier <> 0") as $row)
+			Db::getInstance()->execute("UPDATE "._DB_PREFIX_.QuotationLine::TABLE_NAME." SET id_supplier = ".$row['id_supplier']." WHERE id_product = ".$row['id_product']);
 	}
 
 	/**
