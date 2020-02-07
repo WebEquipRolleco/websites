@@ -6,6 +6,22 @@
 
 {block name='page_content_container'}
 
+	{if empty($highlights) and empty($quotations)}
+		<div class="alert alert-danger">
+	        <table>
+	         	<tbody>
+	         		<tr>
+	            		<td><i class="fa fa-2x fa-sad-tear" aria-hidden="true"></i></td>
+	            		<td style="padding-left:15px; line-height:12px;">
+	              			<strong>{l s="Vous n'avez aucun devis en cours !"}</strong>
+	              			<br><small>{l s="Vous pouvez nous contacter par téléphone pour établir un nouveau devis ou en demande un directement en ligne."}</small>
+	            		</td>
+	          		</tr>
+	        	</tbody>
+	        </table>
+	     </div>
+	{/if}
+
 	{if !empty($highlights)}
 		{foreach from=$highlights item=quotation}
 			<table class="table combinations-table table-labeled margin-bottom-15">
@@ -128,12 +144,6 @@
 							{/if}
 						</td>
 					</tr>
-				{foreachelse}
-					<tr>
-						<td colspan="6">
-							{l s="Vous n'avez aucun devis en cours."}
-						</td>
-					</tr>	
 				{/foreach}
 			</tbody>
 		</table>

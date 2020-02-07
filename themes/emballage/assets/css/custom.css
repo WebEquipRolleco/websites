@@ -68,12 +68,12 @@
   height: 30px;
 }
 .links .link-item:hover {
-  border: 1px solid #d5121d;
-  color: #d5121d;
+  border: 1px solid #8bc44e;
+  color: #8bc44e;
 }
 .links .link-item:hover i,
 .links .link-item:hover p {
-  color: #d5121d;
+  color: #8bc44e;
 }
 .periodic-buzz {
   animation-name: periodic-buzz;
@@ -621,7 +621,7 @@ h1.product-title {
 }
 #logout {
   background-color: #d5121d;
-  color: #4c4c4c !important;
+  color: white !important;
 }
 #logout:hover {
   background-color: #b00015;

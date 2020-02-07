@@ -413,7 +413,8 @@ class Quotation extends ObjectModel {
         if(!$id_customer)
             return 0;
 
-        return Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND (new = 1 OR highlight = 1)");
+        $date = date('Y-m-d H:i:s');
+        return Db::getInstance()->getValue("SELECT COUNT(*) FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE id_customer = $id_customer AND (new = 1 OR highlight = 1) AND (date_begin > '$date' OR date_begin IS NULL) AND (date_end < '$date' OR date_end IS NULL)");
     }
 
     /**
