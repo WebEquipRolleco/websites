@@ -109,12 +109,6 @@ class CustomerFormatter extends CustomerFormatterCore {
                 ->setLabel($this->translator->trans(
                     'Company', [], 'Shop.Forms.Labels'
                 ));
-            $format['chorus'] = (new FormField)
-                ->setName('chorus')
-                ->setType('text')
-                ->setLabel($this->translator->trans(
-                    'Référence Chorus', [], 'Shop.Forms.Labels'
-                ));
             $format['siret'] = (new FormField)
                 ->setName('siret')
                 ->setType('text')
@@ -125,13 +119,22 @@ class CustomerFormatter extends CustomerFormatterCore {
                 ->setName('tva')
                 ->setType('text')
                 ->setLabel($this->translator->trans(
-                    'TVA interne', [], 'Shop.Forms.Labels'
+                    'TVA intra', [], 'Shop.Forms.Labels'
+                ));  
+            $format['chorus'] = (new FormField)
+                ->setName('chorus')
+                ->setType('text')
+                ->setLabel($this->translator->trans(
+                    'Référence Chorus', [], 'Shop.Forms.Labels'
                 ));
+            
+            
         }
 
         $format['email'] = (new FormField)
             ->setName('email')
             ->setType('email')
+            ->setRequired(true)
             ->setLabel(
                 $this->translator->trans(
                     'Email', [], 'Shop.Forms.Labels'
