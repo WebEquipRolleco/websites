@@ -19,12 +19,7 @@ function checkTypeRequirements() {
         if(element.data(name)) {
         	$('#'+name+'_area').show();
 
-            if(element.val() == 2 && jQuery.inArray(name, ['company', 'siret', 'tva']) >= 0) {
-                $('#'+name+'_area').find('label').append("<em class='cw text-danger'>*</em>");
-                $('#'+name).prop('required', true);
-            }
-
-            if(element.val() == 3 && jQuery.inArray(name, ['company', 'siret']) >= 0) {
+            if(element.data(name) == 2) {
                 $('#'+name+'_area').find('label').append("<em class='cw text-danger'>*</em>");
                 $('#'+name).prop('required', true);
             }

@@ -42,33 +42,25 @@ class AdminCustomerTypesController extends AdminController {
             'company' => array(
                 'title' => $this->trans("Société", array(), 'Admin.Global'),
                 'align' => 'center',
-                'active' => 'status',
-                'type' => 'bool',
-                'class' => 'fixed-width-sm',
+                'callback' => 'renderOption',
                 'orderBy' => false
             ),
             'siret' => array(
                 'title' => $this->trans('SIRET', array(), 'Admin.Global'),
                 'align' => 'center',
-                'active' => 'status',
-                'type' => 'bool',
-                'class' => 'fixed-width-sm',
-                'orderby' => false,
+                'callback' => 'renderOption',
+                'orderBy' => false
             ),
             'chorus' => array(
                 'title' => $this->trans("Référence Chorus", array(), 'Admin.Global'),
                 'align' => 'center',
-                'active' => 'status',
-                'type' => 'bool',
-                'class' => 'fixed-width-sm',
+                'callback' => 'renderOption',
                 'orderBy' => false
             ),
             'tva' => array(
                 'title' => $this->trans("TVA interne", array(), 'Admin.Global'),
                 'align' => 'center',
-                'active' => 'status',
-                'type' => 'bool',
-                'class' => 'fixed-width-sm',
+                'callback' => 'renderOption',
                 'orderBy' => false
             ),
             'default_value' => array(
@@ -80,6 +72,23 @@ class AdminCustomerTypesController extends AdminController {
                 'orderBy' => false
             )
         );
+    }
+
+    public function renderOption($value) {
+        $labels = $this->getOptions();
+
+        if($value == 1) return "<span class='text-warning action-disabled' title='".$labels[$value]['name']."'><i class='icon-refresh'></i></span>";
+        if($value == 2) return "<span class='text-success action-disabled' title='".$labels[$value]['name']."'><i class='icon-check'></i></span>";
+        return "<span class='text-danger action-disabled' title='".$labels[$value]['name']."'><i class='icon-remove'></i></span>";
+    }
+    
+    private function getOptions() {
+
+        $data[0] = array('value'=>0, 'name'=>'Désactivé');
+        $data[1] = array('value'=>1, 'name'=>'Facultatif');
+        $data[2] = array('value'=>2, 'name'=>'Obligatoire');
+
+        return $data;
     }
 
     public function renderForm()
@@ -94,94 +103,58 @@ class AdminCustomerTypesController extends AdminController {
                     'type' => 'text',
                     'label' => $this->trans('Name', array(), 'Admin.Shipping.Feature'),
                     'name' => 'name',
+                    'col' => 3,
                     'required' => true,
                     'maxlength' => 512
                 ),
                 array(
-                    'type' => 'switch',
+                    'type' => 'select',
                     'label' => $this->trans('Activer le nom de la société', array(), 'Admin.Global'),
                     'name' => 'company',
-                    'required' => false,
-                    'class' => 't',
-                    'is_bool' => true,
-                    'values' => array(
-                        array(
-                            'id' => 'active_on',
-                            'value' => 1,
-                            'label' => $this->trans('Yes', array(), 'Admin.Global')
-                        ),
-                        array(
-                            'id' => 'active_off',
-                            'value' => 0,
-                            'label' => $this->trans('No', array(), 'Admin.Global')
-                        )
+                    'col' => 2,
+                    'options' => array(
+                        'query' => $this->getOptions(),
+                        'id' => 'value',
+                        'name' => 'name'
                     )
                 ),
                 array(
-                    'type' => 'switch',
+                    'type' => 'select',
                     'label' => $this->trans('Activer le SIRET', array(), 'Admin.Global'),
                     'name' => 'siret',
-                    'required' => false,
-                    'class' => 't',
-                    'is_bool' => true,
-                    'values' => array(
-                        array(
-                            'id' => 'active_on',
-                            'value' => 1,
-                            'label' => $this->trans('Yes', array(), 'Admin.Global')
-                        ),
-                        array(
-                            'id' => 'active_off',
-                            'value' => 0,
-                            'label' => $this->trans('No', array(), 'Admin.Global')
-                        )
+                    'col' => 2,
+                    'options' => array(
+                        'query' => $this->getOptions(),
+                        'id' => 'value',
+                        'name' => 'name'
                     )
                 ),
                 array(
-                    'type' => 'switch',
+                    'type' => 'select',
                     'label' => $this->trans('Activer la référence Chorus', array(), 'Admin.Global'),
                     'name' => 'chorus',
-                    'required' => false,
-                    'class' => 't',
-                    'is_bool' => true,
-                    'values' => array(
-                        array(
-                            'id' => 'active_on',
-                            'value' => 1,
-                            'label' => $this->trans('Yes', array(), 'Admin.Global')
-                        ),
-                        array(
-                            'id' => 'active_off',
-                            'value' => 0,
-                            'label' => $this->trans('No', array(), 'Admin.Global')
-                        )
+                    'col' => 2,
+                    'options' => array(
+                        'query' => $this->getOptions(),
+                        'id' => 'value',
+                        'name' => 'name'
                     )
                 ),
                 array(
-                    'type' => 'switch',
+                    'type' => 'select',
                     'label' => $this->trans('Activer la TVA interne', array(), 'Admin.Global'),
                     'name' => 'tva',
-                    'required' => false,
-                    'class' => 't',
-                    'is_bool' => true,
-                    'values' => array(
-                        array(
-                            'id' => 'active_on',
-                            'value' => 1,
-                            'label' => $this->trans('Yes', array(), 'Admin.Global')
-                        ),
-                        array(
-                            'id' => 'active_off',
-                            'value' => 0,
-                            'label' => $this->trans('No', array(), 'Admin.Global')
-                        )
+                    'col' => 2,
+                    'options' => array(
+                        'query' => $this->getOptions(),
+                        'id' => 'value',
+                        'name' => 'name'
                     )
                 ),
                 array(
                     'type' => 'switch',
                     'label' => $this->trans('Valeur par défault', array(), 'Admin.Global'),
                     'name' => 'default_value',
-                    'required' => false,
                     'class' => 't',
                     'is_bool' => true,
                     'values' => array(
@@ -208,7 +181,6 @@ class AdminCustomerTypesController extends AdminController {
             return;
         }
 
-        //$this->getFieldsValues($obj);
         return parent::renderForm();
     }
 }

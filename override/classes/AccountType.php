@@ -9,16 +9,16 @@ class AccountTypeCore extends ObjectModel {
     public $name;
 
     /** @var bool Company **/
-    public $company = false;
+    public $company = 0;
 
     /** @var bool Siret */
-    public $siret = false;
+    public $siret = 0;
 
     /** @var bool Chorus **/
-    public $chorus = false;
+    public $chorus = 0;
 
     /** @var bool TVA **/
-    public $tva = false;
+    public $tva = 0;
 
     /** @var bool Default **/
     public $default_value = false;
@@ -31,10 +31,10 @@ class AccountTypeCore extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
         	'name' => array('type' => self::TYPE_STRING),
-            'company' => array('type' => self::TYPE_BOOL),
-        	'siret' => array('type' => self::TYPE_BOOL),
-            'chorus' => array('type' => self::TYPE_BOOL),
-            'tva' => array('type' => self::TYPE_BOOL),
+            'company' => array('type' => self::TYPE_INT),
+        	'siret' => array('type' => self::TYPE_INT),
+            'chorus' => array('type' => self::TYPE_INT),
+            'tva' => array('type' => self::TYPE_INT),
             'default_value' => array('type' => self::TYPE_BOOL)
         )
     );
