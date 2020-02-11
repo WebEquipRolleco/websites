@@ -1414,7 +1414,7 @@ class webequip_transfer extends Module {
 				$review->rating = $row['note'];
 				$review->id_customer = $row['id_customer'];
 				$review->date_add = $row['date_add'];
-				$review->active = $row['status'];
+				$review->active = (bool)$row['status'];
 
 				$review->save();
 				$this->nb_rows++;
