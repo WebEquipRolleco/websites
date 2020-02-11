@@ -68,58 +68,62 @@
 			<div class="panel">
 				<div class="panel-heading">
 					{l s="Validité"}
+					<span class="pull-right">
+						<span class="switch prestashop-switch fixed-width-lg" style="margin-top:2px">
+							<input type="radio" name="quotation[active]" id="active_on" value="1" {if $quotation->active}checked{/if}>
+							<label for="active_on">{l s='Active' d='Admin.Labels'}</label>
+							<input type="radio" name="quotation[active]" id="active_off" value="0" {if !$quotation->active}checked{/if}>
+							<label for="active_off">{l s='Inactive' d='Admin.Labels'}</label>
+							<a class="slide-button btn" style="top:0px"></a>
+						</span>
+					</span>
 				</div>
-				<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto; margin-bottom:20px">
-					<input type="radio" name="quotation[active]" id="active_on" value="1" {if $quotation->active}checked{/if}>
-					<label for="active_on">{l s='Active' d='Admin.Labels'}</label>
-					<input type="radio" name="quotation[active]" id="active_off" value="0" {if !$quotation->active}checked{/if}>
-					<label for="active_off">{l s='Inactive' d='Admin.Labels'}</label>
-					<a class="slide-button btn"></a>
-				</span>
-				<div class="form-group">
-					<label for="date_begin">{l s="Date de début"} <em class="text-danger">*</em></label>
-					<input type="date" name="quotation[date_begin]" id="date_begin" class="form-control" {if $quotation->date_begin}value="{$quotation->date_begin|date_format:'Y-m-d'}"{/if} required>
-				</div>
-				<div class="form-group">
-					<label for="date_end">{l s="Date de fin"} <em class="text-danger">*</em></label>
-					<div class="pull-right">
-						<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_end" data-nb="30">
-							<b>J+30</b>
-						</button>
+				<div id="validity_content">
+					<div class="form-group">
+						<label for="date_begin">{l s="Date de début"} <em class="text-danger">*</em></label>
+						<input type="date" name="quotation[date_begin]" id="date_begin" class="form-control" {if $quotation->date_begin}value="{$quotation->date_begin|date_format:'Y-m-d'}"{/if} required>
 					</div>
-					<input type="date" name="quotation[date_end]" id="date_end" class="form-control" {if $quotation->date_end}value="{$quotation->date_end|date_format:'Y-m-d'}"{/if} required>
-				</div>
-				<hr />
-				<div class="form-group">
-					<div>
-						<label for="date_recall">{l s="Date de rappel"}</label>
+					<div class="form-group">
+						<label for="date_end">{l s="Date de fin"} <em class="text-danger">*</em></label>
 						<div class="pull-right">
-							<div class="btn-group">
-								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="3">
-									<b>J+3</b>
-								</button>
-								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="5">
-									<b>J+5</b>
-								</button>
-								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="10">
-									<b>J+10</b>
-								</button>
-							</div>
-							&nbsp;
-							<div class="btn-group">
-								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_end" data-target="#date_recall" data-nb="-3">
-									<b>J-3</b>
-								</button>
-								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_end" data-target="#date_recall" data-nb="-5">
-									<b>J-5</b>
-								</button>
-								<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_end" data-target="#date_recall" data-nb="-10">
-									<b>J-10</b>
-								</button>
+							<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_end" data-nb="30">
+								<b>J+30</b>
+							</button>
+						</div>
+						<input type="date" name="quotation[date_end]" id="date_end" class="form-control" {if $quotation->date_end}value="{$quotation->date_end|date_format:'Y-m-d'}"{/if} required>
+					</div>
+					<hr />
+					<div class="form-group">
+						<div>
+							<label for="date_recall">{l s="Date de rappel"}</label>
+							<div class="pull-right">
+								<div class="btn-group">
+									<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="3">
+										<b>J+3</b>
+									</button>
+									<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="5">
+										<b>J+5</b>
+									</button>
+									<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_begin" data-target="#date_recall" data-nb="10">
+										<b>J+10</b>
+									</button>
+								</div>
+								&nbsp;
+								<div class="btn-group">
+									<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_end" data-target="#date_recall" data-nb="-3">
+										<b>J-3</b>
+									</button>
+									<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_end" data-target="#date_recall" data-nb="-5">
+										<b>J-5</b>
+									</button>
+									<button type="button" class="btn btn-xs btn-primary change-recall" data-source="#date_end" data-target="#date_recall" data-nb="-10">
+										<b>J-10</b>
+									</button>
+								</div>
 							</div>
 						</div>
+						<input type="date" name="quotation[date_recall]" id="date_recall" class="form-control" {if $quotation->date_recall}value="{$quotation->date_recall|date_format:'Y-m-d'}"{/if}>
 					</div>
-					<input type="date" name="quotation[date_recall]" id="date_recall" class="form-control" {if $quotation->date_recall}value="{$quotation->date_recall|date_format:'Y-m-d'}"{/if}>
 				</div>
 			</div>
 			<div class="panel">
@@ -549,6 +553,9 @@
 		/** Calcul initial des prix **/
 		updateAllPrices();
 
+		/** Mise à jour de l'espace validité **/
+		checkValidity();
+
 		/** Re-calcul des prix **/
 		$(document).on('change keyup', '.update-price', function() {
 			updatePrices($(this).data('id'));
@@ -597,6 +604,10 @@
 		$('#add_to_customer').on('click', function(e) {
 			if(!confirm("Etes-vous sûr de vouloir ajouter les produits au panier de ce client ?"))
 				e.preventDefault();
+		});
+
+		$('input[name="quotation[active]"]').on('change', function(e) {
+			checkValidity();
 		});
 
 		/** Changement d'image ou de document **/
@@ -662,6 +673,19 @@
 		});
 
 	});
+
+	function checkValidity() {
+		if($('#active_on').is(':checked')){
+			$('#validity_content').slideDown('fast');
+			$('#validity_content').closest('.panel').css('padding-bottom', '20px');
+			$('#validity_content').closest('.panel').find('.panel-heading').css('margin-bottom', '15px');	
+		}
+		else {
+			$('#validity_content').slideUp('fast');
+			$('#validity_content').closest('.panel').css('padding-bottom', '0px');
+			$('#validity_content').closest('.panel').find('.panel-heading').css('margin-bottom', '0px');
+		}
+	}
 
 	function changeFieldsRequirements(bool) {
 		$('#new_email').prop('required', bool);
