@@ -110,6 +110,7 @@ class webequip_transfer extends Module {
 		$data['ps_specific_price_ONE'] = array('name'=>"Produits [3+] Création des prix spécifiques de quantité 1", 'preview'=>false, 'updatable'=>true);
 		$data['ps_image'] = array('name'=>"Produits [2+] Récupération des données d'images", 'updatable'=>true);
 		$data['ps_accessory'] = array('name'=>"Produits [2+] Récupération des accessoires", 'preview'=>false);
+		$data['ps_activis_avis'] = array('name'=>"Produits [2+] Récupération des avis produits", 'preview'=>false);
 		$data['ps_feature_product_SIMPLE'] = array('name'=>'Produits : Récupération des propriétés de produits simples', 'preview'=>false);
 		$data['ps_feature_product'] = array('name'=>'Produits : Récupération des propriétés de déclinaisons', 'preview'=>false);
 		$data['ps_feature'] = array('name'=>"Produits : liste des caractéristiques", 'preview'=>false, 'updatable'=>true);
@@ -1388,6 +1389,37 @@ class webequip_transfer extends Module {
 		}
 	}
 	
+	/**
+	* [Etape 2+] Récupération des avis clients
+	**/
+	private function transfer_ps_activis_avis() {
+
+		$this->connectToDB();
+
+		Review::erazeContent();
+		$result = $this->old_db->query("SELECT a.*, c.firstname, c.lastname FROM ps_activis_avis a, ps_customer c WHERE a.id_customer = c.id_customer");
+		while($row = $result->fetch_assoc()) {
+
+			$matching = new ProductMatching($row['id_product']);
+			if($matching->id) {
+
+				$review = New Review();
+
+				$review->id_product = $row['id_product'];
+				$review->id_shop = $row['id_shop'];œ
+				$review->name = strtoupper(substr($row['firstname'], 0, 1)).'. '.ucfirst($row['lastname']);
+				$review->comment = $row['comment'];
+				$review->rating = $row['note'];
+				$review->id_customer = $row['id_customer'];
+				$review->date_add = $row['date_add'];
+				$review->active = $row['status'];
+
+				$review->save();
+				$this->nb_rows++;
+			}
+		}
+	}
+
 	/**
 	* [FIX] link_rewrite
 	**/

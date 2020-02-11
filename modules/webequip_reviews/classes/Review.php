@@ -51,6 +51,10 @@ class Review extends ObjectModel {
     	return Db::getInstance()->execute("DROP TABLE "._DB_PREFIX_.self::TABLE_NAME);
     }
 	
+    public static function erazeContent() {
+        return Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME);
+    }
+
 	public function getCustomer() {
 
 		if(!$this->customer and $this->id_customer)
