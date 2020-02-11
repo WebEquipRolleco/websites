@@ -1407,12 +1407,12 @@ class webequip_transfer extends Module {
 
 				$review = New Review();
 
-				$review->id_product = $row['id_product'];
-				$review->id_shop = $row['id_shop'];
-				$review->name = strtoupper(substr($row['firstname'], 0, 1)).'. '.ucfirst($row['lastname']);
-				$review->comment = $row['comment'];
-				$review->rating = $row['note'];
-				$review->id_customer = $row['id_customer'];
+				$review->id_product = (int)$row['id_product'];
+				$review->id_shop = (int)$row['id_shop'];
+				$review->name = utf8_encode(strtoupper(substr($row['firstname'], 0, 1)).'. '.ucfirst($row['lastname']));
+				$review->comment = utf8_encode($row['comment']);
+				$review->rating = (int)$row['note'];
+				$review->id_customer = (int)$row['id_customer'];
 				$review->date_add = $row['date_add'];
 				$review->active = (bool)$row['status'];
 
