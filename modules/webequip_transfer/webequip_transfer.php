@@ -1406,7 +1406,7 @@ class webequip_transfer extends Module {
 				$review = New Review();
 
 				$review->id_product = $row['id_product'];
-				$review->id_shop = $row['id_shop'];œ
+				$review->id_shop = $row['id_shop'];
 				$review->name = strtoupper(substr($row['firstname'], 0, 1)).'. '.ucfirst($row['lastname']);
 				$review->comment = $row['comment'];
 				$review->rating = $row['note'];
