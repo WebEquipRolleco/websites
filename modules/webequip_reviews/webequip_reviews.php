@@ -3,7 +3,7 @@
 if (!defined('_PS_VERSION_'))
     exit;
 
-include "classes/Review.php";
+require_once "classes/Review.php";
 
 class Webequip_reviews extends Module {
 
