@@ -2,6 +2,9 @@
 
 class Combination extends CombinationCore {
 
+	/** @var float Custom Ecotax **/
+	public $custom_ecotax;
+	
 	/** @var float Full price */
 	public $full_price;
 
