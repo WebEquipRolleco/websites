@@ -1,5 +1,7 @@
 <?php
 
+include "../webequip_reviews/classes/Review.php";
+
 class webequip_transfer extends Module {
 
 	private $old_db;
