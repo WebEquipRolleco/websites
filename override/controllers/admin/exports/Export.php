@@ -1,13 +1,14 @@
 <?php
 
-require_once("Products.php");
-require_once("Prices.php");
-require_once("Orders.php");
 require_once("AttributeGroups.php");
-require_once("FeatureGroups.php");
 require_once("AttributeValues.php");
+require_once("Categories.php");
+require_once("FeatureGroups.php");
 require_once("FeatureValues.php");
 require_once("Iconography.php");
+require_once("Orders.php");
+require_once("Prices.php");
+require_once("Products.php");
 require_once("URL.php");
 
 class Export {

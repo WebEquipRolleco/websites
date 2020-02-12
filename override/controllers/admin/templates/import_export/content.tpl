@@ -184,6 +184,39 @@
 </div>
 
 <div class="row">
+
+	<div class="col-lg-6">
+		<form method="post">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-download"></i> <b>Export des catégories</b>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Séparateur de colonnes</label>
+							<input type="text" class="form-control" name="separator" value="{$separator}" required>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Délimiter de valeurs</label>
+							<input type="text" class="form-control" name="delimiter" value="{$delimiter}" required>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer text-right">
+					<button type="submit" class="btn btn-success" name="action" value="export_categories">
+						<i class="process-icon-download"></i> <b>Exporter</b>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+<div class="row">
 	
 	<div class="col-lg-6">
 		<form method="post">
