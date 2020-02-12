@@ -120,6 +120,10 @@ class AdminImportExportControllerCore extends AdminController {
                 case 'feature-values':
                     $import = new ImportFeatureValues();
                 break;
+
+                case 'categories':
+                    $import = new ImportCategories();
+                break;
             }
 
             if(isset($import)) {
