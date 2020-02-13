@@ -26,7 +26,7 @@ class Product extends ProductCore {
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null) {
 
 		self::$definition['fields']['reference'] = array('type'=>self::TYPE_STRING, 'validate'=>'isReference', 'size'=>32, 'shop'=>true);
-		self::$definition['fields']['name'] = array('type'=>self::TYPE_STRING, 'validate'=>'isCatalogName', 'lang'=>true);
+		self::$definition['fields']['name'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
 		self::$definition['fields']['description'] = array('type'=>self::TYPE_HTML, 'lang'=>true);
 		self::$definition['fields']['meta_description'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
 		self::$definition['fields']['meta_keywords'] = array('type'=>self::TYPE_STRING, 'lang'=>true);
