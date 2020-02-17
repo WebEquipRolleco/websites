@@ -205,30 +205,31 @@ class ProductIcon extends ObjectModel {
     	if(isset($product['id_shop']) and !in_array($product['id_shop'], $this->getShops()))
     		return false;
 
-        // Vérification des listes blanches
+        // Vérification des produits
         if(isset($product['id_product']) and $this->product_white_list)
             if(in_array($product['id_product'], $this->getWhiteList()))
                 return true;
 
-        if(isset($product['id_category_default']) and $this->category_white_list)
-            if(in_array($product['id_category_default'], $this->getCategoryWhiteList()))
-                return true;
+        if(isset($product['id_product']) and $this->product_black_list)
+            if(in_array($product['id_product'], $this->getBlackList()))
+                return false;
 
+        // Vérification des fournisseurs
         if(isset($product['id_supplier']) and $this->supplier_white_list)
             if(in_array($product['id_supplier'], $this->getSupplierWhiteList()))
                 return true;
 
-        // Vérification des listes noires
-        if(isset($product['id_product']) and $this->product_black_list)
-        	if(in_array($product['id_product'], $this->getBlackList()))
-        		return false;
+        if(isset($product['id_supplier']) and $this->supplier_black_list)
+            if(in_array($product['id_supplier'], $this->getSupplierBlackList()))
+                return false;
+
+        // Vérification des catégories
+        if(isset($product['id_category_default']) and $this->category_white_list)
+            if(in_array($product['id_category_default'], $this->getCategoryWhiteList()))
+                return true;
 
         if(isset($product['id_category_default']) and $this->category_black_list)
             if(in_array($product['id_category_default'], $this->getCategoryBlackList()))
-                return false;
-
-        if(isset($product['id_supplier']) and $this->supplier_black_list)
-            if(in_array($product['id_supplier'], $this->getSupplierBlackList()))
                 return false;
 
         // Affichage par défaut

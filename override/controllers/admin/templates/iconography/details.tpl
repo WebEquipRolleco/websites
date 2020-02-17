@@ -116,7 +116,7 @@
 
 			<div class="panel">
 				<div class="panel-heading">
-					Condition d'affichage : Produits
+					Condition d'affichage [Priorité 1] : Produits
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
@@ -202,103 +202,12 @@
 
 			</div>
 
-			{assign var=white_list value=$icon->getCategoryWhiteList(true)}
-			{assign var=black_list value=$icon->getCategoryBlackList(true)}
-
-			<div class="panel">
-				<div class="panel-heading">
-					Condition d'affichage : Catégories
-				</div>
-				<div class="row">
-					<div class="col-lg-8">
-						<select class="form-control" name="category">
-							<option value="">{l s="Choisir une catégorie"}</option>
-							{foreach from=$categories item=category}
-								<option value="{$category.id_category}">
-									{$category.name}
-								</option>
-							{/foreach}
-						</select>
-					</div>
-					<div class="col-lg-4">
-						<div class="btn-group">
-							{if empty($black_list)}
-								<button type="submit" class="btn btn-default" name="add_white_list" {if !$icon->id}disabled{/if}>
-									{l s="Liste blanche"}
-								</button>
-							{/if}
-							{if empty($white_list)}
-								<button type="submit" class="btn btn-default" name="add_black_list" {if !$icon->id}disabled{/if}>
-									{l s="Liste noire"}
-								</button>
-							{/if}
-						</div>
-					</div>
-				</div>
-				<hr />
-
-				{if empty($white_list) and empty($black_list)}
-					<div class="alert alert-info">Toutes les catégories sont concernées par cette icône</div>
-				{/if}
-
-				{if !empty($white_list)}
-					<table class="table">
-						<thead>
-							<tr class="bg-success">
-								<td colspan="3">
-									<b>{l s="Liste Blanche"}</b>
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							{foreach from=$white_list item=row}
-								<tr>
-									<td><b>{$row['id_category']}</b></td>
-									<td>{$row['name']}</td>
-									<td class="text-right">
-										<button type="submit" class="btn btn-xs btn-danger" name="remove_category_white_list" value="{$row['id_category']}">
-											<i class="icon-trash"></i>
-										</button>
-									</td>
-								</tr>
-							{/foreach}
-						</tbody>
-					</table>
-				{/if}
-
-				{if !empty($black_list)}
-					<table class="table">
-						<thead>
-							<tr class="bg-danger">
-								<td colspan="3">
-									<b>{l s="Liste Noire"}</b>
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							{foreach from=$black_list item=row}
-								<tr>
-									<td><b>{$row['id_category']}</b></td>
-									<td>{$row['name']}</td>
-									<td class="text-right">
-										<button type="submit" class="btn btn-xs btn-danger" name="remove_category_black_list" value="{$row['id_category']}">
-											<i class="icon-trash"></i>
-										</button>
-									</td>
-								</tr>
-							{/foreach}
-						</tbody>
-					</table>
-				{/if}
-
-			</div>
-
 			{assign var=white_list value=$icon->getSupplierWhiteList(true)}
 			{assign var=black_list value=$icon->getSupplierBlackList(true)}
 
 			<div class="panel">
 				<div class="panel-heading">
-					Condition d'affichage : Fournisseurs
+					Condition d'affichage [Priorité 2] : Fournisseurs
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
@@ -374,6 +283,97 @@
 									<td>{$row['name']}</td>
 									<td class="text-right">
 										<button type="submit" class="btn btn-xs btn-danger" name="remove_supplier_black_list" value="{$row['id_supplier']}">
+											<i class="icon-trash"></i>
+										</button>
+									</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				{/if}
+
+			</div>
+
+			{assign var=white_list value=$icon->getCategoryWhiteList(true)}
+			{assign var=black_list value=$icon->getCategoryBlackList(true)}
+
+			<div class="panel">
+				<div class="panel-heading">
+					Condition d'affichage [Priorité 3] : Catégories
+				</div>
+				<div class="row">
+					<div class="col-lg-8">
+						<select class="form-control" name="category">
+							<option value="">{l s="Choisir une catégorie"}</option>
+							{foreach from=$categories item=category}
+								<option value="{$category.id_category}">
+									{$category.name}
+								</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="col-lg-4">
+						<div class="btn-group">
+							{if empty($black_list)}
+								<button type="submit" class="btn btn-default" name="add_white_list" {if !$icon->id}disabled{/if}>
+									{l s="Liste blanche"}
+								</button>
+							{/if}
+							{if empty($white_list)}
+								<button type="submit" class="btn btn-default" name="add_black_list" {if !$icon->id}disabled{/if}>
+									{l s="Liste noire"}
+								</button>
+							{/if}
+						</div>
+					</div>
+				</div>
+				<hr />
+
+				{if empty($white_list) and empty($black_list)}
+					<div class="alert alert-info">Toutes les catégories sont concernées par cette icône</div>
+				{/if}
+
+				{if !empty($white_list)}
+					<table class="table">
+						<thead>
+							<tr class="bg-success">
+								<td colspan="3">
+									<b>{l s="Liste Blanche"}</b>
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach from=$white_list item=row}
+								<tr>
+									<td><b>{$row['id_category']}</b></td>
+									<td>{$row['name']}</td>
+									<td class="text-right">
+										<button type="submit" class="btn btn-xs btn-danger" name="remove_category_white_list" value="{$row['id_category']}">
+											<i class="icon-trash"></i>
+										</button>
+									</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				{/if}
+
+				{if !empty($black_list)}
+					<table class="table">
+						<thead>
+							<tr class="bg-danger">
+								<td colspan="3">
+									<b>{l s="Liste Noire"}</b>
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach from=$black_list item=row}
+								<tr>
+									<td><b>{$row['id_category']}</b></td>
+									<td>{$row['name']}</td>
+									<td class="text-right">
+										<button type="submit" class="btn btn-xs btn-danger" name="remove_category_black_list" value="{$row['id_category']}">
 											<i class="icon-trash"></i>
 										</button>
 									</td>
