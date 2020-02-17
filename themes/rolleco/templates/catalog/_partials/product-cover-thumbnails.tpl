@@ -36,7 +36,7 @@
   {/block}
 
   {block name='product_images'}
-    <div class="js-qv-mask mask">
+    <div class="js-qv-mask mask scroll">
       <ul class="product-images js-qv-product-images margin-top-10">
         {foreach from=$product.images item=image}
           <li class="thumb-container">
