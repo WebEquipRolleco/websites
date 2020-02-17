@@ -1456,16 +1456,8 @@ class webequip_transfer extends Module {
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
-			$product = new Product($row['id_product'], true, 1, $row['id_shop']);
-			if($product->id) {
-
-				$product->description = utf8_encode($row['description']);
-				$product->description_short = utf8_encode($row['description_short']);
-				if(!$product->price) $product->price = 0;
-				
-				$product->save();
-				$this->nb_rows++;
-			}
+			Db::getInstance()->execute("UPDATE ps_product_lang SET description = '".pSql(utf8_encode($row['description']))."', description_short = '".pSql(utf8_encode($row['description_short']))."' WHERE id_product = ".$row['id_product']." AND id_shop = ".$row['id_shop']);
+			$this->nb_rows++;
 		}
 
 	}
