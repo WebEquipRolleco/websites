@@ -165,6 +165,7 @@ $(document).ready(function() {
 
     });
 
+	$('.js-qv-mask').addClass('scroll');
 });
 
 function updateSelectionPrice() {
