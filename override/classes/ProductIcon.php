@@ -233,7 +233,7 @@ class ProductIcon extends ObjectModel {
                 return false;
 
         // Affichage par défaut
-    	return true;
+    	return (bool)(!$this->product_white_list and !$this->supplier_white_list and !$this->category_white_list);
     }
 
     /**

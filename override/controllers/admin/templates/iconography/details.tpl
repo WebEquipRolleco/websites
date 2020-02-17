@@ -120,7 +120,7 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
-						<select class="form-control" name="product">
+						<select id="filter_product" class="form-control" name="product">
 							<option value="">{l s="Choisir un produit"}</option>
 							{foreach from=$products item=product}
 								<option value="{$product.id_product}">
@@ -211,7 +211,7 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
-						<select class="form-control" name="supplier">
+						<select id="filter_supplier" class="form-control" name="supplier">
 							<option value="">{l s="Choisir un fournisseur"}</option>
 							{foreach from=$suppliers item=supplier}
 								<option value="{$supplier.id_supplier}">
@@ -303,7 +303,7 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
-						<select class="form-control" name="category">
+						<select id="filter_category" class="form-control" name="category">
 							<option value="">{l s="Choisir une catégorie"}</option>
 							{foreach from=$categories item=category}
 								<option value="{$category.id_category}">
@@ -390,3 +390,11 @@
 	</div>
 
 </form>
+
+<script>
+	$(document).ready(function() {
+		$('#filter_product').select2({ width:'auto' });
+		$('#filter_supplier').select2({ width:'auto' });
+		$('#filter_category').select2({ width:'auto' });
+	});
+</script>

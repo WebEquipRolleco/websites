@@ -307,9 +307,10 @@ class AdminIconographyControllerCore extends AdminController {
         }
 
     	$this->context->smarty->assign('icon', $icon);
-    	$this->context->smarty->assign('products', Product::getSimpleProducts(1));
+    	$this->context->smarty->assign('products', Db::getInstance()->executes("SELECT id_product, name FROM ps_product_lang WHERE id_lang = 1 AND id_shop = ".$this->context->shop->id." AND name <> '' AND name IS NOT NULL"));
         $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1));
         $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
+        $this->context->controller->addjQueryPlugin('select2');
 
     	$this->setTemplate('details.tpl');
     }
