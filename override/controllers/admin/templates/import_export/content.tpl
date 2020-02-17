@@ -66,6 +66,9 @@
 					<button type="submit" class="btn btn-info" name="action" value="export_prices" style="width:69px">
 						<i class="process-icon-download"></i> <b>Prix</b>
 					</button>
+					<button type="submit" class="btn btn-danger" name="action" value="export_comments">
+						<i class="process-icon-download"></i> <b>Commentaires</b>
+					</button>
 					<button type="submit" class="btn btn-warning" name="action" value="export_url" style="width:69px">
 						<i class="process-icon-download"></i> <b>URL</b>
 					</button>
@@ -114,6 +117,9 @@
 					</button>
 					<button type="submit" class="btn btn-info" name="action" value="import_prices" style="width:69px">
 						<i class="process-icon-upload"></i> <b>Prix</b>
+					</button>
+					<button type="submit" class="btn btn-danger" name="action" value="import_comments">
+						<i class="process-icon-upload"></i> <b>Commentaires</b>
 					</button>
 				</div>
 			</div>

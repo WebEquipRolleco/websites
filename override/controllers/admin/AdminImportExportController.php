@@ -85,6 +85,11 @@ class AdminImportExportControllerCore extends AdminController {
 
                 case 'url':
                     $export = new ExportProductURL();
+                break; 
+
+                case 'comments':
+                    $export = new ExportComments();
+                break;
             }
 
             if(isset($export)) {
@@ -124,6 +129,9 @@ class AdminImportExportControllerCore extends AdminController {
                 case 'categories':
                     $import = new ImportCategories();
                 break;
+
+                case 'comments':
+                    $import = new ImportComments();
             }
 
             if(isset($import)) {
