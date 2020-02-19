@@ -340,13 +340,13 @@ class webequip_transfer extends Module {
 			$address->id_state = $row['id_state'];
 			$address->country = utf8_encode($row['country']);
 			$address->alias = utf8_encode($row['alias']);
-			$address->company = utf8_encode($row['company']);;
-			$address->lastname = $row['lastname'] ? utf8_encode($row['lastname']) : '-';
+			$address->company = str_replace(array("?", '='), "", utf8_encode($row['company']));
+			$address->lastname = $row['lastname'] ? str_replace('?', ' ', utf8_encode($row['lastname'])) : '-';
 			$address->firstname = $row['firstname'] ? utf8_encode($row['firstname']) : '-';
 			$address->address1 = str_replace("?", "'", utf8_encode($row['address1']));
-			$address->address2 = utf8_encode($row['address2']);
+			$address->address2 = str_replace("?", "'", utf8_encode($row['address2']));
 			$address->postcode = $row['postcode'];
-			$address->city = utf8_encode($row['city']);
+			$address->city = str_replace('?', ' ', utf8_encode($row['city']));
 			$address->other = utf8_encode($row['other']);
 			$address->phone = is_numeric($row['phone']) ? $row['phone'] : null;
 			$address->phone_mobile = is_numeric($row['phone_mobile']) ? $row['phone_mobile'] : null;
