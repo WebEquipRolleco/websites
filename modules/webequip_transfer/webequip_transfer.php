@@ -472,7 +472,7 @@ class webequip_transfer extends Module {
 			$order->id_customer = $row['id_customer'];
 			$order->id_carrier = $row['id_carrier'];
 			$order->current_state = $row['current_state'];
-			$order->secure_key = $row['secure_key'];
+			$order->secure_key = ($row['secure_key'] ? $row['secure_key'] : md5(uniqid(rand(), true)));
 			$order->payment = utf8_encode($row['payment']);
 			$order->module = $row['module'];
 			$order->conversion_rate = $row['conversion_rate'];
@@ -488,8 +488,8 @@ class webequip_transfer extends Module {
 			$order->total_paid_tax_incl = $row['total_paid_tax_incl'];
 			$order->total_paid_tax_excl = $row['total_paid_tax_excl'];
 			$order->total_paid_real = $row['total_paid_real'];
-			$order->total_products = $row['total_products'];
-			$order->total_products_wt = $row['total_products_wt'];
+			$order->total_products = ($row['total_products'] > 0) ? $row['total_products'] : 0;
+			$order->total_products_wt = ($row['total_products_wt'] > 0) ? $row['total_products_wt'] : 0;
 			$order->total_shipping = $row['total_shipping'];
 			$order->total_shipping_tax_incl = $row['total_shipping_tax_incl'];
 			$order->total_shipping_tax_excl = $row['total_shipping_tax_excl'];
