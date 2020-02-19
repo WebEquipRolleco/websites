@@ -386,7 +386,7 @@ class webequip_transfer extends Module {
 
     		$customer->id = $row['id_customer'];
     		$customer->id_shop = $row['id_shop'];
-    		$customer->id_shop_group = ['id_shop_group'];
+    		$customer->id_shop_group = $row['id_shop_group'];
     		$customer->secure_key = $row['secure_key'];
     		$customer->reference = $row['reference_m3'];
     		$customer->chorus = utf8_encode($row['reference_chorus']);
