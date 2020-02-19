@@ -395,7 +395,7 @@ class webequip_transfer extends Module {
     		$customer->id_gender = $row['id_gender'];
     		$customer->id_default_group = $row['id_default_group'];
     		$customer->id_lang = $row['id_lang'];
-    		$customer->lastname = utf8_encode($row['lastname']);
+    		$customer->lastname = str_replace('?', ' ', utf8_encode($row['lastname']));
     		$customer->firstname = $row['firstname'] ? utf8_encode($row['firstname']) : '-';
     		$customer->birthday = $row['birthday'];
     		$customer->email = utf8_encode($row['email']);
