@@ -431,8 +431,8 @@ class webequip_transfer extends Module {
 			$customer->cleanGroups();
 			$ids = array();
 
-			$result = $this->old_db->query("SELECT * FROM ps_customer_group WHERE id_customer = ".$customer->id);
-			while($row = $result->fetch_assoc())
+			$sub_result = $this->old_db->query("SELECT * FROM ps_customer_group WHERE id_customer = ".$customer->id);
+			while($row = $sub_result->fetch_assoc())
 				$ids[] = $row['id_group'];
 
 			if(!empty($ids))
