@@ -408,7 +408,7 @@ class webequip_transfer extends Module {
     		$customer->optin = $row['optin'];
     		$customer->website = $row['website'];
     		$customer->company = $row['company'];
-    		$customer->siret = $row['siret'];
+    		$customer->siret = utf8_encode($row['siret']);
     		$customer->ape = $row['ape'];
     		$customer->tva = $row['tva'];
     		$customer->funding = $row['funding'];
