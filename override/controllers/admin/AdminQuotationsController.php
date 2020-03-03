@@ -108,7 +108,6 @@ class AdminQuotationsController extends AdminController {
                 'title' => $this->trans('Actions', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatActions',
-                'class' => 'fixed-width-lg',
                 'remove_onclick' => true,
                 'search' => false
             ),

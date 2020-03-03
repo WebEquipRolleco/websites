@@ -837,7 +837,7 @@ class webequip_transfer extends Module {
 				$quotation->reference = $row['hash'];
 				$quotation->status = (isset($states[$row['id_state']]) ? $states[$row['id_state']] : Quotation::STATUS_OVER);
 				$quotation->id_customer = Customer::customerExists($row['email'], true);
-				$quotation->email = $row['mail_cc'];
+				$quotation->email = utf8_encode($row['mail_cc']);
 				$quotation->phone = utf8_encode($row['phone']);
 				$quotation->fax = utf8_encode($row['fax']);
 				$quotation->date_begin = $row['date_from'];
