@@ -32,12 +32,12 @@ class Combination extends CombinationCore {
 		foreach(array('custom_ecotax', 'rollcash', 'position', 'batch', 'comment-1', 'comment-2') as $name) {
 			if($id_shop) {
 				if(Tools::getIsset($name."_".$id_product_attribute))
-					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET ".str_replace('-', "_", $name)." = '".Tools::getValue($name."_".$id_product_attribute)."' WHERE id_product_attribute = $id_product_attribute AND id_shop = $id_shop");
+					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET ".str_replace('-', "_", $name)." = '".pSql(Tools::getValue($name."_".$id_product_attribute))."' WHERE id_product_attribute = $id_product_attribute AND id_shop = $id_shop");
 			}
 			else {
 				if(Tools::getIsset($name."_".$id_product_attribute)) {
-					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET ".str_replace('-', "_", $name)." = '".Tools::getValue($name."_".$id_product_attribute)."' WHERE id_product_attribute = $id_product_attribute");
-					Db::getInstance()->execute("UPDATE ps_product_attribute SET ".str_replace('-', "_", $name)." = '".Tools::getValue($name."_".$id_product_attribute)."' WHERE id_product_attribute = $id_product_attribute");
+					Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET ".str_replace('-', "_", $name)." = '".pSql(Tools::getValue($name."_".$id_product_attribute))."' WHERE id_product_attribute = $id_product_attribute");
+					Db::getInstance()->execute("UPDATE ps_product_attribute SET ".str_replace('-', "_", $name)." = '".pSql(Tools::getValue($name."_".$id_product_attribute))."' WHERE id_product_attribute = $id_product_attribute");
 				} 
 						
 			}
