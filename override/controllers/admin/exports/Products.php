@@ -38,10 +38,21 @@ class ExportProducts extends Export {
         foreach($attributes as $group)
             $header[] = $group['name'];
 
+        // Liste des catégories
+        $category_ids = array();
+        $categories = Tools::getValue('categories', array());
+        foreach($categories as $id) {
+            $category_ids[] = $id;
+
+            $category = new Category($id);
+            foreach($category->getChildrenWs() as $child)
+                $category_ids[] = $child['id'];
+        }
+
         $csv = implode($this->separator, $header).parent::END_OF_LINE;
 
         $sql = "SELECT p.id_product, (SELECT GROUP_CONCAT(id_category SEPARATOR '".$this->delimiter."') FROM ps_category_product WHERE id_product = p.id_product) AS id_categories FROM ps_product p WHERE 1";
-        if($category_ids = implode(',', Tools::getValue('categories', array())))
+        if($category_ids = implode(',', $category_ids))
             $sql .= " AND id_category_default IN ($category_ids)";
         if($supplier_ids = implode(',', Tools::getValue('suppliers', array())))
             $sql .= " AND id_supplier IN ($supplier_ids)";
