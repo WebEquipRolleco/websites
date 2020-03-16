@@ -1,4 +1,4 @@
-<div class="btn-group">
+<div class="btn-group" style="width:92px">
 	<a href="{$link->getAdminLink('AdminQuotations')}&dl_pdf&id_quotation={$quotation->id}" class="btn btn-default" title="{l s='Télécharger' d='Shop.Theme.Actions'}">
 		<i class="icon-download"></i>
 	</a>

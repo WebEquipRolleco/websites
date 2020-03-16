@@ -10,21 +10,21 @@
 <page>
 <table cellpadding="3" class="combinations">
 	<tr>
-		<th>{l s="Images" d='Shop.Pdf' pdf=true}</th>
-		<th>{l s="Produit" d='Shop.Pdf' pdf=true}</th>
-		<th>{l s="Réf." d='Shop.Pdf' pdf=true}</th>
-		<th>{l s="Prix unitaire" d='Shop.Pdf' pdf=true}</th>
-		<th>{l s="Qté" d='Shop.Pdf' pdf=true}</th>
-		<th>{l s="Total" d='Shop.Pdf' pdf=true}</th>
+		<th width="10%" style="font-size:8px;">{l s="Images"|upper d='Shop.Pdf' pdf=true}</th>
+		<th width="45%" style="font-size:8px;">{l s="Produit"|upper d='Shop.Pdf' pdf=true}</th>
+		<th width="10%" style="font-size:8px;">{l s="Réf."|upper d='Shop.Pdf' pdf=true}</th>
+		<th width="10%" style="font-size:8px;">{l s="PU"|upper d='Shop.Pdf' pdf=true}</th>
+		<th width="10%" style="font-size:8px;">{l s="Qté"|upper d='Shop.Pdf' pdf=true}</th>
+		<th width="15%" style="font-size:8px;">{l s="Total"|upper d='Shop.Pdf' pdf=true}</th>
 	</tr>
 	{foreach from=$quotation->getProducts() item=product}
 		<tr class="odd">
-			<td class="text-center" style="vertical-align:middle;">
+			<td width="10%" class="text-center" style="vertical-align:middle;">
 				{if $product->getImageLink()}
 					<img src="{$product->getImageLink()}" width="30" height="30">
 				{/if}
 			</td>
-			<td>
+			<td width="45%">
 				<b>{$product->getProductName()}</b>
 				{foreach from=$product->getProductProperties() item=property}
 					<br /> {$property}
@@ -33,10 +33,10 @@
 					<br /> <div style="font-size:8px">{$product->information|replace:"|":"<br />"}</div>
 				{/if}
 			</td>
-			<td class="text-center" style="font-size:10px; font-weight:bold;">
+			<td width="10%" class="text-center" style="font-size:10px; font-weight:bold;">
 				{$product->reference}
 			</td>
-			<td class="text-center">
+			<td width="10%" class="text-center">
 				{assign var=price value=$product->getPrice(false, false, false, 1)}
 				{if $price}<div>{Tools::displayPrice($price)}</div>{/if}
 				{if $product->getEcoTax(1)}
@@ -45,12 +45,12 @@
 					</i>
 				{/if}
 			</td>
-			<td class="text-center" style="font-size:10px; font-weight:bold;">
+			<td width="10%" class="text-center" style="font-size:10px; font-weight:bold;">
 				{if $product->quantity}
 					{$product->quantity}
 				{/if}
 			</td>
-			<td class="text-center bold">
+			<td width="15%" class="text-center bold">
 				{assign var=price value=$product->getPrice()}
 				{if $price}<div>{Tools::displayPrice($price)}</div>{/if}
 				{if $product->getEcoTax()}
@@ -80,9 +80,9 @@
 				<table cellpadding="3" class="combinations">
 					<thead>
 						<tr>
-							<th style="width:5%;"></th>
-							<th style="width:65%">{l s="Options" d='Shop.Pdf' pdf=true}</th>
-							<th style="width:30%">{l s="Prix HT" d='Shop.Pdf' pdf=true}</th>
+							<th style="width:5%;font-size:8px;"></th>
+							<th style="width:65%; font-size:8px;">{l s="Options"|upper d='Shop.Pdf' pdf=true}</th>
+							<th style="width:30%; font-size:8px;">{l s="Prix HT"|upper d='Shop.Pdf' pdf=true}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -139,8 +139,8 @@
 						<td class="text-right">{Tools::displayPrice($quotation->getTVA())}</td>
 					</tr>
 					<tr>
-						<th colspan="2" class="text-center bold">
-							{l s='Total TTC (sans options) :' d='Shop.Pdf' pdf=true}
+						<th colspan="2" class="text-center bold" style="font-size:8px;">
+							{l s='Total TTC (sans options) :'|upper d='Shop.Pdf' pdf=true}
 						</th>
 					</tr>
 					<tr class="bg-light">
