@@ -257,6 +257,7 @@
 				</div>
 				<div class="form-group">
 					<label for="comment">{l s="Commentaire"}</label>
+					<span class="text-muted pull-right">{l s="Non visible par le client"}</span>
 					<textarea rows="5" name="quotation[comment]" id="comment" class="form-control">{$quotation->comment}</textarea>
 				</div>
 				<div class="form-group">
