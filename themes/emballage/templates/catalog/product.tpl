@@ -30,14 +30,23 @@
       {block name='page_header'}
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="product-title" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
+            <h1 class="product-title" itemprop="name">
+              {block name='page_title'}{$product.name}{/block}
+              {if isset($product_manufacturer->id) and isset($manufacturer_image_url)}
+                <span class="pull-right" style="margin-top:-25px; margin-bottom:10px">
+                    {*<a href="{$product_brand_url}">*}
+                    <img src="{$manufacturer_image_url}" class="img img-thumbnail manufacturer-logo" alt="{$product_manufacturer->name}">
+                    {*</a>*}
+                </span>
+              {/if}
+            </h1>
           </div>
         </div>
       {/block}     
     {/block}
 
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-5">
         {block name='page_content_container'}
           <section class="page-content" id="content">
             {block name='page_content'}
@@ -46,8 +55,8 @@
                   {foreach from=$product.flags item=flag}
                     <li class="product-flag {$flag.type}">{$flag.label}</li>
                   {/foreach}
-                  {if $product.rollcash}
-                    <li class="product-flag rollcash">{l s="AtoutCash"} {$product.rollcash}%</li>
+                  {if $product.destocking}
+                    <li class="product-flag destocking">{l s="Déstockage"}</li>
                   {/if}
                 </ul>
               {/block}
@@ -64,6 +73,13 @@
           </section>
         {/block}
         </div>
+
+        <div class="col-xs-12 col-md-1">
+          {block name='product_icons'}
+            {include file='catalog/_partials/product-icons.tpl'}
+          {/block}
+        </div>
+
         <div class="col-xs-12 col-md-6">
 
           {hook h='displayProductAfterTitle' product=$product}
@@ -73,6 +89,13 @@
               {$product.description_short nofilter}
             </div>
             <a href="#full_description" class="description-link">{l s="Voir la description complète"}</a>
+
+            {if $combinations|count > 0}
+              <a href="#content-wrapper" class="btn btn-block btn-info text-center margin-top-10">
+                <b>{l s="Sélectionnez le modèle"}</b>
+              </a>
+            {/if}
+            
           {/block}
 
           {block name='product_prices'}
@@ -118,10 +141,6 @@
                     {include file='catalog/_partials/product-add-to-cart.tpl'}
                   {/block}
 
-                  {block name='product_icons'}
-                    {include file='catalog/_partials/product-icons.tpl'}
-                  {/block}
-
                   {block name='product_additional_info'}
                     {include file='catalog/_partials/product-additional-info.tpl'}
                   {/block}
@@ -133,16 +152,16 @@
 
               <div class="text-center">
                 <a href="{$link->getProductLink($product.id_product)}?dl_pdf=1" class="btn btn-light bold hidden-lg-down" target="_blank">
-                  <i class="fas fa-file-invoice-dollar"></i> &nbsp; Fiche produit
+                  <i class="fas fa-file-invoice-dollar"></i> &nbsp; {l s="Fiche produit"}
                 </a>
                 <a href="{$link->getProductLink($product.id_product)}?dl_demo=1" class="btn btn-light bold hidden-lg-down" title="{l s='PDF sans prix'}" target="_blank">
-                  <i class="fa fa-file-pdf"></i>
+                  <i class="fa fa-file-pdf"></i> &nbsp; {l s="Fiche produit sans prix"}
                 </a>
               </div>
 
-              {block name='product_details'}
+              {*block name='product_details'}
                 {include file='catalog/_partials/product-details.tpl'}
-              {/block}
+              {/block*}
 
             </div>
 
@@ -205,21 +224,6 @@
       </div>
 
     </div>
-
-    {block name='product_accessories'}
-      {if $accessories}
-        <section class="product-accessories top-space clearfix">
-          <h3 class="section-title">{l s='You might also like' d='Shop.Theme.Catalog'}</h3>
-          <div class="products">
-            {foreach from=$accessories item="product_accessory"}
-              {block name='product_miniature'}
-                {include file='catalog/_partials/miniatures/product.tpl' product=$product_accessory}
-              {/block}
-            {/foreach}
-          </div>
-        </section>
-      {/if}
-    {/block}
 
     {block name='product_footer'}
       {if isset($category)}
