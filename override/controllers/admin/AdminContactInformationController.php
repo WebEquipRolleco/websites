@@ -70,8 +70,9 @@ class AdminContactInformationControllerCore extends AdminController {
 			array('label'=>"URL", 'name'=>'WEBEQUIP_TRUST_URL')
 		);
 
-		$data[4]['Apparence'] = array(
-			array('label'=>"Clé bundle Font-Awesome", 'name'=>'KEY_FONT_AWESOME')
+		$data[4]['Gestion API'] = array(
+			array('label'=>"Clé bundle Font-Awesome", 'name'=>'KEY_FONT_AWESOME'),
+			array('label'=>"Clé Google Tag Manager", 'name'=>'KEY_GOOGLE_TAG_MANAGER')
 		);
 
 		return $data;
