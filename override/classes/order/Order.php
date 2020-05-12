@@ -40,6 +40,7 @@ class Order extends OrderCore {
 	private $shop;
 	private $address_invoice;
 	private $address_delivery;
+	private $cart;
 
 	/**
 	* OVERRIDE : ajout de champs
@@ -70,6 +71,18 @@ class Order extends OrderCore {
 		$data[self::EXPORTED] = array('class'=>"success", 'info'=>"Exporté");;
 
 		return $data[$this->exported];
+	}
+
+	/**
+	* Retourne le panier client associé
+	* @return Cart
+	**/
+	public function getCart() {
+
+		if($this->id_cart and !$this->cart)
+			$this->cart = new Cart($this->id_cart);
+
+		return $this->cart;
 	}
 
 	/**

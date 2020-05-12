@@ -200,6 +200,7 @@
           {l s='Order' d='Admin.Global'}
           <span class="badge">{$order->reference}</span>
           <span class="badge">{l s="#" d='Admin.Orderscustomers.Feature'}{$order->id}</span>
+          <span class="badge">{l s="Panier #%s" sprintf=[$order->getCart()->id] d='Admin.Orderscustomers.Feature'}</span>
           {assign var=export_data value=$order->getExportedData()}
           <span class="badge" title="{$export_data.info}">
             <i class="icon-circle text-{$export_data.class}"></i> 
