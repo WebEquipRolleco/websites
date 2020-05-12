@@ -35,7 +35,7 @@ class AdminImportExportControllerCore extends AdminController {
         $this->context->smarty->assign('separator', self::SEPARATOR);
         $this->context->smarty->assign('delimiter', self::DELIMITER);
         $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
-        $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1));
+        $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1, false));
 
         parent::initContent();
     }
