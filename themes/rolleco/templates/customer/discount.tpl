@@ -30,7 +30,7 @@
 
 {block name='page_content'}
   {if $cart_rules}
-    <table class="table table-striped table-bordered hidden-sm-down">
+    <table class="table combinations-table table-striped table-bordered hidden-sm-down">
       <thead class="thead-default">
         <tr>
           <th>{l s='Code' d='Shop.Theme.Checkout'}</th>
@@ -45,13 +45,13 @@
       <tbody>
         {foreach from=$cart_rules item=cart_rule}
           <tr>
-            <th scope="row">{$cart_rule.code}</th>
-            <td>{$cart_rule.name}</td>
-            <td class="text-xs-right">{$cart_rule.quantity_for_user}</td>
-            <td>{$cart_rule.value}</td>
-            <td>{$cart_rule.voucher_minimal}</td>
-            <td>{$cart_rule.voucher_cumulable}</td>
-            <td>{$cart_rule.voucher_date}</td>
+            <td class="text-center" scope="row"><b>{$cart_rule.code}</b></td>
+            <td class="text-center">{$cart_rule.name}</td>
+            <td class="text-center">{$cart_rule.quantity_for_user}</td>
+            <td class="text-center">{$cart_rule.value}</td>
+            <td class="text-center">{$cart_rule.voucher_minimal}</td>
+            <td class="text-center">{$cart_rule.voucher_cumulable}</td>
+            <td class="text-center">{$cart_rule.voucher_date}</td>
           </tr>
         {/foreach}
       </tbody>

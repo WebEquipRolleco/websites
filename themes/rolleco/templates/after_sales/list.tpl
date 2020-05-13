@@ -21,7 +21,7 @@
 					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">{$request->getMessages(true)|@count}</td>
 					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">{$request->date_add|date_format:'d/m/Y'}</td>
 					<td class="text-center {if $request->hasNewMessageForCustomer()}bg-warning{/if}">
-						<a href="{$link->getPageLink('AfterSales')}?sav={$request->reference}" class="btn btn-xs btn-default" title="{l s='Voir mon ticket'}">
+						<a href="{$link->getPageLink('AfterSales')}?sav={$request->reference}" class="btn btn-xs btn-primary" title="{l s='Voir mon ticket'}">
 							<span class="fa fa-edit"></span>
 						</a>
 					</td>

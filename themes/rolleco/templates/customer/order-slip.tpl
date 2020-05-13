@@ -29,9 +29,22 @@
 {/block}
 
 {block name='page_content'}
-  <h6>{l s='Credit slips you have received after canceled orders.' d='Shop.Theme.Customeraccount'}</h6>
-  {if $credit_slips}
-    <table class="table table-striped table-bordered hidden-sm-down">
+  {if !$credit_slips}
+    <div class="alert alert-danger">
+      <table>
+        <tbody>
+          <tr>
+            <td><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></td>
+            <td style="padding-left:15px; line-height:12px;">
+              <strong>{l s='Credit slips you have received after canceled orders.' d='Shop.Theme.Customeraccount'}</strong>
+              <br><small>{l s="Vous n'avez pour le moment aucun avoir en cours, merci de nous contacter pour toute réclamation."}</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {else}
+    <table class="table combinations-table table-striped table-bordered hidden-sm-down">
       <thead class="thead-default">
         <tr>
           <th>{l s='Order' d='Shop.Theme.Customeraccount'}</th>
@@ -43,10 +56,12 @@
       <tbody>
         {foreach from=$credit_slips item=slip}
           <tr>
-            <td><a href="{$slip.order_url_details}" data-link-action="view-order-details">{$slip.order_reference}</a></td>
-            <td scope="row">{$slip.credit_slip_number}</td>
-            <td>{$slip.credit_slip_date}</td>
-            <td class="text-sm-center">
+            <td class="text-center">
+              <a href="{$slip.order_url_details}" data-link-action="view-order-details">{$slip.order_reference}</a>
+            </td>
+            <td class="text-center" scope="row">{$slip.credit_slip_number}</td>
+            <td class="text-center">{$slip.credit_slip_date}</td>
+            <td class="text-center">
               <a href="{$slip.url}"><i class="material-icons">&#xE415;</i></a>
             </td>
           </tr>

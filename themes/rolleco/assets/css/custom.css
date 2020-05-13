@@ -44,11 +44,11 @@
 }
 .address .address-header {
   padding: 10px;
-  background-color: #999;
+  background-color: #efefef;
   border-bottom: 1px solid #484a45;
 }
 .address .address-footer {
-  background-color: #999;
+  background-color: #efefef;
   border-top: 1px solid #484a45 !important;
 }
 .links .link-item {
