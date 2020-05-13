@@ -32,9 +32,7 @@
     {block "form_fields"}
 
       <div class="row">
-
         <div class="col-lg-6">
-
           <h3 class="section-title margin-top-sm">{l s="Mes identifiants"}</h3>
           {foreach from=$formFields item="field"}
             {if $field.name|in_array:array('email', 'password')}
@@ -43,7 +41,6 @@
               {/block}
             {/if}
           {/foreach}
-
           <h3 class="section-title margin-top-sm">{l s="Mon identité"}</h3>
           {foreach from=$formFields item="field"}
             {if $field.name|in_array:array('id_gender', 'firstname', 'lastname')}
@@ -52,11 +49,8 @@
               {/block}
             {/if}
           {/foreach}
-
         </div>
-
         <div class="col-lg-6">
-          
           {if Configuration::get('PS_B2B_ENABLE')}
             <h3 class="section-title margin-top-sm">{l s="Mon statut"}</h3>
             {foreach from=$formFields item="field"}
@@ -67,9 +61,7 @@
               {/if}
             {/foreach}
           {/if}
-
         </div>
-
       </div>
 
       {foreach from=$formFields item="field"}

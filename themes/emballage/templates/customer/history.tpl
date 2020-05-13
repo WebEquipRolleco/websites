@@ -5,7 +5,7 @@
 {/block}
 
 {block name='page_content'}
-  <h6 class="text-center">
+  <h6 class="text-center mb-3">
     {l s="Here are the orders you've placed since your account was created." d='Shop.Theme.Customeraccount'}
   </h6>
 
