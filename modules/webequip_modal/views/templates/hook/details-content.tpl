@@ -18,7 +18,12 @@
 				<b>{l s="Affichage" mod="webequip_modal"}</b>
 			</div>
    			<div class="form-group">
-   				<label>{l s='Icône' mod='webequip_modal'}</label>
+   				<label>
+   					{l s='Icône' mod='webequip_modal'} 
+   					<a href="#" class="text-info" title="{l s='icônes Font-awesome'}">
+						<i class="icon-info-circle"></i>
+					</a>
+				</label>
    				<input type="text" class="form-group" name="modal[icon]" value="{$modal->icon}">
    			</div>
 	        <div class="form-group">

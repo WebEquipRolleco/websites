@@ -1,13 +1,44 @@
 <form method="post" enctype="multipart/form-data">
 	<input type="hidden" name="id" value="{$icon->id}">
 
-	<div class="panel text-right">
-		<a href="{$link->getAdminLink('AdminIconography')}" class="btn btn-default">
-			<b>{l s='Retour' d='Shop.Theme.Labels'}</b>
-		</a>
-		<button type="submit" class="btn btn-success" name="save">
-			<b>{l s='Enregistrer' d='Shop.Theme.Labels'}</b>
+	<div class="panel">
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#help_modal">
+			<i class="icon-info-circle"></i> &nbsp; <b>Aide</b>
 		</button>
+		<div class="pull-right">
+			<a href="{$link->getAdminLink('AdminIconography')}" class="btn btn-default">
+				<b>{l s='Retour' d='Shop.Theme.Labels'}</b>
+			</a>
+			<button type="submit" class="btn btn-success" name="save">
+				<b>{l s='Enregistrer' d='Shop.Theme.Labels'}</b>
+			</button>
+		</div>
+	</div>
+
+	<div id="help_modal" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <b>Comment ça fonctionne ?</b>
+	      </div>
+	      <div class="modal-body">
+	        <p>Par défaut, les icones activées sont visibles sur tous les produits. Vous pouvez cependant restraindre leur affichage en fonction de 3 critères :</p>
+	        <ul>
+	        	<li><b>Produit(s) :</b> Vous pouvez directement affectuer une icône à une liste de produits en particulier uniquement (liste blanche) ou l'afficher partout sauf sur une liste de produits spécifiques (liste noire)</li>
+	        	<li><b>Fournisseur(s) :</b> Autoriser l'affichage de l'icône sur les produits d'un fournisseur particulier (liste blanche) ou sur tous les produits sauf ceux qu'une liste de fournisseurs (liste noire). Les fournisseurs pris en compte sont les fournisseurs "par défaut" des produits.</li>
+	        	<li><b>Catégorie(s) :</b> Autoriser ou non (liste blanche / noire) l'affichage de l'icône concernée en fonction de la catégorie par défaut des produits.</li>
+	       	</ul>
+	       	<div class="alert alert-warning">
+	       		<b>Attention :</b> Ces règles s'appliquent de façon successives dans l'ordre précédemment cité. Par exemple, si un produit correspond à un fournisseur en liste blanche l'icône sera affichée même si ce produit ne correspond pas à une catégorie placée en liste blanche. De même, une icône ne sera jamais affichée sur un produit placé directement en liste noire ou si sont fournisseur ou sa catégorie par défaut sont placés en liste noire.
+	       	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-dismiss="modal">
+	        	<i class="icon-times"></i> &nbsp; <b>Fermer</b>
+	        </button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 
 	<div class="row">
