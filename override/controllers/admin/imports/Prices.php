@@ -66,7 +66,7 @@ class ImportPrices extends Import {
                     $price->comment_1 = $row['comment_1'];
                     $price->comment_2 = $row['comment_2'];
                     $price->from = Tools::isEmptyDate($row['from']) ? date('Y-01-01 00:00:00') : $row['from'];
-                    $price->to = Tools::isEmptyDate($row['to']) ? date('Y-01-01 00:00:00') : $row['to'];
+                    $price->to = Tools::isEmptyDate($row['to']) ? date('2100-01-01 00:00:00') : $row['to'];
                     $price->id_shop = $row['id_shop'] ?? 0;
                     $price->id_group = (int)$row['id_group'];
                     $price->id_customer = (int)$row['id_customer'];
