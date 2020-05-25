@@ -19,7 +19,7 @@
           <td class="bg-blue text-center uppercase">{l s="Adresse de facturation" d='Shop.Theme.Checkout'}</td>
         </tr>
         <tr>
-          <td class="bg-grey text-muted">
+          <td class="text-muted">
             {assign var=address value=$context->cart->getAddressInvoice()}
             <div class="bold">{$address->alias}</div>
             <br />
@@ -42,7 +42,7 @@
           <td class="bg-blue text-center uppercase">{l s="Adresse de livraison" d='Shop.Theme.Checkout'}</td>
         </tr>
         <tr>
-          <td class="bg-grey text-muted">
+          <td class="text-muted">
             {assign var=address value=$context->cart->getAddressDelivery()}
             <div class="bold">{$address->alias}</div>
             <br />
@@ -69,53 +69,53 @@
         </tr>
         {foreach from=$cart.products item=product}
           <tr class="text-muted">
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               <div class="bold">{$product.name}</div>
               {l s="Référence : %s" sprintf=[$product.reference]}
             </td>
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               {$product.cart_quantity}
             </td>
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               {Tools::displayPrice($product.price_with_reduction_without_tax)}
             </td>
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               {Tools::displayPrice($product.price_with_reduction_without_tax * $product.cart_quantity)}
             </td>
           </tr>
         {/foreach}
         {foreach from=OrderOptionCart::findByCart($context->cart->id) item=option}
           <tr class="text-muted">
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               <div class="bold">{$option->name}</div>
               {$option->description}
             </td>
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
 
             </td>
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               {Tools::displayPrice($option->getPrice())}
             </td>
-            <td class="bg-grey text-center" style="vertical-align:middle;">
+            <td class="text-center" style="vertical-align:middle;">
               {Tools::displayPrice($option->getPrice())}
             </td>
           </tr>
         {/foreach}
         <tr class="text-muted">
-          <td colspan="3" class="bg-grey text-right bold">{l s="Sous-total HT" d='Shop.Theme.Checkout'}</td>
-          <td class="bg-grey text-center">{$cart.totals.total_excluding_tax.value}</td>
+          <td colspan="3" class="text-right bold">{l s="Sous-total HT" d='Shop.Theme.Checkout'}</td>
+          <td class="text-center">{$cart.totals.total_excluding_tax.value}</td>
         </tr>
         <tr class="text-muted">
-          <td colspan="3" class="bg-grey text-right bold">{l s="Frais de livraison" d='Shop.Theme.Checkout'}</td>
-          <td class="bg-grey text-center">{$cart.subtotals.shipping.value}</td>
+          <td colspan="3" class="text-right bold">{l s="Frais de livraison" d='Shop.Theme.Checkout'}</td>
+          <td class="text-center">{$cart.subtotals.shipping.value}</td>
         </tr>
         <tr class="text-muted">
-          <td colspan="3" class="bg-grey text-right bold">{l s="Taxes" d='Shop.Theme.Checkout'}</td>
-          <td class="bg-grey text-center">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
+          <td colspan="3" class="text-right bold">{l s="Taxes" d='Shop.Theme.Checkout'}</td>
+          <td class="text-center">{Tools::displayPrice($cart.totals.total_including_tax.amount - $cart.totals.total_excluding_tax.amount)}</td>
         </tr>
         <tr class="text-muted">
-          <td colspan="3" class="bg-grey text-right bold">{l s="Total TTC" d='Shop.Theme.Checkout'}</td>
-          <td class="bg-grey text-center">{$cart.totals.total_including_tax.value}</td>
+          <td colspan="3" class="text-right bold">{l s="Total TTC" d='Shop.Theme.Checkout'}</td>
+          <td class="text-center">{$cart.totals.total_including_tax.value}</td>
         </tr>
       </table>
     </div>
