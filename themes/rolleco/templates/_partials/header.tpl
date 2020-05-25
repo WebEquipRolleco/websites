@@ -77,7 +77,7 @@
           <form method="get" action="{$link->getPageLink('search')}" class="margin-top-15 margin-bottom-10">
             <input type="hidden" name="controller" value="search">
             <p id="brand_description">Votre équipement à prix éco - Site réservé aux professionnels</p>
-            <input type="text" style="width:100%; padding:10px" placeholder="{l s='Rechercher'}">
+            <input type="text" id="search_query_top" style="width:100%; padding:10px" placeholder="{l s='Rechercher'}">
             <a href="" class="hvr-icon-forward" style="position:absolute; top:42px; right:25px;">
               <i class="fa fa-2x fa-play hvr-icon"></i>
             </a>
