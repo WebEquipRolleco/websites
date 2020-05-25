@@ -26,6 +26,10 @@ $(document).ready(function() {
 		$('#submenu_'+$(this).data('id')).slideDown('fast');
 	});
 
+	$('#brand_nav').on('mouseover', function() {
+		$('.megamenu_level_2').slideUp('fast');
+	}); 
+	
 	$('#wrapper').on('mouseover', function() {
 		$('.megamenu_level_2').slideUp('fast');
 	});
