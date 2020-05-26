@@ -96,6 +96,6 @@ class Combination extends CombinationCore {
 	* @return string
 	**/
 	public static function loadColumn($id_combination, $nb_column) {
-		return Db::getInstance()->executeS("SELECT agl.public_name AS name, al.name AS value FROM ps_attribute a, ps_attribute_lang al, ps_attribute_group ag, ps_attribute_group_lang agl, ps_product_attribute_combination ac WHERE a.id_attribute = al.id_attribute AND a.id_attribute = ac.id_attribute AND ac.id_product_attribute = $id_combination AND a.id_attribute_group = ag.id_attribute_group AND a.id_attribute_group = agl.id_attribute_group AND ag.column = $nb_column ORDER BY a.position ASC");
+		return Db::getInstance()->executeS("SELECT agl.public_name AS name, al.name AS value FROM ps_attribute a, ps_attribute_lang al, ps_attribute_group ag, ps_attribute_group_lang agl, ps_product_attribute_combination ac WHERE a.id_attribute = al.id_attribute AND a.id_attribute = ac.id_attribute AND ac.id_product_attribute = $id_combination AND a.id_attribute_group = ag.id_attribute_group AND a.id_attribute_group = agl.id_attribute_group AND ag.column = $nb_column ORDER BY ag.position ASC");
 	}
 }
