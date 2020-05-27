@@ -472,20 +472,7 @@ class Webequip_Configuration extends Module {
             if(Tools::getValue('action') == 'enable_icon' and $id_icon = Tools::getValue('id_icon') and $id_product = Tools::getValue('id_product')) {
                 
                 $icon = new ProductIcon($id_icon);
-                if($icon->id) {
-
-                    $ids = $icon->getBlackList();
-                    if(($key = array_search($id_product, $ids)) !== false) {
-                        unset($ids[$key]);
-                        $icon->product_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                    }
-
-                    $ids = $icon->getWhiteList();
-                    $ids[] = $id_product;
-
-                    $icon->product_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                    $icon->save();
-                }
+                if($icon->id) $icon->addProduct($id_product);
 
                 $this->loadIcons($id_product);
             }
@@ -494,20 +481,7 @@ class Webequip_Configuration extends Module {
             if(Tools::getValue('action') == 'disable_icon' and $id_icon = Tools::getValue('id_icon') and $id_product = Tools::getValue('id_product')) {
                 
                 $icon = new ProductIcon($id_icon);
-                if($icon->id) {
-
-                    $ids = $icon->getWhiteList();
-                    if(($key = array_search($id_product, $ids)) !== false) {
-                        unset($ids[$key]);
-                        $icon->product_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                    }
-
-                    $ids = $icon->getBlackList();
-                    $ids[] = $id_product;
-
-                    $icon->product_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                    $icon->save();
-                }
+                if($icon->id) $icon->removeProduct($id_product);
 
                 $this->loadIcons($id_product);
             }
@@ -534,7 +508,7 @@ class Webequip_Configuration extends Module {
     private function loadIcons($id_product) {
 
         $this->context->smarty->assign('icons', ProductIcon::getList());
-        $this->context->smarty->assign('product', Db::getInstance()->getRow('SELECT p.id_product, ps.id_category_default, p.id_supplier FROM ps_product p LEFT JOIN ps_product_shop ps ON (p.id_product = ps.id_product AND ps.id_shop = '.$this->context->shop->id.") WHERE p.id_product = $id_product"));
+        $this->context->smarty->assign('id_product', $id_product);
         $this->context->smarty->assign('id_shop', $this->context->shop->id);
         $this->context->smarty->assign('link', new Link());
 

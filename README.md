@@ -136,21 +136,25 @@ CREATE TABLE IF NOT EXISTS `ps_product_icon` (
     `extension` VARCHAR(5) DEFAULT NULL, 
     `height` INT(11) DEFAULT NULL, 
     `width` INT(11) DEFAULT NULL, 
-    `product_white_list` VARCHAR(255) DEFAULT NULL, 
-    `product_black_list` VARCHAR(255) DEFAULT NULL, 
-    `category_white_list` VARCHAR(255) DEFAULT NULL, 
-    `category_black_list` VARCHAR(255) DEFAULT NULL, 
-    `supplier_white_list` VARCHAR(255) DEFAULT NULL, 
-    `supplier_black_list` VARCHAR(255) DEFAULT NULL, 
     `position` INT(2) DEFAULT 1, 
     `location` INT(2) DEFAULT 1, 
+    `id_group` INT(11) DEFAULT NULL, 
     `active` TINYINT DEFAULT 1,
     PRIMARY KEY (`id_product_icon`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `ps_product_icon_shop` (
-    `id_product_icon` INT NOT NULL,
-    `id_shop` INT NOT NULL
+CREATE TABLE IF NOT EXISTS `ps_product_icon_group` (
+    `id_product_icon_group` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) DEFAULT NULL, 
+    `unique` INT(2) DEFAULT NULL,
+    PRIMARY KEY (`id_product_icon_group`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `ps_product_icon_association` (
+    `id_product_icon_association` INT NOT NULL AUTO_INCREMENT,
+    `id_product` INT(11) DEFAULT NULL, 
+    `id_product_icon` INT(11) DEFAULT NULL, 
+    PRIMARY KEY (`id_product_icon_association`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ps_daily_objective` (

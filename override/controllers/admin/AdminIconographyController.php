@@ -7,22 +7,35 @@ class AdminIconographyControllerCore extends AdminController {
 
 	public function __construct() {
         
+        $this->bootstrap = true;
         $this->table = ProductIcon::TABLE_NAME;
         $this->className = 'ProductIcon';
 
-        $this->bootstrap = true;
-        $this->required_database = true;
+        $this->addRowAction('edit');
+        $this->addRowAction('delete');
         $this->allow_export = true;
 
         parent::__construct();
 
-        $this->addRowAction('edit');
-        $this->addRowAction('delete');
+        $this->bulk_actions = array(
+            'delete' => array(
+                'text' => $this->trans('Delete selected', array(), 'Admin.Notifications.Info'),
+                'confirm' => $this->trans('Delete selected items?', array(), 'Admin.Notifications.Info'),
+                'icon' => 'icon-trash'
+            )
+        );
 
         $this->toolbar_btn['import'] = array(
             'href' => '#import',
             'desc' => $this->l('Import')
         );
+
+        $this->_select = "a.*, g.name AS group_name";
+        $this->_join = ' LEFT JOIN '._DB_PREFIX_.ProductIcon::TABLE_NAME.'_group g ON (a.id_group = g.id_product_icon_group)';
+
+        $this->_orderBy = 'id_product_icon';
+        $this->_orderWay = 'asc';
+        $this->_use_found_rows = true;
 
         $this->fields_list = array(
             'id_product_icon' => array(
@@ -30,6 +43,10 @@ class AdminIconographyControllerCore extends AdminController {
             ),
             'name' => array(
                 'title' => $this->trans('Name', array(), 'Admin.Global'),
+                'align' => 'center',
+            ),
+            'group_name' => array(
+                'title' => $this->trans('Groupe', array(), 'Admin.Global'),
                 'align' => 'center',
             ),
             'location' => array(
@@ -40,13 +57,15 @@ class AdminIconographyControllerCore extends AdminController {
             'position' => array(
                 'title' => $this->trans('Position', array(), 'Admin.Global'),
                 'align' => 'center',
-                'type' => 'int'
+                'type' => 'int',
+                'search' => false
             ),
             'active' => array(
                 'title' => $this->trans('Actif', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'type' => 'bool',
-                'active' => 'status'
+                'active' => 'status',
+                'search' => false
             ),
         );
     }
@@ -71,6 +90,8 @@ class AdminIconographyControllerCore extends AdminController {
     }
 
     public function postProcess() {
+        parent::postProcess();
+
         if(Tools::getIsset('exportproduct_icon')) {
 
             $export = new ExportIconography();
@@ -129,18 +150,14 @@ class AdminIconographyControllerCore extends AdminController {
     		$icon->active = $form['active'];
     		$icon->position = $form['position'];
             $icon->location = $form['location'];
-            
+            $icon->id_group = $form['id_group'];
+
     		if(isset($form['height']))
     			$icon->height = $form['height'];
     		if(isset($form['width']))
     		$icon->width = $form['width'];
 
     		$icon->save();
-
-    		$icon->eraseShops();
-
-    		foreach(Tools::getValue('shops') as $id_shop => $active)
-    			if($active) $icon->addShop($id_shop);
     	}
 
     	// Modification de l'image
@@ -156,161 +173,9 @@ class AdminIconographyControllerCore extends AdminController {
     		move_uploaded_file($_FILES['picture']['tmp_name'], getcwd()."/../img/icons/".$icon->id.".".$icon->extension);
     	}
 
-    	// Ajout produit dans une des listes
-        if($id = Tools::getValue('product')) {
-
-            // Liste blanche
-            if(Tools::isSubmit('add_white_list')) {
-
-                $ids = $icon->getWhiteList();
-                $ids[] = $id;
-
-                $icon->product_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-
-            // Liste noire
-            if(Tools::isSubmit('add_black_list')) {
-
-                $ids = $icon->getBlackList();
-                $ids[] = $id;
-                
-                $icon->product_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Ajout catégorie dans une des listes
-        if($id = Tools::getValue('category')) {
-
-            // Liste blanche
-            if(Tools::isSubmit('add_white_list')) {
-
-                $ids = $icon->getCategoryWhiteList();
-                $ids[] = $id;
-
-                $icon->category_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-
-            // Liste noire
-            if(Tools::isSubmit('add_black_list')) {
-
-                $ids = $icon->getCategoryBlackList();
-                $ids[] = $id;
-                
-                $icon->category_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Ajout fournisseur dans une des listes
-        if($id = Tools::getValue('supplier')) {
-
-            // Liste blanche
-            if(Tools::isSubmit('add_white_list')) {
-
-                $ids = $icon->getSupplierWhiteList();
-                $ids[] = $id;
-
-                $icon->supplier_white_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-
-            // Liste noire
-            if(Tools::isSubmit('add_black_list')) {
-
-                $ids = $icon->getSupplierBlackList();
-                $ids[] = $id;
-                
-                $icon->supplier_black_list = implode(ProductIcon::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Suppression produit de la liste blanche
-        if(Tools::isSubmit('remove_white_list') and $id = Tools::getValue('remove_white_list')) {
-
-            $ids = $icon->getWhiteList();
-            $key = array_search($id, $ids);
-            if($key !== false) {
-
-                unset($ids[$key]);
-                $icon->product_white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Suppression produit de la liste noire
-        if(Tools::isSubmit('remove_black_list') and $id = Tools::getValue('remove_black_list')) {
-
-            $ids = $icon->getBlackList();
-            $key = array_search($id, $ids);
-            if($key !== false) {
-
-                unset($ids[$key]);
-                $icon->product_black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Suppression catégorie de la liste blanche
-        if(Tools::isSubmit('remove_category_white_list') and $id = Tools::getValue('remove_category_white_list')) {
-
-            $ids = $icon->getCategoryWhiteList();
-            $key = array_search($id, $ids);
-            if($key !== false) {
-
-                unset($ids[$key]);
-                $icon->category_white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Suppression catégorie de la liste noire
-        if(Tools::isSubmit('remove_category_black_list') and $id = Tools::getValue('remove_category_black_list')) {
-
-            $ids = $icon->getCategoryBlackList();
-            $key = array_search($id, $ids);
-            if($key !== false) {
-
-                unset($ids[$key]);
-                $icon->category_black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Suppression fournisseur de la liste blanche
-        if(Tools::isSubmit('remove_supplier_white_list') and $id = Tools::getValue('remove_supplier_white_list')) {
-
-            $ids = $icon->getSupplierWhiteList();
-            $key = array_search($id, $ids);
-            if($key !== false) {
-
-                unset($ids[$key]);
-                $icon->supplier_white_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
-        // Suppression fournisseur de la liste noire
-        if(Tools::isSubmit('remove_supplier_black_list') and $id = Tools::getValue('remove_supplier_black_list')) {
-
-            $ids = $icon->getSupplierBlackList();
-            $key = array_search($id, $ids);
-            if($key !== false) {
-
-                unset($ids[$key]);
-                $icon->supplier_black_list = implode(OrderOption::DELIMITER, array_filter(array_unique($ids)));
-                $icon->save();
-            }
-        }
-
     	$this->context->smarty->assign('icon', $icon);
-    	$this->context->smarty->assign('products', Db::getInstance()->executes("SELECT id_product, name FROM ps_product_lang WHERE id_lang = 1 AND id_shop = ".$this->context->shop->id." AND name <> '' AND name IS NOT NULL"));
-        $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1));
-        $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
-        $this->context->controller->addjQueryPlugin('select2');
+        $this->context->smarty->assign('groups', ProductIconGroup::find());
+        //$this->context->controller->addjQueryPlugin('select2');
 
     	$this->setTemplate('details.tpl');
     }

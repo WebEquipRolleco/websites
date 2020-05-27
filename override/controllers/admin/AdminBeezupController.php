@@ -33,8 +33,7 @@ class AdminBeezupControllerCore extends AdminController {
 		if($this->directory) {
 
 			// Vérification de l'arborescence
-			if(!is_dir(_PS_ROOT_DIR_.$this->directory))
-				mkdir(_PS_ROOT_DIR_.$this->directory, 0777, true);
+			$this->checkExportDirectory();
 
 			foreach(glob(_PS_ROOT_DIR_.$this->directory."/*.csv") as $file_path) {
 				
@@ -81,11 +80,22 @@ class AdminBeezupControllerCore extends AdminController {
 	}
 
 	/**
+	* Vérifie l'existe du dossier d'export
+	**/
+	private function checkExportDirectory() {
+		if(!is_dir(_PS_ROOT_DIR_.$this->directory))
+			mkdir(_PS_ROOT_DIR_.$this->directory, 0777, true);
+	}
+
+	/**
 	* Crée un fichier export
 	**/
 	public function exportFile() {
 		if($this->directory) {
 
+			// Vérification de l'arborescence
+			$this->checkExportDirectory();
+			
 			// Supprimer la sauvegarde précédente
 			@unlink(_PS_ROOT_DIR_.$this->directory.self::CONFIG_ARCHIVE_PREFIX.self::CONFIG_FILE);
 

@@ -25,24 +25,6 @@ class ProductIcon extends ObjectModel {
 	/** @var int width **/
 	public $width;
 
-	/** @var string Product White list **/
-	public $product_white_list;
-
-	/** @var string Product Black list **/
-	public $product_black_list;
-
-    /** @var string Category White list **/
-    public $category_white_list;
-
-    /** @var string Category Black list **/
-    public $category_black_list;
-
-    /** @var string Supplier White list **/
-    public $supplier_white_list;
-
-    /** @var string Supplier Black list **/
-    public $supplier_black_list;
-
 	/** @var int Position **/
 	public $position = 1;
 
@@ -52,8 +34,11 @@ class ProductIcon extends ObjectModel {
 	/** @var bool Active **/
 	public $active = true;
 
-	// Variables temporaires
-	private $shops = array();
+    /** @var int id_group **/
+    public $id_group;
+
+    /** Variables temporaires **/
+    private $group;
 
 	/**
 	* @see ObjectModel::$definition
@@ -68,14 +53,9 @@ class ProductIcon extends ObjectModel {
 			'extension' 	       => array('type' => self::TYPE_STRING),
 			'height'		       => array('type' => self::TYPE_INT),
 			'width'			       => array('type' => self::TYPE_INT),
-			'product_white_list'   => array('type' => self::TYPE_STRING),
-			'product_black_list'   => array('type' => self::TYPE_STRING),
-            'category_white_list'  => array('type' => self::TYPE_STRING),
-            'category_black_list'  => array('type' => self::TYPE_STRING),
-            'supplier_white_list'  => array('type' => self::TYPE_STRING),
-            'supplier_black_list'  => array('type' => self::TYPE_STRING),
             'position'             => array('type' => self::TYPE_INT),
 			'location'		       => array('type' => self::TYPE_INT),
+            'id_group'             => array('type' => self::TYPE_INT),
 			'active' 		       => array('type' => self::TYPE_BOOL)
 		)
 	);
@@ -100,140 +80,51 @@ class ProductIcon extends ObjectModel {
 		return $data;
 	}
 
-	/**
-    * Retourne la liste blanche des produits
-    * @param bool $full
-    * @return array
-    **/
-    public function getWhiteList($full = false) {
-        $id_shop = Context::getContext()->shop->id;
-
-        if(!$full)
-            return array_filter(explode(self::DELIMITER, $this->product_white_list));
-        elseif($this->product_white_list)
-            return Db::getInstance()->executeS("SELECT id_product, name FROM ps_product_lang WHERE id_lang = 1 AND id_shop = $id_shop AND id_product IN (".$this->product_white_list.") ORDER BY id_product ASC");
-        else
-            return array();
-    }
-
     /**
-    * Retourne la liste noire des produits
-    * @param bool $full
-    * @return array
+    * Retourne le groupe associé
     **/
-    public function getBlackList($full = false) {
-        $id_shop = Context::getContext()->shop->id;
+    public function getGroup() {
 
-        if(!$full)
-            return array_filter(explode(self::DELIMITER, $this->product_black_list));
-        elseif($this->product_black_list)
-            return Db::getInstance()->executeS("SELECT id_product, name FROM ps_product_lang WHERE id_lang = 1 AND id_shop = $id_shop AND id_product IN (".$this->product_black_list.") ORDER BY id_product ASC");
-        else
-            return array();
-    }
+        if($this->id_group and !$this->group)
+            $this->group = new ProductIconGroup($this->id_group);
 
-    /**
-    * Retourne la liste blanche des catégories
-    * @param bool $full
-    * @return array
-    **/
-    public function getCategoryWhiteList($full = false) {
-        $id_shop = Context::getContext()->shop->id;
-
-        if(!$full)
-            return array_filter(explode(self::DELIMITER, $this->category_white_list));
-        elseif($this->category_white_list)
-            return Db::getInstance()->executeS("SELECT id_category, name FROM ps_category_lang WHERE id_lang = 1 AND id_shop = $id_shop AND id_category IN (".$this->category_white_list.") ORDER BY id_category ASC");
-        else
-            return array();
-    }
-
-    /**
-    * Retourne la liste noire des catégories
-    * @param bool $full
-    * @return array
-    **/
-    public function getCategoryBlackList($full = false) {
-        $id_shop = Context::getContext()->shop->id;
-
-        if(!$full)
-            return array_filter(explode(self::DELIMITER, $this->category_black_list));
-        elseif($this->category_black_list)
-            return Db::getInstance()->executeS("SELECT id_category, name FROM ps_category_lang WHERE id_lang = 1 AND id_shop = $id_shop AND id_category IN (".$this->category_black_list.") ORDER BY id_category ASC");
-        else
-            return array();
-    }
-
-    /**
-    * Retourne la liste blanche des fournisseurs
-    * @param bool $full
-    * @return array
-    **/
-    public function getSupplierWhiteList($full = false) {
-        $id_shop = Context::getContext()->shop->id;
-
-        if(!$full)
-            return array_filter(explode(self::DELIMITER, $this->supplier_white_list));
-        elseif($this->supplier_white_list)
-            return Db::getInstance()->executeS("SELECT id_supplier, name FROM ps_supplier WHERE id_supplier IN (".$this->supplier_white_list.") ORDER BY id_supplier ASC");
-        else
-            return array();
-    }
-
-    /**
-    * Retourne la liste noire des fournisseurs
-    * @param bool $full
-    * @return array
-    **/
-    public function getSupplierBlackList($full = false) {
-        $id_shop = Context::getContext()->shop->id;
-
-        if(!$full)
-            return array_filter(explode(self::DELIMITER, $this->supplier_black_list));
-        elseif($this->supplier_black_list)
-            return Db::getInstance()->executeS("SELECT id_supplier, name FROM ps_supplier WHERE id_supplier IN (".$this->supplier_black_list.") ORDER BY id_supplier ASC");
-        else
-            return array();
+        return $this->group;
     }
 
     /**
     * Vérifie si l'icône doit être affichée sur la page d'un produit
+    * @param int $id_product
+    * @return bool
     **/
-    public function display($product) {
+    public function display($id_product) {
 
-        // Vérification de la boutique
-    	if(isset($product['id_shop']) and !in_array($product['id_shop'], $this->getShops()))
-    		return false;
+        if(!$this->active) return false;
+        return $this->hasProduct($id_product);
+    }
 
-        // Vérification des produits
-        if(isset($product['id_product']) and $this->product_white_list)
-            if(in_array($product['id_product'], $this->getWhiteList()))
-                return true;
+    /**
+    * Ajoute un produit 
+    * @param int $id_product
+    **/
+    public function addProduct($id_product) {
+        Db::getInstance()->execute("INSERT INTO ps_product_icon_association VALUES(NULL, $id_product, {$this->id});");
+    }
 
-        if(isset($product['id_product']) and $this->product_black_list)
-            if(in_array($product['id_product'], $this->getBlackList()))
-                return false;
+    /**
+    * Supprimer un produit
+    * @param int $id_product
+    **/
+    public function removeProduct($id_product) {
+        Db::getInstance()->execute("DELETE FROM ps_product_icon_association WHERE id_product = $id_product AND id_product_icon = {$this->id};");
+    }
 
-        // Vérification des fournisseurs
-        if(isset($product['id_supplier']) and $this->supplier_white_list)
-            if(in_array($product['id_supplier'], $this->getSupplierWhiteList()))
-                return true;
-
-        if(isset($product['id_supplier']) and $this->supplier_black_list)
-            if(in_array($product['id_supplier'], $this->getSupplierBlackList()))
-                return false;
-
-        // Vérification des catégories
-        if(isset($product['id_category_default']) and $this->category_white_list)
-            if(in_array($product['id_category_default'], $this->getCategoryWhiteList()))
-                return true;
-
-        if(isset($product['id_category_default']) and $this->category_black_list)
-            if(in_array($product['id_category_default'], $this->getCategoryBlackList()))
-                return false;
-
-        // Affichage par défaut
-    	return (bool)(!$this->product_white_list and !$this->supplier_white_list and !$this->category_white_list);
+    /**
+    * Vérifie si un produit est affécté à l'icone
+    * @param int $id_product
+    * @return bool
+    **/
+    public function hasProduct($id_product) {
+        return (bool)Db::getInstance()->getValue("SELECT id_product_icon_association FROM ps_product_icon_association WHERE id_product = $id_product AND id_product_icon = {$this->id};");
     }
 
     /**
@@ -252,44 +143,6 @@ class ProductIcon extends ObjectModel {
     **/
     public function getImgPath() {
     	return _PS_IMG_.'icons/'.$this->id.'.'.$this->extension."?rnd=".uniqid();
-    }
-
-    /**
-    * Retourne la liste des boutiques associées
-    **/
-    public function getShops() {
-
-    	if(!$this->shops and $this->id) {
-    		$rows = Db::getInstance()->executeS("SELECT id_shop FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_product_icon = ".$this->id);
-    		$this->shops = array_map(function($e) { return $e['id_shop']; }, $rows);
-    	}
-
-    	return $this->shops;
-    }
-
-    /**
-    * Gestion multiboutique
-    **/
-    public function hasShop($id_shop, $default = true) {
-
-    	if($default and empty($this->getShops()))
-    		return true;
-
-    	return in_array($id_shop, $this->getShops());
-    }
-
-    /**
-    * Efface la table multiboutique
-    **/
-    public function eraseShops() {
-    	Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_product_icon = ".$this->id);
-    }
-
-    /**
-    * Ajoute une boutique dans la liste
-    **/
-    public function addShop($id_shop) {
-    	Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.self::TABLE_NAME."_shop VALUES(".$this->id.", $id_shop)");
     }
 
     /**

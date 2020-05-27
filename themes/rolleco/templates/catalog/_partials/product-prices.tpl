@@ -62,7 +62,7 @@
     {/if}
 
     {foreach from=ProductIcon::getList(2) item=icon}
-      {if $icon->display($product)}
+      {if $icon->display($product.id_product)}
         <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
           <a href="{$icon->url}" title="{$icon->title}">
             <img class="img-thumbnail" src="{$icon->getImgPath()}" {if $icon->height}height="{$icon->height}px"{/if} {if $icon->width}width="{$icon->width}px"{/if}>

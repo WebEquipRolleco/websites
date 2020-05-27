@@ -1,11 +1,11 @@
 <div class="row">
 	{foreach from=$icons item=icon}
-		{if $icon->hasShop($id_shop, false) and $icon->hasFile()}
+		{if $icon->hasFile()}
 			<div class="col-lg-3">
 				<div class="alert alert-secondary text-center" style="padding-left:0px">
 					<img src="{$icon->getImgPath()}" title="{$icon->name}">
 					<div class="mt-3">
-						{if $icon->display($product)}
+						{if $icon->display($id_product)}
 							<button class="btn btn-outline-secondary" title="L'icone est affichée sur la page produit" disabled>
 								<i class="material-icons text-success">toggle_on</i>
 							</button>
@@ -30,7 +30,7 @@
 
 			$.post({
 				url: "{$link->getAdminLink('AdminModules')}&configure=webequip_configuration",
-				data: { ajax:true, action:$(this).data('action'), id_icon:$(this).val(), id_product:{$product.id_product} },
+				data: { ajax:true, action:$(this).data('action'), id_icon:$(this).val(), id_product:{$id_product} },
 				success : function(response) {
 					$('#icons_result').html(response);
 				}
