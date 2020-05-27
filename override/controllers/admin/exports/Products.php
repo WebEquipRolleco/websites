@@ -20,6 +20,7 @@ class ExportProducts extends Export {
         $header[] = "Quantité minimale";
         $header[] = "Etat";
         $header[] = "Lien";
+        $header[] = "Icones";
 
         return $header;
     }
@@ -73,6 +74,7 @@ class ExportProducts extends Export {
             $data[] = $product->minimal_quantity;
             $data[] = (int)$product->active;
             $data[] = $product->link_rewrite;
+            $data[] = implode($this->separator, array_map(function($e) { return $e->id; }, ProductIcon::findForProduct($product->id, false)));
 
             // Liste de toutes les caractéristiques
                 foreach($attributes as $group)
@@ -94,6 +96,7 @@ class ExportProducts extends Export {
                 $data[] = null;
                 $data[] = null;
                 $data[] = $combination->minimal_quantity;
+                $data[] = null;
                 $data[] = null;
                 $data[] = null;
 

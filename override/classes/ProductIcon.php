@@ -81,6 +81,27 @@ class ProductIcon extends ObjectModel {
 	}
 
     /**
+    * Retourne la liste des icones pour un produit
+    * @param int $id_product
+    * @param bool $active
+    * @param int $position
+    * @return array
+    **/
+    public static function findForProduct($id_product, $active = true, $position = false) {
+
+        $sql = "SELECT * FROM ps_product_icon_association ia, ps_product_icon i WHERE i.id_product_icon = ia.id_product_icon AND ia.id_product = $id_product";
+        if($position) $sql .= " AND i.location = $position";
+        if($active) $sql .= " AND i.active = 1";
+        $sql .= " ORDER BY i.position ASC";
+
+        $data = array();
+        foreach(Db::getInstance()->executeS($sql) as $row)
+            $data[] = new ProductIcon($row['id_product_icon']);
+
+        return $data;
+    }
+
+    /**
     * Retourne le groupe associé
     **/
     public function getGroup() {
@@ -116,6 +137,14 @@ class ProductIcon extends ObjectModel {
     **/
     public function removeProduct($id_product) {
         Db::getInstance()->execute("DELETE FROM ps_product_icon_association WHERE id_product = $id_product AND id_product_icon = {$this->id};");
+    }
+
+    /**
+    * Efface les icones pour un produit
+    * @param int $id_product
+    **/
+    public static function erazeProduct($id_product) {
+        Db::getInstance()->execute("DELETE FROM ps_product_icon_association WHERE id_product = $id_product");
     }
 
     /**

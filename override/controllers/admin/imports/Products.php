@@ -22,6 +22,7 @@ class ImportProducts extends Import {
         $data[] = "min_quantity";
         $data[] = "state";
         $data[] = "link_rewrite";
+        $data[] = "ids_icon";
 
         // Liste de toutes les caractéristiques
         $sql = "SELECT DISTINCT(ag.id_attribute_group) FROM ps_attribute_group ag ".Shop::addSqlAssociation('attribute_group', 'ag')." LEFT JOIN ps_attribute_group_lang agl ON (ag.id_attribute_group = agl.id_attribute_group AND id_lang = 1) ORDER BY ag.id_attribute_group ASC";
@@ -137,6 +138,18 @@ class ImportProducts extends Import {
                 }
             }
         }
+
+        // Icones
+        ProductIcon::erazeProduct($product->id);
+        $ids = explode($this->delimiter, $row['ids_icon']);
+        if(!empty($ids)) {
+
+            foreach($ids as $id) {
+                $icon = new ProductIcon($id);
+                if($icon->id) $icon->addProduct($product->id);
+            }
+        }
+
     }
 
     /**

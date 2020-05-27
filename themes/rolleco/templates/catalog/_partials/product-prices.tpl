@@ -61,15 +61,13 @@
       </div>
     {/if}
 
-    {foreach from=ProductIcon::getList(2) item=icon}
-      {if $icon->display($product.id_product)}
+    {foreach from=ProductIcon::findForProduct($product.id_product, true, 2) item=icon}
         <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
           <a href="{$icon->url}" title="{$icon->title}">
             <img class="img-thumbnail" src="{$icon->getImgPath()}" {if $icon->height}height="{$icon->height}px"{/if} {if $icon->width}width="{$icon->width}px"{/if}>
             {$icon->title}
           </a>
         </div>
-      {/if}
     {/foreach}
 
     {block name='product_without_taxes'}
