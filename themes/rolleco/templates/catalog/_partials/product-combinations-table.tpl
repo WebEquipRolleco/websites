@@ -153,7 +153,7 @@
 							{/if}
 						{else}
 							{foreach from=$prices item=specific_price}
-								{if $specific_price.full_price > 0}
+								{if $specific_price.full_price > 0 and $specific_price.full_price > $specific_price.price}
 									<div class="text-center">
 										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
 										&nbsp;
