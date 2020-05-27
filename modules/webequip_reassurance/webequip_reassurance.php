@@ -47,13 +47,6 @@ class Webequip_Reassurance extends Module {
             $reassurance->active = $form['active'];
             
             $reassurance->save();
-
-            if(isset($form['shops']) and is_array($form['shops'])) {
-                $reassurance->erazeShops();
-
-                foreach($form['shops'] as $id_shop => $status)
-                    $reassurance->addShop($id_shop, $status);
-            }
         }
 
         if($id = Tools::getValue('remove')) {
@@ -63,7 +56,6 @@ class Webequip_Reassurance extends Module {
             }
         }
         
-        $this->context->smarty->assign('shops', Shop::getShops());
         $this->context->smarty->assign('locations', Reassurance::getLocations());
         $this->context->smarty->assign('reassurances', Reassurance::findAll());
         $this->context->smarty->assign('module_link', $this->context->link->getAdminLink('AdminModules').'&configure='.$this->name);
@@ -76,7 +68,6 @@ class Webequip_Reassurance extends Module {
         $reassurance = new Reassurance(Tools::getValue('id'));
 
         $this->context->smarty->assign('reassurance', $reassurance);
-        $this->context->smarty->assign('shops', Shop::getShops());
         $this->context->smarty->assign('locations', Reassurance::getLocations());
 
         die($this->display(__FILE__, 'details.tpl'));
@@ -84,25 +75,25 @@ class Webequip_Reassurance extends Module {
 
     public function hookDisplayWrapperTop($params) {
 
-        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP, $this->context->shop->id));
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP));
     	return $this->display(__FILE__, 'header.tpl');
     }
 
     public function hookDisplayNav1($params) {
 
-        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP, $this->context->shop->id));
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_TOP));
         return $this->display(__FILE__, 'header.tpl');
     }
 
     public function hookDisplayReassurance($params) {
 
-        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM, $this->context->shop->id));
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM));
         return $this->display(__FILE__, 'content.tpl');
     }
 
     public function hookDisplayFooterProduct($params) {
 
-        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM, $this->context->shop->id));
+        $this->context->smarty->assign('reassurances', Reassurance::findByPosition(Reassurance::POSITION_BOTTOM));
         return $this->display(__FILE__, 'content.tpl');
     }
 }

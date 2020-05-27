@@ -17,8 +17,6 @@ class Reassurance extends ObjectModel {
     public $location = null;
     public $position = null;
     public $active = true;
-
-    public $shops = null;
     
 	public static $definition = array(
         'table' => self::TABLE_NAME,
@@ -35,27 +33,21 @@ class Reassurance extends ObjectModel {
     );
 
     public static function createTable() {
-    	$check = Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME." (`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NULL, `icon` TEXT NULL, `text` TEXT NULL, `link` VARCHAR(255) NULL, `location` INT(1) NULL, `position` INT(2) NULL, `active` TINYINT(1) DEFAULT 1, PRIMARY KEY (`id`)) ENGINE = InnoDB;");
-        $check .= Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME."_shop (`id_reassurance` INT NOT NULL, `id_shop` INT NOT NULL, `active` TINYINT(1) DEFAULT 1, PRIMARY KEY (`id_reassurance`, `id_shop`)) ENGINE = InnoDB;");
-
+    	
+        $check = Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME." (`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NULL, `icon` TEXT NULL, `text` TEXT NULL, `link` VARCHAR(255) NULL, `location` INT(1) NULL, `position` INT(2) NULL, `active` TINYINT(1) DEFAULT 1, PRIMARY KEY (`id`)) ENGINE = InnoDB;");
         return $check;
     }
 
     public static function removeTable() {
+        
         $check = Db::getInstance()->execute("DROP TABLE "._DB_PREFIX_.self::TABLE_NAME);
-    	$check .= Db::getInstance()->execute("DROP TABLE "._DB_PREFIX_.self::TABLE_NAME."_shop");
-
         return $check;
     }
 
-    public static function findByPosition($location, $id_shop = null) {
-
-        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE location IN($location, ".self::POSITION_BOTH.") AND active = 1";
-        if($id_shop) $sql .= " AND ".self::TABLE_PRIMARY." IN (SELECT id_reassurance FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_shop = $id_shop AND active = 1)";
-        $sql .= "  ORDER BY position";
+    public static function findByPosition($location) {
 
         $data = array();
-        $rows = Db::getInstance()->executeS($sql);
+        $rows = Db::getInstance()->executeS("SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." WHERE location IN($location, ".self::POSITION_BOTH.") AND active = 1 ORDER BY position");
 
         foreach($rows as $row)
             $data[] = new Reassurance($row['id']);
@@ -81,43 +73,6 @@ class Reassurance extends ObjectModel {
         $data[self::POSITION_BOTTOM] = "Milieu de page";
 
         return $data;
-    }
-
-    public function getShops() {
-        
-        if(!$this->id)
-            return array();
-
-        if(!$this->shops)
-            $this->shops = Db::getInstance()->executeS("SELECT * FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_reassurance = ".$this->id);
-    
-        return $this->shops;
-    }
-
-    public function erazeShops() {
-        return Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_reassurance = ".$this->id);
-    }
-
-    public function addShop($id_shop, $status) {
-        return Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.self::TABLE_NAME."_shop VALUES(".$this->id.", $id_shop, $status)");
-    }
-
-    public function countShops() {
-        
-        $nb = 0;
-        foreach($this->getShops() as $shop)
-            if($shop['active']) $nb++;
-
-        return $nb;
-    }
-
-    public function hasShop($id_shop) {
-
-        foreach($this->getShops() as $row)
-            if($row['id_shop'] == $id_shop)
-                return $row['active'];
-
-        return false;
     }
 
 }

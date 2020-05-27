@@ -104,14 +104,6 @@ class Webequip_Modal extends Module {
             $modal->disable_groups = implode(",", $form['disable_groups'] ?? array());
 
             $modal->save();
-
-            if(isset($form['shops']) and is_array($form['shops'])) {
-                $modal->erazeShops();
-
-                foreach($form['shops'] as $id_shop => $status)
-                    $modal->addShop($id_shop, $status);
-            }
-
         }
 
         $this->context->smarty->assign('modals', Modal::findAll());
@@ -125,7 +117,6 @@ class Webequip_Modal extends Module {
         $modal = new Modal(Tools::getValue('id'));
 
         $this->context->smarty->assign('modal', $modal);
-        $this->context->smarty->assign('shops', Shop::getShops());
         $this->context->smarty->assign('animations_in', Modal::getAnimationsIn());
         $this->context->smarty->assign('animations_out', Modal::getAnimationsOut());
         $this->context->smarty->assign('customers', Customer::getCustomers());

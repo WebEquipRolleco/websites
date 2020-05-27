@@ -18,7 +18,6 @@
 					<th class="text-center"><strong>{l s="Position" d='Shop.Theme.Labels'}</strong></th>
 					<th class="text-center"><strong>{l s="Order d'affichage" d='Shop.Theme.Labels'}</strong></th>
 					<th class="text-center"><strong>{l s="Statut" d='Shop.Theme.Labels'}</strong></th>
-					<th class="text-center"><strong>{l s="Boutiques" d='Shop.Theme.Labels'}</strong></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -45,20 +44,6 @@
 									<i class="icon-times"></i>
 								</span>
 							{/if}
-						</td>
-						<td class="text-center">
-							{foreach from=$shops item=shop}
-								{if $reassurance->hasShop($shop.id_shop)}
-									<span class="label label-success" title="{$shop.name|capitalize}">
-										<i class="icon-check"></i>
-									</span>
-								{else}
-									<span class="label label-danger" title="{$shop.name|capitalize}">
-										<i class="icon-times"></i>
-									</span>
-								{/if}
-								&nbsp;
-							{/foreach}
 						</td>
 						<td class="text-right">
 							<form method="post">
