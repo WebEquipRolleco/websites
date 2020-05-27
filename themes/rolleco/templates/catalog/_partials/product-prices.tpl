@@ -54,10 +54,8 @@
 
     {if Product::hasDegressivePrices($product.id_product)}
       <div style="display:inline-block; vertical-align:text-bottom; margin-left:20px;">
-        <a href="#prix dégressifs" title="{l s="Profitez des prix dégressifs"}">
-          <img class="img-thumbnail" src="/img/prices.jpeg" title="{l s="Profitez des prix dégressifs"}">
-          {l s="Profitez des prix dégressifs"}
-        </a>
+        <img class="img-thumbnail" src="/img/prices.jpeg" title="{l s="Profitez des prix dégressifs"}">
+        {l s="Profitez des prix dégressifs"}
       </div>
     {/if}
 
