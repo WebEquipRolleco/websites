@@ -29,7 +29,6 @@
 					<th><b>{l s="Titre" d='Shop.Theme.Labels'}</b></th>
 					<th class="text-center"><b>{l s="Date de début" d='Shop.Theme.Labels'}</b></th>
 					<th class="text-center"><b>{l s="Date de fin" d='Shop.Theme.Labels'}</b></th>
-					<th class="text-center"><b>{l s="Boutiques" d='Shop.Theme.Labels'}</b></th>
 					<th class="text-center"><b>{l s="Ouverture" d='Shop.Theme.Labels'}</b></th>
 					<th class="text-center"><b>{l s="Fermeture" d='Shop.Theme.Labels'}</b></th>
 					<th class="text-center"><b>{l s="Clients" d='Shop.Theme.Labels'}</b></th>
@@ -58,7 +57,6 @@
 								-
 							{/if}
 						</td>
-						<td class="text-center">{$modal->countShops()}</td>
 						<td class="text-center">
 							{if $modal->auto_open}
 								{$modal->auto_open}s

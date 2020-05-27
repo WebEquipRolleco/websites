@@ -34,6 +34,10 @@ $(document).ready(function() {
 		$('.megamenu_level_2').slideUp('fast');
 	});
 
+	$('#footer').on('mouseover', function() {
+		$('.megamenu_level_2').slideUp('fast');
+	});
+
 	$('.display-step').on('click', function(e) {
 		e.preventDefault();
 

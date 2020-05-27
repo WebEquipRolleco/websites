@@ -46,6 +46,18 @@
 	</div>
 {/if}
 
+<div class="row">
+	<div class="col-lg-3" id="check_customers">
+
+	</div>
+	<div class="col-lg-3" id="check_orders">
+
+	</div>
+	<div class="col-lg-3" id="check_carts">
+
+	</div>
+</div>
+
 <script>
 	var is_configured = {$is_configured};
 	$(document).ready(function() {
@@ -60,6 +72,15 @@
 			
 			e.preventDefault();
 			loadActions();
+		});
+
+		loadData('customers', false);
+		loadData('orders', false);
+		loadData('carts', false);
+
+		$(document).on('click', '.load-data', function(e) {
+			e.preventDefault();
+			loadData($(this).data('type'), $(this).data('update'));
 		});
 
 		if(is_configured) {
@@ -102,4 +123,20 @@
 			}
 		);
 	}
+
+	function loadData(type, update) {
+		$('#refresh_'+type).addClass('icon-spin');
+		$.post(
+			"{$link->getAdminLink('AdminModules')}&configure=webequip_transfer", {
+				ajax:true, 
+				action: 'load_'+type,
+				update: update,
+				skip_test: true
+			},
+			function(response) {
+				$("#check_"+type).html(response);
+			}
+		);
+	}
+
 </script>

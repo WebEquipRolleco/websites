@@ -83,14 +83,12 @@ class Modal extends ObjectModel {
 
     public static function createTable() {
         $check = Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME." (`id` INT NOT NULL AUTO_INCREMENT, `icon` VARCHAR(50) NULL, `title` VARCHAR(255) NULL, `subtitle` VARCHAR(255) NULL, `content` TEXT NULL, `transition_in` VARCHAR(255) NULL, `transition_out` VARCHAR(255) NULL, `auto_open` INTEGER(11) NULL, `auto_close` INTEGER(11) NULL, `fullscreen` TINYINT(1) DEFAULT 0, `close_button` TINYINT(1) DEFAULT 1, `close_escape` TINYINT(1) DEFAULT 1, `close_overlay` TINYINT(1) DEFAULT 1,  `header_color` VARCHAR(20) NULL, `overlay` TINYINT(1) DEFAULT 1, `width` VARCHAR(10) NULL, `top` VARCHAR(10) NULL, `bottom` VARCHAR(10) NULL, `date_begin` DATE NULL DEFAULT NULL, `date_end` DATE NULL DEFAULT NULL, `active` TINYINT(1) DEFAULT 1, `browsing` INTEGER(11) NULL, `expiration` INTEGER(11) NULL, `validation` TINYINT(1) DEFAULT 0, `display_for_customers` TINYINT NOT NULL DEFAULT '1', `display_for_guests` TINYINT NOT NULL DEFAULT '1', `allow_pages` VARCHAR(255) NULL DEFAULT NULL, `disable_pages` VARCHAR(255) NULL DEFAULT NULL, `allow_customers` VARCHAR(255) NULL DEFAULT NULL, `disable_customers` VARCHAR(255) NULL DEFAULT NULL, `allow_groups` VARCHAR(255) NULL DEFAULT NULL, `disable_groups` VARCHAR(255) NULL DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE = InnoDB;");
-        $check .= Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME."_shop (`id_modal` INT NOT NULL, `id_shop` INT NOT NULL, `active` TINYINT(1) DEFAULT 1, PRIMARY KEY (`id_modal`, `id_shop`)) ENGINE = InnoDB;");
 
         return $check;
     }
 
     public static function removeTable() {
         $check = Db::getInstance()->execute("DROP TABLE IF EXISTS "._DB_PREFIX_.self::TABLE_NAME);
-        $check .= Db::getInstance()->execute("DROP TABLE IF EXISTS "._DB_PREFIX_.self::TABLE_NAME."_shop");
         return $check;
     }
 
@@ -105,10 +103,7 @@ class Modal extends ObjectModel {
     	return $data;
     }
 
-    public static function find($id_shop = null, $page_name = null, $id_customer = null, $id_group = null, $exclude = null) {
-
-        if(!$id_shop)
-            $id_shop = Context::getContext()->shop->id;
+    public static function find($page_name = null, $id_customer = null, $id_group = null, $exclude = null) {
 
         if(!$page_name)
             $page_name = Context::getContext()->smarty->tpl_vars['page']->value['page_name'];
@@ -127,7 +122,7 @@ class Modal extends ObjectModel {
         $date = date('Y-m-d');
 
         $data = array();
-        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." m, "._DB_PREFIX_.self::TABLE_NAME."_shop ms WHERE m.id = ms.id_modal AND m.active=1 AND ms.id_shop=$id_shop AND ms.active=1 AND (m.disable_pages IN('', NULL) OR m.disable_pages NOT LIKE '%$page_name%') AND (m.allow_pages IN('', NULL) OR m.allow_pages LIKE '%$page_name%') AND (m.date_begin IN('0000-00-00', NULL) OR m.date_begin <= '$date') AND (m.date_end IN('0000-00-00', NULL) OR date_end >= '$date') AND (m.allow_customers IN('', NULL) OR m.allow_customers LIKE '%@$id_customer@%') AND (m.disable_customers IN('', NULL) OR m.disable_customers NOT LIKE '%@$id_customer@%') AND (m.allow_groups IN ('', NULL) OR m.allow_groups LIKE '%@$id_group@%') AND (m.disable_groups IN ('', NULL) OR m.disable_groups NOT LIKE '%@$id_group@%') AND (m.browsing = 0 OR m.browsing <= $browsing)";
+        $sql = "SELECT ".self::TABLE_PRIMARY." FROM "._DB_PREFIX_.self::TABLE_NAME." m WHERE m.active=1 AND (m.disable_pages IN('', NULL) OR m.disable_pages NOT LIKE '%$page_name%') AND (m.allow_pages IN('', NULL) OR m.allow_pages LIKE '%$page_name%') AND (m.date_begin IN('0000-00-00', NULL) OR m.date_begin <= '$date') AND (m.date_end IN('0000-00-00', NULL) OR date_end >= '$date') AND (m.allow_customers IN('', NULL) OR m.allow_customers LIKE '%@$id_customer@%') AND (m.disable_customers IN('', NULL) OR m.disable_customers NOT LIKE '%@$id_customer@%') AND (m.allow_groups IN ('', NULL) OR m.allow_groups LIKE '%@$id_group@%') AND (m.disable_groups IN ('', NULL) OR m.disable_groups NOT LIKE '%@$id_group@%') AND (m.browsing = 0 OR m.browsing <= $browsing)";
 
         if($id_customer)
             $sql .= " AND m.display_for_customers = 1";
@@ -145,17 +140,6 @@ class Modal extends ObjectModel {
         return $data;
     }
 
-    public function getShops() {
-        
-        if(!$this->id)
-            return array();
-
-        if(!$this->shops)
-            $this->shops = Db::getInstance()->executeS("SELECT * FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_modal = ".$this->id);
-    
-        return $this->shops;
-    }
-
     public function getAllowCustomersIds() {
         return array_filter(explode(",", str_replace("@", '', $this->allow_customers)));
     }
@@ -168,32 +152,6 @@ class Modal extends ObjectModel {
     }
     public function getDisableGroupsIds() {
         return array_filter(explode(",", str_replace("@", '', $this->disable_groups)));
-    }
-
-    public function erazeShops() {
-        return Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.self::TABLE_NAME."_shop WHERE id_modal = ".$this->id);
-    }
-
-    public function addShop($id_shop, $status) {
-        return Db::getInstance()->execute("INSERT INTO "._DB_PREFIX_.self::TABLE_NAME."_shop VALUES(".$this->id.", $id_shop, $status)");
-    }
-
-    public function countShops() {
-        
-        $nb = 0;
-        foreach($this->getShops() as $shop)
-            if($shop['active']) $nb++;
-
-        return $nb;
-    }
-
-    public function hasShop($id_shop) {
-
-        foreach($this->getShops() as $row)
-            if($row['id_shop'] == $id_shop)
-                return $row['active'];
-
-        return false;
     }
 
     public function getOptions() {

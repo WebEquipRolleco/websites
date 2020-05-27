@@ -13,23 +13,6 @@
 				<input type="date" class="form-control" name="modal[date_end]" value="{$modal->date_end}">
 			</div>
 		</div>
-		<div class="panel">
-			<div class="panel-heading">
-				<b>{l s="Multi-boutique" mod="webequip_modal"}</b>
-			</div>
-	        {foreach from=$shops item=shop}
-	        	<div class="form-group text-center">
-					<label>{$shop.name}</label>
-					<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right: auto;">
-						<input type="radio" name="modal[shops][{$shop.id_shop}]" id="shop_{$shop.id_shop}_on" value="1" {if $modal->hasShop($shop.id_shop)}checked{/if}>
-						<label for="shop_{$shop.id_shop}_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
-						<input type="radio" name="modal[shops][{$shop.id_shop}]" id="shop_{$shop.id_shop}_off" value="0" {if !$modal->hasShop($shop.id_shop)}checked{/if}>
-						<label for="shop_{$shop.id_shop}_off">{l s='Non' d='Shop.Theme.Labels'}</label>
-						<a class="slide-button btn"></a>
-					</span>
-				</div>
-	        {/foreach}
-	    </div>
 	    <div class="panel">
 			<div class="panel-heading">
 				<b>{l s="Restrictions globales" mod="webequip_modal"}</b>

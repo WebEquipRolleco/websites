@@ -180,7 +180,8 @@ class webequip_transfer extends Module {
 		if(Tools::getValue('ajax')) {
 
 			// Test de la connexion 
-			$this->connectToDB();
+			if(!Tools::getValue('skip_test'))
+				$this->connectToDB();
 
     		// Gestion des transfert
 			switch (Tools::getValue('action')) {
@@ -208,6 +209,24 @@ class webequip_transfer extends Module {
 						die("<div class='alert alert-success'>Transfert terminé : ".$this->nb_rows." lignes importées</div>");
 					else
 						die("<div class='alert alert-success'>Transfert terminé</div>");
+				break;
+
+				case 'load_customers':
+					if(Tools::getValue('update') == 1) $this->updateOldCustomers();
+					$this->context->smarty->assign('nb', Db::getInstance()->getValue('SELECT COUNT(*) FROM ps_customer WHERE id_shop <> 1'));
+					die($this->display(__FILE__, 'bloc_old_customers.tpl'));
+				break;
+
+				case 'load_orders':
+					if(Tools::getValue('update') == 1) $this->updateOldOrders();
+				$this->context->smarty->assign('nb', Db::getInstance()->getValue('SELECT COUNT(*) FROM ps_orders WHERE id_shop <> 1'));
+					die($this->display(__FILE__, 'bloc_old_orders.tpl'));
+				break;
+
+				case 'load_carts':
+					if(Tools::getValue('update') == 1) $this->updateOldCarts();
+				$this->context->smarty->assign('nb', Db::getInstance()->getValue('SELECT COUNT(*) FROM ps_cart WHERE id_shop <> 1'));
+					die($this->display(__FILE__, 'bloc_old_carts.tpl'));
 				break;
 			}	
 		}
@@ -1686,6 +1705,53 @@ class webequip_transfer extends Module {
 		$product->record($update);
 		ProductMatching::recordRow($row['id_product'], $row['id_product']);
 		$this->nb_rows++;
+	}
+
+	/**
+	* Transfert des comptes clients vers Rolléco
+	**/
+	private function updateOldCustomers() {
+
+		foreach(Db::getInstance()->executeS("SELECT id_customer, email FROM ps_customer WHERE id_shop <> 1") as $row) {
+
+			// Vérifier la présence du client sur rolléco
+			$id = Db::getInstance()->getValue("SELECT id_customer FROM ps_customer WHERE email ='".$row['email']."' AND id_shop = 1");
+
+			// Le client n'est pas sur Rolléco, on le transfère
+			if(!$id)
+				Db::getInstance()->execute("UPDATE ps_customer SET id_shop = 1 WHERE id_customer = ".$row['id_customer']);
+			// Le client est déjà sur Rolléco, on affecte ses données au client trouvé avant de la supprimer
+			else {
+
+				// Adresses, paniers, messages, commandes, réductions, devis, prix personnalisés
+				foreach(array('ps_address', 'ps_cart', 'ps_message', 'ps_orders', 'ps_order_slip', 'ps_quotation', 'ps_specific_price') as $table)
+					Db::getInstance()->execute("UPDATE $table SET id_customer = ".$row['id_customer']." WHERE id_customer = $id");
+
+				// On supprime le client sur l'ancienne boutique
+				Db::getInstance()->execute("DELETE FROM ps_customer WHERE id_customer = ".$row['id_customer']);
+			}
+
+		}
+	}
+
+	/**
+	* Transfert des commandes clients vers Rolléco
+	**/
+	private function updateOldOrders() {
+		// On affecte simplement les commandes chez Rolléco
+		Db::getInstance()->execute("UPDATE ps_orders SET id_shop = 1");
+		// On change aussi le détail des commandes
+		Db::getInstance()->execute("UPDATE ps_order_detail SET id_shop = 1");
+	}
+
+	/**
+	* Transfert des paniers clients vers Rolléco
+	**/
+	private function updateOldCarts() {
+		// On affecte simplement les paniers chez Rolléco
+		Db::getInstance()->execute("UPDATE ps_cart SET id_shop = 1");
+		// On change aussi le détail des paniers
+		Db::getInstance()->execute("UPDATE ps_cart_product SET id_shop = 1");
 	}
 
 }
