@@ -727,8 +727,8 @@ h1.product-title {
   vertical-align: top;
 }
 .megamenu_level_2 li img {
-  height: 175px;
-  width: 175px;
+  height: 150px;
+  width: 150px;
   margin-bottom: 15px;
 }
 .megamenu_level_2 li .title {
@@ -736,7 +736,7 @@ h1.product-title {
   margin-bottom: 15px;
   height: 32px;
   font-size: 12px;
-  width: 175px;
+  width: 150px;
   color: #4c4c4c;
 }
 .megamenu_level_2 li:hover .title {
