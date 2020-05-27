@@ -2,9 +2,9 @@
 	<div id="home_displays" class="row">
 		{foreach from=$displays item=display}
 			<div class="col-lg-4 margin-top-15 text-center">
-				<a href="{$display->link}">
+				{if $display->link}<a href="{$display->link}">{/if}
 					<img src="{$display->getUrl()}" title="{$display->name}">
-				</a>
+				{if $display->link}</a>{/if}
 			</div>
 		{/foreach}
 	</div>

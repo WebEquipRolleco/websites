@@ -40,3 +40,4 @@ var/logs/
 var/sessions/
 documents/*
 administration/import/*
+modules/webequip_display/img/*

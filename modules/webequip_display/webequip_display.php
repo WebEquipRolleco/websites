@@ -66,12 +66,6 @@ class Webequip_Display extends Module {
             $display->active = $form['active'];
             $display->save();
 
-            if(isset($form['shops']) and is_array($form['shops'])) {
-                $display->erazeShops();
-
-                foreach($form['shops'] as $id_shop => $status)
-                    $display->addShop($id_shop, $status);
-            }
         }
 
         $this->context->smarty->assign('displays', Display::findAll());
@@ -83,15 +77,13 @@ class Webequip_Display extends Module {
     public function ajaxProcessDetails() {
 
         $display = new Display(Tools::getValue('id'));
-
         $this->context->smarty->assign('display', $display);
-        $this->context->smarty->assign('shops', Shop::getShops());
 
         die($this->display(__FILE__, 'details.tpl'));
     }
 
     public function hookDisplayHome($params) {
-        $this->context->smarty->assign('displays', Display::find());
+        $this->context->smarty->assign('displays', Display::find(false));
         return $this->display(__FILE__, 'content.tpl');
     }
 
