@@ -73,8 +73,8 @@ class ExportBeezup extends Export {
 				$data = array();
 		    	$data[] = $product->reference;
 				$data[] = "Rolléco";
-				$data[] = $product->name;
-				$data[] = '"'.$product->description_short.'"';
+				$data[] = trim($product->name.' '.$product->comment_1);
+				$data[] = str_replace(array(";", "\n"), ".", strip_tags($product->description_short));
 				$data[] = SpecificPrice::getMinimumPrice($product->id);
 				$data[] = SpecificPrice::getMaximumPrice($product->id);
 				$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
@@ -116,8 +116,8 @@ class ExportBeezup extends Export {
 					$data = array();
 			    	$data[] = $combination->reference;
 					$data[] = "Rolléco";
-					$data[] = $product->name;
-					$data[] = '"'.$product->description_short.'"';
+					$data[] = trim($product->name.' '.$combination->comment_1);
+					$data[] = str_replace(array(";", "\n"), ".", strip_tags($product->description_short));
 					$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id);
 					$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id);
 					$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
