@@ -7,7 +7,6 @@ class Partner extends ObjectModel {
 
 	public $id = null;
 	public $name = null;
-	public $link = null;
 	public $picture = null;
 
 	public static $definition = array(
@@ -15,13 +14,12 @@ class Partner extends ObjectModel {
         'primary' => self::TABLE_PRIMARY,
         'fields' => array(
             'name' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
-            'link' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255),
             'picture' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'size' => 255)
         ),
     );
 
     public static function createTable() {
-    	return Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME." (`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NULL, `link` VARCHAR(255) NULL, `picture` VARCHAR(255) NULL, PRIMARY KEY (`id`)) ENGINE = InnoDB;");
+    	return Db::getInstance()->execute("CREATE TABLE "._DB_PREFIX_.self::TABLE_NAME." (`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NULL, `picture` VARCHAR(255) NULL, PRIMARY KEY (`id`)) ENGINE = InnoDB;");
     }
 
     public static function removeTable() {

@@ -9,9 +9,6 @@
 					<input type="text" class="form-control" name="new_slide[name]" placeholder="Nom">
 				</div>
 				<div class="col-lg-3">
-					<input type="text" class="form-control" name="new_slide[link]" placeholder="Lien">
-				</div>
-				<div class="col-lg-3">
 					<input type="file" class="form-control" name="new_slide[file]" placeholder="Fichier" required>
 				</div>
 				<div class="col-lg-3">
@@ -39,7 +36,6 @@
 					<thead>
 						<tr>
 							<th>{l s="Nom" d='Shop.Theme.Labels'}</th>
-							<th>{l s="Lien" d='Shop.Theme.Labels'}</th>
 							<th>{l s="image" d='Shop.Theme.Labels'}</th>
 							<th></th>
 						</tr>
@@ -48,7 +44,6 @@
 						{foreach from=$slides item=slide}
 							<tr>
 								<td>{$slide->name}</td>
-								<td>{$slide->link}</td>
 								<td><img src='{$slide->getUrl()}' style="height:50px" title='{$slide->picture}'></td>
 								<td class="text-right">
 									<button type="submit" class="btn btn-xs btn-danger" name="remove_slide" value="{$slide->id}" title="Supprimer">

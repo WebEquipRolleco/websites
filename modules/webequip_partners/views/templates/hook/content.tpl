@@ -5,9 +5,7 @@
 			<section id="partners">
 				{foreach from=$slides item=slide}
 	    			<div class="slide">
-	    				<a href="{$slide->link}">
-	    					<img src="{$slide->getUrl()}" title="{$slide->name}">
-	    				</a>
+	    				<img src="{$slide->getUrl()}" title="{$slide->name}">
 	    			</div>
 	    		{/foreach}
 	    	</section>

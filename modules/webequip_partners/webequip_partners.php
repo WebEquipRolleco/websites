@@ -57,7 +57,6 @@ class Webequip_Partners extends Module {
 
                 $partner = new Partner();
                 $partner->name = $form['name'];
-                $partner->link = $form['link'];
                 $partner->picture = $file_name;
 
                 $partner->save();
