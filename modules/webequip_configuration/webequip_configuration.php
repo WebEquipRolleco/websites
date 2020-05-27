@@ -98,6 +98,9 @@ class Webequip_Configuration extends Module {
         if(!isTabInstalled("AdminDocuments"))
             $check .= $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'file');
 
+        if(!isTabInstalled("AdminDocuments"))
+            $check .= $this->installTab("Beezup", "AdminBeezup", 'WEBEQUIP', 'bug');
+
         return $check;
     }
 
@@ -204,6 +207,10 @@ class Webequip_Configuration extends Module {
             case 'DOCUMENTS':
                 $this->installTab("Documents", "AdminDocuments", 'WEBEQUIP', 'description');
             break;
+
+            case 'BEEZUP':
+                $this->installTab("Beezup", "AdminBeezup", 'WEBEQUIP', 'trending_up');
+            break;
         }
 
         // Suppression des menus
@@ -227,6 +234,7 @@ class Webequip_Configuration extends Module {
         $tabs[1]['children'][] = array('name'=>"Résultats", 'id'=>$this->isTabInstalled("AdminResults"), 'action'=>'RESULTS');
         $tabs[1]['children'][] = array('name'=>"Documents", 'id'=>$this->isTabInstalled("AdminDocuments"), 'action'=>'DOCUMENTS');
         $tabs[1]['children'][] = array('name'=>"Import / Export", 'id'=>$this->isTabInstalled("AdminImportExport"), 'action'=>'IMPORT_EXPORT');
+        $tabs[1]['children'][] = array('name'=>"BEEZUP", 'id'=>$this->isTabInstalled("AdminBeezup"), 'action'=>'BEEZUP');
 
         $tabs[2] = array('name'=>'CLIENTS');
         $tabs[2]['children'][] = array('name'=>"Newsletter", 'id'=>$this->isTabInstalled('AdminNewsletter'), 'action'=>'NEWSLETTER');

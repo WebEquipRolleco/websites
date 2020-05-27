@@ -17,6 +17,7 @@ class AdminSkuController extends AdminController {
     public function getConfigNames() {
     	return array("SKU_PRODUCT_PREFIX", "SKU_COMBINATION_PREFIX", "SKU_SEPARATOR");
     }
+    
     /**
 	* Récupère la configuration
 	**/

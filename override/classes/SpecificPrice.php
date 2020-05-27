@@ -89,4 +89,45 @@ class SpecificPrice extends SpecificPriceCore {
     public static function getDefaultPrices($id_product, $id_product_attribute = false) {
     	return Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow('SELECT * FROM `'._DB_PREFIX_.'specific_price` WHERE `id_product` = '.(int)$id_product.($id_product_attribute ? ' AND id_product_attribute = '.(int)$id_product_attribute : ''));
     }
+
+    /**
+    * Retourne le prix spécifique minimum d'un produit ou d'une déclinaison
+	* @param int $id_product
+	* @param int $id_combination
+	* @param bool $use_taxes
+	* @return float
+    **/
+    public static function getMinimumPrice($id_product, $id_combination = null, $use_taxes = false) {
+
+    	$sql = "SELECT MIN(price) FROM ps_specific_price WHERE id_product = $id_product";
+    	if($id_combination) $sql .= " AND id_product_attribute = $id_combination";
+
+    	$price = Db::getInstance()->getValue($sql);
+    	if($use_taxes) $price *= 1.2;
+
+    	return $price;
+    }
+
+    /**
+    * Retourne le prix spécifique maximum d'un produit ou d'une déclinaison
+	* @param int $id_product
+	* @param int $id_combination
+	* @param bool $use_taxes
+	* @param bool $full_price
+	* @return float
+    **/
+    public static function getMaximumPrice($id_product, $id_combination = null, $use_taxes = false, $full_price = false) {
+
+    	if($full_price) $column = "full_price";
+    	else $column = "price";
+
+    	$sql = "SELECT MAX($column) FROM ps_specific_price WHERE id_product = $id_product";
+    	if($id_combination) $sql .= " AND id_product_attribute = $id_combination";
+
+    	$price = Db::getInstance()->getValue($sql);
+    	if($use_taxes) $price *= 1.2;
+
+    	return $price;
+    }
+
 }

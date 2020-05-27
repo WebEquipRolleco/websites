@@ -214,7 +214,7 @@ class Product extends ProductCore {
 	* @return string
 	**/
 	public static function loadColumn($id_product, $nb_column) {
-		return Db::getInstance()->executeS("SELECT fl.public_name AS name, fvl.value FROM ps_feature_product fp, ps_feature f, ps_feature_lang fl, ps_feature_value_lang fvl WHERE fp.id_feature = f.id_feature AND fl.id_feature = fp.id_feature AND fp.id_product = $id_product AND fp.id_feature_value = fvl.id_feature_value AND f.column = $nb_column ORDER BY f.position ASC");
+		return Db::getInstance()->executeS("SELECT fl.public_name AS name, fv.reference, fvl.value FROM ps_feature_product fp, ps_feature f, ps_feature_lang fl, ps_feature_value_lang fvl, ps_feature_value fv WHERE fp.id_feature = f.id_feature AND fl.id_feature = fp.id_feature AND fp.id_product = $id_product AND fp.id_feature_value = fvl.id_feature_value AND fv.id_feature_value = fvl.id_feature_value AND f.column = $nb_column ORDER BY f.position ASC");
 	}
 
 	/**

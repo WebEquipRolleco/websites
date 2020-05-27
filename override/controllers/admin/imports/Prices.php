@@ -85,6 +85,7 @@ class ImportPrices extends Import {
                     // Mise à jour du produit ou de la déclinaison
                     if($price->getTarget()) {
 
+                        if(!$price->getTarget()->price) $price->getTarget()->price = 0;
                         $price->getTarget()->rollcash = str_replace(',', '.', $row['rollcash']);
                         $price->getTarget()->batch = (int)$row['batch'];
                         $price->getTarget()->custom_ecotax = str_replace(',', '.', $row['ecotax']);

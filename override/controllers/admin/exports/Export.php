@@ -2,6 +2,7 @@
 
 require_once("AttributeGroups.php");
 require_once("AttributeValues.php");
+require_once("Beezup.php");
 require_once("Categories.php");
 require_once("Comments.php");
 require_once("FeatureGroups.php");

@@ -39,4 +39,28 @@ class Image extends ImageCore {
 
 		return $check_path;
 	}
+
+	/**
+	* Retourne l'url du fichier 
+	* @param string $type cart/home/small/medium/large
+	* @return string
+	**/
+	public function getFileUrl($type = null) {
+
+		$path = _PS_BASE_URL_."/img/p/".$this->getImgPath();
+		$extension = ".".$this->image_format;
+		
+		if($type) {
+			$check_path = $path."-".$type."_default".$extension;
+			if(is_file($check_path))
+				return $check_path; 
+		}
+
+		$check_path = $path.$extension;
+		if(is_file($check_path))
+			return $check_path;
+
+		return $check_path;
+		
+	}
 }
