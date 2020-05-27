@@ -73,18 +73,14 @@
           
         </a>
       </div>
-      <div class="col-xs-12 col-lg-3">
-          <form method="get" action="{$link->getPageLink('search')}" class="margin-top-15 margin-bottom-10">
-            <input type="hidden" name="controller" value="search">
+      <div class="col-xs-12 col-lg-4">
+          <div class="margin-top-15 margin-bottom-10">
             <p id="brand_description">Votre équipement à prix éco - Site réservé aux professionnels</p>
             <input type="text" id="search_query_top" style="width:100%; padding:10px" placeholder="{l s='Rechercher'}">
-            <a href="" class="hvr-icon-forward" style="position:absolute; top:42px; right:25px;">
-              <i class="fa fa-2x fa-play hvr-icon"></i>
-            </a>
-          </form>
+          </div>
       </div>
 
-      <div class="col-xs-12 col-lg-6 text-right">
+      <div class="col-xs-12 col-lg-5 text-right">
         {hook h='displayNav2'}
       </div>
 
