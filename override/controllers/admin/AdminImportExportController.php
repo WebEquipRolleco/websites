@@ -90,6 +90,15 @@ class AdminImportExportControllerCore extends AdminController {
                 case 'comments':
                     $export = new ExportComments();
                 break;
+
+                case 'products-without-prices':
+                    $export = new ExportProductsWithoutPrices();
+                break;
+
+                case 'combinations-without-prices':
+                    $export = new ExportCombinationsWithoutPrices();
+                break;
+
             }
 
             if(isset($export)) {

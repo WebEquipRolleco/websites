@@ -13,6 +13,9 @@ require_once("Prices.php");
 require_once("Products.php");
 require_once("URL.php");
 
+require_once("CombinationsWithoutPrices.php");
+require_once("ProductsWithoutPrices.php");
+
 class Export {
 
 	protected $separator;

@@ -177,6 +177,27 @@
 			</div>
 		</form>
 	</div>
+	<div class="col-lg-3">
+		<form method="post">
+			<div class="panel">
+				<div class="panel-heading">
+					<i class="icon-lock text-danger"></i> <b class="text-danger">{l s="Sécurité"}</b>
+				</div>
+				<div class="panel-content">
+					<div>
+						<button type="submit" class="btn btn-block btn-danger" name="action" value="export_products-without-prices">
+							<i class="icon-bug"></i> &nbsp; <b>Exporter : Produits actifs sans prix</b>
+						</button>
+					</div>
+					<div style="margin-top:15px">
+						<button type="submit" class="btn btn-block btn-danger" name="action" value="export_combinations-without-prices">
+							<i class="icon-bug"></i> &nbsp; <b>Exporter : Déclinaisons actives sans prix</b>
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 
 <div class="row">
