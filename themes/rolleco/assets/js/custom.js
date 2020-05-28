@@ -193,11 +193,13 @@ function updateSelectionPrice() {
 		$('#total_price_selection').fadeIn('fast');
 		$('#total_price_selection_wt').fadeIn('fast');
 		$('#add_all_to_cart').removeClass('disabled');
+		$('#add_all_to_cart').prop('disabled', false);
 	}
 	else {
 		$('#total_price_selection').fadeOut('fast');
 		$('#total_price_selection_wt').fadeOut('fast');
 		$('#add_all_to_cart').addClass('disabled');
+		$('#add_all_to_cart').prop('disabled', true);
 	}
 
 }
