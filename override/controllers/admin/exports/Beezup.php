@@ -47,7 +47,7 @@ class ExportBeezup extends Export {
     	$csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
     	$format = Configuration::get(AdminBeezupControllerCore::CONFIG_IMG_FORMAT);
 
-    	foreach(Db::getInstance()->executeS("SELECT id_product FROM ps_product") as $row) {
+    	foreach(Db::getInstance()->executeS("SELECT id_product FROM ps_product WHERE active = 1") as $row) {
 
     		$product = new Product($row['id_product'], true, 1);
     		$combinations = Combination::getCombinations($product->id);
@@ -74,7 +74,7 @@ class ExportBeezup extends Export {
 		    	$data[] = $product->reference;
 				$data[] = "Rolléco";
 				$data[] = trim($product->name.' '.$product->comment_1);
-				$data[] = str_replace(array(";", "\n"), ".", strip_tags($product->description_short));
+				$data[] = str_replace(array(";", "\n", "\r"), ".", strip_tags($product->description_short));
 				$data[] = SpecificPrice::getMinimumPrice($product->id);
 				$data[] = SpecificPrice::getMaximumPrice($product->id);
 				$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");

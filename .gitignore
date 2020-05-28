@@ -40,4 +40,8 @@ var/logs/
 var/sessions/
 documents/*
 administration/import/*
+
+# Images modules
+modules/ps_imageslider/images/*
 modules/webequip_display/img/*
+modules/webequip_partners/img/*
