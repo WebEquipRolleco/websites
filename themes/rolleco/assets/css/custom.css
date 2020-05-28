@@ -678,6 +678,7 @@ h1.product-title {
   padding-right: 20px;
   text-transform: uppercase;
   font-weight: bold;
+  color: white;
 }
 #megamenu li.main-category a {
   vertical-align: middle;

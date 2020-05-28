@@ -41,11 +41,11 @@
     {assign var=font_size value=Configuration::get('MENU_FORCED_FONT_SIZE')}
     <menu id="megamenu" type="navigation">
       {foreach from=$nodes key=key item=node}
-        <li class="main-category">
-          <a href="{$node.url}" class="show-menu" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if} {if $font_size}style="font-size:{$font_size}px"{/if}>
+        <a href="{$node.url}" class="show-menu" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if} {if $font_size}style="font-size:{$font_size}px"{/if}>
+          <li class="main-category">
             {$node.label}
-          </a>
-        </li>
+          </li>
+        </a>
         {if $node.children|count}
             {sub_menu nodes=$node.children index=$key}
         {/if}
