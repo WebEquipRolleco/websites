@@ -105,7 +105,11 @@ class AdminBeezupControllerCore extends AdminController {
 			// Générer le nouveau flux
 			$export = new ExportBeezup();
 
-			file_put_contents(_PS_ROOT_DIR_.$this->directory.self::CONFIG_FILE, $export->getContent());
+			$fp = fopen(_PS_ROOT_DIR_.$this->directory.self::CONFIG_FILE, "w+");
+			foreach($export->getLines() as $line)
+				fputcsv($fp, $line, ";");
+			fclose($fp);
+			//file_put_contents(_PS_ROOT_DIR_.$this->directory.self::CONFIG_FILE, $export->getContent());
 		}
 	}
 

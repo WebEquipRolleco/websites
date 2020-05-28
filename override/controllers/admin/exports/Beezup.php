@@ -42,9 +42,9 @@ class ExportBeezup extends Export {
     /**
     * Retourne le contenu du fichier CSV
     **/
-    public function getContent() {
+    public function getLines() {
 
-    	$csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
+    	$lines[] = $this->getHeader();
     	$format = Configuration::get(AdminBeezupControllerCore::CONFIG_IMG_FORMAT);
 
     	foreach(Db::getInstance()->executeS("SELECT id_product FROM ps_product WHERE active = 1") as $row) {
@@ -99,7 +99,7 @@ class ExportBeezup extends Export {
 				$data[] = $category_3->name;
 				$data[] = $product->id;
 
-				$csv .= implode($this->separator, $data).parent::END_OF_LINE;
+				$lines[] = $data;
 			}
 			// Export déclinaison
 			else {
@@ -142,12 +142,12 @@ class ExportBeezup extends Export {
 					$data[] = $category_3->name;
 					$data[] = $combination->id;
 
-					$csv .= implode($this->separator, $data).parent::END_OF_LINE;
+					$lines[] = $data;
 				}
 			}
 		}
 
-    	return $csv;	
+    	return $lines;	
     }
 
     /**
