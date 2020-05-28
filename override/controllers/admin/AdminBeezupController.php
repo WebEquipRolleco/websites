@@ -109,7 +109,6 @@ class AdminBeezupControllerCore extends AdminController {
 			foreach($export->getLines() as $line)
 				fputcsv($fp, $line, ";");
 			fclose($fp);
-			//file_put_contents(_PS_ROOT_DIR_.$this->directory.self::CONFIG_FILE, $export->getContent());
 		}
 	}
 

@@ -61,70 +61,28 @@ class ExportBeezup extends Export {
 
 			// Export produit simple
 			if(empty($combinations)) {
+				if($product->reference) {
 
-				$picture = Product::getCoverPicture($product->id);
-				$picture = $picture->getFileUrl($format);
-
-				$infos = Product::loadColumn($product->id, 2);
-
-				$min_crossed_ht = SpecificPrice::getMinimumPrice($product->id, null, false, true);
-				$max_crossed_ht = SpecificPrice::getMaximumPrice($product->id, null, false, true);
-
-				$data = array();
-		    	$data[] = $product->reference;
-				$data[] = "Rolléco";
-				$data[] = trim($product->name.' '.$product->comment_1);
-				$data[] = str_replace(array(";", "\n", "\r"), ".", strip_tags($product->description_short));
-				$data[] = SpecificPrice::getMinimumPrice($product->id);
-				$data[] = SpecificPrice::getMaximumPrice($product->id);
-				$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
-				$data[] = SpecificPrice::getMinimumPrice($product->id, null, true);
-				$data[] = SpecificPrice::getMinimumPrice($product->id, null, true, true);
-				$data[] = SpecificPrice::getMaximumPrice($product->id, null, true);
-				$data[] = SpecificPrice::getMaximumPrice($product->id, null, true, true);
-				$data[] = "Neuf";
-				$data[] = $link;
-				$data[] = $picture;
-				$data[] = $picture;
-				$data[] = 0;
-				$data[] = "En stock";
-				$data[] = (isset($infos['reference']) ? $infos['reference'] : 0);
-				$data[] = $category_1->name;
-				$data[] = $category_2->name;
-				$data[] = $category_3->name;
-				$data[] = "Livraison gratuite dès 1€ !";
-				$data[] = $category_3->name;
-				$data[] = 1;
-				$data[] = "EUR";
-				$data[] = $category_3->name;
-				$data[] = $product->id;
-
-				$lines[] = $data;
-			}
-			// Export déclinaison
-			else {
-				foreach($combinations as $combination) {
-					
-					$picture = Product::getCoverPicture($product->id, $combination->id);
+					$picture = Product::getCoverPicture($product->id);
 					$picture = $picture->getFileUrl($format);
 
-					$infos = Combination::loadColumn($combination->id, 2);
+					$infos = Product::loadColumn($product->id, 2);
 
-					$min_crossed_ht = SpecificPrice::getMinimumPrice($product->id, $combination->id, false, true);
-					$max_crossed_ht = SpecificPrice::getMaximumPrice($product->id, $combination->id, false, true);
+					$min_crossed_ht = SpecificPrice::getMinimumPrice($product->id, null, false, true);
+					$max_crossed_ht = SpecificPrice::getMaximumPrice($product->id, null, false, true);
 
 					$data = array();
-			    	$data[] = $combination->reference;
+			    	$data[] = $product->reference;
 					$data[] = "Rolléco";
-					$data[] = trim($product->name.' '.$combination->comment_1);
-					$data[] = str_replace(array(";", "\n"), ".", strip_tags($product->description_short));
-					$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id);
-					$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id);
+					$data[] = trim($product->name.' '.$product->comment_1);
+					$data[] = str_replace(array(";", "\n", "\r"), ".", strip_tags($product->description_short));
+					$data[] = SpecificPrice::getMinimumPrice($product->id);
+					$data[] = SpecificPrice::getMaximumPrice($product->id);
 					$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
-					$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id, true);
-					$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id, true, true);;
-					$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id, true);
-					$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id, true, true);
+					$data[] = SpecificPrice::getMinimumPrice($product->id, null, true);
+					$data[] = SpecificPrice::getMinimumPrice($product->id, null, true, true);
+					$data[] = SpecificPrice::getMaximumPrice($product->id, null, true);
+					$data[] = SpecificPrice::getMaximumPrice($product->id, null, true, true);
 					$data[] = "Neuf";
 					$data[] = $link;
 					$data[] = $picture;
@@ -140,9 +98,55 @@ class ExportBeezup extends Export {
 					$data[] = 1;
 					$data[] = "EUR";
 					$data[] = $category_3->name;
-					$data[] = $combination->id;
+					$data[] = $product->id;
 
 					$lines[] = $data;
+				}
+			}
+			// Export déclinaison
+			else {
+				foreach($combinations as $combination) {
+					if($combination->reference) {
+
+						$picture = Product::getCoverPicture($product->id, $combination->id);
+						$picture = $picture->getFileUrl($format);
+
+						$infos = Combination::loadColumn($combination->id, 2);
+
+						$min_crossed_ht = SpecificPrice::getMinimumPrice($product->id, $combination->id, false, true);
+						$max_crossed_ht = SpecificPrice::getMaximumPrice($product->id, $combination->id, false, true);
+
+						$data = array();
+				    	$data[] = $combination->reference;
+						$data[] = "Rolléco";
+						$data[] = trim($product->name.' '.$combination->comment_1);
+						$data[] = str_replace(array(";", "\n"), ".", strip_tags($product->description_short));
+						$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id);
+						$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id);
+						$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
+						$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id, true);
+						$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id, true, true);;
+						$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id, true);
+						$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id, true, true);
+						$data[] = "Neuf";
+						$data[] = $link;
+						$data[] = $picture;
+						$data[] = $picture;
+						$data[] = 0;
+						$data[] = "En stock";
+						$data[] = (isset($infos['reference']) ? $infos['reference'] : 0);
+						$data[] = $category_1->name;
+						$data[] = $category_2->name;
+						$data[] = $category_3->name;
+						$data[] = "Livraison gratuite dès 1€ !";
+						$data[] = $category_3->name;
+						$data[] = 1;
+						$data[] = "EUR";
+						$data[] = $category_3->name;
+						$data[] = $combination->id;
+
+						$lines[] = $data;
+					}
 				}
 			}
 		}
