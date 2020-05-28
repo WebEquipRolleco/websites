@@ -29,7 +29,7 @@
             {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, $quantity_wanted))}
             <small>HT</small>
           </span>
-          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice(Product::getPriceStatic($product.id_product, true, null, 2, null, false, true, $quantity_wanted))} {$product.labels.tax_long}</span>
+          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice(Product::getPriceStatic($product.id_product, true, null, 2, null, false, true, $quantity_wanted))} TTC</span>
 
           {if $product.has_discount}
             {if $product.discount_type === 'percentage'}
