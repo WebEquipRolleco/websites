@@ -44,7 +44,7 @@ class ExportProductsWithoutPrices extends Export {
 	public function export() {
 
         $suppliers = array();
-        $sql = "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND active = 1";
+        $sql = "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1";
 
         $context = Context::getContext();
         $csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
