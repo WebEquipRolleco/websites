@@ -178,7 +178,7 @@ class AdminAfterSalesControllerCore extends AdminController {
                 $data['{reference}'] = $sav->reference;
 
                 foreach($sav->getMails() as $email)
-                    Mail::send(1, "sav_change_status", $this->l("Mise à jour de votre SAV : ".$sav->reference), $data, $email, null, $this->email_from);
+                    Mail::send(1, "sav_change_status", $this->l("Mise à jour de votre SAV : ".$sav->reference), $data, $email, trim($sav->getCustomer()->firstname." ".$sav->getCustomer()->lastname), $this->email_from, $this->context->shop->name);
             }
 
             $sav->hasBeenUpdated();

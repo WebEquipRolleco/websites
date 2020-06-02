@@ -41,8 +41,8 @@
     </div>
   {else}
     <form>
-      <button type="submit" class="continue btn btn-success float-xs-right bold" name="confirm-addresses" value="1">
-          {l s='Continue' d='Shop.Theme.Actions'}
+      <button type="submit" class="continue btn btn-primary float-xs-right mb-3 bold" name="confirm-addresses" value="1">
+          {l s='Save' d='Shop.Theme.Actions'}
       </button>
       {if $customer.addresses|count > 0}
         <a class="js-cancel-address cancel-address float-xs-right" href="{url entity='order' params=['cancelAddress' => {$type}]}">{l s='Cancel' d='Shop.Theme.Actions'}</a>

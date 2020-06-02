@@ -38,8 +38,8 @@
         </label>
       </header>
       <hr>
-      <footer class="address-footer bg-grey">
-        {if $interactive}
+      {if $interactive}
+        <footer class="address-footer bg-grey">
           <a href="{url entity='order' params=['id_address' => $address.id, 'editAddress' => $type, 'token' => $token]}" class="btn btn-warning edit-address" data-link-action="edit-address" title="{l s='Edit' d='Shop.Theme.Actions'}">
             <i class="fa fa-edit edit"></i>
           </a>
@@ -47,8 +47,8 @@
             data-link-action="delete-address" title="{l s='Delete' d='Shop.Theme.Actions'}">
             <i class="fa fa-trash-alt delete"></i>
           </a>
-        {/if}
-      </footer>
+        </footer>
+      {/if}
     </article>
   {/foreach}
   {if $interactive}

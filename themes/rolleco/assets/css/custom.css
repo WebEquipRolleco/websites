@@ -327,7 +327,7 @@ h1.category-title {
 #checkout_step_list .checkout-step {
   display: block;
   padding: 10px 0px 10px 15px;
-  background-color: #999;
+  background-color: #efefef;
   font-weight: bold;
   text-transform: uppercase;
   color: #4c4c4c;

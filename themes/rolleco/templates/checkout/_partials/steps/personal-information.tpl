@@ -5,7 +5,7 @@
 
     <div class="row">
       <div class="col-xs-12 offset-lg-3 col-lg-6">
-        <div class="well text-center">
+        <div class="bg-light p-1 text-center">
             <i class="fa fa-4x fa-user margin-top-15"></i>
             <p>{l s="Connected as" d='Shop.Theme.Checkout'}</p>
             <p>

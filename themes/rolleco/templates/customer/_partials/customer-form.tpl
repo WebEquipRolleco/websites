@@ -40,25 +40,27 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-12">
-          <h3 class="section-title margin-top-sm">{l s="Nouveau mot de passe"}</h3>
-          <div id="new_password_area" class="form-group row ">
-            <div class="col-md-12">
-              <div class="input-group js-parent-focus">
-                <input class="form-control js-child-focus js-visible-password" name="new_password" type="password" value="" pattern=".{ 5, }">
-                <span class="input-group-btn">
-                  <button class="btn" type="button" data-action="show-password" data-text-show="{l s='Montrer'}" data-text-hide="{l s='Cacher'}">
-                    {l s='Montrer'}
-                  </button>
-                </span>
+      {if $logged}
+        <div class="row">
+          <div class="col-lg-12">
+            <h3 class="section-title margin-top-sm">{l s="Nouveau mot de passe"}</h3>
+            <div id="new_password_area" class="form-group row ">
+              <div class="col-md-12">
+                <div class="input-group js-parent-focus">
+                  <input class="form-control js-child-focus js-visible-password" name="new_password" type="password" value="" pattern=".{ 5, }">
+                  <span class="input-group-btn">
+                    <button class="btn" type="button" data-action="show-password" data-text-show="{l s='Montrer'}" data-text-hide="{l s='Cacher'}">
+                      {l s='Montrer'}
+                    </button>
+                  </span>
+                </div>
               </div>
+              <div class="col-lg-12 text-right text-muted"></div>
             </div>
-            <div class="col-lg-12 text-right text-muted"></div>
           </div>
         </div>
-      </div>
-
+      {/if}
+      
       {foreach from=$formFields item="field"}
         {if !$field.name|in_array:array('email', 'password', 'new_password', 'id_gender', 'firstname', 'lastname', 'id_account_type', 'company', 'chorus', 'siret', 'tva')}
           {block "form_field"}

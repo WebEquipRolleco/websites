@@ -3,6 +3,7 @@
 {block name='step_content'}
   <div class="js-address-form">
     <form method="POST" action="{$urls.pages.order}" data-refresh-url="{url entity='order' params=['ajax' => 1, 'action' => 'addressForm']}">
+      <input type="hidden" name="use_same_address" value="1">
 
       {*if !$use_same_address}
         <h2 class="h4">{l s='Shipping Address' d='Shop.Theme.Checkout'}</h2>
