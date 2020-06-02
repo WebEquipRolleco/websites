@@ -51,6 +51,13 @@
           {/if}
         {/block}
 
+        {block name='product_combination'}
+          <div class="text-center text-primary margin-bottom-10" style="min-height: 20px;">
+            {assign var="nb_combinations" value=Product::getNbCombinations($product.id_product)}
+            {if $nb_combinations}{$nb_combinations} Déclinaison(s){/if}
+          </div>
+        {/block}
+
         {block name='product_price_and_shipping'}
           {if $product.show_price}
             <div class="product-price-and-shipping">

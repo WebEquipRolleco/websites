@@ -238,4 +238,13 @@ class Product extends ProductCore {
     	$nb_prices = Db::getInstance()->getValue("SELECT COUNT(*) FROM ps_specific_price WHERE id_product = $id_product");
     	return $nb_prices > $nb_combinations;
     }
+
+    /**
+    * Retourne le nombre de déclinaisons d'un produit
+    * @param id_product
+    * @return int
+    **/
+    public static function getNbCombinations($id_product) {
+    	return (int)Db::getInstance()->getValue("SELECT COUNT(id_product_attribute) FROM ps_product_attribute WHERE id_product = $id_product");
+    }
 }
