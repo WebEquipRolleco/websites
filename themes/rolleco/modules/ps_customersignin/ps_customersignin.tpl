@@ -3,7 +3,6 @@
     <div class="user-info text-center">
       <a href="{$my_account_url}" class="account" title="{l s='View my customer account' d='Shop.Theme.Customeraccount'}" rel="nofollow">
         <i class="fa fa-2x fa-user"></i> <br />
-        <i class="fa fa-user hidden-md-up logged"></i>
         <span class="hidden-sm-down">{$customerName}</span>
       </a>
     </div>

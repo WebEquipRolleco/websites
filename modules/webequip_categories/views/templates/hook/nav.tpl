@@ -11,7 +11,7 @@
 	{/if}
 {/function}
 
-<ul id="nav_categories">
+<ul id="nav_categories" class="hidden-sm-down">
 	{foreach from=$categories item=category}
 		{display_category category=$category}
 	{/foreach}
