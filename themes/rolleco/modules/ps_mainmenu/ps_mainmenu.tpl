@@ -41,16 +41,6 @@
     {assign var=font_size value=Configuration::get('MENU_FORCED_FONT_SIZE')}
     {assign var=nb_elements value=Configuration::get('MENU_FORCED_NB_ELEMENTS')}
     <menu id="megamenu" type="navigation">
-      <a href="#previous" id="previous_menu" title="{l s='Afficher le menu précédent'}" {if $font_size}style="font-size:{$font_size}px"{/if}>
-        <li>
-          <i class="fas fa-angle-double-left periodic-buzz"></i>
-        </li>
-      </a>
-      <a href="#next" id="next_menu" title="{l s='Afficher le menu suivant'}" {if $font_size}style="font-size:{$font_size}px"{/if}>
-        <li>
-          <i class="fas fa-angle-double-right periodic-buzz"></i>
-        </li>
-      </a>
       {foreach from=$nodes key=key item=node name=nodes}
         {if $smarty.foreach.nodes.iteration <= $nb_elements }
           <a href="{$node.url}" class="show-menu" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if} {if $font_size}style="font-size:{$font_size}px"{/if}>
@@ -63,6 +53,18 @@
             {sub_menu nodes=$node.children index=$key}
         {/if}
       {/foreach}
+      {if $nodes|count > $nb_elements}
+        <a href="#previous" id="previous_menu" title="{l s='Afficher le menu précédent'}" {if $font_size}style="font-size:{$font_size}px"{/if}>
+          <li>
+            <i class="fas fa-angle-double-left periodic-buzz"></i>
+          </li>
+        </a>
+        <a href="#next" id="next_menu" title="{l s='Afficher le menu suivant'}" {if $font_size}style="font-size:{$font_size}px"{/if}>
+          <li>
+            <i class="fas fa-angle-double-right periodic-buzz"></i>
+          </li>
+        </a>
+      {/if}
     </menu>
     <script>
       window.menu_elements = {$nb_elements};
