@@ -32,12 +32,12 @@
               src = "{$product.cover.bySize.large_default.url}"
               alt = "{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
               data-full-size-image-url = "{$product.cover.large.url}"
-              class="col-lg-12"
+              class="col-xs-12"
             >
           </a>
         {else}
           <a href="{$product.url}" class="thumbnail product-thumbnail">
-            <img src="{$urls.no_picture_image.bySize.large_default.url}" class="col-lg-12">
+            <img src="{$urls.no_picture_image.bySize.large_default.url}" class="col-xs-12">
           </a>
         {/if}
       {/block}
