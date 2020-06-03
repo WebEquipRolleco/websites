@@ -87,7 +87,7 @@ class ImportProducts extends Import {
         $product->low_stock_alert = false;
         $product->active = (bool)$row["state"];
         $product->link_rewrite = $row["link_rewrite"];
-        $product->price = 0;
+        if(!$product->price) $product->price = 0;
         $product->ecotax = 0;
 
         $product->record($update);
