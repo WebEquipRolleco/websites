@@ -50,12 +50,7 @@
               </a>
             {/if}
 
-            
             {hook h='displayNav1'}
-
-            <a href="{$link->getPageLink('cart')}" class="nav-link-right hidden-sm-up pull-right">
-              <i class="fa fa-shopping-cart"></i>
-            </a>
 
           </div>
 

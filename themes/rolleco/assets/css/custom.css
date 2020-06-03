@@ -561,6 +561,9 @@ h1.product-title {
   padding-left: 5px;
   padding-right: 5px;
 }
+#brand_nav {
+  background-color: white;
+}
 #_mobile_cart {
   margin-right: 15px;
 }
