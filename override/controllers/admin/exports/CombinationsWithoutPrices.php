@@ -13,6 +13,7 @@ class ExportCombinationsWithoutPrices extends Export {
         $header[] = 'Declinaison ID';
         $header[] = 'Reference produit *';
         $header[] = 'Reference declinaison *';
+        $header[] = 'Reference absolue *';
         $header[] = 'Designation *';
         $header[] = 'Quantite de depart';
         $header[] = "Prix avant réduction (ecotaxe comprise)";
@@ -61,6 +62,7 @@ class ExportCombinationsWithoutPrices extends Export {
             $data[] = $combination->getProduct()->id;
             $data[] = $combination->id;
             $data[] = $combination->getProduct()->reference;
+            $data[] = $combination->reference;
             $data[] = $combination->reference;
             $data[] = $combination->getProduct()->name;
             $data[] = null;

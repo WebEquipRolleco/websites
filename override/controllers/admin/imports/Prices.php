@@ -13,6 +13,7 @@ class ImportPrices extends Import {
         $data[] = 'id_combination';
         $data[] = '_product_reference';
         $data[] = '_combination_reference';
+        $data[] = '_absolute_reference';
         $data[] = '_name';
         $data[] = 'min_quantity';
         $data[] = "full_price";
