@@ -69,7 +69,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-lg-4">
           <div class="margin-top-15 margin-bottom-10">
-            <p id="brand_description">Votre équipement à prix éco - Site réservé aux professionnels</p>
+            <p id="brand_description" class="hidden-xs-down">Votre équipement à prix éco - Site réservé aux professionnels</p>
             <input type="text" id="search_query_top" style="width:100%; padding:10px" placeholder="{l s='Rechercher'}">
           </div>
       </div>
