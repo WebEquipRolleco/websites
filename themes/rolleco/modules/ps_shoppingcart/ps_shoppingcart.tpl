@@ -1,5 +1,5 @@
 {assign var=nb_products value=$cart->nbProducts()}
-<div id="_desktop_cart" class="nav-block margin-top-sm">
+<div id="_desktop_cart" class="nav-block hidden-lg-down margin-top-sm">
   <div class="blockcart cart-preview {if $nb_products > 0}active{else}inactive{/if} hvr-icon-pop" data-refresh-url="{$refresh_url}">
     <div class="header text-center">
       {if $nb_products > 0}

@@ -70,7 +70,7 @@ $(document).ready(function() {
 		$(target).addClass('-current');
 	});
 
-	$('#iziModal-menu-icon').on('click', function() {
+	$('#display_mobile_menu').on('click', function() {
 		$('#iziMenu').iziModal({
 			headerColor: "#1e4688",
 			icon: 'fas fa-list',

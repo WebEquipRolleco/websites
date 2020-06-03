@@ -32,13 +32,16 @@
   <nav class="header-nav">
     {*<div class="container">*}
       <div class="row">
-        <div class="hidden-sm-down">
+
           <div class="col-xs-12">
 
             {* BLOC DEVIS *}
             <a href="{$link->getPageLink('quotationregistration')}" id="_desktop_nav_quotation" class="nav-link">
               <i class="fa fa-calculator periodic-buzz"></i>
-              {l s="Devis gratuit"}
+              <span class="hidden-lg-down">{l s="Devis gratuit"}</span>
+            </a>
+            <a href="#menu_mobile" id="display_mobile_menu" class="nav-link hidden-sm-up">
+              {l s="Menu"}
             </a>
             {assign var=nb_quotations value=Quotation::countNew(Context::getContext()->customer->id)}
             {if $nb_quotations}
@@ -47,19 +50,15 @@
               </a>
             {/if}
 
+            
             {hook h='displayNav1'}
 
+            <a href="{$link->getPageLink('cart')}" class="nav-link-right hidden-sm-up pull-right">
+              <i class="fa fa-shopping-cart"></i>
+            </a>
+
           </div>
-        </div>
-        <div class="hidden-md-up text-sm-center mobile">
-          <div class="float-xs-left" id="iziModal-menu-icon">
-            <i class="material-icons fas fa-list d-inline"></i>
-          </div>
-          <div class="float-xs-right" id="_mobile_cart"></div>
-          <div class="float-xs-right" id="_mobile_user_info"></div>
-          <div class="top-logo" id="_mobile_logo"></div>
-          <div class="clearfix"></div>
-        </div>
+
       </div>
     {*</div>*}
   </nav>
@@ -67,13 +66,13 @@
 
 {block name="brand_top"}
     <div id="brand_nav" class="row">
-      <div class="col-xs-12 col-lg-3 text-center">
+      <div class="col-xs-12 col-sm-3 col-lg-3 text-center">
         <a href="/">
           <img src="/img/rolleco.png"  class="margin-top-sm" style="width:175px;">
           
         </a>
       </div>
-      <div class="col-xs-12 col-lg-4">
+      <div class="col-xs-12 col-sm-6 col-lg-4">
           <div class="margin-top-15 margin-bottom-10">
             <p id="brand_description">Votre équipement à prix éco - Site réservé aux professionnels</p>
             <input type="text" id="search_query_top" style="width:100%; padding:10px" placeholder="{l s='Rechercher'}">
