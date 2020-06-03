@@ -204,12 +204,18 @@
 <form id="text_size" action="#text_size" method="post">
 	<div class="panel">
 		<div class="panel-heading">
-			<i class="icon-cogs"></i> Forcer la police du menu principal	
+			<i class="icon-cogs"></i> Gestion du menu principal	
 		</div>
 		<div class="row">
 			<div class="col-lg-4">
-				<label>{l s="Taille de la police en PX" mod="webequip_configuration"}</label>
-				<input type="text" class="form-control" name="MENU_FORCED_FONT_SIZE" value="{$MENU_FORCED_FONT_SIZE}">
+				<div class="form-group">
+					<label>{l s="Taille de la police en PX" mod="webequip_configuration"}</label>
+					<input type="text" class="form-control" name="MENU_FORCED_FONT_SIZE" value="{$MENU_FORCED_FONT_SIZE}">
+				</div>
+				<div class="form-group">
+					<label>{l s="Nombre d'éléments affichés" mod="webequip_configuration"}</label>
+					<input type="number" min=1 step=1 class="form-control" name="MENU_FORCED_NB_ELEMENTS" value="{$MENU_FORCED_NB_ELEMENTS}">
+				</div>
 			</div>
 		</div>
 		<div class="panel-footer text-right">

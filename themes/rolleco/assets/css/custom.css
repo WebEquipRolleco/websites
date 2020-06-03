@@ -666,12 +666,10 @@ h1.product-title {
 #megamenu {
   margin: 0px;
   padding-left: 0px;
-  border-left: 1px solid white;
   font-size: 0px;
 }
 #megamenu li {
   display: inline-block;
-  border-right: 1px solid white;
   list-style: none;
   line-height: 50px;
   padding-left: 20px;
@@ -689,6 +687,9 @@ h1.product-title {
 }
 #megamenu li.main-category:hover {
   background-color: #0d2a59;
+}
+#megamenu .show-menu li {
+  border-right: 1px solid white;
 }
 .megamenu_level_2 {
   box-shadow: 0px 5px 15px 1px lightgrey;
@@ -748,6 +749,16 @@ h1.product-title {
 }
 #search_widget form {
   margin-bottom: 0px !important;
+}
+#previous_menu {
+  position: absolute;
+  left: 0;
+  border-right: 1px solid white;
+}
+#next_menu {
+  position: absolute;
+  right: 0;
+  border-left: 1px solid white;
 }
 #newsletter_box {
   margin-bottom: 40px;

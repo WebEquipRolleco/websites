@@ -249,7 +249,7 @@ class Webequip_Configuration extends Module {
         $tabs[3]['children'][] = array('name'=>"Recherche", 'id'=>$this->isTabInstalled("AdminProductSearch"), 'action'=>'PRODUCT_SEARCH');
         
         // Configuration footer
-        $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ', 'MENU_FORCED_FONT_SIZE');
+        $links = array('FOOTER_LINK_PAIEMENT', 'FOOTER_LINK_FAQ', 'MENU_FORCED_FONT_SIZE', 'MENU_FORCED_NB_ELEMENTS');
         foreach($links as $name) {
 
             if(Tools::getIsset($name))

@@ -5,11 +5,9 @@
 #megamenu {
 	margin: 0px;
 	padding-left: 0px;
-	border-left: 1px solid @lightBg;
 	font-size: 0px;
 	li {
 		display: inline-block;
-		border-right: 1px solid @lightBg;
 		list-style: none;
 		line-height: 50px;
 		padding-left: 20px;
@@ -28,6 +26,10 @@
 			background-color: @mainDarkColor;
 		}
 	}
+}
+
+#megamenu .show-menu li {
+	border-right: 1px solid @lightBg;
 }
 
 .megamenu_level_2 {
@@ -90,4 +92,16 @@
 
 #search_widget form {
 	margin-bottom: 0px !important;
+}
+
+#previous_menu {
+	position: absolute;
+	left: 0;
+	border-right: 1px solid @lightBg;
+}
+
+#next_menu {
+	position: absolute;
+	right: 0;
+	border-left: 1px solid @lightBg;
 }

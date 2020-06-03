@@ -39,22 +39,42 @@
 {function name="menu" nodes=[] depth=0 parent=null}
   {if $nodes|count}
     {assign var=font_size value=Configuration::get('MENU_FORCED_FONT_SIZE')}
+    {assign var=nb_elements value=Configuration::get('MENU_FORCED_NB_ELEMENTS')}
     <menu id="megamenu" type="navigation">
-      {foreach from=$nodes key=key item=node}
-        <a href="{$node.url}" class="show-menu" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if} {if $font_size}style="font-size:{$font_size}px"{/if}>
-          <li class="main-category">
-            {$node.label}
-          </li>
-        </a>
+      <a href="#previous" id="previous_menu" title="{l s='Afficher le menu précédent'}" {if $font_size}style="font-size:{$font_size}px"{/if}>
+        <li>
+          <i class="fas fa-angle-double-left periodic-buzz"></i>
+        </li>
+      </a>
+      <a href="#next" id="next_menu" title="{l s='Afficher le menu suivant'}" {if $font_size}style="font-size:{$font_size}px"{/if}>
+        <li>
+          <i class="fas fa-angle-double-right periodic-buzz"></i>
+        </li>
+      </a>
+      {foreach from=$nodes key=key item=node name=nodes}
+        {if $smarty.foreach.nodes.iteration <= $nb_elements }
+          <a href="{$node.url}" class="show-menu" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if} {if $font_size}style="font-size:{$font_size}px"{/if}>
+            <li class="main-category" {if $smarty.foreach.nodes.iteration == $nb_elements}style="border-right:0px"{/if}>
+              {$node.label}
+            </li>
+          </a>
+        {/if}
         {if $node.children|count}
             {sub_menu nodes=$node.children index=$key}
         {/if}
       {/foreach}
     </menu>
+    <script>
+      window.menu_elements = {$nb_elements};
+      window.menu = new Array();
+      {foreach from=$nodes key=key item=node}
+        window.menu.push("<a href='{$node.url}' class='show-menu' data-id='{$key}'  {if $node.open_in_new_window}target='_blank'{/if} {if $font_size}style='font-size:{$font_size}px'{/if}><li class='main-category'>{$node.label}</li></a>");
+        {/foreach}
+    </script>
   {/if}
 {/function}
 
-<div class="col-sm-12 text-center">
+<div class="col-sm-12 text-center" style="height:50px; overflow:hidden;">
   <div class="menu js-top-menu position-static hidden-lg-down" id="_desktop_top_menu">
       {menu nodes=$menu.children}
       <div class="clearfix"></div>

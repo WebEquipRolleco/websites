@@ -20,7 +20,31 @@ $(document).ready(function() {
 		$(document).find('#modal_product_added').remove();
 	});
 
-	$('.show-menu').on('mouseover', function() {
+	$('#previous_menu').on('click', function(e) {
+
+		var element = window.menu.shift();
+		window.menu.push(element);
+
+		$('.show-menu').remove();
+		for(let i=0; i<window.menu_elements; i++)
+			$('#megamenu').append(window.menu[i]);
+
+		$(".show-menu").last().find('li').css("border-right", "0px");
+	});
+
+	$('#next_menu').on('click', function(e) {
+		
+		var element = window.menu.pop();
+		window.menu.unshift(element);
+		
+		$('.show-menu').remove();
+		for(let i=0; i<window.menu_elements; i++)
+			$('#megamenu').append(window.menu[i]);
+
+		$(".show-menu").last().find('li').css("border-right", "0px");
+	});
+
+	$(document).on('mouseover', '.show-menu', function() {
 
 		$('.megamenu_level_2').hide();
 		$('#submenu_'+$(this).data('id')).slideDown('fast');
