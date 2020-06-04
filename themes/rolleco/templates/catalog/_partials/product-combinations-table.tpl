@@ -1,7 +1,7 @@
 <table id="product_selection" class="table combinations-table margin-top-sm vertical-align">
 	<thead>
 		<tr>
-			<th>{l s="Produit"}</th>
+			<th class="hidden-md-up">{l s="Produit"}</th>
 			<th width="10%" class="hidden-sm-down">{l s="Réf."}</th>
 			<th width="20%" class="hidden-sm-down">{l s="Dimensions"}</th>
 			<th width="35%" class="hidden-sm-down">{l s="Commentaire"}</th>
