@@ -38,9 +38,9 @@
             {* BLOC DEVIS *}
             <a href="{$link->getPageLink('quotationregistration')}" id="_desktop_nav_quotation" class="nav-link">
               <i class="fa fa-calculator periodic-buzz"></i>
-              <span class="hidden-lg-down">{l s="Devis gratuit"}</span>
+              <span class="hidden-md-down">{l s="Devis gratuit"}</span>
             </a>
-            <a href="#menu_mobile" id="display_mobile_menu" class="nav-link hidden-sm-up">
+            <a href="#menu_mobile" id="display_mobile_menu" class="nav-link hidden-lg-up">
               {l s="Menu"}
             </a>
             {assign var=nb_quotations value=Quotation::countNew(Context::getContext()->customer->id)}
@@ -61,7 +61,7 @@
 
 {block name="brand_top"}
     <div id="brand_nav" class="row">
-      <div class="col-xs-12 col-sm-3 col-lg-3 text-center">
+      <div class="col-xs-12 col-sm-5 col-lg-3 text-center">
         <a href="/">
           <img src="/img/rolleco.png"  class="margin-top-sm" style="width:175px;">
           

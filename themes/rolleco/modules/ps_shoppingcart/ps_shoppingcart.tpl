@@ -1,12 +1,12 @@
 {assign var=nb_products value=$cart->nbProducts()}
-<div id="_desktop_cart" class="nav-block hidden-lg-down margin-top-sm">
+<div id="_desktop_cart" class="nav-block hidden-md-down margin-top-sm">
   <div class="blockcart cart-preview {if $nb_products > 0}active{else}inactive{/if} hvr-icon-pop" data-refresh-url="{$refresh_url}">
     <div class="header text-center">
       {if $nb_products > 0}
         <a rel="nofollow" href="{$cart_url}" class="show-cart-summary">
       {/if}
         <i class="fa fa-2x fa-shopping-cart"></i><br />
-        <span class="hidden-sm-down">{l s='Mon panier' d='Shop.Theme.Checkout'}</span><br />
+        <span class="hidden-md-down">{l s='Mon panier' d='Shop.Theme.Checkout'}</span><br />
         <div class="label-cart hvr-icon">{$nb_products}</div>
       {if $nb_products > 0}
         </a>

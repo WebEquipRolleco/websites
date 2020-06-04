@@ -76,8 +76,8 @@
   {/if}
 {/function}
 
-<div class="col-sm-12 hidden-lg-down text-center" style="height:50px; overflow:hidden;">
-  <div class="menu js-top-menu position-static hidden-lg-down" id="_desktop_top_menu">
+<div class="col-sm-12 hidden-md-down text-center" style="height:50px; overflow:hidden;">
+  <div class="menu js-top-menu position-static" id="_desktop_top_menu">
       {menu nodes=$menu.children}
       <div class="clearfix"></div>
   </div>
