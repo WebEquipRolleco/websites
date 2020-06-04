@@ -68,17 +68,19 @@ class ExportBeezup extends Export {
 
 					$infos = Product::loadColumn($product->id, 2);
 
+					$min_price_ht = SpecificPrice::getMinimumPrice($product->id);
+					$max_price_ht = SpecificPrice::getMaximumPrice($product->id);
+
 					$min_crossed_ht = SpecificPrice::getMinimumPrice($product->id, null, false, true);
-					$max_crossed_ht = SpecificPrice::getMaximumPrice($product->id, null, false, true);
 
 					$data = array();
 			    	$data[] = $product->reference;
 					$data[] = "Rolléco";
 					$data[] = trim($product->name.' '.$product->comment_1);
 					$data[] = str_replace(array(";", "\n", "\r"), ".", strip_tags($product->description_short));
-					$data[] = SpecificPrice::getMinimumPrice($product->id);
-					$data[] = SpecificPrice::getMaximumPrice($product->id);
-					$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
+					$data[] = $min_price_ht;
+					$data[] = $max_price_ht;
+					$data[] = (($min_price_ht == $max_price_ht and $min_crossed_ht > 0 and $min_crossed_ht > $min_price_ht) ? $min_crossed_ht : "");
 					$data[] = SpecificPrice::getMinimumPrice($product->id, null, true);
 					$data[] = SpecificPrice::getMinimumPrice($product->id, null, true, true);
 					$data[] = SpecificPrice::getMaximumPrice($product->id, null, true);
@@ -113,17 +115,19 @@ class ExportBeezup extends Export {
 
 						$infos = Combination::loadColumn($combination->id, 2);
 
+						$min_price_ht = SpecificPrice::getMinimumPrice($product->id, $combination->id);
+						$max_price_ht = SpecificPrice::getMaximumPrice($product->id, $combination->id);
+
 						$min_crossed_ht = SpecificPrice::getMinimumPrice($product->id, $combination->id, false, true);
-						$max_crossed_ht = SpecificPrice::getMaximumPrice($product->id, $combination->id, false, true);
 
 						$data = array();
 				    	$data[] = $combination->reference;
 						$data[] = "Rolléco";
 						$data[] = trim($product->name.' '.$combination->comment_1);
 						$data[] = str_replace(array(";", "\n"), ".", strip_tags($product->description_short));
-						$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id);
-						$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id);
-						$data[] = ($min_crossed_ht == $max_crossed_ht ? $min_crossed_ht : "");
+						$data[] = $min_price_ht;
+						$data[] = $max_price_ht;
+						$data[] = (($min_price_ht == $max_price_ht and $min_crossed_ht and $min_crossed_ht > $min_price_ht) ? $min_crossed_ht : "");
 						$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id, true);
 						$data[] = SpecificPrice::getMinimumPrice($product->id, $combination->id, true, true);;
 						$data[] = SpecificPrice::getMaximumPrice($product->id, $combination->id, true);

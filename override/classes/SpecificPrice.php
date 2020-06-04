@@ -97,9 +97,12 @@ class SpecificPrice extends SpecificPriceCore {
 	* @param bool $use_taxes
 	* @return float
     **/
-    public static function getMinimumPrice($id_product, $id_combination = null, $use_taxes = false) {
+    public static function getMinimumPrice($id_product, $id_combination = null, $use_taxes = false, $full_price = false) {
 
-    	$sql = "SELECT MIN(price) FROM ps_specific_price WHERE id_product = $id_product";
+    	if($full_price) $column = "full_price";
+    	else $column = "price";
+
+    	$sql = "SELECT MIN($column) FROM ps_specific_price WHERE id_product = $id_product";
     	if($id_combination) $sql .= " AND id_product_attribute = $id_combination";
 
     	$price = Db::getInstance()->getValue($sql);
