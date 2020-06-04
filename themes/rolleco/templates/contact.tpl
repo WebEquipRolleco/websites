@@ -39,7 +39,7 @@
   	<table>
 		<tbody>
 			<tr>
-				<td><img src="/img/contact.png"></td>
+				<td class="hidden-sm-down"><img src="/img/contact.png"></td>
 				<td class="description-cell">
 					{l s="Pour toute demande ou information, vous pouvez nous contacter en remplissant le formulaire ci-dessous."} <br />
 					{l s="Nous vous répondrons dans les plus brefs délais."} <br />
@@ -109,10 +109,13 @@
 				</div>
 		  	</div>
 
+		</div>
+
+		<div class="row">
 		  	<div class="col-lg-12 text-right">
 		  		<div class="well">
-			  		<button type="submit" class="btn btn-info bold">
-			  			{l s="Envoyer ma demande" d='Shop.Forms.Labels'}
+			  		<button type="submit" class="btn btn-success bold">
+			  			{l s="Envoyer" d='Shop.Forms.Labels'}
 			  		</button>
 			  	</div>
 		  	</div>
