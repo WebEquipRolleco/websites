@@ -17,7 +17,7 @@
 			<tbody>
 				{foreach from=$reviews item=review}
 					<tr>
-						<td>
+						<td style="min-width:200px;">
 							{include file="./stars.tpl" rating=$review->rating}
 							<div class="author">
 								{l s="Par" mod="webequip_reviews"}
