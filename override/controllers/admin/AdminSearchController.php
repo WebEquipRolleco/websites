@@ -80,7 +80,13 @@ class AdminSearchController extends AdminSearchControllerCore {
                         $this->_list['orders'] = array($row);
                     }
                 } else {
-                    $orders = Order::getByReference($this->query);
+                    $orders_1 = Order::getByReference($this->query);
+                    $orders_2 = Order::getByInvoiceReference($this->query);
+
+                    $orders = array();
+                    foreach($orders_1 as $order) $orders[$order->id] = $order;
+                    foreach($orders_2 as $order) $orders[$order->id] = $order;
+
                     $nb_orders = count($orders);
                     if ($nb_orders == 1 && $searchType == 3) {
                         Tools::redirectAdmin('index.php?tab=AdminOrders&id_order='.(int)$orders[0]->id.'&vieworder'.'&token='.Tools::getAdminTokenLite('AdminOrders'));

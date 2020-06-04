@@ -60,6 +60,19 @@ class Order extends OrderCore {
 	}
 
 	/**
+    * Get a collection of orders using invoice number
+    * @param string $reference
+    * @return PrestaShopCollection Collection of Order
+    **/
+    public static function getByInvoiceReference($reference)
+    {
+        $orders = new PrestaShopCollection('Order');
+        $orders->where('invoice_number', 'like', $reference);
+
+        return $orders;
+    }
+
+	/**
 	* Retourne les informations concernant l'export vers M3
 	* UTILISATION : page commande
 	* @return array
