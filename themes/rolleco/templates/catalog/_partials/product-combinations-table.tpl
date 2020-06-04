@@ -42,7 +42,7 @@
 							{/if}
 						</td>
 						<td class="text-center hidden-sm-down">
-							{$product.reference}
+							{$combination.reference}
 						</td>
 						<td class="text-center hidden-sm-down">
 							{$smarty.capture.dimensions nofilter}

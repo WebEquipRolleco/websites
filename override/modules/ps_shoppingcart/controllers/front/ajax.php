@@ -13,7 +13,8 @@ class Ps_ShoppingcartAjaxModuleFrontControllerOverride extends Ps_ShoppingcartAj
         if (Tools::getValue('action') === 'add-to-cart')
         	$data['modal'] = $this->module->renderModal($this->context->cart, null, null);
         $data['preview'] = $this->module->renderWidget(null, array('cart'=>$this->context->cart));
-
+        $data['nb_products'] = $this->context->cart->nbProducts();
+        
         die(json_encode($data));
     }
 
