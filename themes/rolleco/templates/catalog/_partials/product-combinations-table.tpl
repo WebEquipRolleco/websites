@@ -1,9 +1,10 @@
 <table id="product_selection" class="table combinations-table margin-top-sm vertical-align">
 	<thead>
 		<tr>
-			<th width="10%">{l s="Réf."}</th>
+			<th>{l s="Produit"}</th>
+			<th width="10%" class="hidden-sm-down">{l s="Réf."}</th>
 			<th width="20%" class="hidden-sm-down">{l s="Dimensions"}</th>
-			<th width="35%">{l s="Commentaire"}</th>
+			<th width="35%" class="hidden-sm-down">{l s="Commentaire"}</th>
 			<th width="10%" class="hidden-sm-down">{l s="Délai"}</th>
 			<th width="15%">{l s="Prix unitaire HT"}</th>
 			<th width="10%">{l s="Quantité"}</th>
@@ -12,36 +13,42 @@
 	<tbody>
 		{* PRODUIT AVEC DECLINAISONS *}
 		{if $combinations|count > 0}
-			{capture "dimensions"}
-				{foreach from=Combination::loadColumn($id_combination, 1) item=row name=column_1}
-					<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-				{/foreach}
-			{/capture}
-			{capture "delivery"}
-				{foreach from=Combination::loadColumn($id_combination, 2) item=row}
-					{$row.value} 
-				{/foreach}
-			{/capture}
 			{foreach from=$combinations key=id_combination item=combination}
+				{capture "dimensions"}
+					{foreach from=Combination::loadColumn($id_combination, 1) item=row name=column_1}
+						<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+					{/foreach}
+				{/capture}
+				{capture "comments"}
+					{assign var=comments value=Combination::loadComments($id_combination)}
+					{if $comments.comment_1}<div>{$comments.comment_1}</div>{/if}
+					{if $comments.comment_2}<div>{$comments.comment_2}</div>{/if}
+				{/capture}
+				{capture "delivery"}
+					{foreach from=Combination::loadColumn($id_combination, 2) item=row}
+						{$row.value} 
+					{/foreach}
+				{/capture}
 				{if $combination.reference}
 					<tr>
-						<td class="text-center">
+						<td class="hidden-md-up">
+							<div><b>{l s="Dimensions"}</b></div>
+							{$smarty.capture.dimensions nofilter}
+							<div class="margin-top-10"><b>{l s="Délai"}</b></div>
+							{$smarty.capture.delivery nofilter}
+							{if $smarty.capture.comments}
+								<div class="margin-top-10"><b>{l s="Commentaires"}</b></div>
+								{$smarty.capture.comments}
+							{/if}
+						</td>
+						<td class="text-center hidden-sm-down">
 							{$product.reference}
-							<div class="margin-top-10 hidden-md-up">
-								<div><b>{l s="Dimensions"}</b></div>
-								{$smarty.capture.dimensions nofilter}
-							</div>
 						</td>
 						<td class="text-center hidden-sm-down">
 							{$smarty.capture.dimensions nofilter}
 						</td>
-						<td>
-							{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
-							{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
-							<div class="margin-top-10 hidden-md-up">
-								<div><b>{l s="Délai"}</b></div>
-								{$smarty.capture.delivery nofilter}
-							</div>
+						<td class="hidden-sm-down">
+							{$smarty.capture.comments nofilter}
 						</td>
 						<td class="text-center hidden-sm-down">
 							{$smarty.capture.delivery nofilter}
@@ -108,29 +115,34 @@
 					<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
 				{/foreach}
 			{/capture}
+			{capture "comments"}
+				{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
+				{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+			{/capture}
 			{capture "delivery"}
 				{foreach from=Product::loadColumn($product.id_product, 2) item=row}
 					{$row.value} 
 				{/foreach}
 			{/capture}
 			<tr>
-				<td class="text-center">
+				<td class="hidden-md-up">
+					<div><b>{l s="Dimensions"}</b></div>
+					{$smarty.capture.dimensions nofilter}
+					<div class="margin-top-10"><b>{l s="Délai"}</b></div>
+					{$smarty.capture.delivery nofilter}
+					{if $smarty.capture.comments}
+						<div class="margin-top-10"><b>{l s="Commentaires"}</b></div>
+						{$smarty.capture.comments nofilter}
+					{/if}
+				</td>
+				<td class="text-center hidden-sm-down">
 					{$product.reference}
-					<div class="margin-top-10 hidden-md-up">
-						<div><b>{l s="Dimensions"}</b></div>
-						{$smarty.capture.dimensions nofilter}
-					</div>
 				</td>
 				<td class="text-center hidden-sm-down">
 					{$smarty.capture.dimensions nofilter}
 				</td>	
-				<td>
-					{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
-					{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
-					<div class="margin-top-10 hidden-md-up">
-						<div><b>{l s="Délai"}</b></div>
-						{$smarty.capture.delivery nofilter}
-					</div>
+				<td class="hidden-sm-down">
+					{$smarty.capture.comments nofilter}
 				</td>
 				<td class="text-center hidden-sm-down">
 					{$smarty.capture.delivery nofilter}
