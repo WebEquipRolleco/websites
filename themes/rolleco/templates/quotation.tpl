@@ -7,7 +7,7 @@
 {block name='page_content_container'}
 	<table>
 		<tr>
-			<td><img src="/img/quotation.png"></td>
+			<td class="hidden-sm-down"><img src="/img/quotation.png"></td>
 			<td class="description-cell">
 				{l s="Vous avez une demande particulière concernant les prix et les quantités de nos produits ?"}
 				<br />
@@ -118,8 +118,8 @@
 							{l s="* Délai moyen habituellement constaté. 24h (jour ouvrable)."}
 						</td>
 						<td class="text-right">
-							<button type="submit" class="btn btn-info bold">
-								{l s="Envoyer ma demande de devis" d='Shop.Forms.Labels'}
+							<button type="submit" class="btn btn-success bold">
+								{l s="Envoyer" d='Shop.Forms.Labels'}
 							</button>
 						</td>
 					</tr>

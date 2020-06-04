@@ -35,9 +35,9 @@
         <table class="table combinations-table margin-top-15">
           <thead>
             <tr>
-              <td colspan="7" class="bg-darkgrey">
+              <th colspan="7">
                 <b>{l s="Options disponibles" d='Shop.Theme.Checkout'}</b>
-              </td>
+              </th>
             </tr>
           </thead>
           <tbody>
