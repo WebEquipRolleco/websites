@@ -126,6 +126,7 @@ class ExportPrices extends Export {
             $data[] = $combination->id;
             $data[] = $combination->getProduct()->reference;
             $data[] = $combination->reference;
+            $data[] = $combination->reference;
             $data[] = $combination->getProduct()->name;
             $data[] = 1;
             $data[] = 0;
@@ -166,6 +167,7 @@ class ExportPrices extends Export {
             $data[] = 0;
             $data[] = $product->reference;
             $data[] = null;
+            $data[] = $product->reference;
             $data[] = $product->name;
             $data[] = 1;
             $data[] = 0;
