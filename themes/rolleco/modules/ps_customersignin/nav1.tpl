@@ -14,6 +14,6 @@
 	</a>
 {/if}
 
-<a href="{$link->getPageLink('cart')}" class="nav-link-right hidden-lg-up">
+<a href="{$link->getPageLink('cart?action=show')}" class="nav-link-right hidden-lg-up">
     <i class="fa fa-shopping-cart"></i>
 </a>

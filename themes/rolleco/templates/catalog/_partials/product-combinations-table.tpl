@@ -2,9 +2,9 @@
 	<thead>
 		<tr>
 			<th width="10%">{l s="Réf."}</th>
-			<th width="20%">{l s="Dimensions"}</th>
+			<th width="20%" class="hidden-sm-down">{l s="Dimensions"}</th>
 			<th width="35%">{l s="Commentaire"}</th>
-			<th width="10%">{l s="Délai"}</th>
+			<th width="10%" class="hidden-sm-down">{l s="Délai"}</th>
 			<th width="15%">{l s="Prix unitaire HT"}</th>
 			<th width="10%">{l s="Quantité"}</th>
 		</tr>
@@ -12,26 +12,39 @@
 	<tbody>
 		{* PRODUIT AVEC DECLINAISONS *}
 		{if $combinations|count > 0}
+			{capture "dimensions"}
+				{foreach from=Combination::loadColumn($id_combination, 1) item=row name=column_1}
+					<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+				{/foreach}
+			{/capture}
+			{capture "delivery"}
+				{foreach from=Combination::loadColumn($id_combination, 2) item=row}
+					{$row.value} 
+				{/foreach}
+			{/capture}
 			{foreach from=$combinations key=id_combination item=combination}
 				{if $combination.reference}
 					<tr>
 						<td class="text-center">
-							{$combination.reference}
+							{$product.reference}
+							<div class="margin-top-10 hidden-md-up">
+								<div><b>{l s="Dimensions"}</b></div>
+								{$smarty.capture.dimensions nofilter}
+							</div>
 						</td>
-						<td class="text-center">
-							{foreach from=Combination::loadColumn($id_combination, 1) item=row name=column_1}
-								<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-							{/foreach}
+						<td class="text-center hidden-sm-down">
+							{$smarty.capture.dimensions nofilter}
 						</td>
 						<td>
-							{assign var=comments value=Combination::loadComments($id_combination)}
-							{if $comments.comment_1}<div>{$comments.comment_1}</div>{/if}
-							{if $comments.comment_2}<div>{$comments.comment_2}</div>{/if}
+							{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
+							{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+							<div class="margin-top-10 hidden-md-up">
+								<div><b>{l s="Délai"}</b></div>
+								{$smarty.capture.delivery nofilter}
+							</div>
 						</td>
-						<td class="text-center">
-							{foreach from=Combination::loadColumn($id_combination, 2) item=row}
-								{$row.value} 
-							{/foreach}
+						<td class="text-center hidden-sm-down">
+							{$smarty.capture.delivery nofilter}
 						</td>
 						<td class="text-center" style="padding:5px">
 							{assign var=prices value=SpecificPrice::getByProductId($product.id_product, $id_combination)}
@@ -90,21 +103,37 @@
 			{/foreach}
 		{* PRODUIT SIMPLE *}
 		{else}
+			{capture "dimensions"}
+				{foreach from=Product::loadColumn($product.id_product, 1) item=row name=column_1}
+					<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+				{/foreach}
+			{/capture}
+			{capture "delivery"}
+				{foreach from=Product::loadColumn($product.id_product, 2) item=row}
+					{$row.value} 
+				{/foreach}
+			{/capture}
 			<tr>
-				<td class="text-center">{$product.reference}</td>
 				<td class="text-center">
-					{foreach from=Product::loadColumn($product.id_product, 1) item=row name=column_1}
-						<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-					{/foreach}
+					{$product.reference}
+					<div class="margin-top-10 hidden-md-up">
+						<div><b>{l s="Dimensions"}</b></div>
+						{$smarty.capture.dimensions nofilter}
+					</div>
+				</td>
+				<td class="text-center hidden-sm-down">
+					{$smarty.capture.dimensions nofilter}
 				</td>	
 				<td>
 					{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
 					{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+					<div class="margin-top-10 hidden-md-up">
+						<div><b>{l s="Délai"}</b></div>
+						{$smarty.capture.delivery nofilter}
+					</div>
 				</td>
-				<td class="text-center">
-					{foreach from=Product::loadColumn($product.id_product, 2) item=row}
-						{$row.value} 
-					{/foreach}
+				<td class="text-center hidden-sm-down">
+					{$smarty.capture.delivery nofilter}
 				</td>
 				<td>
 					<table id="prices_{$product.id_product}" class="prices-table">
