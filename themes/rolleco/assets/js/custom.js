@@ -156,7 +156,9 @@ $(document).ready(function() {
 							'id_product_attribute' : 0,
 							'qty' : qty,
 							'token' : token
-						}
+						},
+					}).always(function() {
+						reloadCartPreview();
 					});
 				}
 				else {
@@ -170,12 +172,13 @@ $(document).ready(function() {
 							'qty' : qty,
 							'token' : token
 						}
+					}).always(function() {
+						reloadCartPreview();
 					});
 				}
 			}
 		});
 
-		reloadCartPreview();
 	});
 
 	$(document).on('click', '.display-image', function(e) {
@@ -248,7 +251,7 @@ function reloadCartPreview() {
 		},
 		success : function(response) {
 
-			$('#_desktop_cart').html(response.preview);
+			$('#_desktop_cart').replaceWith(response.preview);
 			if(response.modal) $('#ajax_content').html(response.modal);
 		}	
 	});
