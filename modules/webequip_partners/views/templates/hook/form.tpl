@@ -73,8 +73,8 @@
 				</div>
 			</div>
 			<div class="well text-center">
-				<button type="submit" class="btn btn-info bold">
-					{l s="Envoyer votre demande" d='Shop.Forms.Labels'}
+				<button type="submit" class="btn btn-success bold">
+					{l s="Envoyer" d='Shop.Forms.Labels'}
 				</button>
 			</div>
 		</form>
