@@ -6,7 +6,7 @@
   	{l s="Votre commande est traitée dès son enregistrement et après la vérification de votre établissement." mod="webequip_payment_administrative"}
   	<br />
   	<br />
-  	{l s="Le mandat administratif est à effctuer sur le compte suivant :" mod="webequip_payment_administrative"}
+  	{l s="Le mandat administratif est à effectuer sur le compte suivant :" mod="webequip_payment_administrative"}
   	<br />
   	<b>{$TO}</b>
   	<br />

@@ -12,7 +12,3 @@ PRODUIT : {product_name}
 PIÈCE JOINTE : {attached_file} 		 
 
 Nous vous répondrons dans les meilleurs délais. 
-
-{shop_name} [{shop_url}] powered by
-PrestaShop(tm) [http://www.prestashop.com/] 
-
