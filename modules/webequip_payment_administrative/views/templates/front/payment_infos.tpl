@@ -1,7 +1,7 @@
 <section class="margin-bottom-15">
 	<img src="/img/mandat.jpg"> <br />
 	<br />
-	{l s="Nous acceptions les [1]règlements par mandat administratif[/1] pour tous les établissements relevant de la comptabilité publique (Ministères, Mairies, Conseils Généraux et Régionaux, Universités, CAT, CCAS, établissements scolaires, ...)." tags=["<b>"] mod="webequip_payment_administrative"} 
+	{l s="Nous acceptons les [1]règlements par mandat administratif[/1] pour tous les établissements relevant de la comptabilité publique (Ministères, Mairies, Conseils Généraux et Régionaux, Universités, CAT, CCAS, établissements scolaires, ...)." tags=["<b>"] mod="webequip_payment_administrative"} 
 	<br />
   	{l s="Votre commande est traitée dès son enregistrement et après la vérification de votre établissement." mod="webequip_payment_administrative"}
   	<br />
