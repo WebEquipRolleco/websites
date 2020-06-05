@@ -31,10 +31,6 @@ RÉDUCTIONS
 
 {total_discounts} 
 
-PAQUET CADEAU 
-
-{total_wrapping} 
-
 LIVRAISON 
 
 {total_shipping} 
