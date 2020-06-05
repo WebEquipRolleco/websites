@@ -102,7 +102,7 @@
 						</td>
 						<td class="text-center">
 							<div class="qty">
-		          				<input type="text" name="qty" id="quantity_wanted_{$id_combination}" data-step="{$combination.batch}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-id-combination="{$id_combination}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
+		          				<input type="text" name="qty" id="quantity_wanted_{$id_combination}" data-step="{if $combination.batch}{$combination.batch}{else}1{/if}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-id-combination="{$id_combination}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
 		        			</div>
 						</td>
 					</tr>
@@ -211,7 +211,7 @@
 				</td>
 				<td class="text-center">
 					<div class="qty">
-	          			<input type="text" data-step="{$product.batch}" name="qty" id="quantity_wanted_{$product.id_product}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-id-product="{$product.id_product}" data-id-combination="{$product.id_product}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
+	          			<input type="text" data-step="{if $product.batch}{$product.batch}{else}1{/if}" name="qty" id="quantity_wanted_{$product.id_product}" value="0" class="input-group combination-quantity" min="{$product.minimal_quantity}" data-id-product="{$product.id_product}" data-id-combination="{$product.id_product}" aria-label="{l s='Quantity' d='Shop.Theme.Actions'}">
 	        		</div>
 				</td>
 			</tr>
