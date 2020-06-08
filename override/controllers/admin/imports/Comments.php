@@ -10,6 +10,7 @@ class ImportComments extends Import {
 
         $data[] = 'id_product';
         $data[] = "id_combination";
+        $data[] = '_absolute_reference';
         $data[] = "id_shop";
         $data[] = "comment_1";
         $data[] = "comment_2";
