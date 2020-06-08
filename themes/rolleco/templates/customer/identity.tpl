@@ -31,3 +31,7 @@
 {block name='page_content'}
   {render file='customer/_partials/customer-form.tpl' ui=$customer_form}
 {/block}
+
+{block name='custom_js'}
+  <script type="text/javascript" src="/themes/rolleco/assets/js/registration.js"></script>
+{/block}
