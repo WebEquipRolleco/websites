@@ -1,6 +1,6 @@
 {if $logged}
 	<a rel="nofollow" href="{$logout_url}" id="logout" class="nav-link-right"  title="{l s='Me déconnecter' d='Shop.Theme.CustomerAccount'}">
-		<i class="fa fa-power-off"></i>
+		<i class="fa fa-sign-out"></i>
 	</a>
 	<a rel="nofollow" href="#navigation_rapide" id="quick_navigation" class="nav-link-right" title="{l s='Navigation rapide'}">
         <i class="fa fa-list"></i>

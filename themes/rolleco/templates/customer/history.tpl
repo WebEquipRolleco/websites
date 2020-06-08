@@ -23,6 +23,7 @@
         </tr>
       </thead>
       <tbody>
+        {assign var="sav_enabled" value=Configuration::get('AFTER_SALES_ENABLED')}
         {foreach from=$orders item=order}
           <tr>
             <td class="text-center bold">{$order.details.reference}</th>
@@ -50,9 +51,11 @@
                   <i class="fa fa-cart-arrow-down"></i>
                 </a>
               {/if}
-              <a href="{$link->getPageLink('AfterSaleRequest&order='|cat:$order.details.reference)}" class="btn btn-danger" title="{l s='Ouvrir un SAV' d='Shop.Theme.Actions'}">
-                <i class="fa fa-exchange"></i>
-              </a>
+              {if $sav_enabled}
+                <a href="{$link->getPageLink('AfterSaleRequest&order='|cat:$order.details.reference)}" class="btn btn-warning" title="{l s='Ouvrir un SAV' d='Shop.Theme.Actions'}">
+                  <i class="fa fa-headset"></i>
+                </a>
+              {/if}
             </td>
           </tr>
         {/foreach}

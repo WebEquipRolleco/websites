@@ -131,3 +131,11 @@
     </form>
   </div>
 {/block}
+
+{block name="custom_js"}
+  <script>
+    $(document).ready(function() {
+      alert('ok');
+    });
+  </script>
+{/block}

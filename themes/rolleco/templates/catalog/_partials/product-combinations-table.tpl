@@ -158,7 +158,7 @@
 								{if !$smarty.foreach.loop_prices.first}
 									{if $loop_full_price > 0}
 										<tr class='active'>
-											<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)}%</td>
+											<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)|string_format:"%.2f"}%</td>
 											<td class="text-right" style="text-decoration:line-through;">{Tools::displayPrice($loop_full_price)}</td>
 										</tr>
 									{/if}
@@ -196,7 +196,7 @@
 							{foreach from=$prices item=specific_price}
 								{if $specific_price.full_price > 0 and $specific_price.full_price > $specific_price.price}
 									<div class="text-center">
-										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
+										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)|string_format:"%.2f"}%</span>
 										&nbsp;
 										<span class="text-info" style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
 									</div>
