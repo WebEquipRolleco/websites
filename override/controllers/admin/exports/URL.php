@@ -9,6 +9,8 @@ class ExportProductURL extends Export {
     private function getHeader() {
 
         $header[] = "ID";
+        $header[] = "Type";
+        $header[] = "Référence";
         $header[] = "Nom";
         $header[] = "URL";
 
@@ -37,10 +39,25 @@ class ExportProductURL extends Export {
 
             $data = array();
             $data[] = $product->id;
+            $data[] = "Produit";
+            $data[] = $product->reference;
             $data[] = $product->name;
             $data[] = $link->getProductLink($product);
 
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;
+
+            // Déclinaisons du produit
+            foreach(Combination::getCombinations($product->id) as $combination) {
+
+                $data = array();
+                $data[] = $combination->id;
+                $data[] = "Déclinaison";
+                $data[] = $combination->reference;
+                $data[] = $product->name;
+                $data[] = $link->getProductLink($product);
+
+                $csv .= implode($this->separator, $data).parent::END_OF_LINE;
+            }
         }
 
         $this->renderCSV("produits_".date('d-m_H-i').".csv", $csv);
