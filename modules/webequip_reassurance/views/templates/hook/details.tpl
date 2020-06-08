@@ -66,17 +66,29 @@
 									</label>
 									<input type="number" min="1" id="reassurance_position" class="form-control" name="reassurance[position]" value="{$reassurance->position}">
 								</div>
+								<div class="form-group">
+									<label>
+										<b>{l s="Active" d='Shop.Theme.Labels'}</b>
+											<span class="switch prestashop-switch fixed-width-lg">
+											<input type="radio" name="reassurance[active]" id="active_on" value="1" {if $reassurance->active}checked{/if}>
+											<label for="active_on">{l s='Oui' d='Shop.Theme.Labels'}</label>
+											<input type="radio" name="reassurance[active]" id="active_off" value="0" {if !$reassurance->active}checked{/if}>
+											<label for="active_off">{l s='Non' d='Shop.Theme.Labels'}</label>
+											<a class="slide-button btn"></a>
+										</span>
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
 
 	      		</div>
 	      		<div class="modal-footer" style="background-color:whitesmoke">
-	        		<button type="submit" class="btn btn-xs btn-success">
-	        			<i class="process-icon-ok"></i>
+	        		<button type="submit" class="btn btn-success">
+	        			<i class="icon-save"></i> &nbsp; <b>{l s="Save" d='Shop.Theme.Actions'}</b>
 	        		</button>
-	        		<button type="button" class="btn btn-xs btn-danger" data-dismiss="modal">
-	        			<i class="process-icon-close"></i>
+	        		<button type="button" class="btn btn-danger" data-dismiss="modal">
+	        			<i class="icon-close"></i> &nbsp; <b>{l s="Fermer" d='Shop.Theme.Actions'}</b>
 	        		</button>
 	      		</div>
 	    	</div>
