@@ -265,8 +265,10 @@ class Order extends OrderCore {
 	public static function findOrderedProducts($id_customer) {
 		
 		$products = array(); 
-		foreach(Db::getInstance()->executeS("SELECT DISTINCT(d.product_id) FROM ps_orders o, ps_order_detail d WHERE o.id_order = d.id_order AND o.id_customer = $id_customer") as $row)
-			$products[] = new Product($row['product_id'], true, 1);
+
+		if($id_customer)
+			foreach(Db::getInstance()->executeS("SELECT DISTINCT(d.product_id) FROM ps_orders o, ps_order_detail d WHERE o.id_order = d.id_order AND o.id_customer = $id_customer") as $row)
+				$products[] = new Product($row['product_id'], true, 1);
 
 		return $products;
 	}

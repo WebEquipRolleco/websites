@@ -242,17 +242,21 @@ function loadQtyTouchSpin() {
 	});
 }
 
+var preview_timeout;
 function reloadCartPreview() {
-	$.ajax({
-		url: $('.cart-preview').data('refresh-url'),
-		dataType: 'json',
-		data : {
-			'action': 'add-to-cart'
-		},
-		success : function(response) {
+	clearTimeout(preview_timeout);
+	preview_timeout = setTimeout(function() {
+		$.ajax({
+			url: $('.cart-preview').data('refresh-url'),
+			dataType: 'json',
+			data : {
+				'action': 'add-to-cart'
+			},
+			success : function(response) {
 
-			$('#_desktop_cart').replaceWith(response.preview);
-			if(response.modal) $('#ajax_content').html(response.modal);
-		}	
-	});
+				$('#_desktop_cart').replaceWith(response.preview);
+				if(response.modal) $('#ajax_content').html(response.modal);
+			}	
+		});
+	}, 250);
 }
