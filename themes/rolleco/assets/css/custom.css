@@ -1070,6 +1070,12 @@ li.product-flag.destocking {
 .bg-light {
   background-color: #efefef !important;
 }
+.bg-dark {
+  background-color: black !important;
+}
+.bg-dark * {
+  color: white !important;
+}
 .bg-grey {
   background-color: #999 !important;
 }

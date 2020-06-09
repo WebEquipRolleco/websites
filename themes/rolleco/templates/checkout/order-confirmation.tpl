@@ -1,23 +1,30 @@
 {extends file='page.tpl'}
 
 {block name='page_content_container' prepend}
-    <section id="content-hook_order_confirmation" class="card">
+    <section id="content-hook_order_confirmation">
       <div class="card-block">
         <div class="row">
           <div class="col-md-12">
 
             {block name='order_confirmation_header'}
-              <h3 class="h1 card-title">
-                <i class="material-icons rtl-no-flip done">&#xE876;</i>{l s='Your order is confirmed' d='Shop.Theme.Checkout'}
-              </h3>
+              <ul class="ps-alert-success" style="padding:0px">
+                <li class="item">
+                  <i>
+                    <svg viewBox="0 0 24 24">
+                      <path fill="#fff" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                    </svg>
+                  </i>
+                  <p><b>{l s='Your order is confirmed' d='Shop.Theme.Checkout'}</b></p>
+                </li>
+              </ul>
             {/block}
 
-            <p>
-              {l s='An email has been sent to your mail address %email%.' d='Shop.Theme.Checkout' sprintf=['%email%' => $customer.email]}
+            {l s='An email has been sent to your mail address %email%.' d='Shop.Theme.Checkout' sprintf=['%email%' => $customer.email]}
+              
               {if $order.details.invoice_url}
                 {* [1][/1] is for a HTML tag. *}
                 {l
-                  s='You can also [1]download your invoice[/1]'
+                  s='Vous pouvez également [1]télécharger votre facture[/1].'
                   d='Shop.Theme.Checkout'
                   sprintf=[
                     '[1]' => "<a href='{$order.details.invoice_url}'>",
@@ -38,9 +45,25 @@
 {/block}
 
 {block name='page_content_container'}
-  <section id="content" class="page-content page-order-confirmation card">
+  <section id="content" class="page-content page-order-confirmation">
     <div class="card-block">
       <div class="row">
+
+        {block name='order_details'}
+          <div id="order-details" class="col-md-12">
+            {*<h3 class="h3 card-title">{l s='Order details' d='Shop.Theme.Checkout'}:</h3>*}
+            <ul>
+              <li>{l s='<b>Référence de la commande :</b> %reference%' d='Shop.Theme.Checkout' sprintf=['%reference%' => $order.details.reference]}</li>
+              <li>{l s='<b>Méthode de paiement :</b> %method%' d='Shop.Theme.Checkout' sprintf=['%method%' => $order.details.payment]}</li>
+              {*if !$order.details.is_virtual}
+                <li>
+                  {l s='Shipping method: %method%' d='Shop.Theme.Checkout' sprintf=['%method%' => $order.carrier.name]}<br>
+                  <em>{$order.carrier.delay}</em>
+                </li>
+              {/if*}
+            </ul>
+          </div>
+        {/block}
 
         {block name='order_confirmation_table'}
           {include
@@ -53,21 +76,7 @@
           }
         {/block}
 
-        {block name='order_details'}
-          <div id="order-details" class="col-md-12">
-            <h3 class="h3 card-title">{l s='Order details' d='Shop.Theme.Checkout'}:</h3>
-            <ul>
-              <li>{l s='Order reference: %reference%' d='Shop.Theme.Checkout' sprintf=['%reference%' => $order.details.reference]}</li>
-              <li>{l s='Payment method: %method%' d='Shop.Theme.Checkout' sprintf=['%method%' => $order.details.payment]}</li>
-              {*if !$order.details.is_virtual}
-                <li>
-                  {l s='Shipping method: %method%' d='Shop.Theme.Checkout' sprintf=['%method%' => $order.carrier.name]}<br>
-                  <em>{$order.carrier.delay}</em>
-                </li>
-              {/if*}
-            </ul>
-          </div>
-        {/block}
+        
 
       </div>
     </div>
