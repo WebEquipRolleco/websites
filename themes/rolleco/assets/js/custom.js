@@ -44,10 +44,19 @@ $(document).ready(function() {
 		$(".show-menu").last().find('li').css("border-right", "0px");
 	});
 
+	var menu_timeout;
 	$(document).on('mouseover', '.show-menu', function() {
+		clearTimeout(menu_timeout);
 
-		$('.megamenu_level_2').hide();
-		$('#submenu_'+$(this).data('id')).slideDown('fast');
+		var id_menu = $(this).data('id');
+		menu_timeout = setTimeout(function() {
+			$('.megamenu_level_2').hide();
+			$('#submenu_'+id_menu).slideDown('fast');
+		}, 100);
+	});
+
+	$(document).on('mouseout', '.show-menu', function() {
+		clearTimeout(menu_timeout);
 	});
 
 	$('#brand_nav').on('mouseover', function() {
