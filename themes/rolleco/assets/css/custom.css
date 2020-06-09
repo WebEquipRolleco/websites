@@ -424,6 +424,9 @@ body {
 .container {
   background-color: white;
 }
+.form-control {
+  background: white;
+}
 #wrapper {
   background-color: transparent !important;
   box-shadow: none !important;
