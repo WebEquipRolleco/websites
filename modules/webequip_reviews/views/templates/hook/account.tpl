@@ -23,7 +23,7 @@
 	<div class="row">
 		{foreach from=$reviews item=review}
 			<form method="post">
-				<input type="hidden" name="id_review" value="{$review->id}">
+				{if $review->id}<input type="hidden" name="id_review" value="{$review->id}">{/if}
 				<input type="hidden" name="review[id_product]" value="{$review->id_product}">
 				<input type="hidden" name="review[id_shop]" value="{$review->id_shop}">
 				<input type="hidden" name="review[name]" value="{$review->name}">
@@ -41,11 +41,11 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<textarea rows="5" class="form-control" name="review[comment]" placeholder="{l s='Mon avis sur ce produit'}">{$review->comment}</textarea>
+							<textarea rows="5" class="form-control" name="review[comment]" placeholder="{l s='Mon avis sur ce produit'}" required>{$review->comment}</textarea>
 						</div>
 						<div class="form-group text-right">
 							<button type="submit" class="btn btn-success bold">
-								Enregistrer
+								{if $review->id}Enregistrer{else}Ajouter{/if}
 							</button>
 						</div>
 					</div>

@@ -21,11 +21,10 @@ class Webequip_reviewsAccountModuleFrontController extends ModuleFrontController
         }
 
 		$reviews = array();
-		$product_ids = Order::findOrderedProducts($this->context->customer->id);
-		foreach($product_ids as $row) {
+		foreach(Order::findOrderedProducts($this->context->customer->id) as $product) {
 
-			$review = Review::find($this->context->customer->id, $row['id_product']);
-			if(!$review->name) $review->name = $row['name'];
+			$review = Review::find($this->context->customer->id, $product->id);
+			if(!$review->name) $review->name = $product->name;
 
 			$reviews[] = $review;
 		}
