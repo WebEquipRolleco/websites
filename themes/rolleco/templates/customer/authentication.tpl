@@ -39,19 +39,27 @@
       {/block}
 
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-xs-6 hidden-sm-down">
           <div class="no-account">
             <a href="{$urls.pages.register}" data-link-action="display-register-form">
               {l s='No account? Create one here' d='Shop.Theme.Customeraccount'}
             </a>
           </div>
         </div>
-        <div class="col-lg-6 text-right">
+        <div class="col-xs-6  hidden-sm-down text-right">
           <div class="forgot-password">
             <a href="{$urls.pages.password}" rel="nofollow">
               {l s='Forgot your password?' d='Shop.Theme.Customeraccount'}
             </a>
           </div>
+        </div>
+        <div class="col-xs-12 text-center hidden-md-up">
+          <a href="{$urls.pages.register}" class="btn btn-primary" data-link-action="display-register-form">
+            <b>{l s='Créer un compte' d='Shop.Theme.Customeraccount'}</b>
+          </a>
+          <a href="{$urls.pages.password}" class="btn btn-primary" rel="nofollow">
+            <b>{l s='Forgot your password?' d='Shop.Theme.Customeraccount'}</b>
+          </a>
         </div>
       </div>
     {/block}
