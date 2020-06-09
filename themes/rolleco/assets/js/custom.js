@@ -156,36 +156,47 @@ $(document).ready(function() {
 				var qty = $(this).val();
 
 				if(id_selected_product) {
-					$.ajax({
-						url: prestashop.urls.pages.cart,
-						data: {
-							'ajax':true, 
-							'add': true, 
-							'id_product' : id_selected_product,
-							'id_product_attribute' : 0,
-							'qty' : qty,
-							'token' : token
-						},
-					}).always(function() {
-						reloadCartPreview();
+					$(document).queue("cart", function() {
+						$.ajax({
+							url: prestashop.urls.pages.cart,
+							data: {
+								'ajax':true, 
+								'add': true, 
+								'id_product' : id_selected_product,
+								'id_product_attribute' : 0,
+								'qty' : qty,
+								'token' : token
+							},
+						}).always(function() {
+							$(document).dequeue("cart");
+						});
 					});
 				}
 				else {
-					$.ajax({
-						url: prestashop.urls.pages.cart,
-						data: {
-							'ajax':true, 
-							'add': true, 
-							'id_product' : id_product,
-							'id_product_attribute' : id_combination,
-							'qty' : qty,
-							'token' : token
-						}
-					}).always(function() {
-						reloadCartPreview();
+					$(document).queue("cart", function() {
+						$.ajax({
+							url: prestashop.urls.pages.cart,
+							data: {
+								'ajax':true, 
+								'add': true, 
+								'id_product' : id_product,
+								'id_product_attribute' : id_combination,
+								'qty' : qty,
+								'token' : token
+							}
+						}).always(function() {
+							$(document).dequeue("cart");
+						});
 					});
 				}
 			}
+
+			$(document).queue("cart", function() {
+				reloadCartPreview();
+				$(document).dequeue("cart");
+			});
+			
+			$(document).dequeue("cart");
 		});
 
 	});
