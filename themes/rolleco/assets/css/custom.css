@@ -377,14 +377,14 @@ body#checkout #footer {
   color: white;
 }
 #footer {
-  background-color: #0d2a59 !important;
+  background-color: #1e4688 !important;
   padding-top: 0px !important;
 }
 #footer p {
   color: white;
 }
 #footer .btn {
-  background-color: #1e4688;
+  background-color: #0d2a59;
   color: white;
 }
 .footer-wrapper {
@@ -392,7 +392,7 @@ body#checkout #footer {
   padding-right: 15px;
 }
 #footer_links {
-  background-color: #1e4688;
+  background-color: #0d2a59;
   text-align: center;
 }
 #footer_links .block-contact,
