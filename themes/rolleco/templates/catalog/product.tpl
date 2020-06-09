@@ -91,7 +91,7 @@
             <a href="#full_description" class="description-link">{l s="Voir la description complète"}</a>
 
             {if $combinations|count > 0}
-              <a href="#content-wrapper" class="btn btn-block btn-info text-center margin-top-10">
+              <a href="#see_combinations" id="see_combinations" class="btn btn-block btn-info text-center margin-top-10">
                 <b>{l s="Sélectionnez le modèle"}</b>
               </a>
             {/if}
