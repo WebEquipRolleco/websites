@@ -4,17 +4,17 @@
       <div class="modal-body">
         <div class="row" style="background-color:white;">
           {assign var=imagesCount value=$product.images|count}
-          <div class="col-lg-8">
+          <div class="col-xs-12 col-lg-8">
             <figure>
               <img class="js-modal-product-cover product-cover-modal" width="{$product.cover.large.width}" src="{$product.cover.large.url}" alt="{$product.cover.legend}" title="{$product.cover.legend}" itemprop="image">
-              <figcaption class="image-caption">
+              <figcaption class="text-center">
               {block name='product_description_short'}
                 <div id="product-description-short" itemprop="description">{$product.description_short nofilter}</div>
               {/block}
             </figcaption>
             </figure>
           </div>
-          <div class="col-lg-4">
+          <div class="col-xs-12 col-lg-4">
             <aside id="thumbnails" class="thumbnails js-thumbnails text-sm-center">
               {block name='product_images'}
                 <div class="js-modal-mask mask">
