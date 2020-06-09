@@ -32,7 +32,9 @@
 				{if $combination.reference}
 					<tr>
 						<td class="hidden-md-up">
-							<div><b>{l s="Dimensions"}</b></div>
+							<div><b>{l s="Référence"}</b></div>
+							{$combination.reference}
+							<div class="margin-top-10"><b>{l s="Dimensions"}</b></div>
 							{$smarty.capture.dimensions nofilter}
 							<div class="margin-top-10"><b>{l s="Délai"}</b></div>
 							{$smarty.capture.delivery nofilter}
@@ -126,7 +128,9 @@
 			{/capture}
 			<tr>
 				<td class="hidden-md-up">
-					<div><b>{l s="Dimensions"}</b></div>
+					<div><b>{l s="Référence"}</b></div>
+					{$product.reference}
+					<div class="margin-top-10"><b>{l s="Dimensions"}</b></div>
 					{$smarty.capture.dimensions nofilter}
 					<div class="margin-top-10"><b>{l s="Délai"}</b></div>
 					{$smarty.capture.delivery nofilter}
@@ -227,45 +231,73 @@
   		<table class="table combinations-table vertical-align">
   			<thead>
 				<tr>
-					<th width="10%">{l s="Réf."}</th>
-					<th width="25%">{l s="Désignation"}</th>
-					<th width="15%">{l s="Dimensions"}</th>
-					<th width="15%">{l s="Commentaire"}</th>
-					<th width="10%">{l s="Délai"}</th>
+					<th class="hidden-md-up">{l s="Produit"}</th>
+					<th width="10%" class="hidden-sm-down">{l s="Réf."}</th>
+					<th width="25%" class="hidden-sm-down">{l s="Désignation"}</th>
+					<th width="15%" class="hidden-sm-down">{l s="Dimensions"}</th>
+					<th width="15%" class="hidden-sm-down">{l s="Commentaire"}</th>
+					<th width="10%" class="hidden-sm-down">{l s="Délai"}</th>
 					<th width="15%">{l s="Prix unitaire HT"}</th>
 					<th width="10%">{l s="Quantité"}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{foreach from=$product_accessories item=accessory}
+					{capture "dimensions"}
+						{if $accessory->getCombination()}
+							{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 1) item=row name=column_1}
+								<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+							{/foreach}
+						{else}
+							{foreach from=Product::loadColumn($accessory->id_product_accessory, 1) item=row name=column_1}
+								<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
+							{/foreach}
+						{/if}
+					{/capture}
+					{capture name="comments"}
+						{if $accessory->getTarget()->comment_1}<div>{$accessory->getTarget()->comment_1}</div>{/if}
+						{if $accessory->getTarget()->comment_2}<div>{$accessory->getTarget()->comment_2}</div>{/if}
+					{/capture}
+					{capture "delivery"}
+						{if $accessory->getCombination()}
+							{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 2) item=row}
+								{$row.value} 
+							{/foreach}
+						{else}
+							{foreach from=Product::loadColumn($accessory->id_product_accessory, 2) item=row}
+								{$row.value} 
+							{/foreach}
+						{/if}
+					{/capture}
 					<tr>
-						<td class="text-center">{$accessory->getTarget()->reference}</td>
-						<td>{$accessory->getProduct()->name}</td>
-						<td class="text-center">
-							{if $accessory->getCombination()}
-								{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 1) item=row name=column_1}
-									<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-								{/foreach}
-							{else}
-								{foreach from=Product::loadColumn($accessory->id_product_accessory, 1) item=row name=column_1}
-									<b>{$row.name}.</b> {$row.value} {if !$smarty.foreach.column_1.last} x {/if}
-								{/foreach}
+						<td class="hidden-md-up">
+							<div><b>{l s="Référence"}</b></div>
+							{$accessory->getTarget()->reference}
+							<div class="margin-top-10"><b>{l s="Désignation"}</b></div>
+							{$accessory->getProduct()->name}
+							{if $smarty.capture.dimensions}
+								<div class="margin-top-10"><b>{l s="Dimensions"}</b></div>
+								{$smarty.capture.dimensions nofilter}
+							{/if}
+							{if $smarty.capture.comments}
+								<div class="margin-top-10"><b>{l s="Commentaires"}</b></div>
+								{$smarty.capture.comments nofilter}
+							{/if}
+							{if $smarty.capture.delivery}
+								<div class="margin-top-10"><b>{l s="Délai"}</b></div>
+								{$smarty.capture.delivery nofilter}
 							{/if}
 						</td>
-						<td>
-							{if $accessory->getTarget()->comment_1}<div>{$accessory->getTarget()->comment_1}</div>{/if}
-							{if $accessory->getTarget()->comment_2}<div>{$accessory->getTarget()->comment_2}</div>{/if}
+						<td class="hidden-sm-down text-center">{$accessory->getTarget()->reference}</td>
+						<td class="hidden-sm-down">{$accessory->getProduct()->name}</td>
+						<td class="hidden-sm-down text-center">
+							{$smarty.capture.dimensions nofilter}
 						</td>
-						<td class="text-center">
-							{if $accessory->getCombination()}
-								{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 2) item=row}
-									{$row.value} 
-								{/foreach}
-							{else}
-								{foreach from=Product::loadColumn($accessory->id_product_accessory, 2) item=row}
-									{$row.value} 
-								{/foreach}
-							{/if}
+						<td class="hidden-sm-down">
+							{$smarty.capture.comments nofilter}
+						</td>
+						<td class="hidden-sm-down text-center">
+							{$smarty.capture.delivery nofilter}
 						</td>
 						<td>
 							<table id="prices_{$product.id_product}" class="prices-table">
