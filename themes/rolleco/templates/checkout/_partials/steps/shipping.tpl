@@ -92,7 +92,7 @@
                 <label for="delivery_message">
                   {l s='(Impératif de livraison, Digicode, Horaires d\'ouverture, livraison à l\'étage, ...)' d='Shop.Theme.Checkout'}
                 </label>
-                <textarea rows="5" cols="120" id="delivery_message" class="form-control" name="delivery_message">{$delivery_message}</textarea>
+                <textarea rows="5" cols="120" id="delivery_message" class="form-control" name="delivery_message">{$delivery_message nofilter}</textarea>
               </div>
             </div>
 

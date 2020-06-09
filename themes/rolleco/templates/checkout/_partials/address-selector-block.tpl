@@ -28,7 +28,7 @@
       <header class="h4">
         <label class="radio-block">
           <span class="custom-radio">
-            <input type="radio" name="{$name}" value="{$address.id}" {if $address.id == $selected}checked{/if}>
+            <input type="radio" class="change-address" name="{$name}" value="{$address.id}" {if $address.id == $selected}checked{/if}>
             <span></span>
           </span>
           <span class="address-alias h4">

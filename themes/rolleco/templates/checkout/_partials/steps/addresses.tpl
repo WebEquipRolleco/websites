@@ -74,7 +74,7 @@
         {/if}
 
         <p class="add-address text-center">
-          <a href="{$new_address_delivery_url}" class="btn btn-info bold">
+          <a href="{$new_address_delivery_url}" id="new_delivery_address" class="btn btn-info bold">
             {l s='add new address' d='Shop.Theme.Actions'}
           </a>
         </p>
