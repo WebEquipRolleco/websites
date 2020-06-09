@@ -99,7 +99,7 @@ class AdminSearchController extends AdminSearchControllerCore {
                             $customer = $order->getCustomer();
                             $row['customer'] = $customer->firstname.' '.$customer->lastname;
                             $order_state = $order->getCurrentOrderState();
-                            $row['osname'] = $order_state->name[$this->context->language->id];
+                            $row['osname'] = $order_state ? $order_state->name[$this->context->language->id] : '-';
                             $this->_list['orders'][] = $row;
                         }
                     } elseif ($searchType == 3) {

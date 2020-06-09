@@ -133,7 +133,7 @@ class AfterSale extends ObjectModel {
             $sql .= " AND id_order = ".$options['id_order'];
 
         if(isset($options['search']))
-            $sql .= " AND reference LIKE '%".$options['search']."%'";
+            $sql .= " AND reference LIKE '%".pSql($options['search'])."%'";
 
         if(isset($options['orderBy'])) {
             $sql .= " ORDER BY ".$options['orderBy'];
