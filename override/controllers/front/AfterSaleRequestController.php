@@ -44,7 +44,7 @@ class AfterSaleRequestControllerCore extends FrontController {
 		$request->email = $form['email'];
 		$request->id_order = $form['id_order'];
     	$request->ids_detail = implode(AfterSale::DELIMITER, $form['id_detail']);
-    	$request->notice_on_delivery = isset($form['notice_on_delivery']);
+    	$request->notice_on_delivery = $form['notice_on_delivery'];
     	$request->date_add = date('Y-m-d H:i:s');
     	$request->hasBeenUpdated();
     	$request->generateReference();
