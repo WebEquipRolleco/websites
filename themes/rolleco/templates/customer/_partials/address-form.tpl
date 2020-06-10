@@ -27,33 +27,55 @@
     {include file='_partials/form-errors.tpl' errors=$errors['']}
 
     {block name="address_form_url"}
-    <form
-      method="POST"
-      action="{url entity='address' params=['id_address' => $id_address]}"
-      data-id-address="{$id_address}"
-      data-refresh-url="{url entity='address' params=['ajax' => 1, 'action' => 'addressForm']}"
-    >
+    <form method="POST" action="{url entity='address' params=['id_address' => $id_address]}" data-id-address="{$id_address}" data-refresh-url="{url entity='address' params=['ajax' => 1, 'action' => 'addressForm']}">
     {/block}
 
       {block name="address_form_fields"}
-        <section class="form-fields">
-          {block name='form_fields'}
-            {foreach from=$formFields item="field"}
-              {block name='form_field'}
-                {form_field field=$field}
-              {/block}
-            {/foreach}
-          {/block}
-        </section>
+        {block name='form_fields'}
+          <section class="form-fields">
+            <div class="row">
+              <div class="col-xs-12 col-lg-6">
+                <h3 class="section-title margin-top-sm">{l s="mes informations"}</h3>
+                {foreach from=$formFields item="field"}
+                  {if $field.name|in_array:array('id_address', 'id_customer', 'back', 'token', 'alias', 'firstname', 'lastname', 'company', 'vat_number')}
+                    {block name='form_field'}
+                      {form_field field=$field}
+                    {/block}
+                  {/if}
+                {/foreach}
+                <h3 class="section-title margin-top-sm">{l s="Contact"}</h3>
+                {foreach from=$formFields item="field"}
+                  {if $field.name|in_array:array('phone')}
+                    {block name='form_field'}
+                      {form_field field=$field}
+                    {/block}
+                  {/if}
+                {/foreach}
+              </div>
+              <div class="col-xs-12 col-lg-6">
+                <h3 class="section-title margin-top-sm">{l s="Coordonnées"}</h3>
+                {foreach from=$formFields item="field"}
+                  {if $field.name|in_array:array('address1', 'address2', 'postcode', 'city', 'id_country')}
+                    {block name='form_field'}
+                      {form_field field=$field}
+                    {/block}
+                  {/if}
+                {/foreach}
+              </div>
+            </div>
+          </section>
+        {/block}
       {/block}
 
       {block name="address_form_footer"}
       <footer class="form-footer clearfix">
         <input type="hidden" name="submitAddress" value="1">
         {block name='form_buttons'}
-          <button class="btn btn-primary float-xs-right" type="submit" class="form-control-submit">
-            {l s='Save' d='Shop.Theme.Actions'}
-          </button>
+          <div class="bg-light text-center margin-bottom-15">
+            <button class="btn btn-success margin-top-10 margin-bottom-10" type="submit" class="form-control-submit">
+              <b>{l s='Save' d='Shop.Theme.Actions'}</b>
+            </button>
+          </div>
         {/block}
       </footer>
       {/block}
