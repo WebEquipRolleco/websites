@@ -513,4 +513,20 @@ class Mail extends MailCore {
         }
     }
 
+    /**
+    * OVERRIDE : fix INTL
+    * Automatically convert email to Punycode.
+    * @param string $to Email address
+    * @return string
+    **/
+    public static function toPunycode($to) {
+
+        $address = explode('@', $to);
+
+        if(empty($address[0]) || empty($address[1]))
+            return $to;
+
+        return $address[0].'@'.idn_to_ascii($address[1], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+    }
+
 }
