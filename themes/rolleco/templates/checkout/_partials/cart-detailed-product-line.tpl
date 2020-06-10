@@ -75,7 +75,7 @@
   </td>
 
   {* QUANTITE *}
-  <td class="qty text-center">
+  <td class="qty text-center" style="min-width:95px">
     {if isset($product.is_gift) && $product.is_gift}
       <span class="gift-quantity">{$product.quantity}</span>
     {else}
