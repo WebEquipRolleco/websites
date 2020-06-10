@@ -1167,9 +1167,6 @@ a.btn:hover {
   margin-left: auto;
   margin-right: auto;
 }
-body {
-  background-image: url('/img/bg-square.png');
-}
 #footer_phone {
   color: #ffd24a !important;
 }
