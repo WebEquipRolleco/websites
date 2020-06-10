@@ -26,7 +26,7 @@
         {assign var=id_cms value=Configuration::get('FOOTER_LINK_PAIEMENT')}
         {if $id_cms}
           <div class="text-center margin-top-10">
-            <a href="{$link->getCMSLink($id_cms)}">{l s='Voir nos moyens de paiment'}</a>
+            <a href="{$link->getCMSLink($id_cms)}">{l s='Voir nos moyens de paiement'}</a>
           </div>
         {/if}
       </div>
