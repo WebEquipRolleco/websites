@@ -10,4 +10,6 @@ class PDF extends PDFCore {
 	const TEMPLATE_PRODUCT_DEMO = "ProductDemo";
 
 	const TEMPLATE_QUOTATION = "Quotation";
+
+	const TEMPLATE_CART = "Cart";
 }

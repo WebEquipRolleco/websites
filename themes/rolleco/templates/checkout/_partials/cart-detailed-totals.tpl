@@ -51,7 +51,7 @@
             </tr>
             <tr>
               <td colspan="2" class="text-center">
-                <a href="" class="btn btn-info bold" onclick="window.print();return false;">
+                <a href="{$link->getPageLink("cart")}?action=show&dl_pdf" target="_blank" class="btn btn-info bold">
                   <i class="fa fa-print"></i> {l s="Imprimer" d='Shop.Theme.Actions'}
                 </a>
                 <a href="{$urls.pages.order}" class="btn btn-success bold">

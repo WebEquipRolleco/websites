@@ -274,7 +274,7 @@
 							<div><b>{l s="Référence"}</b></div>
 							{$accessory->getTarget()->reference}
 							<div class="margin-top-10"><b>{l s="Désignation"}</b></div>
-							{$accessory->getProduct()->name}
+							{$accessory->getProduct()->name|replace:"|":"<br />"}
 							{if $smarty.capture.dimensions}
 								<div class="margin-top-10"><b>{l s="Dimensions"}</b></div>
 								{$smarty.capture.dimensions nofilter}

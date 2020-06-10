@@ -7,6 +7,12 @@ class CartController extends CartControllerCore {
     **/
     public function initContent() {
 
+        // Téléchargement du PDF
+        if(Tools::getIsset('dl_pdf')) {
+            $pdf = new PDF(array('cart'=>$this->context->cart), PDF::TEMPLATE_CART, $this->context->smarty);
+            die($pdf->render());
+        }
+
     	// Ajout option
     	if($id = Tools::getValue('add_option')) {
     		$cart_id = Context::getContext()->cart->id;

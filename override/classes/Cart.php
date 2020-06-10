@@ -19,6 +19,7 @@ class Cart extends CartCore {
     private $customer;
     private $address_invoice;
     private $address_delivery;
+    private $shop;
 
     /**
     * OVERRIDE : ajout référence interne
@@ -64,6 +65,14 @@ class Cart extends CartCore {
         if($id_product)
             return parent::updateQty($quantity, $id_product, $id_product_attribute, $id_customization, $operator, $id_address_delivery, $shop, $auto_add_cart_rule, $skipAvailabilityCheckOutOfStock);
         return true;
+    }
+
+    public function getShop() {
+        
+        if(!$this->shop)
+            $this->shop = new Shop($this->id_shop, 1);
+
+        return $this->shop;
     }
 
     public function getCustomer() {

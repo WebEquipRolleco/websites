@@ -1,12 +1,12 @@
 <?php
 
-class HTMLTemplateQuotationCore extends HTMLTemplate {
+class HTMLTemplateCartCore extends HTMLTemplate {
 
-	public $quotation;
+	public $cart;
 
-	public function __construct(Quotation $quotation, $smarty) {
+	public function __construct(Cart $cart, $smarty) {
 
-		$this->quotation = $quotation;
+		$this->cart = $cart;
 		$this->smarty = $smarty;
 
 		$this->smarty->assign('header_mail', Configuration::get('PS_TEAM_PHONE'));
@@ -20,9 +20,8 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
     public function getHeader() {
 
         $this->assignCommonHeaderData();
-        $this->smarty->assign('quotation', $this->quotation);
 
-        return $this->smarty->fetch($this->getTemplate('header.quotation'));
+        return $this->smarty->fetch($this->getTemplate('header'));
     }
 
     /**
@@ -31,7 +30,7 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
     **/
     public function getFooter() {
 
-    	$this->smarty->assign('shop', $this->quotation->getShop());
+    	$this->smarty->assign('shop', $this->cart->getShop());
 
         return $this->smarty->fetch($this->getTemplate('footer'));
     }
@@ -42,10 +41,10 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 	**/
 	public function getContent() {
 
-		$this->smarty->assign('quotation', $this->quotation);
+		$this->smarty->assign('cart', $this->cart);
 		$this->smarty->assign('style_tab', $this->smarty->fetch($this->getTemplate('style-tab')));
 		
-		return $this->smarty->fetch($this->getTemplate('quotation'));
+		return $this->smarty->fetch($this->getTemplate('cart'));
 	}
 
 	/**
@@ -53,7 +52,7 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 	* @return string filename
 	**/
 	public function getBulkFilename() {
-		return $this->quotation->reference.'.pdf';
+		return 'mon-panier'.iconv('UTF-8', 'ASCII//TRANSLIT', $this->cart->getShop()->name).'.pdf';
 	}
 
 	/**
@@ -61,7 +60,7 @@ class HTMLTemplateQuotationCore extends HTMLTemplate {
 	* @return string filename
 	**/
 	public function getFilename() {
-		return $this->quotation->reference.'.pdf';
+		return 'mon-panier-'.iconv('UTF-8', 'ASCII//TRANSLIT', $this->cart->getShop()->name).'.pdf';
 	}
 
 }
