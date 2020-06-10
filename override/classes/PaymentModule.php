@@ -155,6 +155,7 @@ class PaymentModule extends PaymentModuleCore {
                     $order->id_lang = (int)$this->context->cart->id_lang;
                     $order->id_cart = (int)$this->context->cart->id;
                     $order->reference = $reference;
+                    $order->internal_reference = $this->context->cart->internal_reference;
                     $order->id_shop = (int)$this->context->shop->id;
                     $order->id_shop_group = (int)$this->context->shop->id_shop_group;
 
@@ -203,19 +204,6 @@ class PaymentModule extends PaymentModuleCore {
                     }
 
                     $result = $order->add();
-
-                    // Ajout référence interne
-                    if($order->id) {
-                    	
-                    	session_start();
-                    	$order->internal_reference = $_SESSION['internal_reference'];
-
-                    	if($order->internal_reference)
-                    		$order->save();
-
-                    	// Effacer la référence interne en mémoire
-                    	$_SESSION['internal_reference'] = null;
-                    }
 
                     if (!$result) {
                         PrestaShopLogger::addLog('PaymentModule::validateOrder - Order cannot be created', 3, null, 'Cart', (int)$id_cart, true);

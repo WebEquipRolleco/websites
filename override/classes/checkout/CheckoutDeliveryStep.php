@@ -17,13 +17,13 @@ class CheckoutDeliveryStep extends CheckoutDeliveryStepCore {
             );
         }
 
+        if(isset($requestParams['internal_reference'])) {
+            $this->getCheckoutSession()->getCart()->internal_reference = $requestParams['internal_reference'];
+            $this->getCheckoutSession()->getCart()->save();
+        }
+
         if(isset($requestParams['delivery_message']))
             $this->getCheckoutSession()->setMessage($requestParams['delivery_message']);
-
-        if(Tools::getIsset('internal_reference')) {
-        	if(session_status() == PHP_SESSION_NONE) session_start();
-        	$_SESSION['internal_reference'] = Tools::getValue('internal_reference');
-        }
 
         if ($this->step_is_reachable && isset($requestParams['confirmDeliveryOption'])) {
             // we're done if
@@ -57,7 +57,7 @@ class CheckoutDeliveryStep extends CheckoutDeliveryStepCore {
                 'recyclable' => $this->getCheckoutSession()->isRecyclable(),
                 'recyclablePackAllowed' => $this->isRecyclablePackAllowed(),
                 'delivery_message' => $this->getCheckoutSession()->getMessage(),
-                'internal_reference' => $_SESSION['internal_reference'] ?? null,
+                'internal_reference' => $this->getCheckoutSession()->getCart()->internal_reference,
                 'gift' => array(
                     'allowed' => $this->isGiftAllowed(),
                     'isGift' => $this->getCheckoutSession()->getGift()['isGift'],

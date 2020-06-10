@@ -28,6 +28,8 @@ ALTER TABLE `ps_shop` ADD `quotation_prefix` VARCHAR(10) NULL AFTER `reference_l
 ALTER TABLE `ps_shop` ADD `quotation_number` INT NOT NULL DEFAULT '0' AFTER `quotation_prefix`;
 ALTER TABLE `ps_shop` ADD `color` VARCHAR(30) NULL AFTER `theme_name`;
 
+ALTER TABLE `ps_cart` ADD `internal_reference` VARCHAR(255) DEFAULT NULL AFTER `id_lang`;
+
 ALTER TABLE `ps_customer` ADD `id_account_type` INT(11) NULL AFTER `id_risk`;
 ALTER TABLE `ps_customer` ADD `id_customer_state` INT(11) NULL AFTER `id_account_type`;
 ALTER TABLE `ps_customer` ADD `comment` TEXT NULL AFTER `id_customer_state`;
