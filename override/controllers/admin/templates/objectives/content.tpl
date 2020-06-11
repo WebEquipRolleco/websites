@@ -31,15 +31,14 @@
 	{else}
 
 		<div class="row">
-			<div class="col-lg-3">
+
+			<div class="col-lg-4">
 				<div class="panel text-center" style="min-height:103px; background-color:#ffc107; color:white;">
 					<div class="panel-heading">
 						<b style="color:white">{l s="Objectif du jour"}</b>
 					</div>
 					<p>{displayPrice price=$objective->value}</p>
 				</div>
-			</div>
-			<div class="col-lg-6">
 				<div class="panel">
 					<div class="panel-heading">
 						<div class="row">
@@ -69,8 +68,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-lg-3">
 				<div class="panel text-center" style="min-height:103px; border-color:#28a745;">
 					<div class="panel-heading text-muted">
 						{l s="Différence objectif jour"}
@@ -81,26 +78,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="row">
-			{foreach from=$shops item=shop}
-				<div class="col-lg-{(12 / $shops|@count)}">
-					{include file="./helpers/view/panel_shop.tpl"}
-				</div>
-			{/foreach}
-		</div>
-
-		<div class="row">
-			<div class="col-lg-6">
-				<div class="panel" style="min-height:475px">
-					<div class="panel-heading text-center">
-						{l s="Répartition du chiffre d'affaire"}
-					</div>
-					<div id="pie_chart"></div>
-				</div>
-			</div>
-			<div class="col-lg-6">
+			<div class="col-lg-8">
 				<div class="panel" style="min-height:475px">
 					<div class="panel-heading text-center">
 						{l s="Progression de la journée"}
@@ -214,29 +192,6 @@
 		});
 
 		{if $objective->id}
-			var options = {
-				data: [{
-					type: "pie",
-					startAngle: 45,
-					{literal}
-					showInLegend: "true",
-					legendText: "{label}",
-					indexLabel: "{label} ({y}%)",
-					color: "{color}",
-					{/literal}
-					dataPoints: [
-						{foreach from=$shops item=shop}
-							{
-								label: "{$shop.name}",
-								y: {$shop.total_rate},
-								color: "{$shop.color}"
-							},
-						{/foreach}
-					]
-				}]
-			};
-			$("#pie_chart").CanvasJSChart(options);
-
 			var options = {
 				animationEnabled: true,
 				theme: "light2",

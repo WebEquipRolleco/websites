@@ -82,30 +82,6 @@ class AdminObjectivesControllerCore extends AdminController {
     	$this->context->smarty->assign('objective', $objective);
     	$this->context->smarty->assign('objectives', DailyObjective::findForPeriod($this->date_begin, $this->date_end));
 
-        $shops = array();
-        foreach(Shop::getShops() as $shop) {
-
-            $row['name'] = $shop['name'];
-            $row['color'] = $shop['color'];
-
-            $row['turnover'] = Order::sumTurnover(false, $this->date_current, $this->date_current, $shop['id_shop']);
-            $row['nb_orders'] = Order::count($this->date_current, $this->date_current, $shop['id_shop']);
-            $row['avg'] = ($row['turnover'] and $row['nb_orders']) ? $row['turnover'] / $row['nb_orders'] : 0;
-
-            $last_turnover = Order::sumTurnover(false, $this->date_compare, $this->date_compare, $shop['id_shop']);
-            $last_nb_orders = Order::count($this->date_compare, $this->date_compare, $shop['id_shop']);
-            $last_avg = ($last_turnover and $last_nb_orders) ? $last_turnover / $last_nb_orders : 0;
-
-            $row['rate_turnover'] = Tools::getRate($row['turnover'], $last_turnover);
-            $row['rate_nb_orders'] = Tools::getRate($row['nb_orders'], $last_nb_orders);
-            $row['rate_avg'] = Tools::getRate($row['avg'], $last_avg);
-
-            $row['total_rate'] = Tools::getRate($row['turnover'], $turnover);
-
-            $shops[] = $row;
-        }
-        $this->context->smarty->assign('shops', $shops);
-
         $evolution = array();
         $date = clone($this->date_current);
 
