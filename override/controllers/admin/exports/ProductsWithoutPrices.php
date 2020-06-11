@@ -64,7 +64,7 @@ class ExportProductsWithoutPrices extends Export {
             $data[] = $product->reference;
             $data[] = null;
             $data[] = $product->reference;
-            $data[] = $product->name;
+            $data[] = pSql($product->name);
             $data[] = 1;
             $data[] = null;
             $data[] = null;

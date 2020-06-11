@@ -64,7 +64,7 @@ class ExportCombinationsWithoutPrices extends Export {
             $data[] = $combination->getProduct()->reference;
             $data[] = $combination->reference;
             $data[] = $combination->reference;
-            $data[] = $combination->getProduct()->name;
+            $data[] = pSql($combination->getProduct()->name);
             $data[] = null;
             $data[] = null;
             $data[] = null;
