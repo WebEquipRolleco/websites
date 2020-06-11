@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+    $('#email').prop('pattern', '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$');
     $("#siret").prop('pattern', '.{14}');
     $("#siret").prop('title', "14 caractères");
 

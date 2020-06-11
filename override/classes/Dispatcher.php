@@ -101,4 +101,102 @@ class Dispatcher extends DispatcherCore {
         ),
     );
 
+    /**
+    * Create an url from
+    * @param string $route_id Name the route
+    * @param int    $id_lang
+    * @param array  $params
+    * @param bool   $force_routes
+    * @param string $anchor Optional anchor to add at the end of this url
+    * @param null   $id_shop
+    * @return string
+    * @throws PrestaShopException
+    **/
+    public function createUrl(
+        $route_id,
+        $id_lang = null,
+        array $params = array(),
+        $force_routes = false,
+        $anchor = '',
+        $id_shop = null
+    ) {
+        if ($id_lang === null) {
+            $id_lang = (int)Context::getContext()->language->id;
+        }
+        if ($id_shop === null) {
+            $id_shop = (int)Context::getContext()->shop->id;
+        }
+
+        if (!isset($this->routes[$id_shop])) {
+            $this->loadRoutes($id_shop);
+        }
+
+        if (!isset($this->routes[$id_shop][$id_lang][$route_id])) {
+            $query = http_build_query($params, '', '&');
+            $index_link = $this->use_routes ? '' : 'index.php';
+            return ($route_id == 'index') ? $index_link.(($query) ? '?'.$query : '') :
+                ((trim($route_id) == '') ? '' : 'index.php?controller='.$route_id).(($query) ? '&'.$query : '').$anchor;
+        }
+        $route = $this->routes[$id_shop][$id_lang][$route_id];
+        // Check required fields
+        $query_params = isset($route['params']) ? $route['params'] : array();
+        foreach ($route['keywords'] as $key => $data) {
+            if (!$data['required']) {
+                continue;
+            }
+
+            if (!array_key_exists($key, $params)) {
+                throw new PrestaShopException('Dispatcher::createUrl() miss required parameter "'.
+                    $key.'" for route "'.$route_id.'"');
+            }
+            if (isset($this->default_routes[$route_id])) {
+                $query_params[$this->default_routes[$route_id]['keywords'][$key]['param']] = $params[$key];
+            }
+        }
+
+        // Build an url which match a route
+        if ($this->use_routes || $force_routes) {
+            $url = $route['rule'];
+            $add_param = array();
+
+            foreach ($params as $key => $value) {
+                if (!isset($route['keywords'][$key])) {
+                    if (!isset($this->default_routes[$route_id]['keywords'][$key])) {
+                        $add_param[$key] = $value;
+                    }
+                } else {
+                    if ($params[$key]) {
+                        $replace = $route['keywords'][$key]['prepend'].$params[$key].$route['keywords'][$key]['append'];
+                    } else {
+                        $replace = '';
+                    }
+                    $url = preg_replace('#\{([^{}]*:)?'.$key.'(:[^{}]*)?\}#', $replace, $url);
+                }
+            }
+            $url = preg_replace('#\{([^{}]*:)?[a-z0-9_]+?(:[^{}]*)?\}#', '', $url);
+            if (count($add_param)) {
+                $url .= '?'.http_build_query($add_param, '', '&');
+            }
+        } else {
+            // Build a classic url index.php?controller=foo&...
+            $add_params = array();
+            foreach ($params as $key => $value) {
+                if (!isset($route['keywords'][$key]) && !isset($this->default_routes[$route_id]['keywords'][$key])) {
+                    $add_params[$key] = $value;
+                }
+            }
+
+            if (!empty($route['controller'])) {
+                $query_params['controller'] = $route['controller'];
+            }
+            $query = http_build_query(array_merge($add_params, $query_params), '', '&');
+            if ($this->multilang_activated) {
+                $query .= (!empty($query) ? '&' : '').'id_lang='.(int)$id_lang;
+            }
+            $url = 'index.php?'.$query;
+        }
+
+        return $url;
+    }
+
 }
