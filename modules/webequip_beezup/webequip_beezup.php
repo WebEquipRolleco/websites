@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../override/controllers/admin/exports/Export.php");
+require_once(dirname(__FILE__)."/../../override/controllers/admin/exports/Export.php");
 
 class webequip_beezup extends Module {
 
