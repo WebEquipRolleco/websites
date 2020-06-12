@@ -155,20 +155,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					{foreach from=Shop::getShops() item=shop}
-						<div class="col-lg-4 text-center">
-							<label for="shop_{$shop.id_shop}" style="color:{$shop.color}">{$shop.name}</label>
-							<span class="switch prestashop-switch fixed-width-lg" style="margin-left:auto; margin-right:auto;">
-								<input type="radio" name="shops[{$shop.id_shop}]" id="shop_{$shop.id_shop}_on" value="1" checked>
-								<label for="shop_{$shop.id_shop}_on">Oui</label>
-								<input type="radio" name="shops[{$shop.id_shop}]" id="shop_{$shop.id_shop}_off" value="0">
-								<label for="shop_{$shop.id_shop}_off">Non</label>
-								<a class="slide-button btn"></a>
-							</span>
-						</div>
-					{/foreach}
-				</div>
 				<div class="panel-footer text-right">
 					<button type="submit" class="btn btn-success" name="action" value="export_orders" style="width:69px">
 						<i class="process-icon-download"></i> <b>Exporter</b>

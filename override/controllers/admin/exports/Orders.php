@@ -44,9 +44,9 @@ class ExportOrders extends Export {
         $options['date_begin'] = Tools::getValue('date_begin');
         $options['date_end'] = Tools::getValue('date_end');
         
-        $options['shops'] = array();
+        /*$options['shops'] = array();
         foreach(Tools::getValue('shops') as $id => $value)
-            if($value) $options['shops'][] = $id;
+            if($value) $options['shops'][] = $id;*/
 
         foreach(Order::findIds($options) as $id) {
             $order = new Order($id);
