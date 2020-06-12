@@ -1712,7 +1712,7 @@ class webequip_transfer extends Module {
 	**/
 	private function updateOldCustomers() {
 
-		foreach(Db::getInstance()->executeS("SELECT id_customer, email FROM ps_customer WHERE id_shop <> 1") as $row) {
+		foreach(Db::getInstance()->executeS("SELECT id_customer, email, rollcash FROM ps_customer WHERE id_shop <> 1") as $row) {
 
 			// Vérifier la présence du client sur rolléco
 			$id = Db::getInstance()->getValue("SELECT id_customer FROM ps_customer WHERE email ='".$row['email']."' AND id_shop = 1");
@@ -1723,6 +1723,10 @@ class webequip_transfer extends Module {
 			// Le client est déjà sur Rolléco, on affecte ses données au client trouvé avant de la supprimer
 			else {
 
+				// On transfère son solde si nécessaire
+				if($row['rollcash'] > 0)
+					Db::getInstance()->execute("UPDATE ps_customer SET rollcach = rollcash + ".(float)$row['rollcash']." WHERE id_customer = $id");
+				
 				// Adresses, paniers, messages, commandes, réductions, devis, prix personnalisés
 				foreach(array('ps_address', 'ps_cart', 'ps_message', 'ps_orders', 'ps_order_slip', 'ps_quotation', 'ps_specific_price') as $table)
 					Db::getInstance()->execute("UPDATE $table SET id_customer = ".$row['id_customer']." WHERE id_customer = $id");
