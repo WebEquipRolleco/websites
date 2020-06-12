@@ -1725,8 +1725,8 @@ class webequip_transfer extends Module {
 
 				// On transfère son solde si nécessaire
 				if($row['rollcash'] > 0)
-					Db::getInstance()->execute("UPDATE ps_customer SET rollcach = rollcash + ".(float)$row['rollcash']." WHERE id_customer = $id");
-				
+					Db::getInstance()->execute("UPDATE ps_customer SET rollcash = rollcash + ".(float)$row['rollcash']." WHERE id_customer = $id");
+
 				// Adresses, paniers, messages, commandes, réductions, devis, prix personnalisés
 				foreach(array('ps_address', 'ps_cart', 'ps_message', 'ps_orders', 'ps_order_slip', 'ps_quotation', 'ps_specific_price') as $table)
 					Db::getInstance()->execute("UPDATE $table SET id_customer = ".$row['id_customer']." WHERE id_customer = $id");
