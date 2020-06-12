@@ -45,21 +45,23 @@
             </th>
             <th class="text-right">
               {if $order.details.invoice_url}
-                <a href="{$order.details.invoice_url}" class="btn btn-default" title="{l s='Download your invoice as a PDF file.' d='Shop.Theme.Customeraccount'}">
+                <a href="{$order.details.invoice_url}" class="btn btn-primary" title="{l s='Download your invoice as a PDF file.' d='Shop.Theme.Customeraccount'}" style="border-left:1px solid white !important;">
                   <i class="fa fa-file-pdf"></i>
                 </a>
               {/if}
               {if $order.follow_up}
-                <a class="btn btn-default" title="{l s='Click the following link to track the delivery of your order' d='Shop.Theme.Customeraccount'}">
+                <a class="btn btn-primary" title="{l s='Click the following link to track the delivery of your order' d='Shop.Theme.Customeraccount'}" style="border-left:1px solid white !important;">
                   <i class="fa fa-truck"></i>
                 </a>
               {/if}
-              <a href="{$order.details.reorder_url}" class="btn btn-success" title="{l s='Reorder' d='Shop.Theme.Actions'}">
+              <a href="{$order.details.reorder_url}" class="btn btn-success" title="{l s='Reorder' d='Shop.Theme.Actions'}" style="border-left:1px solid white !important;">
                 <i class="fa fa-cart-arrow-down"></i>
               </a>
-              <a href="{$link->getPageLink('AfterSaleRequest&order='|cat:$order.details.reference)}" class="btn btn-danger" title="{l s='Ouvrir un SAV' d='Shop.Theme.Actions'}">
-                <i class="fa fa-exchange"></i>
-              </a>
+              {if Configuration::get('AFTER_SALES_ENABLED')}
+                <a href="{$link->getPageLink('AfterSaleRequest&order='|cat:$order.details.reference)}" class="btn btn-warning" title="{l s='Ouvrir un SAV' d='Shop.Theme.Actions'}" style="border-left:1px solid white !important;">
+                  <i class="fa fa-headset"></i>
+                </a>
+              {/if}
             </th>
           </tr>
         </thead>
