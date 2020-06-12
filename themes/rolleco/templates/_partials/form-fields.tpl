@@ -29,11 +29,10 @@
   {/block}
 
 {elseif $field.type == 'custom-select-row'}
-
   <div class="col-md-12{if ($field.type === 'radio-buttons')} form-control-valign{/if}">
     <select class="form-control form-control-select" id="{$field.name}" name="{$field.name}" {if $field.required}required{/if}>
       {foreach from=$field.availableValues item="label" key="value"}
-        <option value="{$label->id}" data-company="{$label->company}" data-siret="{$label->siret}" data-chorus="{$label->chorus}" data-tva="{$label->tva}" {if $label->default_value}selected{/if}>
+        <option value="{$label->id}" data-company="{$label->company}" data-siret="{$label->siret}" data-chorus="{$label->chorus}" data-tva="{$label->tva}" {if $field.value and $field.value == $label->id}selected{elseif $label->default_value}selected{/if}>
           {$label->name}
         </option>
       {/foreach}

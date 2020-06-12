@@ -46,25 +46,59 @@ class Customer extends CustomerCore {
 	private $state = null;
 	private $shop = null;
 
-	public function __construct($id_category = null, $id_lang = null, $id_shop = null) {
-
-		self::$definition['fields']['reference'] = array('type' => self::TYPE_STRING, 'validate' => 'isString');
-		self::$definition['fields']['id_account_type'] = array('type' => self::TYPE_INT, 'validate' => 'isInt');
-		self::$definition['fields']['id_customer_state'] = array('type' => self::TYPE_INT, 'validate' => 'isInt');
-		self::$definition['fields']['comment'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['email'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['company'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['chorus'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['tva'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['funding'] = array('type' => self::TYPE_BOOL);
-		self::$definition['fields']['date_funding'] = array('type' => self::TYPE_DATE);
-		self::$definition['fields']['email_invoice'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['email_tracking'] =array('type' => self::TYPE_STRING);
-		self::$definition['fields']['rollcash'] = array('type' => self::TYPE_FLOAT);
-		self::$definition['fields']['quotation'] = array('type' => self::TYPE_INT);
-		
-		parent::__construct($id_category, $id_lang, $id_shop);
-	}
+	/**
+     * @see ObjectModel::$definition
+     */
+    public static $definition = array(
+        'table' => 'customer',
+        'primary' => 'id_customer',
+        'fields' => array(
+            'secure_key' => array('type' => self::TYPE_STRING, 'validate' => 'isMd5', 'copy_post' => false),
+            'reference' => array('type' => self::TYPE_STRING, 'validate' => 'isString'),
+            'lastname' => array('type' => self::TYPE_STRING, 'validate' => 'isName', 'required' => true, 'size' => 255),
+            'firstname' => array('type' => self::TYPE_STRING, 'validate' => 'isName', 'required' => true, 'size' => 255),
+            'email' => array('type' => self::TYPE_STRING, 'validate' => 'isEmail'),
+            'passwd' => array('type' => self::TYPE_STRING, 'validate' => 'isPasswd', 'required' => true, 'size' => 60),
+            'last_passwd_gen' => array('type' => self::TYPE_STRING, 'copy_post' => false),
+            'id_gender' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId'),
+            'birthday' => array('type' => self::TYPE_DATE, 'validate' => 'isBirthDate'),
+            'newsletter' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'newsletter_date_add' => array('type' => self::TYPE_DATE, 'copy_post' => false),
+            'ip_registration_newsletter' => array('type' => self::TYPE_STRING, 'copy_post' => false),
+            'optin' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'website' => array('type' => self::TYPE_STRING, 'validate' => 'isUrl'),
+            'company' => array('type' => self::TYPE_STRING),
+            'siret' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
+            'ape' => array('type' => self::TYPE_STRING, 'validate' => 'isApe'),
+            'outstanding_allow_amount' => array('type' => self::TYPE_FLOAT, 'validate' => 'isFloat', 'copy_post' => false),
+            'show_public_prices' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool', 'copy_post' => false),
+            'id_risk' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedInt', 'copy_post' => false),
+            'max_payment_days' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedInt', 'copy_post' => false),
+            'active' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool', 'copy_post' => false),
+            'deleted' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool', 'copy_post' => false),
+            'note' => array('type' => self::TYPE_HTML, 'validate' => 'isCleanHtml', 'size' => 65000, 'copy_post' => false),
+            'is_guest' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool', 'copy_post' => false),
+            'id_shop' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'copy_post' => false),
+            'id_shop_group' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'copy_post' => false),
+            'id_default_group' => array('type' => self::TYPE_INT, 'copy_post' => false),
+            'id_lang' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'copy_post' => false),
+            'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate', 'copy_post' => false),
+            'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate', 'copy_post' => false),
+            'reset_password_token' => array('type' => self::TYPE_STRING, 'validate' => 'isSha1', 'size' => 40, 'copy_post' => false),
+            'reset_password_validity' => array('type' => self::TYPE_DATE, 'validate' => 'isDateOrNull', 'copy_post' => false),
+            'id_account_type' => array('type' => self::TYPE_INT, 'validate' => 'isInt'),
+			'id_customer_state' => array('type' => self::TYPE_INT, 'validate' => 'isInt'),
+			'comment' => array('type' => self::TYPE_STRING),
+			'chorus' => array('type' => self::TYPE_STRING),
+			'tva' => array('type' => self::TYPE_STRING),
+			'funding' => array('type' => self::TYPE_BOOL),
+			'date_funding' => array('type' => self::TYPE_DATE),
+			'email_invoice' => array('type' => self::TYPE_STRING),
+			'email_tracking' => array('type' => self::TYPE_STRING),
+			'rollcash' => array('type' => self::TYPE_FLOAT),
+			'quotation' => array('type' => self::TYPE_INT)
+        )
+    );
 
 	// SHORTCUTS
 	public function getType() { return $this->getAccountType(); }
