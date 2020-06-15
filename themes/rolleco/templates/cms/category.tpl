@@ -49,7 +49,7 @@
           {if $has_file}
             <div class="col-lg-2 margin-top-15">
                 <a href="{$cms_page.link}">
-                  <img src="{$urls.img_ps_url}{CMS::DIR}{$cms_page.id_cms}.png" style="max-width: 100%">
+                  <img src="{$urls.img_ps_url}{CMS::DIR}{$cms_page.id_cms}.png" class="hidden-sm-down" style="max-width: 100%">
                 </a>
             </div>
           {/if}
