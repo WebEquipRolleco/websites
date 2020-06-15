@@ -479,6 +479,14 @@ h1.product-title {
   font-size: 20px;
   color: #1e4688;
 }
+h3.section-subtitle {
+  border-bottom: 1px solid #484a45;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #1e4688;
+}
 .tabs .nav-tabs .nav-link.active {
   color: #1e4688;
   border-bottom: 3px solid #1e4688;
