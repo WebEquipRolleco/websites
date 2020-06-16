@@ -986,6 +986,9 @@ li.product-flag.destocking {
 .price {
   color: #1e4688;
 }
+.highlighted-informations {
+  height: 6.125rem !important;
+}
 #quotation_box {
   background-color: #efefef;
   margin-bottom: 40px;
