@@ -23,17 +23,36 @@ class SpecificPrice extends SpecificPriceCore {
 
 	/**
 	* OVERRIDE : ajout des champs de gestion Web-équip
-	**/
-	public function __construct($id_specific_price = null, $id_lang = null, $id_shop = null) {
-
-		self::$definition['fields']['full_price'] = array('type' => self::TYPE_FLOAT);
-		self::$definition['fields']['buying_price'] = array('type' => self::TYPE_FLOAT);
-		self::$definition['fields']['delivery_fees'] = array('type' => self::TYPE_FLOAT);
-		self::$definition['fields']['comment_1'] = array('type' => self::TYPE_STRING);
-		self::$definition['fields']['comment_2'] = array('type' => self::TYPE_STRING);
-
-		parent::__construct($id_specific_price, $id_lang, $id_shop);
-	}
+    * @see ObjectModel::$definition
+    **/
+    public static $definition = array(
+        'table' => 'specific_price',
+        'primary' => 'id_specific_price',
+        'fields' => array(
+            'id_shop_group' =>          array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId'),
+            'id_shop' =>				array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'id_cart' =>            	array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'id_product' =>            	array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'id_product_attribute' =>   array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId'),
+            'id_currency' =>            array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'id_specific_price_rule' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId'),
+            'id_country' =>            	array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'id_group' =>               array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'id_customer' =>            array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'price' =>                  array('type' => self::TYPE_FLOAT, 'validate' => 'isNegativePrice', 'required' => true),
+            'from_quantity' =>          array('type' => self::TYPE_INT, 'validate' => 'isUnsignedInt', 'required' => true),
+            'reduction' =>              array('type' => self::TYPE_FLOAT, 'validate' => 'isPrice', 'required' => true),
+            'reduction_tax' =>          array('type' => self::TYPE_INT, 'validate' => 'isBool', 'required' => true),
+            'reduction_type' =>        	array('type' => self::TYPE_STRING, 'validate' => 'isReductionType', 'required' => true),
+            'from' =>                   array('type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true),
+            'to' =>                    	array('type' => self::TYPE_DATE, 'validate' => 'isDateFormat', 'required' => true),
+            'full_price' => 			array('type' => self::TYPE_FLOAT),
+			'buying_price' => 			array('type' => self::TYPE_FLOAT),
+			'delivery_fees' => 			array('type' => self::TYPE_FLOAT),
+			'comment_1' => 				array('type' => self::TYPE_STRING),
+			'comment_2' => 				array('type' => self::TYPE_STRING)
+        ),
+    );
 
 	/**
 	* Retourne le produit associé
@@ -133,4 +152,17 @@ class SpecificPrice extends SpecificPriceCore {
     	return $price;
     }
 
+    /**
+    * Retourne la quantité minimal d'un produit
+    * @param int $id_product
+    * @return int
+    **/
+    public static function getProductMinQuantity($id_product) {
+
+    	$quantity = Db::getInstance()->getValue("SELECT MIN(from_quantity) FROM ps_specific_price WHERE id_product = $id_product");
+    	if(!$quantity) $quantity = 1;
+
+    	return $quantity;
+    }
+    
 }
