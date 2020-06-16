@@ -18,14 +18,14 @@
 
         <div class="current-price">
           <span class="pre-price">{l s="A partir de"}</span>
-          {if $specific_price and $specific_price.full_price > 0}
+          {if $specific_price and $specific_price.full_price > $specific_price.price}
             <div class="crossed-price text-muted">
               <span style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
               &nbsp;
               <span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
             </div>
           {/if}
-          <span class="main-price {if $specific_price and $specific_price.full_price > 0}text-danger{/if}">
+          <span class="main-price {if $specific_price and $specific_price.full_price > $specific_price.price}text-danger{/if}">
             {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, $quantity_wanted))}
             <small>HT</small>
           </span>
