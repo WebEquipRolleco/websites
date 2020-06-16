@@ -77,6 +77,11 @@ class AdminCategoriesController extends AdminCategoriesControllerCore {
                     'hint' => $this->trans('Invalid characters:', array(), 'Admin.Notifications.Info').' <>;=#{}',
                 ),
                 array(
+                    'type' => 'text',
+                    'label' => $this->trans('Position', array(), 'Admin.Global'),
+                    'name' => 'position'
+                ),
+                array(
                     'type' => 'switch',
                     'label' => $this->trans('Displayed', array(), 'Admin.Global'),
                     'name' => 'active',
