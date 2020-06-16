@@ -1,5 +1,5 @@
-{assign var=quantity_wanted value=Tools::getValue('quantity_wanted', SpecificPrice::getProductMinQuantity($product.id_product))}
-{assign var=specific_price value=specificPrice::getSpecificPrice($product.id_product, 1, 1, 8, 0, $quantity_wanted)}
+{assign var=quantity_wanted value=Tools::getValue('quantity_wanted', 1)}
+{assign var=specific_price value=specificPrice::getSpecificPrice($product.id_product, 1, 1, 8, 0, SpecificPrice::getProductMinQuantity($product.id_product))}
 {if $product.show_price}
   <div class="product-prices text-center">
     {*block name='product_discount'}

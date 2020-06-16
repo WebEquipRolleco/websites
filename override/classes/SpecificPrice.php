@@ -164,5 +164,16 @@ class SpecificPrice extends SpecificPriceCore {
 
     	return $quantity;
     }
-    
+
+    /**
+    * Retourne le prix spécific minimum pour un produit
+    * @param int $id_product
+    * @return SpecificPrice
+    **/
+    public static function getMinimumPrice($id_product) {
+
+    	$id = Db::getInstance()->getValue("SELECT id_specific_price FROM ps_specific_price WHERE id_product = $id_product ORDER BY from_quantity ASC, price ASC");
+    	return new self($id);
+    }
+
 }
