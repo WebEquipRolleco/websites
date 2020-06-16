@@ -51,14 +51,25 @@ class ExportPrices extends Export {
         $context = Context::getContext();
         $csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
 
+        // Liste des catégories
+        $category_ids = array();
+        $categories = Tools::getValue('categories', array());
+        foreach($categories as $id) {
+            $category_ids[] = $id;
+
+            $category = new Category($id);
+            foreach($category->getChildrenWs() as $child)
+                $category_ids[] = $child['id'];
+        }
+        
         $sub_sql = "SELECT p.id_product FROM ps_product p WHERE 1";
 
         $status_type = Tools::getValue('status_type');
         if($status_type == parent::ACTIVE_PRODUCTS_ONLY) $sub_sql .= " AND p.active = 1";
         if($status_type == parent::INACTIVE_PRODUCTS_ONLY) $sub_sql .= " AND p.active = 0";
 
-        if($category_ids = implode(',', Tools::getValue('categories', array())))
-            $sub_sql .= " AND id_category_default IN ($category_ids)";
+        if($category_ids = implode(',', $category_ids))
+            $sql .= " AND id_category_default IN ($category_ids)";
         if($supplier_ids = implode(',', Tools::getValue('suppliers', array())))
             $sub_sql .= " AND id_supplier IN ($supplier_ids)";
         $sql = "SELECT id_specific_price FROM ps_specific_price WHERE id_product IN ($sub_sql)";
