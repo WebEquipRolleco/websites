@@ -3,7 +3,7 @@
     <table class="table combinations-table block-promo">
       <thead>
         <tr>
-          <th colspan="2" class="bg-light" style="border-top:0px; color:black">
+          <th colspan="2">
             {l s='Programme de fidélité rollcash' d='Shop.Theme.Checkout'}
           </th>
         </tr>
