@@ -83,7 +83,7 @@ class QuotationLine extends ObjectModel {
 		if($use_taxes) $price *= 1.2;
 		if($eco_tax) $price += $this->getEcoTax($quantity);
 
-		return round($price * $this->quantity, 2);
+		return round($price, 2);
 	}
 
 	/**
