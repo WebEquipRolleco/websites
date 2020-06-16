@@ -480,7 +480,7 @@
 			      			<div class="col-lg-12">
 			      				<div class="form-group">
 			      					<select class="form-control select2" name="product_infos">
-			      						<option value="">{l s="Produit libre"}</option>
+			      						<option value="0">{l s="Produit libre"}</option>
 			      						{foreach $products as $product}
 			      							<option value="{$product.id_product}_{$product.id_product_attribute}">
 			      								{if $product.reference_attribute}
@@ -655,6 +655,11 @@
 			else
 				$(target).val(null);
 
+		});
+
+		$('#new_product').on('click', function() {
+			$('select[name=product_infos]').val(0);
+			$('select[name=product_infos]').trigger('change');
 		});
 
 		$('#new_product_form').on('submit', function(e) {
