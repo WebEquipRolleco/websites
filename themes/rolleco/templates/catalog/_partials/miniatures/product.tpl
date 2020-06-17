@@ -59,7 +59,7 @@
         {/block}
 
         {block name='product_price_and_shipping'}
-          {if $product.show_price}
+            {assign var=specific_price value=}
             <div class="product-price-and-shipping">
               {if $product.has_discount}
                 {hook h='displayProductPriceBlock' product=$product type="old_price"}
@@ -76,7 +76,7 @@
               {hook h='displayProductPriceBlock' product=$product type="before_price"}
 
               <span class="sr-only">{l s='Price' d='Shop.Theme.Catalog'}</span>
-              <span itemprop="price" class="price">{$product.price}</span>
+              <span itemprop="price" class="price">{SpecificPrice::getMinimumPrice($product.id_product)}</span>
 
               {hook h='displayProductPriceBlock' product=$product type='unit_price'}
 
