@@ -165,4 +165,25 @@ class SpecificPrice extends SpecificPriceCore {
     	return $quantity;
     }
 
+    /**
+    * Retourne le prix spécifique par défaut d'un produit (à afficher dans les miniatures, etc...)
+    * @param int $id_product
+    * @param int $id_combination
+    * @return SpecificPrice
+    **/
+    public static function getDefault($id_product, $id_combination = null) {
+
+        // Détermine la quantité minimale du produit / déclinaison
+        $quantity_sql = "SELECT MIN(from_quantity) FROM ps_specific_price WHERE id_product = $id_product";
+        if($id_combination) $quantity_sql = " AND id_product_attribute = $id_combination";
+
+        // SQL du prix à retourner
+        $sql = "SELECT id_specific_price FROM ps_specific_price WHERE id_product = $id_product";
+        if($id_combination) $sql .= " AND id_product_attribute = $id_combination";
+        $sql .= " AND from_quantity = ($quantity_sql) ORDER BY price ASC";
+
+        // Retourne l'objet trouvé
+        return new Self(Db::getInstance()->getValue($sql));
+    }
+    
 }

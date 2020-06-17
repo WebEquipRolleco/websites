@@ -28,11 +28,17 @@ class ExportProductURL extends Export {
         $csv = implode($this->separator, $header).parent::END_OF_LINE;
         $link = new Link();
 
-        $sql = "SELECT p.id_product, (SELECT GROUP_CONCAT(id_category SEPARATOR '".$this->delimiter."') FROM ps_category_product WHERE id_product = p.id_product) AS id_categories FROM ps_product p WHERE 1";
+        $sql = "SELECT id_product FROM ps_product WHERE 1";
         if($category_ids = implode(',', Tools::getValue('categories', array())))
             $sql .= " AND id_category_default IN ($category_ids)";
         if($supplier_ids = implode(',', Tools::getValue('suppliers', array())))
             $sql .= " AND id_supplier IN ($supplier_ids)";
+        if($status = Tools::getValue('status_type')) {
+            if($status == Export::ACTIVE_PRODUCTS_ONLY)
+                $sql .= " AND active = 1";
+            if($status == Export::INACTIVE_PRODUCTS_ONLY)
+                $sql .= " AND active = 0";
+        }
 
         foreach(Db::getInstance()->executeS($sql) as $row) {
             $product = new Product($row['id_product'], true, 1, $context->shop->id);
