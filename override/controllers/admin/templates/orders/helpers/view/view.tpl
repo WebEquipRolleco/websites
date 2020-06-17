@@ -93,17 +93,11 @@
           <i class="icon-cogs"></i>
           {l s='Référence interne' d='Admin.Global'}
         </div>
-        <form method="post">
-          <div class="row">
-            <div class="col-lg-9">
-              <input type="text" class="form-control" name="new_internal_reference" value="{$order->internal_reference}" placeholder="{l s='Non renseignée' d='Admin.Global'}">
-            </div>
-            <div class="col-lg-3">
-              <button type="submit" class="btn btn-info">
-                <strong>{l s='Enregistrer' d='Admin.Actions'}</strong>
-              </button>
-            </div>
-          </div>
+        <form method="post" class="form-inline">
+          <input type="text" class="form-control" name="new_internal_reference" value="{$order->internal_reference}" placeholder="{l s='Non renseignée' d='Admin.Global'}">
+          <button type="submit" class="btn btn-info">
+            <strong>{l s='Enregistrer' d='Admin.Actions'}</strong>
+          </button>
         </form>
       </div>
     </div>
