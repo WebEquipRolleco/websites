@@ -59,6 +59,7 @@
         {/block}
 
         {block name='product_price_and_shipping'}
+          {if $product.show_price}
             <div class="product-price-and-shipping">
               {if $product.has_discount}
                 {hook h='displayProductPriceBlock' product=$product type="old_price"}
