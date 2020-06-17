@@ -76,7 +76,7 @@
               {hook h='displayProductPriceBlock' product=$product type="before_price"}
 
               <span class="sr-only">{l s='Price' d='Shop.Theme.Catalog'}</span>
-              <span itemprop="price" class="price">{SpecificPrice::getMinimumPrice($product.id_product)}</span>
+              <span itemprop="price" class="price">{displayPrice price=SpecificPrice::getMinimumPrice($product.id_product)}</span>
 
               {hook h='displayProductPriceBlock' product=$product type='unit_price'}
 
