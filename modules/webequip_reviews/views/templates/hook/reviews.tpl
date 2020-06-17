@@ -28,7 +28,7 @@
 							</div>
 						</td>
 						<td>
-							{$review->comment}
+							{$review->comment nofilter}
 						</td>
 					</tr>
 				{/foreach}
