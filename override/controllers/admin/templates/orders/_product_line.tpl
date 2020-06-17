@@ -171,7 +171,7 @@
 			{assign var='amount_refundable' value=$product['amount_refundable_tax_incl']}
 		{/if}
 		<div class="form-group">
-			<div class="{if $product['amount_refundable'] > 0}col-lg-4{else}col-lg-12{/if}">
+			<div class="col-lg-12">
 				<label class="control-label">
 					{l s='Quantity:'}
 				</label>
@@ -180,7 +180,7 @@
 					<div class="input-group-addon">/ {$product['quantity_refundable']}</div>
 				</div>
 			</div>
-			<div class="{if $product['quantity_refundable'] > 0}col-lg-8{else}col-lg-12{/if}">
+			<div class="col-lg-12">
 				<label class="control-label">
 					<span class="title_box ">{l s='Amount' d='Admin.Global'}</span>
 					<small class="text-muted">({$smarty.capture.TaxMethod})</small>
