@@ -18,10 +18,14 @@
 			{l s="Votre demande sera traîtée dans les plus brefs délais." mod="webequip_partners"}
 		</div>
 	{else}
+		{l s="Pour toute proposition commerciale, vous pouvez nous contacter en remplissant le formulaire ci-dessous."} <br />
+		<b>{l s="Nous vous répondrons dans les plus brefs délais."}</b> <br />
+		<br />
+		{l s="Vous pouvez également nous joindre par téléphone au <b>%s</b> ou par fax au <b>%s</b>." sprintf=[Configuration::get('PS_SHOP_PHONE'), Configuration::get('PS_SHOP_FAX')]}
 		<form method="post">
 			<div class="row">
 				<div class="col-xs-12 col-lg-6">
-					<h3 class="section-title margin-top-sm">
+					<h3 class="section-subtitle top-space">
 						{l s="Vos informations" mod="webequip_partners"}
 					</h3>
 					<div class="form-group">
@@ -60,7 +64,7 @@
 					</div>
 				</div>
 				<div class="col-xs-12 col-lg-6">
-					<h3 class="section-title margin-top-sm">
+					<h3 class="section-subtitle top-space">
 						{l s="Votre demande" mod="webequip_partners"}
 					</h3>
 					<div class="form-group">

@@ -5,18 +5,11 @@
 {/block}
 
 {block name='page_content_container'}
-	<table>
-		<tr>
-			<td class="hidden-sm-down"><img src="/img/quotation.png"></td>
-			<td class="description-cell">
-				{l s="Vous avez une demande particulière concernant les prix et les quantités de nos produits ?"}
-				<br />
-				{l s="Remplissez la demande de devis ci-dessous et Rolléco répond à votre demande dans les 24h*!"}
-				<br />
-				{l s="N'hésitez pas non plus à nous contacter au 03.20.22.00.11. Nos experts vous conseillerons."}
-			</td>
-		</tr>
-	</table>
+	
+	{l s="Vous avez une demande particulière concernant les prix et les quantités de nos produits ?"} <br />
+	<b>{l s="Remplissez la demande de devis ci-dessous et nous répondrons à votre demande dans les 24h* !"}</b> <br />
+	<br />
+	{l s="N'hésitez pas non plus à nous contacter au <b>%s</b>. Nos experts vous conseillerons." sprintf=[Configuration::get('PS_SHOP_PHONE')]}
 
 	{if isset($validation)}
 		<div class="alert alert-success mt-3">
@@ -38,7 +31,7 @@
 		<form method="post">
 			<div class="row">
 				<div class="col-xs-12 col-lg-6">
-					<h3 class="section-title margin-top-sm">
+					<h3 class="section-subtitle top-space">
 						{l s="Vos informations"}
 					</h3>
 					<div class="form-group">
@@ -84,7 +77,7 @@
 					</div>
 				</div>
 				<div class="col-xs-12 col-lg-6">
-					<h3 class="section-title margin-top-sm">
+					<h3 class="section-subtitle top-space">
 						{l s="Votre demande"}
 					</h3>
 					<div class="form-group">

@@ -36,24 +36,17 @@
   		{l s="Contactez-nous"}
   	</h1>
 
-  	<table>
-		<tbody>
-			<tr>
-				<td class="hidden-sm-down"><img src="/img/contact.png"></td>
-				<td class="description-cell">
-					{l s="Pour toute demande ou information, vous pouvez nous contacter en remplissant le formulaire ci-dessous."} <br />
-					{l s="Nous vous répondrons dans les plus brefs délais."} <br />
-					{l s="Vous pouvez également nous joindre par téléphone au 03.20.22.00.11 ou par fax au 03.28.35.09.34."}
-				</td>
-			</tr>
-		</tbody>
-	</table>
+  	
+	{l s="Pour toute demande ou information, vous pouvez nous contacter en remplissant le formulaire ci-dessous."} <br />
+	<b>{l s="Nous vous répondrons dans les plus brefs délais."}</b> <br />
+	<br />
+	{l s="Vous pouvez également nous joindre par téléphone au <b>%s</b> ou par fax au <b>%s</b>." sprintf=[Configuration::get('PS_SHOP_PHONE'), Configuration::get('PS_SHOP_FAX')]}
 
 	<form method="post">
 		<div class="row">
 
 		  	<div class="col-lg-6">
-		  		<h3 class="section-title margin-top-sm">{l s="Votre message"}</h3>
+		  		<h3 class="section-subtitle top-space">{l s="Vos coordonnées"}</h3>
 		  		<div class="form-group">
 					<label for="contact_firstname">
 						{l s="Prénom" d='Shop.Forms.Labels'}
@@ -99,7 +92,7 @@
 		  	</div>
 
 		  	<div class="col-xs-12 col-lg-6">
-		  		<h3 class="section-title margin-top-sm">{l s="Votre message"}</h3>
+		  		<h3 class="section-subtitle top-space">{l s="Votre message"}</h3>
 		  		<div class="form-group">
 					<label for="contact_message">
 						{l s="Demande détaillée" d='Shop.Forms.Labels'}
@@ -112,7 +105,7 @@
 		</div>
 
 		<div class="row">
-		  	<div class="col-lg-12 text-right">
+		  	<div class="col-lg-12 text-center">
 		  		<div class="well">
 			  		<button type="submit" class="btn btn-success bold">
 			  			{l s="Envoyer" d='Shop.Forms.Labels'}
