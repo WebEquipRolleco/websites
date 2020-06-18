@@ -702,6 +702,9 @@ h3.section-subtitle {
 #megamenu li.main-category:hover {
   background-color: #0d2a59;
 }
+#megamenu .show-menu {
+  display: inline-block;
+}
 #megamenu .show-menu li {
   border-right: 1px solid white;
 }
