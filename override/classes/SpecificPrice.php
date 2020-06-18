@@ -87,6 +87,20 @@ class SpecificPrice extends SpecificPriceCore {
 		return $this->getProduct();
 	}
 	
+    /**
+    * Vérifie si le prix dispose d'une réduction
+    **/
+    public function hasReduction() {
+        return $this->full_price > $this->price;
+    }
+    
+    /**
+    * Retourne le taux de réduction
+    **/
+    public function getReductionRate() {
+        return round(Tools::getRate($this->price, $this->full_price), 2);
+    }
+
 	/**
 	* OVERRIDE : forcer l'ordre en fonction du nombre de produits
 	**/
