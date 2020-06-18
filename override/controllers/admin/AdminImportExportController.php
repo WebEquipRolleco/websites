@@ -37,6 +37,12 @@ class AdminImportExportControllerCore extends AdminController {
         $this->context->smarty->assign('suppliers', Supplier::getSuppliers(1));
         $this->context->smarty->assign('categories', Category::getAllCategoriesName(null, 1, false));
 
+        $export = new ExportProductsWithoutPrices();
+        $this->context->smarty->assign('nb_priceless_products', $export->count());
+
+        $export = new ExportCombinationsWithoutPrices();
+        $this->context->smarty->assign('nb_priceless_combinations', $export->count());
+
         parent::initContent();
     }
 

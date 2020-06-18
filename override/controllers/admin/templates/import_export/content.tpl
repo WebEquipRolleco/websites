@@ -172,12 +172,12 @@
 				<div class="panel-content">
 					<div>
 						<button type="submit" class="btn btn-block btn-danger" name="action" value="export_products-without-prices">
-							<i class="icon-bug"></i> &nbsp; <b>Exporter : Produits actifs sans prix</b>
+							<i class="icon-bug"></i> &nbsp; <b>Exporter : Produits actifs sans prix ({$nb_priceless_products})</b>
 						</button>
 					</div>
 					<div style="margin-top:15px">
 						<button type="submit" class="btn btn-block btn-danger" name="action" value="export_combinations-without-prices">
-							<i class="icon-bug"></i> &nbsp; <b>Exporter : Déclinaisons actives sans prix</b>
+							<i class="icon-bug"></i> &nbsp; <b>Exporter : Déclinaisons actives sans prix ({$nb_priceless_combinations})</b>
 						</button>
 					</div>
 				</div>

@@ -39,18 +39,30 @@ class ExportCombinationsWithoutPrices extends Export {
         return $header;
     }
 
+    /** 
+    * Retourne la requête SQL 
+    **/
+    private function getSQL() {
+        return "SELECT DISTINCT(pa.id_product_attribute) FROM ps_product_attribute pa, ps_product p WHERE p.id_product = pa.id_product AND pa.id_product_attribute NOT IN (SELECT id_product_attribute FROM ps_specific_price) AND p.active = 1";
+    }
+
+    public function count() {
+
+        Db::getInstance()->execute($this->getSql());
+        return Db::getInstance()->numRows();
+    }
+
     /**
     * Exporte une fichier CSV
     **/
 	public function export() {
 
         $suppliers = array();
-        $sql = "SELECT DISTINCT(pa.id_product_attribute) FROM ps_product_attribute pa, ps_product p WHERE p.id_product = pa.id_product AND pa.id_product_attribute NOT IN (SELECT id_product_attribute FROM ps_specific_price) AND p.active = 1";
 
         $context = Context::getContext();
         $csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
 
-        foreach(Db::getInstance()->executeS($sql) as $row) {
+        foreach(Db::getInstance()->executeS($this->getSQL()) as $row) {
             
             $combination = new Combination($row['id_product_attribute'], 1);
 

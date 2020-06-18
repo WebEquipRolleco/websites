@@ -39,18 +39,30 @@ class ExportProductsWithoutPrices extends Export {
         return $header;
     }
 
+    /** 
+    * Retourne la requête SQL 
+    **/
+    private function getSQL() {
+        return "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1";
+    }
+
+    public function count() {
+
+        Db::getInstance()->execute($this->getSql());
+        return Db::getInstance()->numRows();
+    }
+
     /**
     * Exporte une fichier CSV
     **/
 	public function export() {
 
         $suppliers = array();
-        $sql = "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1";
 
         $context = Context::getContext();
         $csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
 
-        foreach(Db::getInstance()->executeS($sql) as $row) {
+        foreach(Db::getInstance()->executeS($this->getSQL()) as $row) {
             
             $product = new Product($row['id_product'], true, 1);
 
