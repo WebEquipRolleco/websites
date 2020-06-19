@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th colspan="2">
-            {l s='Programme de fidélité rollcash' d='Shop.Theme.Checkout'}
+            {l s='Utilisez votre code promo' d='Shop.Theme.Checkout'}
           </th>
         </tr>
       </thead>
