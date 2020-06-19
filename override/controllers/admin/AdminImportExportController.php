@@ -51,6 +51,15 @@ class AdminImportExportControllerCore extends AdminController {
     **/
     public function postProcess() {
 
+        if(Tools::isSubmit('DEACTIVATE')) {
+
+            $export = new ExportProductsWithoutPrices();
+            $export->deactivate();
+
+            $export = new ExportCombinationsWithoutPrices();
+            $export->deactivate();
+        }
+
         $options = explode("_", Tools::getValue('action'));
 
         // Exports

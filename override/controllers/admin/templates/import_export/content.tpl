@@ -163,27 +163,34 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-lg-3">
-		<form method="post">
-			<div class="panel">
-				<div class="panel-heading">
-					<i class="icon-lock text-danger"></i> <b class="text-danger">{l s="Sécurité"}</b>
-				</div>
-				<div class="panel-content">
-					<div>
-						<button type="submit" class="btn btn-block btn-danger" name="action" value="export_products-without-prices">
-							<i class="icon-bug"></i> &nbsp; <b>Exporter : Produits actifs sans prix ({$nb_priceless_products})</b>
-						</button>
+	{if $nb_priceless_products or $nb_priceless_combinations}
+		<div class="col-lg-3">
+			<form method="post">
+				<div class="panel">
+					<div class="panel-heading">
+						<i class="icon-lock text-danger"></i> <b class="text-danger">{l s="Sécurité"}</b>
 					</div>
-					<div style="margin-top:15px">
-						<button type="submit" class="btn btn-block btn-danger" name="action" value="export_combinations-without-prices">
-							<i class="icon-bug"></i> &nbsp; <b>Exporter : Déclinaisons actives sans prix ({$nb_priceless_combinations})</b>
-						</button>
+					<div class="panel-content">
+						<div>
+							<button type="submit" class="btn btn-block btn-danger" name="action" value="export_products-without-prices">
+								<i class="icon-bug"></i> &nbsp; <b>Exporter : Produits actifs sans prix ({$nb_priceless_products})</b>
+							</button>
+						</div>
+						<div style="margin-top:15px">
+							<button type="submit" class="btn btn-block btn-danger" name="action" value="export_combinations-without-prices">
+								<i class="icon-bug"></i> &nbsp; <b>Exporter : Déclinaisons actives sans prix ({$nb_priceless_combinations})</b>
+							</button>
+						</div>
+						<div style="margin-top:15px">
+							<button type="submit" id="deactivate" class="btn btn-block btn-danger" name="DEACTIVATE">
+								<i class="icon-times"></i> &nbsp; <b>TOUT DESACTIVER</b>
+							</button>
+						</div>
 					</div>
 				</div>
-			</div>
-		</form>
-	</div>
+			</form>
+		</div>
+	{/if}
 </div>
 
 <div class="row">
@@ -424,6 +431,11 @@
 	$(document).on('ready', function() {
 
 		$('.select2').select2({ placeholder:'Cliquez ici pour choisir dans la liste' });
+
+		$('#deactivate').on("click", function(e) {
+			if(!confirm("Etes-vous sûr de vouloir désactiver tous les produits sans prix ?"))
+				e.preventDefault();
+		});
 
 	});
 </script>

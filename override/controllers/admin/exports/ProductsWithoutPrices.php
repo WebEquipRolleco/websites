@@ -43,13 +43,25 @@ class ExportProductsWithoutPrices extends Export {
     * Retourne la requête SQL 
     **/
     private function getSQL() {
-        return "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1";
+        return "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1 AND (reference IS NULL OR reference = '')";
     }
 
+    /**
+    * Compte le nombre de lignes concernées
+    **/
     public function count() {
 
         Db::getInstance()->execute($this->getSql());
         return Db::getInstance()->numRows();
+    }
+
+    /**
+    * Désactive les produits concernés
+    **/
+    public function deactivate() {
+
+        $ids = implode(',', array_map(function($e) { return $e['id_product']; }, Db::getInstance()->executeS($this->getSQL())));
+        Db::getInstance()->execute("UPDATE ps_product SET active = 0 WHERE id_product IN ($ids)");
     }
 
     /**
