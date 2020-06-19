@@ -661,10 +661,10 @@ class webequip_transfer extends Module {
 		if(Tools::getValue('eraze'))
 			Db::getInstance()->execute("DELETE FROM ps_order_history");
 		else
-			$ids = $this->getSavedIds("id_order_history", "ps_order_history");
+			$id = Db::getInstance()->getValue("SELECT MAX(id_order_history) FROM ps_order_history");
 
-		$sql = "SELECT * FROM ps_order_history WHERE id_order IN (".$this->getSavedIds('id_order', 'ps_orders').")";
-		if(isset($ids) and $ids) $sql .= " AND id_order_history NOT IN ($ids)";
+		$sql = "SELECT * FROM ps_order_history";
+		if(isset($id) and $id) $sql .= " WHERE id_order_history > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
