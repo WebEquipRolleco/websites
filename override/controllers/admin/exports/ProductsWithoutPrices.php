@@ -43,7 +43,7 @@ class ExportProductsWithoutPrices extends Export {
     * Retourne la requête SQL 
     **/
     private function getSQL() {
-        return "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1 AND (reference IS NOT NULL OR reference <> '')";
+        return "SELECT DISTINCT(id_product) FROM ps_product WHERE id_product NOT IN (SELECT id_product FROM ps_specific_price) AND id_product NOT IN (SELECT id_product FROM ps_product_attribute) AND active = 1 AND reference <> ''";
     }
 
     /**
