@@ -58,6 +58,9 @@ ALTER TABLE `ps_orders` ADD `exported` INT(1) DEFAULT '0' AFTER `no_recall`;
 ALTER TABLE `ps_orders` ADD `display_with_taxes` TINYINT DEFAULT '0' AFTER `exported`;
 ALTER TABLE `ps_orders` ADD `invoice_comment` TEXT NULL AFTER `invoice_number`;
 
+ALTER TABLE `ps_category` ADD `bg_color` VARCHAR(255) DEFAULT NULL AFTER `is_root_category`;
+ALTER TABLE `ps_category` ADD `bg_color_hover` VARCHAR(255) DEFAULT NULL AFTER `bg_color`;
+
 ALTER TABLE `ps_category_lang` ADD `bottom_description` TEXT NULL AFTER `description`;
 
 ALTER TABLE `ps_product` ADD `custom_ecotax` FLOAT DEFAULT '0' AFTER `ecotax`;

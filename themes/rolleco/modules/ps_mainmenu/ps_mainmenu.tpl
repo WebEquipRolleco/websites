@@ -43,7 +43,22 @@
     <menu id="megamenu" type="navigation">
       {foreach from=$nodes key=key item=node name=nodes}
         {if $smarty.foreach.nodes.iteration <= $nb_elements }
-          <a href="{$node.url}" class="show-menu" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if} {if $font_size}style="font-size:{$font_size}px"{/if}>
+        {if $node.bg_color or $node.bg_color_hover or $font_size}
+          <style>
+            {if $font_size or $node.bg_color}
+              .menu-{$key}{
+                {if $font_size}font-size:{$font_size}px;{/if}
+                {if $node.bg_color}background-color:{$node.bg_color};{/if}
+              }
+            {/if}
+            {if $node.bg_color_hover}
+              .menu-{$key} :hover{
+                background-color:{$node.bg_color_hover}!important;
+              }
+            {/if}
+          </style>
+        {/if}
+          <a href="{$node.url}" class="show-menu menu-{$key}" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if}>
             <li class="main-category" {if $smarty.foreach.nodes.iteration == $nb_elements}style="border-right:0px"{/if}>
               {$node.label}
             </li>

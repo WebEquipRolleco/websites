@@ -97,6 +97,18 @@ class AdminCategoriesController extends AdminCategoriesControllerCore {
                     )
                 ),
                 array(
+                    'type'  => 'color',
+                    'label' => $this->trans('Couleur de fond', array(), 'Admin.Catalog.Feature'),
+                    'name'  => 'bg_color',
+                    'hint' => $this->trans('Affichée dans le menu uniquement', array(), 'Admin.Notifications.Info')
+                ),
+                array(
+                    'type'  => 'color',
+                    'label' => $this->trans('Couleur de fond au survol', array(), 'Admin.Catalog.Feature'),
+                    'name'  => 'bg_color_hover',
+                    'hint' => $this->trans('Affichée dans le menu uniquement', array(), 'Admin.Notifications.Info')
+                ),
+                array(
                     'type'  => 'categories',
                     'label' => $this->trans('Parent category', array(), 'Admin.Catalog.Feature'),
                     'name'  => 'id_parent',

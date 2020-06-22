@@ -5,6 +5,12 @@ class Category extends CategoryCore {
 	/** @var string Bottom Description */
 	public $bottom_description;
 
+    /** @var string Color Background Menu */
+    public $bg_color;
+
+    /** @var string Color Background Menu Hover */
+    public $bg_color_hover;
+
 	/**
     * @see ObjectModel::$definition
     **/
@@ -31,7 +37,9 @@ class Category extends CategoryCore {
             'meta_title' => array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 128),
             'meta_description' => array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255),
             'meta_keywords' => array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255),
-            'bottom_description' => array('type' => self::TYPE_HTML, 'lang' => true, 'validate' => 'isCleanHtml')
+            'bottom_description' => array('type' => self::TYPE_HTML, 'lang' => true, 'validate' => 'isCleanHtml'),
+            'bg_color' => array('type' => self::TYPE_STRING),
+            'bg_color_hover' => array('type' => self::TYPE_STRING)
         ),
     );
 
