@@ -56,6 +56,11 @@
                 background-color:{$node.bg_color_hover}!important;
               }
             {/if}
+            {if $node.bg_color}
+              #submenu_{$key}{
+                border-bottom:3px solid {$node.bg_color}!important;
+              }
+            {/if}
           </style>
         {/if}
           <a href="{$node.url}" class="show-menu menu-{$key}" data-id="{$key}"  {if $node.open_in_new_window}target="_blank"{/if}>
