@@ -3,6 +3,7 @@
 if (!defined('_PS_VERSION_'))
     exit;
 
+require_once(dirname(__FILE__)."/../../override/controllers/admin/exports/Export.php");
 
 class Webequip_Configuration extends Module {
 
@@ -37,6 +38,7 @@ class Webequip_Configuration extends Module {
         $check .= $this->registerHook('displayAdminProductsCombinationBottom');
         $check .= $this->registerHook('displayAdminProductsMainStepLeftColumnBottom');
         $check .= $this->registerHook('displayAdminProductsMainStepRightColumnBottom');
+        $check .= $this->registerHook('dashboardZoneOne');
 
         if(!isTabInstalled("WEBEQUIP"))
             $check .= $this->installTab("Web-équip", "WEBEQUIP", false, 0);
@@ -124,6 +126,9 @@ class Webequip_Configuration extends Module {
 
         if(!$this->isRegisteredInHook("displayAdminProductsMainStepRightColumnBottom"))
             $this->registerHook('displayAdminProductsMainStepRightColumnBottom');
+
+        if(!$this->isRegisteredInHook("dashboardZoneOne"))
+            $this->registerHook('dashboardZoneOne');
 
         // Installation manuelle des menus
         switch (Tools::getValue('action')) {
@@ -369,6 +374,20 @@ class Webequip_Configuration extends Module {
     public function hookDisplayAdminProductsMainStepRightColumnBottom($params) {
         $this->context->smarty->assign('product', new Product($params['id_product'], true, 1, $this->context->shop->id));
         return $this->display(__FILE__, 'product_destocking.tpl');
+    }
+
+    /**
+    * Ajoute un rappel des produits sans prix dans le dashboard Admin
+    **/
+    public function hookDashboardZoneOne($params) {
+
+        $export = new ExportProductsWithoutPrices();
+        $this->context->smarty->assign('nb_priceless_products', $export->count());
+
+        $export = new ExportCombinationsWithoutPrices();
+        $this->context->smarty->assign('nb_priceless_combinations', $export->count());
+        
+        return $this->display(__FILE__, 'admin_dashboard_left.tpl');
     }
 
     /**
