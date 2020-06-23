@@ -543,10 +543,10 @@ class webequip_transfer extends Module {
 		if(Tools::getValue('eraze'))
 			Db::getInstance()->execute("DELETE FROM ps_order_detail");
 		else
-			$ids = $this->getSavedIds("id_order_detail", "ps_order_detail");
+			$id = Db::getInstance()->getValue("SELECT MAX(id_order_detail) FROM ps_order_detail");
 
 		$sql = "SELECT * FROM ps_order_detail od, ps_activis_order_extends_detail oed WHERE od.id_order_detail = oed.id_order_detail";
-		if(isset($ids) and $ids) $sql .= " AND od.id_order_detail NOT IN ($ids)";
+		if(isset($id) and $id) $sql .= " AND od.id_order_detail > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
