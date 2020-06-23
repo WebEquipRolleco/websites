@@ -545,8 +545,8 @@ class webequip_transfer extends Module {
 		else
 			$id = Db::getInstance()->getValue("SELECT MAX(id_order_detail) FROM ps_order_detail");
 
-		$sql = "SELECT * FROM ps_order_detail od, ps_activis_order_extends_detail oed WHERE od.id_order_detail = oed.id_order_detail";
-		if(isset($id) and $id) $sql .= " AND od.id_order_detail > $id";
+		$sql = "SELECT * FROM ps_order_detail od LEFT JOIN ps_activis_order_extends_detail oed ON (od.id_order_detail = oed.id_order_detail)";
+		if(isset($id) and $id) $sql .= " WHERE od.id_order_detail > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
