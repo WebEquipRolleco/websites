@@ -839,7 +839,7 @@ class webequip_transfer extends Module {
 		$states[3] = Quotation::STATUS_VALIDATED;
 
 		$sql = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis) WHERE 1";
-		if($id) $sql .= " AND d.id_activis_devis > $ids";
+		if($id) $sql .= " AND d.id_activis_devis > $id";
 		$sql .= " AND d.hash <> 'Deleted' AND d.date_add >= '2016-01-01 00:00:00' GROUP BY d.id_activis_devis";
 
 		$result = $this->old_db->query($sql);
@@ -887,7 +887,7 @@ class webequip_transfer extends Module {
 		else $id = $this->getMax(QuotationLine::TABLE_PRIMARY, _DB_PREFIX_.QuotationLine::TABLE_NAME);
 
 		$sql = "SELECT * FROM ps_activis_devis_line";
-		if($id) $sql .= " WHERE id_activis_devis_line NOT IN ($ids)";
+		if($id) $sql .= " WHERE id_activis_devis_line NOT IN ($id)";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
