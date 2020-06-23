@@ -91,7 +91,7 @@ class webequip_transfer extends Module {
 	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
-		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
+		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
@@ -245,6 +245,16 @@ class webequip_transfer extends Module {
 	}
 
 	/**
+	* Retourne une valeur max enregistrée en BDD
+	* @param string $key Clé primaire à recherchée
+	* @param string $table Table concernée par le transfert de données
+	* @return int
+	**/
+	private function getMax($key, $table) {
+		return Db::getInstance()->getValue("SELECT MAX($key) FROM $table");
+	}
+
+	/**
 	* Transfert des fournisseurs
 	**/
 	private function transfer_ps_supplier() {
@@ -332,17 +342,15 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des adresses
 	**/
-	private function transfer_ps_address() {
+	public function transfer_ps_address($min_id = false) {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM ps_address");
-		else
-			$ids = $this->getSavedIds("id_address", "ps_address");
+		if($min_id) $id = $min_id;
+		else $id = $this->getMax("id_address", "ps_address");
 
 		$sql = "SELECT * FROM ps_address";
-		if(isset($ids) and $ids) $sql .= " WHERE id_address NOT IN ($ids)";
+		if($id) $sql .= " WHERE id_address > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -383,19 +391,17 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des clients
 	**/
-	private function transfer_ps_customer() {
+	public function transfer_ps_customer($min_id = null) {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM ps_customer");
-		else
-			$ids = $this->getSavedIds("id_customer", "ps_customer");
+		if($min_id) $id = $min_id;
+		else $id = $this->getMax("id_customer", "ps_customer");
 
 		$id_default_type = AccountType::getDefaultID();
 
 		$sql = "SELECT c.*, (SELECT SUM(l.amount) FROM ps_activis_loyalty l WHERE c.id_customer = l.id_customer GROUP BY l.id_customer) AS rollcash FROM ps_customer c";
-		if(isset($ids) and $ids) $sql .= " WHERE c.id_customer NOT IN ($ids)";
+		if($id) $sql .= " WHERE c.id_customer > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -462,17 +468,15 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des commandes
 	**/
-	private function transfer_ps_orders() {
+	public function transfer_ps_orders($min_id) {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM ps_orders");
-		else
-			$id = Db::getInstance()->getValue('SELECT MAX(id_order) FROM ps_orders');
+		if($min_id) $id = $min_id;
+		else $id = $this->getMax('id_order', 'ps_orders');
 
 		$sql = "SELECT * FROM ps_orders";
-		if(isset($id) and $id) $sql .= " WHERE id_order > $id";
+		if($id) $sql .= " WHERE id_order > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -536,20 +540,21 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des détails de commande
 	**/
-	private function transfer_ps_order_detail() {
+	public function transfer_ps_order_detail($id_min = null) {
 
 		$this->connectToDB();
 
-		$id = Db::getInstance()->getValue("SELECT MAX(id_order_detail) FROM ps_order_detail");
+		if($id_min) $id = $id_min;
+		else $id = $this->getMax('id_order_detail', 'ps_order_detail');
 
-		$sql = "SELECT * FROM ps_order_detail od LEFT JOIN ps_activis_order_extends_detail oed ON (od.id_order_detail = oed.id_order_detail)";
+		$sql = "SELECT *, od.id_order_detail FROM ps_order_detail od LEFT JOIN ps_activis_order_extends_detail oed ON (od.id_order_detail = oed.id_order_detail)";
 		if($id) $sql .= " WHERE od.id_order_detail > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			$detail = new OrderDetail($row['id_order_detail']);
-			if(!$detail->id) continue;
+			$update = !empty($order->id);
 
 			$detail->id = $row['id_order_detail'];
 			$detail->id_order = $row['id_order'];
@@ -604,9 +609,7 @@ class webequip_transfer extends Module {
 			$detail->notification_sent = $row['notified'];
 			$detail->prevent_notification = false;
 
-			$detail->force_id = true;
-			$detail->add();
-
+			$detail->record($udpate);
 			$this->nb_rows++;
 		}
 	}
@@ -653,14 +656,12 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des historiques de changement de statut
 	**/
-	private function transfer_ps_order_history() {
+	public function transfer_ps_order_history($min_id = null) {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM ps_order_history");
-		else
-			$id = Db::getInstance()->getValue("SELECT MAX(id_order_history) FROM ps_order_history");
+		if($min_id) $id = $min_id;
+		else $id = $this->getMax('id_order_history', 'ps_order_history');
 
 		$sql = "SELECT * FROM ps_order_history";
 		if(isset($id) and $id) $sql .= " WHERE id_order_history > $id";
@@ -826,22 +827,20 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des devis
 	**/
-	private function transfer_ps_activis_devis() {
+	public function transfer_ps_activis_devis($min_id = null) {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.Quotation::TABLE_NAME);
-		else
-			$ids = $this->getSavedIds(Quotation::TABLE_PRIMARY, _DB_PREFIX_.Quotation::TABLE_NAME);
+		if($min_id) $id = $min_id;
+		else $id = $this->getMax(Quotation::TABLE_PRIMARY, _DB_PREFIX_.Quotation::TABLE_NAME);
 
 		$states[1] = Quotation::STATUS_REFUSED;
 		$states[2] = Quotation::STATUS_WAITING;
 		$states[3] = Quotation::STATUS_VALIDATED;
 
-		$sql = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis)";
-		if(isset($ids) and $ids) $sql .= " WHERE d.id_activis_devis NOT IN ($ids)";
-		$sql .= "AND d.hash <> 'Deleted' AND d.date_add >= '2016-01-01 00:00:00' GROUP BY d.id_activis_devis";
+		$sql = "SELECT * FROM ps_activis_devis d INNER JOIN ps_activis_devis_shop s ON (d.id_activis_devis = s.id_activis_devis) WHERE 1";
+		if($id) $sql .= " AND d.id_activis_devis > $ids";
+		$sql .= " AND d.hash <> 'Deleted' AND d.date_add >= '2016-01-01 00:00:00' GROUP BY d.id_activis_devis";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -880,17 +879,15 @@ class webequip_transfer extends Module {
 	/**
 	* Transfert des lignes produits pour les devis
 	**/
-	private function transfer_ps_activis_devis_line() {
+	public function transfer_ps_activis_devis_line($min_id = null) {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM "._DB_PREFIX_.QuotationLine::TABLE_NAME);
-		else
-			$ids = $this->getSavedIds(QuotationLine::TABLE_PRIMARY, _DB_PREFIX_.QuotationLine::TABLE_NAME);
+		if($min_id) $id = $min_id;
+		else $id = $this->getMax(QuotationLine::TABLE_PRIMARY, _DB_PREFIX_.QuotationLine::TABLE_NAME);
 
 		$sql = "SELECT * FROM ps_activis_devis_line";
-		if(isset($ids) and $ids) $sql .= " WHERE id_activis_devis_line NOT IN ($ids)";
+		if($id) $sql .= " WHERE id_activis_devis_line NOT IN ($ids)";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
