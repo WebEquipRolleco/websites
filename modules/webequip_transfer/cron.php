@@ -38,7 +38,19 @@ include(dirname(__FILE__).'/webequip_transfer.php');
 			case 'QUOTATION_LINE':
 				$module->transfer_ps_activis_devis_line($min_id);
 			break;
-			
+
+			case 'OLD_CUSTOMERS':
+				$module->updateOldCustomers();
+			break;
+
+			case 'OLD_ORDERS':
+				$module->updateOldOrders();
+			break;
+
+			case 'OLD_CARTS':
+				$module->updateOldCarts();
+			break;
+
 		}
 
 die("END");
