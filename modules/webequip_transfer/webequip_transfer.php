@@ -1,6 +1,6 @@
 <?php
 
-require_once getcwd()."/../modules/webequip_reviews/classes/Review.php";
+require_once dirname(__FILE__)."/../../modules/webequip_reviews/classes/Review.php";
 
 class webequip_transfer extends Module {
 

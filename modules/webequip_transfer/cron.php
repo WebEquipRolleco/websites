@@ -7,9 +7,9 @@ include(dirname(__FILE__).'/webequip_transfer.php');
 
 	$actions = explode('|', Tools::getValue('action'));
 	$min_id = Tools::getValue('min_id', null);
-	
+
 	foreach($actions as $action)
-		switch () {
+		switch($action) {
 
 			case 'CUSTOMER':
 				$module->transfer_ps_customer($min_id);
@@ -38,4 +38,7 @@ include(dirname(__FILE__).'/webequip_transfer.php');
 			case 'QUOTATION_LINE':
 				$module->transfer_ps_activis_devis_line($min_id);
 			break;
+			
 		}
+
+die("END");
