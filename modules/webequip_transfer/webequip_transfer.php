@@ -104,7 +104,8 @@ class webequip_transfer extends Module {
 		$data['ps_activis_avis'] = array('name'=>"Produits [2+] Récupération des avis produits", 'preview'=>false);
 		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_QUOTATIONS'] = array('name'=>"[FIX] Correction des fournisseurs produits devis", 'preview'=>false, 'updatable'=>false);
-
+		$data['FIX_DELIVERY_ORDERS'] = array('name'=>"[UPDATE] Récupère les données de livraison des produits", 'preview'=>false);
+		
 		return $data;
 	}
 
@@ -1035,6 +1036,27 @@ class webequip_transfer extends Module {
 
 		foreach(Db::getInstance()->executeS("SELECT id_product, id_supplier FROM ps_product WHERE id_product IN($ids) AND id_supplier <> 0") as $row)
 			Db::getInstance()->execute("UPDATE "._DB_PREFIX_.QuotationLine::TABLE_NAME." SET id_supplier = ".$row['id_supplier']." WHERE id_product = ".$row['id_product']);
+	}
+
+	/**
+	* [FIX] Récupère les données de livraison des produits (en cas de modification après la récupération des données)
+	**/
+	private function transfer_FIX_DELIVERY_ORDERS() {
+
+		$result = $this->old_db->query("SELECT * FROM ps_activis_order_extends_detail ORDER BY id_activis_order_extends_detail");
+		while($row = $result->fetch_assoc()) {
+
+			$detail = new OrderDetail($row['id_order_detail']);
+			if(!$detail->id) continue;
+
+			$detail->day = $row['day'];
+			$detail->week = $row['week'];
+			$detail->comment = utf8_encode($row['comment']);
+			$detail->notification_sent = $row['notified'];
+
+			$detail->save();
+			$this->nb_rows++;
+		}
 	}
 
 	/**
