@@ -6,19 +6,21 @@
 
 {block name='page_content'}
 
-	<table>
-		<tbody>
-			<tr>
-				<td>
-					<img src="/modules/webequip_reviews/logo.png">
-				</td>
-				<td class="description-cell">
-					{l s="Vous retrouverez ici les produits que vous avez commandé afin de pouvoir laisser un avis."} <br />
-					{l s="Vos retours sont importants pour nous alors n'hésitez pas à partager votre expérience."}
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="alert alert-info">
+	    <table>
+	        <tbody>
+	         	<tr>
+	            	<td><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></td>
+	            	<td style="padding-left:15px; line-height:12px;">
+	              		<strong>{l s="Vous retrouverez ici les produits que vous avez commandé afin de pouvoir laisser un avis."}</strong>
+	              		<br />
+	              		<br /><small>{l s="Vos retours sont importants pour nous alors n'hésitez pas à partager votre expérience."}</small>
+	              		<br /><small>{l s="Si vous avez le moindre problème ou besoin d'informations, n'hésitez pas à [1]nous contacter[1]." tags=["<a href='/nous-contacter'>"]}</small>
+	            	</td>
+	          	</tr>
+	        </tbody>
+	    </table>
+	</div>
 
 	<div class="row">
 		{foreach from=$reviews item=review}

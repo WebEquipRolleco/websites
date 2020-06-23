@@ -5,10 +5,24 @@
 {/block}
 
 {block name='page_content'}
-  <h6 class="text-center">
-    {l s="Here are the orders you've placed since your account was created." d='Shop.Theme.Customeraccount'}
-  </h6>
 
+  {if !$orders}
+    <div class="alert alert-info">
+      <table>
+        <tbody>
+          <tr>
+            <td><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></td>
+            <td style="padding-left:15px; line-height:12px;">
+              <strong>{l s="Here are the orders you've placed since your account was created." d='Shop.Theme.Customeraccount'}</strong>
+              <br />
+              <br><small>{l s="Vous n'avez pour le moment passé aucune commande sur notre site."}</small>
+              <br><small>{l s="Pour toute information ou demande de devis, n'hésitez pas à [1]nous contacter[1]." tags=["<a href='/nous-contacter'>"]}</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {/if}
   {if $orders}
     <table class="table combinations-table table-labeled hidden-sm-down">
       <thead class="thead-default">

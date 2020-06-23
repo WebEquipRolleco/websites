@@ -7,14 +7,16 @@
 {block name='page_content_container'}
 
 	{if empty($highlights) and empty($quotations)}
-		<div class="alert alert-danger">
+		<div class="alert alert-info">
 	        <table>
 	         	<tbody>
 	         		<tr>
-	            		<td><i class="fa fa-2x fa-sad-tear" aria-hidden="true"></i></td>
+	            		<td><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></td>
 	            		<td style="padding-left:15px; line-height:12px;">
 	              			<strong>{l s="Vous n'avez aucun devis en cours !"}</strong>
-	              			<br><small>{l s="Vous pouvez nous contacter par téléphone pour établir un nouveau devis ou en demande un directement en ligne."}</small>
+	              			<br />
+	              			<br /><small>{l s="Pour toute demande, n'hésitez pas à nous contacter par téléphone au <b>%s</b>." sprintf=[Configuration::get('PS_SHOP_PHONE')]}</small>
+	              			<br /><small>{l s="Vous pouvez également utilisez notre formulaire de [1]demande de devis[1]." tags=["<a href='/demande-de-devis'>"]}</small>
 	            		</td>
 	          		</tr>
 	        	</tbody>

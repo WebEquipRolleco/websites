@@ -30,14 +30,16 @@
 
 {block name='page_content'}
   {if !$credit_slips}
-    <div class="alert alert-danger">
+    <div class="alert alert-info">
       <table>
         <tbody>
           <tr>
             <td><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></td>
             <td style="padding-left:15px; line-height:12px;">
               <strong>{l s='Credit slips you have received after canceled orders.' d='Shop.Theme.Customeraccount'}</strong>
-              <br><small>{l s="Vous n'avez pour le moment aucun avoir en cours, merci de nous contacter pour toute réclamation."}</small>
+              <br />
+              <br /><small>{l s="Vous n'avez pour le moment aucun avoir en cours."}</small>
+              <br /><small>{l s="Pour toute réclamation, n'hésitez pas à [1]nous contacter[1]." tags=["<a href='/nous-contacter'>"]}</small>
             </td>
           </tr>
         </tbody>

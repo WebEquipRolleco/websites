@@ -29,6 +29,23 @@
 {/block}
 
 {block name='page_content'}
+  {if !$cart_rules}
+    <div class="alert alert-info">
+      <table>
+        <tbody>
+          <tr>
+            <td><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></td>
+            <td style="padding-left:15px; line-height:12px;">
+              <strong>{l s='Toutes vos réductions et offres spéciales seront listées ici.' d='Shop.Theme.Customeraccount'}</strong>
+              <br />
+              <br /><small>{l s="Restez à l'affût de nos offres promotionnelles et bonnes affaires !"}</small>
+              <br /><small>{l s="Et si ce n'est pas déjà fait, n'hésitez pas à vous inscrire à notre [1]Newsletter[1]." tags=["<a href='/#newsletter_box'>"]}</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {/if}
   {if $cart_rules}
     <table class="table combinations-table table-striped table-bordered hidden-sm-down">
       <thead class="thead-default">
