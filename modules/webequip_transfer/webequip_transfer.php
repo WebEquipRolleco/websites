@@ -94,7 +94,7 @@ class webequip_transfer extends Module {
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
-		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
+		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_order_history'] = array('name'=>"Commandes : historique des états", 'lang'=>false, 'shop'=>false, 'updatable'=>true);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME, 'updatable'=>true);
@@ -540,19 +540,16 @@ class webequip_transfer extends Module {
 
 		$this->connectToDB();
 
-		if(Tools::getValue('eraze'))
-			Db::getInstance()->execute("DELETE FROM ps_order_detail");
-		else
-			$id = Db::getInstance()->getValue("SELECT MAX(id_order_detail) FROM ps_order_detail");
+		$id = Db::getInstance()->getValue("SELECT MAX(id_order_detail) FROM ps_order_detail");
 
 		$sql = "SELECT * FROM ps_order_detail od LEFT JOIN ps_activis_order_extends_detail oed ON (od.id_order_detail = oed.id_order_detail)";
-		if(isset($id) and $id) $sql .= " WHERE od.id_order_detail > $id";
+		if($id) $sql .= " WHERE od.id_order_detail > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
 
 			$detail = new OrderDetail($row['id_order_detail']);
-			$update = !empty($detail->id);
+			if(!$detail->id) continue;
 
 			$detail->id = $row['id_order_detail'];
 			$detail->id_order = $row['id_order'];
@@ -607,7 +604,9 @@ class webequip_transfer extends Module {
 			$detail->notification_sent = $row['notified'];
 			$detail->prevent_notification = false;
 
-			$detail->record($update);
+			$detail->force_id = true;
+			$detail->add();
+
 			$this->nb_rows++;
 		}
 	}
