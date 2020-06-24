@@ -246,11 +246,14 @@ class OrderDetail extends OrderDetailCore {
         $this->total_price_tax_incl = (float)$product['total_wt'];
         $this->total_price_tax_excl = (float)$product['total'];
 
-        /*$this->purchase_supplier_price = (float)$product['wholesale_price'];
-        if ($product['id_supplier'] > 0 && ($supplier_price = ProductSupplier::getProductPrice((int)$product['id_supplier'], $product['id_product'], $product['id_product_attribute'], true)) > 0) {
-            $this->purchase_supplier_price = (float)$supplier_price;
-        }*/
-
+        // OVERRIDE : ne pas écraser le prix d'achat des prix spécifiques
+        if(!$this->purchase_supplier_price) {
+            $this->purchase_supplier_price = (float)$product['wholesale_price'];
+            if ($product['id_supplier'] > 0 && ($supplier_price = ProductSupplier::getProductPrice((int)$product['id_supplier'], $product['id_product'], $product['id_product_attribute'], true)) > 0) {
+                $this->purchase_supplier_price = (float)$supplier_price;
+            }
+        }
+        
         $this->setSpecificPrice($order, $product);
 
         $this->group_reduction = (float)Group::getReduction((int)$order->id_customer);
