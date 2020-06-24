@@ -520,7 +520,7 @@ class webequip_transfer extends Module {
 			$this->nb_rows++;
 		}
 
-		return $this->nb;
+		return $this->nb_rows;
 	}
 
 	/**
