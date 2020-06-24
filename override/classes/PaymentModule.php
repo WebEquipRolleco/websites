@@ -643,7 +643,8 @@ class PaymentModule extends PaymentModuleCore {
                         }
 
                         // Join PDF invoice
-                        if ((int)Configuration::get('PS_INVOICE') && $order_status->invoice && $order->invoice_number) {
+                        if ((int)Configuration::get('PS_INVOICE') && $order_status->pdf_invoice && $order->invoice_number) {
+
                             $order_invoice_list = $order->getInvoicesCollection();
                             Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $order_invoice_list));
                             $pdf = new PDF($order_invoice_list, PDF::TEMPLATE_INVOICE, $this->context->smarty);
