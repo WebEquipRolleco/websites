@@ -11,52 +11,52 @@ include(dirname(__FILE__).'/webequip_transfer.php');
 	foreach($actions as $action)
 		switch($action) {
 
-			case 'CUSTOMER':
+			case 'customer':
 				$nb = $module->transfer_ps_customer($min_id);
 				echo "<div><b>$nb</b> clients importés</div>";
 			break;
 			
-			case 'ADDRESS':
+			case 'address':
 				$nb = $module->transfer_ps_address($min_id);
 				echo "<div><b>$nb</b> adresses importées</div>";
 			break;
 
-			case 'ORDER':
+			case 'order':
 				$nb = $module->transfer_ps_orders($min_id);
 				echo "<div><b>$nb</b> commandes importées</div>";
 			break;
 
-			case 'ORDER_DETAIL':
+			case 'order_detail':
 				$nb = $module->transfer_ps_order_detail($min_id);
 				echo "<div><b>$nb</b> détails commandes importés</div>";
 			break;
 
-			case 'ORDER_HISTORY':
+			case 'order_history':
 				$nb = $module->transfer_ps_order_history($min_id);
 				echo "<div><b>$nb</b> historiques de commande importés</div>";
 			break;
 
-			case 'QUOTATION':
+			case 'quotation':
 				$nb = $module->transfer_ps_activis_devis($min_id);
 				echo "<div><b>$nb</b> devis importés</div>";
 			break;
 
-			case 'QUOTATION_LINE':
+			case 'quotation_line':
 				$nb = $module->transfer_ps_activis_devis_line($min_id);
 				echo "<div><b>$nb</b> lignes devis importés</div>";
 			break;
 
-			case 'OLD_CUSTOMERS':
+			case 'old_customers':
 				$nb = $module->updateOldCustomers();
 				echo "<div><b>$nb</b> clients tranférés</div>";
 			break;
 
-			case 'OLD_ORDERS':
+			case 'old_orders':
 				$nb = $module->updateOldOrders();
 				echo "<div><b>$nb</b> commandes transférées</div>";
 			break;
 
-			case 'OLD_CARTS':
+			case 'old_carts':
 				$nb = $module->updateOldCarts();
 				echo "<div><b>$nb</b> paniers transférés</div>";
 			break;
