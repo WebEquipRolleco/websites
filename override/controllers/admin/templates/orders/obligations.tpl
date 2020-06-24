@@ -71,6 +71,11 @@
       loadOA();
     });
 
+    $(document).on('keyup', '#new_oa_code', function(e) {
+      if(e.keyCode == 13)
+        $('#save_new_oa').trigger('click');
+    });
+
     /**
     * Enregistrer nouvel OA
     **/
