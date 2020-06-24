@@ -21,7 +21,7 @@ class Webequip_payment_invoice extends PaymentModule {
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->trans('Paiement à date de facture', array(), 'Modules.Checkpayment.Admin');
+        $this->displayName = $this->trans('Paiement à 45 jours date de facture', array(), 'Modules.Checkpayment.Admin');
         $this->description = $this->trans('Aucun prérequis de paiement lors du passage de la commande', array(), 'Modules.Checkpayment.Admin');
         $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
     }
