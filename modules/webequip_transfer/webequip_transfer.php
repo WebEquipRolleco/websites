@@ -322,6 +322,7 @@ class webequip_transfer extends Module {
 	public function transfer_ps_address($min_id = false) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax("id_address", "ps_address");
@@ -363,6 +364,8 @@ class webequip_transfer extends Module {
 			$address->record($update);
 			$this->nb_rows++;
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
@@ -371,6 +374,7 @@ class webequip_transfer extends Module {
 	public function transfer_ps_customer($min_id = null) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax("id_customer", "ps_customer");
@@ -440,6 +444,8 @@ class webequip_transfer extends Module {
 			if(!empty($ids))
 				$customer->addGroups($ids);
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
@@ -448,6 +454,7 @@ class webequip_transfer extends Module {
 	public function transfer_ps_orders($min_id = null) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax('id_order', 'ps_orders');
@@ -512,6 +519,8 @@ class webequip_transfer extends Module {
 			$order->record($udpate);
 			$this->nb_rows++;
 		}
+
+		return $this->nb;
 	}
 
 	/**
@@ -520,6 +529,7 @@ class webequip_transfer extends Module {
 	public function transfer_ps_order_detail($id_min = null) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($id_min) $id = $id_min;
 		else $id = $this->getMax('id_order_detail', 'ps_order_detail');
@@ -589,6 +599,8 @@ class webequip_transfer extends Module {
 			$detail->record($udpate);
 			$this->nb_rows++;
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
@@ -597,6 +609,7 @@ class webequip_transfer extends Module {
 	private function transfer_ps_order_state() {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		Db::getInstance()->execute("DELETE FROM ps_order_state");
 		Db::getInstance()->execute("DELETE FROM ps_order_state_lang");
@@ -628,6 +641,8 @@ class webequip_transfer extends Module {
 		    $state->record($update);
 		    $this->nb_rows++;
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
@@ -636,6 +651,7 @@ class webequip_transfer extends Module {
 	public function transfer_ps_order_history($min_id = null) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax('id_order_history', 'ps_order_history');
@@ -659,6 +675,8 @@ class webequip_transfer extends Module {
 		    $history->record($update);
 		    $this->nb_rows++;
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**

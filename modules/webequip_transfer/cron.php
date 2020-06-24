@@ -12,43 +12,53 @@ include(dirname(__FILE__).'/webequip_transfer.php');
 		switch($action) {
 
 			case 'CUSTOMER':
-				$module->transfer_ps_customer($min_id);
+				$nb = $module->transfer_ps_customer($min_id);
+				echo "<div><b>$nb</b> clients importés</div>";
 			break;
 			
 			case 'ADDRESS':
-				$module->transfer_ps_address($min_id);
+				$nb = $module->transfer_ps_address($min_id);
+				echo "<div><b>$nb</b> adresses importées</div>";
 			break;
 
 			case 'ORDER':
-				$module->transfer_ps_orders($min_id);
+				$nb = $module->transfer_ps_orders($min_id);
+				echo "<div><b>$nb</b> commandes importées</div>";
 			break;
 
 			case 'ORDER_DETAIL':
-				$module->transfer_ps_order_detail($min_id);
+				$nb = $module->transfer_ps_order_detail($min_id);
+				echo "<div><b>$nb</b> détails commandes importés</div>";
 			break;
 
 			case 'ORDER_HISTORY':
-				$module->transfer_ps_order_history($min_id);
+				$nb = $module->transfer_ps_order_history($min_id);
+				echo "<div><b>$nb</b> historiques de commande importés</div>";
 			break;
 
 			case 'QUOTATION':
-				$module->transfer_ps_activis_devis($min_id);
+				$nb = $module->transfer_ps_activis_devis($min_id);
+				echo "<div><b>$nb</b> devis importés</div>";
 			break;
 
 			case 'QUOTATION_LINE':
-				$module->transfer_ps_activis_devis_line($min_id);
+				$nb = $module->transfer_ps_activis_devis_line($min_id);
+				echo "<div><b>$nb</b> lignes devis importés</div>";
 			break;
 
 			case 'OLD_CUSTOMERS':
-				$module->updateOldCustomers();
+				$nb = $module->updateOldCustomers();
+				echo "<div><b>$nb</b> clients tranférés</div>";
 			break;
 
 			case 'OLD_ORDERS':
-				$module->updateOldOrders();
+				$nb = $module->updateOldOrders();
+				echo "<div><b>$nb</b> commandes transférées</div>";
 			break;
 
 			case 'OLD_CARTS':
-				$module->updateOldCarts();
+				$nb = $module->updateOldCarts();
+				echo "<div><b>$nb</b> paniers transférés</div>";
 			break;
 
 		}
