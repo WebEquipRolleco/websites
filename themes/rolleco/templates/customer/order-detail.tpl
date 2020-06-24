@@ -54,9 +54,11 @@
                   <i class="fa fa-truck"></i>
                 </a>
               {/if}
-              <a href="{$order.details.reorder_url}" class="btn btn-success" title="{l s='Reorder' d='Shop.Theme.Actions'}" style="border-left:1px solid white !important;">
-                <i class="fa fa-cart-arrow-down"></i>
-              </a>
+              {if $order.details.reorder_url}
+                <a href="{$order.details.reorder_url}" class="btn btn-success" title="{l s='Reorder' d='Shop.Theme.Actions'}" style="border-left:1px solid white !important;">
+                  <i class="fa fa-cart-arrow-down"></i>
+                </a>
+              {/if}
               {if Configuration::get('AFTER_SALES_ENABLED')}
                 <a href="{$link->getPageLink('AfterSaleRequest&order='|cat:$order.details.reference)}" class="btn btn-warning" title="{l s='Ouvrir un SAV' d='Shop.Theme.Actions'}" style="border-left:1px solid white !important;">
                   <i class="fa fa-headset"></i>
