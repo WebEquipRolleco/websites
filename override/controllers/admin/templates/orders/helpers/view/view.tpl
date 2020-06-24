@@ -1147,21 +1147,7 @@
           <div class="clear">&nbsp;</div>
           <div class="row">
             <div class="col-xs-6">
-              <div class="alert alert-warning">
-                {* [1][/1] is for a HTML tag. *}
-                {l
-                  s='For this customer group, prices are displayed as: [1]%tax_method%[/1]'
-                  sprintf=[
-                    '%tax_method%' => $smarty.capture.TaxMethod,
-                    '[1]' => '<strong>',
-                    '[/1]' => '</strong>'
-                  ]
-                  d='Admin.Orderscustomers.Notification'
-                }
-                {*if !Configuration::get('PS_ORDER_RETURN')}
-                  <br/><strong>{l s='Merchandise returns are disabled' d='Admin.Orderscustomers.Notification'}</strong>
-                {/if*}
-              </div>
+
             </div>
             <div class="col-xs-6">
               <div class="panel panel-vouchers" style="{if !sizeof($discounts)}display:none;{/if}">
