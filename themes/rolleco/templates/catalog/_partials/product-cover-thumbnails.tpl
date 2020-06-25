@@ -38,16 +38,16 @@
   {block name='product_images'}
     <div class="js-qv-mask">
       <ul class="product-images js-qv-product-images margin-top-10">
-        {foreach from=$product.images item=image}
+        {foreach from=$images item=image}
           <li class="thumb-container">
             <img
-              id="product_image_{$image.id_image}"
-              class="thumb js-thumb {if $image.id_image == $product.cover.id_image} selected {/if}"
-              data-image-medium-src="{$image.bySize.medium_default.url}"
-              data-image-large-src="{$image.bySize.large_default.url}"
-              src="{$image.bySize.home_default.url}"
-              alt="{$image.legend}"
-              title="{$image.legend}"
+              id="product_image_{$image->id}"
+              class="thumb js-thumb {if $image->cover} selected {/if}"
+              data-image-medium-src="{$image->getFileUrl('medium')}"
+              data-image-large-src="{$image->getFileUrl('large')}"
+              src="{$image->getFileUrl('home')}"
+              alt="{$image->legend}"
+              title="{$image->legend}"
               width="100"
               itemprop="image"
             >

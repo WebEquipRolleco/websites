@@ -1,5 +1,7 @@
 {extends file=$layout}
 
+{assign var=images value=Product::getAllPictures($product.id_product)}
+
 {block name='head_seo' prepend}
   <link rel="canonical" href="{$product.canonical_url}">
 {/block}

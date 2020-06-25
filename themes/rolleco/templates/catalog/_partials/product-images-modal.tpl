@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <div class="row" style="background-color:white;">
-          {assign var=imagesCount value=$product.images|count}
+          {assign var=imagesCount value=$images|count}
           <div class="col-xs-12 col-lg-8">
             <figure>
               <img class="js-modal-product-cover product-cover-modal" width="{$product.cover.large.width}" src="{$product.cover.large.url}" alt="{$product.cover.legend}" title="{$product.cover.legend}" itemprop="image">
@@ -19,9 +19,9 @@
               {block name='product_images'}
                 <div class="js-modal-mask mask">
                   <ul class="product-images js-modal-product-images">
-                    {foreach from=$product.images item=image}
+                    {foreach from=$images item=image}
                       <li class="thumb-container">
-                        <img data-image-large-src="{$image.large.url}" class="thumb js-modal-thumb" src="{$image.medium.url}" alt="{$image.legend}" title="{$image.legend}" width="{$image.medium.width}" itemprop="image">
+                        <img data-image-large-src="{$image->getFileUrl('large')}" class="thumb js-modal-thumb" src="{$image->getFileUrl('medium')}" alt="{$image->legend}" title="{$image->legend}" width="600" itemprop="image">
                       </li>
                     {/foreach}
                   </ul>

@@ -208,6 +208,20 @@ class Product extends ProductCore {
     }
 
     /**
+    * Retourne la liste de toutes les images d'un produit
+    * @param in $id_product
+    * @return Image
+    **/
+    public static function getAllPictures($id_product) {
+
+        $data = array();
+        foreach(Db::getInstance()->executeS("SELECT id_image FROM ps_image WHERE id_product = $id_product ORDER BY cover") as $row)
+            $data[] = new Image($row['id_image'], 1);
+
+        return $data;
+    }
+
+    /**
 	* Retourne les informations contenues dans la colonne 1 des declinaisons
 	* @param int $id_product
 	* @param int $nb_column
