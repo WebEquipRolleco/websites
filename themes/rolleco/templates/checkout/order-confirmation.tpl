@@ -21,9 +21,9 @@
 
             {l s='An email has been sent to your mail address %email%.' d='Shop.Theme.Checkout' sprintf=['%email%' => $customer.email]}
               
-              {if $order.details.invoice_url}
+              {*if $order.details.invoice_url}
                 {* [1][/1] is for a HTML tag. *}
-                {l
+                {*l
                   s='Vous pouvez également [1]télécharger votre facture[/1].'
                   d='Shop.Theme.Checkout'
                   sprintf=[
@@ -31,7 +31,7 @@
                     '[/1]' => "</a>"
                   ]
                 }
-              {/if}
+              {/if*}
             </p>
 
             {block name='hook_order_confirmation'}
