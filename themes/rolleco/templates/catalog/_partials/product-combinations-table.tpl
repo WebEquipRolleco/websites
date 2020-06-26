@@ -21,8 +21,8 @@
 				{/capture}
 				{capture "comments"}
 					{assign var=comments value=Combination::loadComments($id_combination)}
-					{if $comments.comment_1}<div>{$comments.comment_1}</div>{/if}
-					{if $comments.comment_2}<div>{$comments.comment_2}</div>{/if}
+					{if $comments.comment_1}<div>{$comments.comment_1 nofilter}</div>{/if}
+					{if $comments.comment_2}<div>{$comments.comment_2 nofilter}</div>{/if}
 				{/capture}
 				{capture "delivery"}
 					{foreach from=Combination::loadColumn($id_combination, 2) item=row}
@@ -118,8 +118,8 @@
 				{/foreach}
 			{/capture}
 			{capture "comments"}
-				{if $product.comment_1}<div>{$product.comment_1}</div>{/if}
-				{if $product.comment_2}<div>{$product.comment_2}</div>{/if}
+				{if $product.comment_1}<div>{$product.comment_1 nofilter}</div>{/if}
+				{if $product.comment_2}<div>{$product.comment_2 nofilter}</div>{/if}
 			{/capture}
 			{capture "delivery"}
 				{foreach from=Product::loadColumn($product.id_product, 2) item=row}
@@ -255,8 +255,8 @@
 						{/if}
 					{/capture}
 					{capture name="comments"}
-						{if $accessory->getTarget()->comment_1}<div>{$accessory->getTarget()->comment_1}</div>{/if}
-						{if $accessory->getTarget()->comment_2}<div>{$accessory->getTarget()->comment_2}</div>{/if}
+						{if $accessory->getTarget()->comment_1}<div>{$accessory->getTarget()->comment_1 nofilter}</div>{/if}
+						{if $accessory->getTarget()->comment_2}<div>{$accessory->getTarget()->comment_2 nofilter}</div>{/if}
 					{/capture}
 					{capture "delivery"}
 						{if $accessory->getCombination()}
