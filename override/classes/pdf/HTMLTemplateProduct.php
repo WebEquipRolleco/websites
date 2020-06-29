@@ -123,7 +123,7 @@ class HTMLTemplateProductCore extends HTMLTemplate {
     * @return string filename
     **/
     public function getBulkFilename() {
-        return 'product.pdf';
+        return $this->product->link_rewrite.'-'.$this->product->id.'.pdf';
     }
 
     /**
@@ -131,7 +131,7 @@ class HTMLTemplateProductCore extends HTMLTemplate {
     * @return string filename
     **/
     public function getFilename() {
-        return str_replace(" ", "_", $this->product->name).'.pdf';
+        return $this->product->link_rewrite.'-'.$this->product->id.'.pdf';
     }
 
 }
