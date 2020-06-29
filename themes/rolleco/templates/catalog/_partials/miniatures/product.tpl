@@ -66,8 +66,8 @@
                 {hook h='displayProductPriceBlock' product=$product type="old_price"}
 
                 <span class="sr-only">{l s='Regular price' d='Shop.Theme.Catalog'}</span>
-                <span class="regular-price">{$specificPrice->full_price}</span>
-                <span class="discount-percentage discount-product">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
+                <span class="regular-price">{Tools::displayPrice($specificPrice->full_price)}</span>
+                <span class="discount-percentage discount-product">{Tools::getRate($specificPrice->price, $specificPrice->full_price)}%</span>
               {/if}
 
               {hook h='displayProductPriceBlock' product=$product type="before_price"}
