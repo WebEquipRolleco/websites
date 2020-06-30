@@ -42,13 +42,15 @@
 
   </head>
 
-  <body>
+  <body style="margin:0px">
 
-    <div id="layout-error">
-      {block name='content'}
-        <p>Hello world! This is HTML5 Boilerplate.</p>
-      {/block}
-    </div>
+    {block name="full_page"}
+      <div id="layout-error">
+        {block name='content'}
+          <p>Hello world! This is HTML5 Boilerplate.</p>
+        {/block}
+      </div>
+    {/block}
 
   </body>
 
