@@ -75,8 +75,9 @@ class AdminContactInformationControllerCore extends AdminController {
 			array('label'=>"Clé Google Tag Manager", 'name'=>'KEY_GOOGLE_TAG_MANAGER')
 		);
 
-		$data[4]['IDS'] = array(
-			array('label'=>"Index devis", 'name'=>'QUOTATION_INDEX'),
+		$data[4]['Reference devis'] = array(
+			array('label'=>"Préfixe", 'name'=>'QUOTATION_PREFIX'),
+			array('label'=>"Index en cours", 'name'=>'QUOTATION_INDEX')
 		);
 
 		return $data;

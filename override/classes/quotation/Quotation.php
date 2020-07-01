@@ -457,11 +457,15 @@ class Quotation extends ObjectModel {
     **/
     public function generateReference($update_shop = false) {
 
-        $this->reference = $this->getShop()->quotation_prefix.$this->getShop()->quotation_number;
+        $prefix = Configuration::get('QUOTATION_PREFIX');
+        $index = (int)Configuration::get('QUOTATION_INDEX');
+
+        $this->reference = $prefix.$index;
         
         if($update_shop) {
-            $this->getShop()->quotation_number++;
-            $this->getShop()->save();
+            
+            $index++;
+            Configuration::updateValue('QUOTATION_INDEX', $index);
         }
     }
 
