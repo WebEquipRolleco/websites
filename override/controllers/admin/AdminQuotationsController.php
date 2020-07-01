@@ -63,6 +63,7 @@ class AdminQuotationsController extends AdminController {
             'emails' => array(
                 'title' => $this->trans('E-mails', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'c!email'
             ),
             'company' => array(
                 'title' => $this->trans('Société', array(), 'Admin.Global'),
