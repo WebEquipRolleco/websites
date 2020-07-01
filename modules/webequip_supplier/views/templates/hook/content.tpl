@@ -136,7 +136,7 @@
 				{foreach from=$order_details item=detail}
 					<tr>
 						<td>
-							<a href="{Link::getAdminLink('adminOrders')}&id_order={$detail.order->id}&vieworder">
+							<a href="{$link->getAdminLink('adminOrders')}&id_order={$detail.order->id}&vieworder">
 								{$detail.order->reference}
 							</a>
 						</td>
@@ -144,7 +144,7 @@
 						<td class="text-center">{$detail.supplier_name}</td>
 						<td class="text-center">
 							{foreach from=$detail.employees item=employee}
-								<a href="{Link::getAdminLink('adminEmployees')}&id_employee={$employee->id}&updateemployee">
+								<a href="{$link->getAdminLink('adminEmployees')}&id_employee={$employee->id}&updateemployee">
 									<span class="label label-default" title="{$employee->email}">
 										{$employee->firstname} {$employee->lastname}
 									</span>

@@ -78,7 +78,8 @@ class webequip_supplier extends Module {
 
 		$this->context->smarty->assign('order_details', $details);
 		$this->context->smarty->assign('cron_url', $this->getCronUrl());
-
+		$this->context->smarty->assign('link', new Link());
+		
 		$this->context->smarty->assign('secure_key', Configuration::get(self::SECURE_KEY));
 		$this->context->smarty->assign('selected_state', Configuration::get(self::RECALL_STATE));
 		$this->context->smarty->assign('nb_min_days', Configuration::get(self::RECALL_NB_MIN_DAYS));
