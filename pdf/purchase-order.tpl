@@ -170,7 +170,10 @@
 	<tbody>
 		{assign var=total value=0}
 		{foreach $order->getDetails($oa->id_supplier) as $details}
-			{assign var=total_ht value=($total + $details->total_price_tax_excl)}
+			{assign var=row_price value=($details->purchase_supplier_price * $details->product_quantity)}
+			{assign var=row_fees value=($details->delivery_fees * $details->product_quantity)}
+			{assign var=row_total value=($row_price + $row_fees)}
+			{assign var=total value=($total + $row_total)}
 			<tr>
 				<td style="text-align:center">
 					<b>{$details->product_supplier_reference|default:'-'}</b>
@@ -188,10 +191,10 @@
 					{Tools::displayPrice($details->purchase_supplier_price)}
 				</td>
 				<td style="text-align:center">
-					{Tools::displayPrice($details->delivery_fees * $details->product_quantity)}
+					{Tools::displayPrice($row_fees)}
 				</td>
 				<td style="text-align:center">
-					{Tools::displayPrice($details->total_price_tax_excl)}
+					{Tools::displayPrice($row_total)}
 				</td>
 			</tr>
 		{/foreach}
@@ -202,7 +205,7 @@
 				{l s="Total"|upper}
 			</td>
 			<td style="text-align:center">
-				{Tools::displayPrice($total_ht)}
+				{Tools::displayPrice($total)}
 			</td>
 		</tr>
 	</tfoot>	
