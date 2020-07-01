@@ -105,6 +105,7 @@ class webequip_transfer extends Module {
 		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_QUOTATIONS'] = array('name'=>"[FIX] Correction des fournisseurs produits devis", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_DELIVERY_ORDERS'] = array('name'=>"[UPDATE] Récupère les données de livraison des produits", 'preview'=>false);
+		$data['FIX_DATE_ORDERS'] = array('name'=>"[UPDATE] Récupère les dates de commandes", 'preview'=>false);
 		
 		return $data;
 	}
@@ -1073,6 +1074,25 @@ class webequip_transfer extends Module {
 			$detail->notification_sent = $row['notified'];
 
 			$detail->save();
+			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* [FIX] récupèration des dates de commandes
+	**/
+	private function transfer_FIX_DATE_ORDERS() {
+
+		$result = $this->old_db->query("SELECT id_order, date_add, date_upd FROM ps_orders ORDER BY id_order DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$order = new Order($row['id_order']);
+			if(!$order->id) continue;
+
+			$order->date_add = $row['date_add'];
+			$order->date_upd = $row['date_upd'];
+			
+			$order->save();
 			$this->nb_rows++;
 		}
 	}
