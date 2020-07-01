@@ -107,6 +107,7 @@ class webequip_transfer extends Module {
 		$data['FIX_DELIVERY_ORDERS'] = array('name'=>"[UPDATE] Récupère les données de livraison des produits", 'preview'=>false);
 		$data['FIX_DATE_ORDERS'] = array('name'=>"[UPDATE] Récupère les dates de commandes", 'preview'=>false);
 		$data['FIX_DATE_CUSTOMERS'] = array('name'=>"[UPDATE] Récupère les dates des clients", 'preview'=>false);
+		$data['ps_oa'] = array('name'=>"[UPDATE] Récupère des OA", 'preview'=>false);
 		
 		return $data;
 	}
@@ -1113,6 +1114,28 @@ class webequip_transfer extends Module {
 			$customer->date_upd = $row['date_upd'];
 			
 			$customer->save();
+			$this->nb_rows++;
+		}
+	}
+
+	/**
+	* [FIX] récupèration des OA
+	**/
+	private function transfer_ps_oa() {
+
+		$result = $this->old_db->query("SELECT * FROM ps_oa ORDER BY id DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$oa = new OA($row['id']);
+			$update = !empty($oa->id);
+
+			$oa->id_order = $row['id_order'];
+			$oa->id_supplier = $row['id_supplier'];
+			$oa->code = $row['code'];
+			$oa->date_BC = $row['date_BC'];
+			$oa->date_BL = $row['date_BL'];
+
+			$oa->record($update);
 			$this->nb_rows++;
 		}
 	}
