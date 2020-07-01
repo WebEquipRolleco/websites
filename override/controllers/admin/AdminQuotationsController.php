@@ -50,6 +50,7 @@ class AdminQuotationsController extends AdminController {
             'id_2' => array(
                 'title' => $this->trans('Commande', array(), 'Admin.Global'),
                 'callback' => 'formatOrder',
+                'filter_key' => 'a!reference'
             ),
             'id_3' => array(
                 'title' => $this->trans('Date commande', array(), 'Admin.Global'),
@@ -59,6 +60,7 @@ class AdminQuotationsController extends AdminController {
             'customer' => array(
                 'title' => $this->trans('Client', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'c!email'
             ),
             'emails' => array(
                 'title' => $this->trans('E-mails', array(), 'Admin.Global'),
@@ -68,15 +70,18 @@ class AdminQuotationsController extends AdminController {
             'company' => array(
                 'title' => $this->trans('Société', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'c!company'
             ),
             'employee' => array(
                 'title' => $this->trans('Créateur', array(), 'Admin.Global'),
                 'align' => 'text-center',
+                'filter_key' => 'e!email'
             ),
             'price' => array(
                 'title' => $this->trans('Montant HT', array(), 'Admin.Global'),
                 'align' => 'text-center',
                 'callback' => 'formatPrice',
+                'search' => false
             ),
             'status' => array(
                 'title' => $this->trans('Etat', array(), 'Admin.Global'),
