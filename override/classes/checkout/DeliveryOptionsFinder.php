@@ -10,6 +10,24 @@ class DeliveryOptionsFinder extends DeliveryOptionsFinderCore {
         $this->priceFormatter = $priceFormatter;
     }
 
+    private function isFreeShipping($cart, array $carrier) {
+        
+        $free_shipping = false;
+
+        if ($carrier['is_free']) {
+            $free_shipping = true;
+        } else {
+            foreach ($cart->getCartRules() as $rule) {
+                if ($rule['free_shipping'] && !$rule['carrier_restriction']) {
+                    $free_shipping = true;
+                    break;
+                }
+            }
+        }
+
+        return $free_shipping;
+    }
+
 	public function getSelectedDeliveryOption() {
 
 		$current = current($this->context->cart->getDeliveryOption(null, false, false));
