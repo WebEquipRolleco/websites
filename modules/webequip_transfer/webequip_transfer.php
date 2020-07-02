@@ -91,6 +91,7 @@ class webequip_transfer extends Module {
 	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
+		$data['FIX_ps_address'] = array('name'=>"[FIX] Téléphones des adresses", 'preview'=>false);
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
@@ -366,6 +367,27 @@ class webequip_transfer extends Module {
 			$address->deleted = $row['deleted'];
 
 			$address->record($update);
+			$this->nb_rows++;
+		}
+
+		return $this->nb_rows;
+	}
+
+	public function transfer_FIX_ps_address() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+		
+		$result = $this->old_db->query("SELECT id_address, phone, phone_mobile FROM ps_address ORDER BY id_address DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$address = new Address($row['id_address'], 1);
+			if(!$address->id) continue;
+
+			$address->phone = $row['phone'];
+			$address->phone_mobile = $row['phone_mobile'];
+
+			$address->save();
 			$this->nb_rows++;
 		}
 
