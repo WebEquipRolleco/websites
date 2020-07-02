@@ -496,9 +496,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                     // Bon de commande
                     if($documents[$OA->id_supplier]['BC']) {
                         $pdf = new PDF($OA, PDF::TEMPLATE_PURCHASE_ORDER, $this->context->smarty);
-                        $attachments['BL']['content'] = $pdf->render(false);
-                        $attachments['BL']['name'] = "bon_de_commande.pdf";
-                        $attachments['BL']['mime'] = 'application/pdf';
+                        $attachments['BC']['content'] = $pdf->render(false);
+                        $attachments['BC']['name'] = "bon_de_commande.pdf";
+                        $attachments['BC']['mime'] = 'application/pdf';
 
                         $OA->date_BC = date('Y-m-d H:i:s');
                         $template .= "BC";
