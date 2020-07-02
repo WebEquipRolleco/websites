@@ -1180,11 +1180,11 @@ class webequip_transfer extends Module {
 	**/
 	private function transfer_ps_oa() {
 
-		$result = $this->old_db->query("SELECT * FROM ps_oa ORDER BY id DESC");
+		$result = $this->old_db->query("SELECT * FROM ps_oa");
 		while($row = $result->fetch_assoc()) {
 
 			$oa = new OA($row['id']);
-			if($oa->id) continue;
+			$update = !empty($oa->id);
 
 			$oa->id_order = $row['id_order'];
 			$oa->id_supplier = $row['id_supplier'];
@@ -1192,7 +1192,7 @@ class webequip_transfer extends Module {
 			$oa->date_BC = $row['date_BC'];
 			$oa->date_BL = $row['date_BL'];
 
-			$oa->save();
+			$oa->record($update);
 			$this->nb_rows++;
 		}
 	}
