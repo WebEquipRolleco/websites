@@ -97,6 +97,7 @@ class webequip_transfer extends Module {
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_order_history'] = array('name'=>"Commandes : historique des états", 'lang'=>false, 'shop'=>false);
+		$data['ps_order_payment'] = array('name'=>"Commandes : liste des paiements", 'preview'=>false);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME);
 		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
@@ -676,6 +677,40 @@ class webequip_transfer extends Module {
 		    $history->date_upd = date('Y-m-d H:i:s');
 
 		    $history->record($update);
+		    $this->nb_rows++;
+		}
+
+		return $this->nb_rows;
+	}
+
+	/**
+	* Transfert des modes de paiements
+	**/
+	public function transfer_ps_order_payment() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$result = $this->old_db->query("SELECT * FROM ps_order_payment ORDER BY id_order_payment");
+		while($row = $result->fetch_assoc()) {
+
+			$payment = new OrderPayment($row['id_order_payment']);
+			$update = !empty($payment->id);
+
+			$payment->id = $prow['id_order_payment'];
+			$payment->order_reference = $row['order_reference'];
+		    $payment->id_currency = $row['id_currency'];
+		    $payment->amount = $row['amount'];
+		    $payment->payment_method = $row['payment_method'];
+		    $payment->conversion_rate = $row['conversion_rate'];
+		    $payment->transaction_id = $row['transaction_id'];
+		    $payment->card_number = $row['card_number'];
+		    $payment->card_brand = $row['card_brand'];
+		    $payment->card_expiration = $row['card_expiration'];
+		    $payment->card_holder = $row['card_holder'];
+		    $payment->date_add = $row['date_add'];
+
+			$payment->record($update);
 		    $this->nb_rows++;
 		}
 
