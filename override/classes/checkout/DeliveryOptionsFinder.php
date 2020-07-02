@@ -12,10 +12,11 @@ class DeliveryOptionsFinder extends DeliveryOptionsFinderCore {
 
 	public function getSelectedDeliveryOption() {
 
+		$current = current($this->context->cart->getDeliveryOption(null, false, false));
+		if($current) return $current;
+
         Foreach(Carrier::getCarriers(1, true) as $carrier)
             return $carrier['id_carrier'];
-
-        return current($this->context->cart->getDeliveryOption(null, false, false));
     }
 
     public function getDeliveryOptions() {
