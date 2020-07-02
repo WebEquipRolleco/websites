@@ -1184,7 +1184,7 @@ class webequip_transfer extends Module {
 		while($row = $result->fetch_assoc()) {
 
 			$oa = new OA($row['id']);
-			$update = !empty($oa->id);
+			if($oa->id) continue;
 
 			$oa->id_order = $row['id_order'];
 			$oa->id_supplier = $row['id_supplier'];
@@ -1192,7 +1192,7 @@ class webequip_transfer extends Module {
 			$oa->date_BC = $row['date_BC'];
 			$oa->date_BL = $row['date_BL'];
 
-			$oa->record($update);
+			$oa->save();
 			$this->nb_rows++;
 		}
 	}
