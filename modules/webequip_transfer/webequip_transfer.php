@@ -101,15 +101,13 @@ class webequip_transfer extends Module {
 		$data['ps_order_payment'] = array('name'=>"Commandes : liste des paiements", 'preview'=>false);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME);
-		$data['ps_supplier'] = array('name'=>"Fournisseurs", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_manufacturer'] = array('name'=>"Marques", 'lang'=>true, 'shop'=>true, 'updatable'=>true);
-		$data['ps_activis_avis'] = array('name'=>"Produits [2+] Récupération des avis produits", 'preview'=>false);
 		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_QUOTATIONS'] = array('name'=>"[FIX] Correction des fournisseurs produits devis", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_DELIVERY_ORDERS'] = array('name'=>"[UPDATE] Récupère les données de livraison des produits", 'preview'=>false);
 		$data['FIX_DATE_ORDERS'] = array('name'=>"[UPDATE] Récupère les dates de commandes", 'preview'=>false);
 		$data['FIX_DATE_CUSTOMERS'] = array('name'=>"[UPDATE] Récupère les dates des clients", 'preview'=>false);
 		$data['ps_oa'] = array('name'=>"[UPDATE] Récupère des OA", 'preview'=>false);
+		$data['FIX_FACTURATION'] = array('name'=>"[UPDATE] Information de facturation", 'preview'=>false);
 		
 		return $data;
 	}
@@ -234,91 +232,6 @@ class webequip_transfer extends Module {
 	**/
 	private function getMax($key, $table) {
 		return Db::getInstance()->getValue("SELECT MAX($key) FROM $table");
-	}
-
-	/**
-	* Transfert des fournisseurs
-	**/
-	private function transfer_ps_supplier() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_supplier");
-			Db::getInstance()->execute("DELETE FROM ps_supplier_lang");
-			Db::getInstance()->execute("DELETE FROM ps_supplier_shop");
-		}
-		else
-			$ids = $this->getSavedIds("id_supplier", "ps_supplier");
-
-		$sql = "SELECT * FROM ps_supplier s, ps_supplier_lang sl WHERE s.id_supplier = sl.id_supplier AND sl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND id_supplier NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$supplier = new Supplier($row['id_supplier'], 1);
-			$update = !empty($supplier->id);
-			$split = explode('-', $row['name']);
-
-			$supplier->id = $row['id_supplier'];
-			$supplier->reference = (count($split) == 2) ? $split[0] : null;
-		    $supplier->name = (count($split) == 2) ? utf8_encode($split[1]) : utf8_encode($row['name']);
-		    $supplier->description = utf8_encode($row['description']);
-		    $supplier->emails = $row['emails'];
-		    $supplier->date_add = $row['date_add'];
-		    $supplier->date_upd = $row['date_upd'];
-		    $supplier->link_rewrite;
-		    $supplier->meta_title = $row['meta_title'];
-		    $supplier->meta_keywords = $row['meta_keywords'];
-		    $supplier->meta_description = $row['meta_description'];
-		    $supplier->BC = $row['BC'];
-    		$supplier->BL = $row['BL'];
-		    $supplier->active = $row['active'];
-		    
-		   	$supplier->record($update);
-		   	$this->nb_rows++;
-		}
-	}
-
-	/**
-	* Transfert des marques
-	**/
-	private function transfer_ps_manufacturer() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_manufacturer");
-			Db::getInstance()->execute("DELETE FROM ps_manufacturer_lang");
-			Db::getInstance()->execute("DELETE FROM ps_manufacturer_shop");
-		}
-		else
-			$ids = $this->getSavedIds("id_manufacturer", "ps_manufacturer");
-
-		$sql = "SELECT * FROM ps_manufacturer m, ps_manufacturer_lang ml WHERE m.id_manufacturer = ml.id_manufacturer AND ml.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND m.id_manufacturer NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$manufacturer = new Manufacturer($row['id_manufacturer'], 1);
-			$update = !empty($manufacturer->id);
-
-			$manufacturer->id = $row['id_manufacturer'];
-			$manufacturer->name = utf8_encode($row['name']);
-			$manufacturer->description = utf8_encode($row['description']);
-			$manufacturer->short_description = utf8_encode($row['short_description']);
-			$manufacturer->date_add = $row['date_add'];
-			$manufacturer->date_upd = $row['date_upd'];
-			$manufacturer->meta_title = $row['meta_title'];
-			$manufacturer->meta_keywords = $row['meta_keywords'];
-			$manufacturer->meta_description = $row['meta_description'];
-			$manufacturer->active = $row['active'];
-
-			$manufacturer->record($update);
-			$this->nb_rows++;
-		}
 	}
 
 	/**
@@ -740,151 +653,12 @@ class webequip_transfer extends Module {
 	}
 
 	/**
-	* Transfert des caractéristiques
-	**/
-	private function transfer_ps_feature() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_feature");
-			Db::getInstance()->execute("DELETE FROM ps_feature_lang");
-			Db::getInstance()->execute("DELETE FROM ps_feature_shop");
-		}
-		else
-			$ids = $this->getSavedIds("id_feature", "ps_feature");
-
-		$sql = "SELECT * FROM ps_feature f, ps_feature_lang fl WHERE f.id_feature = fl.id_feature AND fl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND f.id_feature NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$feature = new Feature($row['id_feature'], 1);
-			$update = !empty($feature->id);
-
-			$feature->id = $row['id_feature'];
-			$feature->name = utf8_encode($row['name']);
-			$feature->public_name = $feature->name;
-    		$feature->position = $row['position'];
-
-			$feature->record($update);
-			$this->nb_rows++;
-		}
-	}
-
-	/**
-	* Transfert des valeurs de caractéristiques
-	**/
-	private function transfer_ps_feature_value() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_attribute");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_lang");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_shop");
-		}
-		else
-			$ids = $this->getSavedIds("id_feature_value", "ps_feature_value");
-
-		$sql = "SELECT * FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fv.id_feature_value = fvl.id_feature_value AND fvl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND fv.id_feature_value NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$value = new FeatureValue($row['id_feature_value'], 1);
-			$update = !empty($value->id);
-
-			$value->id = $row['id_feature_value'];
-			$value->id_feature = $row['id_feature'];
-    		$value->value = utf8_encode($row['value']);
-
-    		$value->record($update);
-    		$this->nb_rows++;
-		}
-	}
-
-	/**
-	* Transfert des groupes d'attributs
-	* INFOS : copie de la table des caractéristiques
-	**/
-	private function transfer_ps_attribute_group() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_attribute_group");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_group_lang");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_group_shop");
-		}
-		else
-			$ids = $this->getSavedIds("id_attribute_group", "ps_attribute_group");
-
-		$sql = "SELECT * FROM ps_feature f, ps_feature_lang fl WHERE f.id_feature = fl.id_feature AND fl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND f.id_feature NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$group = new AttributeGroup($row['id_feature'], 1);
-			$update = !empty($group->id);
-
-			$group->id = $row['id_feature'];
-			$group->name = utf8_encode($row['name']);
-			$group->public_name = $group->name;
-    		$group->is_color_group = false;
-    		$group->quotation = false;
-    		$group->group_type = "select";
-    		$group->position = $row['position'];
-
-			$group->record($update);
-			$this->nb_rows++;
-		}
-	}
-
-	/**
-	* Transfert des valeurs d'attributs
-	* INFOS : copie de la table des valeurs de caractéristiques
-	**/
-	private function transfer_ps_attribute() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_attribute");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_lang");
-			Db::getInstance()->execute("DELETE FROM ps_attribute_shop");
-		}
-		else
-			$ids = $this->getSavedIds("id_feature_value", "ps_feature_value");
-
-		$sql = "SELECT * FROM ps_feature_value fv, ps_feature_value_lang fvl WHERE fv.id_feature_value = fvl.id_feature_value AND fvl.id_lang = 1";
-		if(isset($ids) and $ids) $sql .= " AND fv.id_feature_value NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$attribute = new Attribute($row['id_feature_value'], 1);
-			$update = !empty($attribute->id);
-
-			$attribute->id = $row['id_feature_value'];
-			$attribute->id_attribute_group = $row['id_feature'];
-    		$attribute->name = utf8_encode($row['value']);
-    		$attribute->position = $row['position'];
-
-    		$attribute->record($update);
-    		$this->nb_rows++;
-		}
-	}
-
-	/**
 	* Transfert des devis
 	**/
 	public function transfer_ps_activis_devis($min_id = null) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax(Quotation::TABLE_PRIMARY, _DB_PREFIX_.Quotation::TABLE_NAME);
@@ -929,6 +703,8 @@ class webequip_transfer extends Module {
 				$this->nb_rows++;
 			}
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
@@ -937,6 +713,7 @@ class webequip_transfer extends Module {
 	public function transfer_ps_activis_devis_line($min_id = null) {
 
 		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax(QuotationLine::TABLE_PRIMARY, _DB_PREFIX_.QuotationLine::TABLE_NAME);
@@ -969,105 +746,8 @@ class webequip_transfer extends Module {
 			$line->record($update);
 			$this->nb_rows++;
 		}
-	}
 
-	/**
-	* Transfert des comptes employés
-	**/
-	public function transfer_ps_employee() {
-
-		$this->connectToDB();
-
-		if(Tools::getValue('eraze')) {
-			Db::getInstance()->execute("DELETE FROM ps_employee");
-			Db::getInstance()->execute("DELETE FROM ps_employee_shop");
-			Db::getInstance()->execute("DELETE FROM ps_employee_supplier");
-		}
-		else
-			$ids = $this->getSavedIds("id_employee", "ps_employee");
-
-		$sql = "SELECT * FROM ps_employee";
-		if(isset($ids) and $ids) $sql .= " WHERE id_employee NOT IN ($ids)";
-
-		$result = $this->old_db->query($sql);
-		while($row = $result->fetch_assoc()) {
-
-			$employee = new Employee($row['id_employee']);
-			$update = !empty($employee->id);
-
-			$employee->id = $row['id_employee'];
-			$employee->id_profile = $row['id_profile'];
-			$employee->id_lang = $row['id_lang'];
-			$employee->lastname = utf8_encode($row['lastname']);
-			$employee->firstname = utf8_encode($row['firstname']);
-			$employee->email = utf8_encode($row['email']);
-			$employee->passwd = $row['passwd'];
-			$employee->last_passwd_gen = $row['last_passwd_gen'];
-			$employee->stats_date_from = $row['stats_date_from'];
-			$employee->stats_date_to = $row['stats_date_to'];
-			$employee->stats_compare_from;
-			$employee->stats_compare_to;
-			$employee->stats_compare_option = 1;
-			$employee->preselect_date_range;
-			$employee->bo_color = utf8_encode($row['bo_color']);
-			$employee->default_tab = $row['default_tab'];
-			$employee->bo_theme = utf8_encode($row['bo_theme']);
-			$employee->bo_css = 'theme.css';
-			$employee->bo_width = $row['bo_width'];
-			$employee->bo_menu = 1;
-			$employee->bo_show_screencast = false;
-			$employee->active = $row['active'];
-			$employee->optin = 1;
-			$employee->remote_addr;
-			$employee->id_last_order = $row['id_last_order'];
-			$employee->id_last_customer_message = $row['id_last_customer_message'];
-			$employee->id_last_customer = $row['id_last_customer'];
-			$employee->reset_password_token;
-			$employee->reset_password_validity;
-
-			$employee->record($update);
-			$this->nb_rows++;
-
-			Db::getInstance()->execute("DELETE FROM ps_employee_supplier WHERE id_employee = ".$employee->id);
-			$result = $this->old_db->query("SELECT * FROM ps_employee_supplier WHERE id_employee = ".$employee->id);
-			while($row = $result->fetch_assoc())
-				Db::getInstance()->execute("INSERT INTO ps_employee_supplier VALUES(NULL, ".$row['id_employee'].", ".$row['id_supplier'].")");
-		}
-	}
-
-	
-	/**
-	* [Etape 2+] Récupération des avis clients
-	**/
-	private function transfer_ps_activis_avis() {
-
-		$this->connectToDB();
-
-		Review::erazeContent();
-		$result = $this->old_db->query("SELECT a.*, c.firstname, c.lastname FROM ps_activis_avis a, ps_customer c WHERE a.id_customer = c.id_customer");
-		while($row = $result->fetch_assoc()) {
-
-			$matching = new ProductMatching($row['id_product']);
-			if($matching->id) {
-
-				$review = New Review();
-
-				$name = ucfirst($row['lastname']);
-				if($row['firstname']) $name = strtoupper(substr($row['firstname'], 0, 1)).'. '.$name;
-
-				$review->id_product = (int)$row['id_product'];
-				$review->id_shop = (int)$row['id_shop'];
-				$review->name = utf8_encode($name);
-				$review->comment = utf8_encode($row['comment']);
-				$review->rating = (int)$row['note'];
-				$review->id_customer = (int)$row['id_customer'];
-				$review->date_add = $row['date_add'];
-				$review->active = (bool)$row['status'];
-
-				$review->save();
-				$this->nb_rows++;
-			}
-		}
+		return $this->nb_rows;
 	}
 
 	/**
@@ -1121,6 +801,9 @@ class webequip_transfer extends Module {
 	**/
 	private function transfer_FIX_DELIVERY_ORDERS() {
 
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
 		$result = $this->old_db->query("SELECT * FROM ps_activis_order_extends_detail ORDER BY id_activis_order_extends_detail");
 		while($row = $result->fetch_assoc()) {
 
@@ -1135,12 +818,17 @@ class webequip_transfer extends Module {
 			$detail->save();
 			$this->nb_rows++;
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
 	* [FIX] récupèration des dates de commandes
 	**/
 	private function transfer_FIX_DATE_ORDERS() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		$result = $this->old_db->query("SELECT id_order, date_add, date_upd FROM ps_orders ORDER BY id_order DESC");
 		while($row = $result->fetch_assoc()) {
@@ -1154,12 +842,17 @@ class webequip_transfer extends Module {
 			$order->save();
 			$this->nb_rows++;
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
 	* [FIX] récupèration des dates de clients
 	**/
 	private function transfer_FIX_DATE_CUSTOMERS() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		$result = $this->old_db->query("SELECT id_customer, date_add, date_upd FROM ps_customer ORDER BY id_customer DESC");
 		while($row = $result->fetch_assoc()) {
@@ -1173,12 +866,42 @@ class webequip_transfer extends Module {
 			$customer->save();
 			$this->nb_rows++;
 		}
+
+		return $this->nb_rows;
+	}
+
+	/**
+	* [FIX] Facturation commandes
+	**/
+	private function transfer_FIX_FACTURATION() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$result = $this->old_db->query("SELECT id_order, invoice_number, invoice_date, no_recall FROM ps_activis_order_extends_invoice_customization ORDER BY id_order DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$order = new Order($row['id_order']);
+			if(!$order->id) continue;
+
+			$order->invoice_number = $row['invoice_number'];
+			$order->invoice_date = $row['invoice_date'];
+			$order->no_recall = $row['no_recall'];
+
+			$order->save();
+			$this->nb_rows++;
+		}
+
+		return $this->nb_rows;
 	}
 
 	/**
 	* [FIX] récupèration des OA
 	**/
 	private function transfer_ps_oa() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
 
 		$result = $this->old_db->query("SELECT * FROM ps_oa");
 		while($row = $result->fetch_assoc()) {
@@ -1195,6 +918,8 @@ class webequip_transfer extends Module {
 			$oa->record($update);
 			$this->nb_rows++;
 		}
+
+		return $this->nb_rows++;
 	}
 
 	/**
