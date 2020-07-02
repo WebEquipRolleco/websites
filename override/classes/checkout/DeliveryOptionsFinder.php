@@ -2,8 +2,8 @@
 
 class DeliveryOptionsFinder extends DeliveryOptionsFinderCore {
 
-	public function __construct(Context $context, TranslatorInterface $translator, ObjectPresenter $objectPresenter, PriceFormatter $priceFormatter) {
-		
+	public function __construct($context, $translator, $objectPresenter, $priceFormatter) {
+
         $this->context = $context;
         $this->objectPresenter = $objectPresenter;
         $this->translator = $translator;
