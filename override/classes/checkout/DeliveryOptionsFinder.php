@@ -2,6 +2,14 @@
 
 class DeliveryOptionsFinder extends DeliveryOptionsFinderCore {
 
+	public function __construct(Context $context, TranslatorInterface $translator, ObjectPresenter $objectPresenter, PriceFormatter $priceFormatter) {
+		
+        $this->context = $context;
+        $this->objectPresenter = $objectPresenter;
+        $this->translator = $translator;
+        $this->priceFormatter = $priceFormatter;
+    }
+
 	public function getSelectedDeliveryOption() {
 
         Foreach(Carrier::getCarriers(1, true) as $carrier)
@@ -11,7 +19,7 @@ class DeliveryOptionsFinder extends DeliveryOptionsFinderCore {
     }
 
     public function getDeliveryOptions() {
-    	
+
         $delivery_option_list = $this->context->cart->getDeliveryOptionList();
         $include_taxes = !Product::getTaxCalculationMethod((int) $this->context->cart->id_customer) && (int) Configuration::get('PS_TAX');
         $display_taxes_label = (Configuration::get('PS_TAX') && !Configuration::get('AEUC_LABEL_TAX_INC_EXC'));
