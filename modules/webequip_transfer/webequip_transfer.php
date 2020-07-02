@@ -701,7 +701,7 @@ class webequip_transfer extends Module {
 			$payment->order_reference = $row['order_reference'];
 		    $payment->id_currency = $row['id_currency'];
 		    $payment->amount = $row['amount'];
-		    $payment->payment_method = $row['payment_method'];
+		    $payment->payment_method = utf8_encode($row['payment_method']);
 		    $payment->conversion_rate = $row['conversion_rate'];
 		    $payment->transaction_id = $row['transaction_id'];
 		    $payment->card_number = $row['card_number'];
