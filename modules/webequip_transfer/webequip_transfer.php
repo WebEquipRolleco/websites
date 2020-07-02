@@ -98,6 +98,7 @@ class webequip_transfer extends Module {
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_order_history'] = array('name'=>"Commandes : historique des états", 'lang'=>false, 'shop'=>false);
+		$data['FIX_HISTORY'] = array('name'=>"[FIX] Dates des historique des états", 'preview'=>false);
 		$data['ps_order_payment'] = array('name'=>"Commandes : liste des paiements", 'preview'=>false);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME);
@@ -613,6 +614,29 @@ class webequip_transfer extends Module {
 
 		    $history->record($update);
 		    $this->nb_rows++;
+		}
+
+		return $this->nb_rows;
+	}
+
+	/**
+	* [FIX] Récupération des dates d'historiques de commandes
+	**/
+	public function transfer_FIX_HISTORY() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$result = $this->old_db->query("SELECT id_order_history, date_add FROM ps_order_history ORDER BY id_order_history DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$history = new OrderHistory($row['id_order_history']);
+			if(!$history->id) continue;
+
+			$history->date_add = $row['date_add'];
+			$history->save();
+
+			$this->nb_rows++;
 		}
 
 		return $this->nb_rows;
