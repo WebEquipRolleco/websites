@@ -19,6 +19,16 @@ class HTMLTemplatePurchaseOrderCore extends HTMLTemplate
 	}
 
 	/**
+    * Returns the template's HTML header
+    * @return string HTML header
+    **/
+    public function getHeader() {
+        
+        $this->assignCommonHeaderData();
+        return $this->smarty->fetch($this->getTemplate('header.purchase-order'));
+    }
+
+	/**
 	* Returns the template's HTML content
 	* @return string HTML content
 	**/
