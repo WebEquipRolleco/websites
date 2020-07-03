@@ -558,13 +558,16 @@ class webequip_transfer extends Module {
 			$detail = new OrderDetail($row['id_order_detail']);
 			if(!$detail->id) continue;
 
-			$infos = json_decode($row['specific_price']);
+			$infos = unserialize($row['specific_price']);
 			if(isset($infos['shipping_price'])) {
 
 				$detail->delivery_fees = $infos['shipping_price'];
 				$detail->save();
+				$this->nb_rows++;
 			}
 		}
+
+		return $this->nb_rows;
 	}
 
 	/**
