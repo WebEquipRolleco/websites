@@ -91,11 +91,12 @@ class webequip_transfer extends Module {
 	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
-		$data['FIX_ps_address'] = array('name'=>"[FIX] Téléphones des adresses", 'preview'=>false);
+		$data['FIX_ps_address'] = array('name'=>"[FIX] Téléphones des adresses");
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
 		$data['ps_order_detail'] = array('name'=>"Commandes : liste des produits", 'lang'=>false, 'shop'=>false);
+		$data['FIX_DELIVERY_FEES'] = array('name'=>"[FIX] Frais de port des lignes produits", 'preview'=>false);
 		$data['ps_order_state'] = array('name'=>"Commandes : liste des états", 'lang'=>true, 'shop'=>false);
 		$data['ps_order_history'] = array('name'=>"Commandes : historique des états", 'lang'=>false, 'shop'=>false);
 		$data['FIX_HISTORY'] = array('name'=>"[FIX] Dates des historique des états", 'preview'=>false);
@@ -541,6 +542,29 @@ class webequip_transfer extends Module {
 		}
 
 		return $this->nb_rows;
+	}
+
+	/**
+	* [FIX] Récupération des frais de ports
+	**/
+	public function transfer_FIX_DELIVERY_FEES() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$result = $this->old_db->query("SELECT id_order_detail, specific_price FROM ps_order_detail ORDER BY id_order_detail DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$detail = new OrderDetail($row['id_order_detail']);
+			if(!$detail->id) continue;
+
+			$infos = json_decode($row['specific_price']);
+			if(isset($infos['shipping_price'])) {
+
+				$detail->delivery_fees = $infos['shipping_price'];
+				$detail->save();
+			}
+		}
 	}
 
 	/**
