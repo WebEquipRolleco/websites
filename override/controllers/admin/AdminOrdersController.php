@@ -583,6 +583,14 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $order_invoice = new OrderInvoice((int)Tools::getValue('product_invoice'));
         }
 
+        // update new fileds
+        $order_detail->day = Tools::getValue('day');
+        $order_detail->week = Tools::getValue('week');
+        $order_detail->comment = Tools::getValue('comment');
+        $order_detail->notification_sent = Tools::getValue('notification_sent');
+        $order_detail->prevent_notification = Tools::getValue('prevent_notification');
+        $order_detail->save();
+
         // Check fields validity
         $this->doEditProductValidation($order_detail, $this->getCurrentOrder(), isset($order_invoice) ? $order_invoice : null);
 
@@ -667,13 +675,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // update taxes
         $res &= $order_detail->updateTaxAmount($order);
-
-        // update new fileds
-        $order_detail->day = Tools::getValue('day');
-        $order_detail->week = Tools::getValue('week');
-        $order_detail->comment = Tools::getValue('comment');
-        $order_detail->notification_sent = Tools::getValue('notification_sent');
-        $order_detail->prevent_notification = Tools::getValue('prevent_notification');
 
         // Save order detail
         $res &= $order_detail->update();
