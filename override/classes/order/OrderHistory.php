@@ -67,12 +67,18 @@ class OrderHistory extends OrderHistoryCore {
         if (isset($result['template']) && Validate::isEmail($result['email'])) {
             ShopUrl::cacheMainDomainForShop($order->id_shop);
 
+            $date = DateTime::createFromFormat('Y-m-d H:i:s', $order->date_add);
+
             $topic = $result['osname'];
             $data = array(
                 '{lastname}' => $result['lastname'],
                 '{firstname}' => $result['firstname'],
                 '{id_order}' => (int)$this->id_order,
-                '{order_name}' => $order->getUniqReference()
+                '{order_name}' => $order->getUniqReference(),
+                '{order_reference}' => $order->reference,
+                '{deadline}' => $order->getPaymentDeadline()->format('d/m/Y'),
+                '{shop_phone}' => Configuration::get('PS_SHOP_PHONE'),
+                '{order_date}' => $date->format('d/m/Y')
             );
 
             if ($result['module_name']) {
