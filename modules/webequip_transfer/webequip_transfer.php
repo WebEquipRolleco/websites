@@ -762,7 +762,7 @@ class webequip_transfer extends Module {
 	/**
 	* Récupère les emails et la provenance des devis
 	**/
-	public function tansfer_FIX_QUOTATION() {
+	public function transfer_FIX_QUOTATION() {
 
 		$this->connectToDB();
 		$this->nb_rows = 0;
