@@ -778,7 +778,7 @@ class webequip_transfer extends Module {
 			$quotation = new Quotation($row['id_activis_devis']);
 			if(!$quotation->id) continue;
 
-			if($row['email']) $quotation->email = $row['email'];
+			if($row['email']) $quotation->email = utf8_encode($row['email']);
 			if($row['customer_origin'] and isset($origins[$row['customer_origin']])) $quotation->origin = $origins[$row['customer_origin']];
 
 			$quotation->save();
