@@ -102,6 +102,7 @@ class webequip_transfer extends Module {
 		$data['FIX_HISTORY'] = array('name'=>"[FIX] Dates des historique des états", 'preview'=>false);
 		$data['ps_order_payment'] = array('name'=>"Commandes : liste des paiements", 'preview'=>false);
 		$data['ps_activis_devis'] = array('name'=>"Devis", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.Quotation::TABLE_NAME);
+		$data['ps_FIX_QUOTATION'] = array('name'=>"[FIX] Provenance devis et email client", 'preview'=>false);
 		$data['ps_activis_devis_line'] = array('name'=>"Devis : liste des produits", 'lang'=>false, 'shop'=>false, 'new_table'=>_DB_PREFIX_.QuotationLine::TABLE_NAME);
 		$data['FIX_MATCHING'] = array('name'=>"[FIX] Correction du matching", 'preview'=>false, 'updatable'=>false);
 		$data['FIX_QUOTATIONS'] = array('name'=>"[FIX] Correction des fournisseurs produits devis", 'preview'=>false, 'updatable'=>false);
@@ -753,6 +754,35 @@ class webequip_transfer extends Module {
 				$quotation->record($update);
 				$this->nb_rows++;
 			}
+		}
+
+		return $this->nb_rows;
+	}
+
+	/**
+	* Récupère les emails et la provenance des devis
+	**/
+	public function tansfer_FIX_QUOTATION() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$origins['telephone'] = Quotation::ORIGIN_PHONE;
+		$origins['mail'] = Quotation::ORIGIN_MAIL;
+		$origins['fax'] = Quotation::ORIGIN_FAX;
+		$origins['autres'] = Quotation::ORIGIN_OTHERS;
+
+		$result = $this->old_db->query("SELECT id_activis_devis, email, customer_origin FROM ps_activis_devis ORDER BY id_activis_devis DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$quotation = new Quotation($row['id_activis_devis']);
+			if(!$quotation->id) continue;
+
+			if($row['email']) $quotation->email = $row['email'];
+			if($row['customer_origin'] and isset($origins[$row['customer_origin']])) $quotation->origin = $origins[$row['customer_origin']];
+
+			$quotation->save();
+			$this->nb_rows++;
 		}
 
 		return $this->nb_rows;
