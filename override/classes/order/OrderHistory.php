@@ -76,9 +76,9 @@ class OrderHistory extends OrderHistoryCore {
                 '{id_order}' => (int)$this->id_order,
                 '{order_name}' => $order->getUniqReference(),
                 '{order_reference}' => $order->reference,
-                '{deadline}' => $order->getPaymentDeadline()->format('d/m/Y'),
+                '{deadline}' => $order->getPaymentDeadline() ? $order->getPaymentDeadline()->format('d/m/Y') : '',
                 '{shop_phone}' => Configuration::get('PS_SHOP_PHONE'),
-                '{order_date}' => $date->format('d/m/Y')
+                '{order_date}' => $date ? $date->format('d/m/Y') : ''
             );
 
             if ($result['module_name']) {
