@@ -360,15 +360,15 @@ class AdminQuotationsController extends AdminController {
             $data['{link}'] = $quotation->getLink();
             $data['{reference}'] = $quotation->reference;
             $data['{message}'] = str_replace("\r\n", "<br />", Tools::getValue('content'));
-            $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop);
-            $data['{shop_email}'] = Configuration::get('PS_SHOP_EMAIL', null, $quotation->id_shop);
-            $data['{shop_phone}'] = Configuration::get('PS_SHOP_PHONE', null, $quotation->id_shop);
-            $data['{shop_fax}'] = Configuration::get('PS_SHOP_FAX', null, $quotation->id_shop);
+            $data['{shop_name}'] = Configuration::get('PS_SHOP_NAME');
+            $data['{shop_email}'] = Configuration::get('PS_SHOP_EMAIL');
+            $data['{shop_phone}'] = Configuration::get('PS_SHOP_PHONE');
+            $data['{shop_fax}'] = Configuration::get('PS_SHOP_FAX');
             $data['{shop_url}'] = ShopUrl::getMainShopDomain($quotation->id_shop);
 
             // Gestion des destinataires
             $emails = explode(',', Tools::getValue('emails'));
-            $emails[] = Configuration::get('PS_SHOP_EMAIL', null, $quotation->id_shop);
+            $emails[] = Configuration::get('PS_SHOP_EMAIL');
             
             // Gestion pièces jointes : PDF
             if(Tools::getValue('pdf')) {
@@ -388,7 +388,7 @@ class AdminQuotationsController extends AdminController {
                 
             // Envoi des e-mails
             foreach($emails as $email)
-                Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $quotation->id_shop), $attachments);
+                Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME'), $attachments);
 
             $quotation->mail_sent = true;
             $quotation->save();
