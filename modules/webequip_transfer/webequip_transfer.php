@@ -111,7 +111,8 @@ class webequip_transfer extends Module {
 		$data['FIX_DATE_CUSTOMERS'] = array('name'=>"[UPDATE] Récupère les dates des clients", 'preview'=>false);
 		$data['ps_oa'] = array('name'=>"[UPDATE] Récupère des OA", 'preview'=>false);
 		$data['FIX_FACTURATION'] = array('name'=>"[UPDATE] Information de facturation", 'preview'=>false);
-		
+		$data['ps_cart'] = array('name'=>"Cart : Récupération des paniers", 'preview'=>false);
+		$data['ps_cart_line'] = array('name'=>"Cart : Récupération des produits", 'preview'=>false);
 		return $data;
 	}
 
@@ -235,6 +236,49 @@ class webequip_transfer extends Module {
 	**/
 	private function getMax($key, $table) {
 		return Db::getInstance()->getValue("SELECT MAX($key) FROM $table");
+	}
+
+	public function transfer_ps_cart() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$result = $this->old_db->query("SELECT * FROM ps_cart ORDER BY id_cart DESC");
+		while($row = $result->fetch_assoc()) {
+
+			$cart = new Cart($row['id_cart']);
+			if($cart->id) continue;
+
+			$cart->id_shop_group = 1;
+		    $cart->id_shop = 1;
+		    $cart->id_address_delivery = $row['id_address_delivery'];
+		    $cart->id_address_invoice = $row['id_address_invoice'];
+		    $cart->id_currency = $row['id_currency'];
+		    $cart->id_customer = $row['id_customer'];
+		    $cart->id_guest = $row['id_guest'];
+		    $cart->id_lang = 1;
+		    $cart->date_add = $row['date_add'];;
+		    $cart->secure_key = $row['secure_key'];;
+		    $cart->id_carrier = 0;
+		    $cart->date_upd = $row['date_upd'];;
+
+			$cart->save();
+			$this->nb_rows++;
+		}
+
+		return $this->nb_rows;
+	}
+
+	public function transfer_ps_cart_line() {
+
+		$this->connectToDB();
+		$this->nb_rows = 0;
+
+		$result = $this->old_db->query("SELECT * FROM ps_cart_product ORDER BY id_cart DESC");
+		while($row = $result->fetch_assoc()) {
+
+			@Db::getInstance()->execute("INSERT IGNORE INTO ps_cart_product VALUES(".$row['id_cart'].", ".$row['id_product'].", ".$row['id_address_delivery'].", 1, ".$row['id_product_attribute'].", 0, ".$row['quantity'].", '".$row['date_add']."')");
+		}
 	}
 
 	/**
