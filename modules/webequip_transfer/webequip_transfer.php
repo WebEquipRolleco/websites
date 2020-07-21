@@ -91,7 +91,7 @@ class webequip_transfer extends Module {
 	private function getTransferList() {
 		
 		$data['ps_address'] = array('name'=>"Adresses", 'lang'=>false, 'shop'=>false);
-		$data['FIX_ps_address'] = array('name'=>"[FIX] Téléphones des adresses");
+		$data['FIX_ps_address'] = array('name'=>"[FIX] Téléphones des adresses", 'preview'=>false);
 		$data['ps_customer'] = array('name'=>"Comptes : clients", 'lang'=>false, 'shop'=>false);
 		$data['ps_employee'] = array('name'=>"Comptes : administration", 'lang'=>false, 'shop'=>false);
 		$data['ps_orders'] = array('name'=>"Commandes", 'lang'=>false, 'shop'=>false);
