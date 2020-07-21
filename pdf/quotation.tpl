@@ -132,7 +132,7 @@
 					</tr>
 					<tr class="bg-light">
 						<td class="text-right">{l s='Total HT :' d='Shop.Pdf' pdf=true}</td>
-						<td class="text-right">{Tools::displayPrice($quotation->getPrice(false, true))}</td>
+						<td class="text-right">{Tools::displayPrice($quotation->getPrice())}</td>
 					</tr>
 					<tr class="bg-light">
 						<td class="text-right">{l s='Total TVA :' d='Shop.Pdf' pdf=true}</td>
