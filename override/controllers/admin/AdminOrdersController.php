@@ -584,12 +584,30 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
 
         // update new fileds
+        if (Tools::getValue('day') != $order_detail->day or Tools::getValue('week') != $order_detail->week)
+            $sendEmail = true;
+
         $order_detail->day = Tools::getValue('day');
         $order_detail->week = Tools::getValue('week');
         $order_detail->comment = Tools::getValue('comment');
         $order_detail->notification_sent = Tools::getValue('notification_sent');
         $order_detail->prevent_notification = Tools::getValue('prevent_notification');
         $order_detail->save();
+
+        $link = new Link();
+        if ($sendEmail){
+            $tabArgs["{firstname}"] = $order_detail->getOrder()->getCustomer()->firstname;
+            $tabArgs["{lastname}"] =  $order_detail->getOrder()->getCustomer()->lastname;
+            $tabArgs["{order_name}"] =  $order_detail->getOrder()->reference;
+            $tabArgs["{send_date}"] = ($order_detail->day ? "le " .  $order_detail->day
+                : "en semaine " . $order_detail->week);
+            $tabArgs["{history_url}"] = $link->getPageLink("history");
+            $tabArgs["{my_account_url}"] = $link->getPageLink("account");
+
+            Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
+                $tabArgs,  $order_detail->getOrder()->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
+                Configuration::get("PS_SHOP_NAME"));
+        }
 
         // Check fields validity
         $this->doEditProductValidation($order_detail, $this->getCurrentOrder(), isset($order_invoice) ? $order_invoice : null);

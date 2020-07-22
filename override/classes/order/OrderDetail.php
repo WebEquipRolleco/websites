@@ -36,6 +36,8 @@ class OrderDetail extends OrderDetailCore {
 	private $supplier;
     private $quotation_line;
 
+    private $order;
+
     /**
     * @see ObjectModel::$definition
     **/
@@ -377,6 +379,17 @@ class OrderDetail extends OrderDetailCore {
 
 		return $this->supplier;
 	}
+
+    /**
+     * Retourne la commande
+     **/
+    public function getOrder() {
+
+        if(!$this->order and $this->id_order)
+            $this->order = new Order($this->id_order);
+
+        return $this->order;
+    }
 
     /**
     * Retourne la ligne de devis concernée
