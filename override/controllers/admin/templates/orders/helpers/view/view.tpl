@@ -1082,7 +1082,8 @@
                   </th>
                   <th>
                     <span class="title_box ">{l s='Price per unit' d='Admin.Advparameters.Feature'}</span>
-                    <small class="text-muted">{$smarty.capture.TaxMethod}</small>
+                    <small class="text-muted">{l s="HT"}</small>
+ {*                   <small class="text-muted">{$smarty.capture.TaxMethod}</small> *}
                   </th>
                   <th class="text-center"><span class="title_box ">{l s='Qty' d='Admin.Orderscustomers.Feature'}</span></th>
                   {if $display_warehouse}<th><span class="title_box ">{l s='Warehouse'}</span></th>{/if}

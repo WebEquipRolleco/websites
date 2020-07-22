@@ -1,10 +1,10 @@
 {assign var="currencySymbolBeforeAmount" value=$currency->format[0] === '¤'}
 {* Assign product price *}
-{if ($order->getTaxCalculationMethod() == $smarty.const.PS_TAX_EXC)}
+{* {if ($order->getTaxCalculationMethod() == $smarty.const.PS_TAX_EXC)} *}
 	{assign var=product_price value=($product['unit_price_tax_excl'] + $product['ecotax'])}
-{else}
+{* {else}
 	{assign var=product_price value=$product['unit_price_tax_incl']}
-{/if}
+{/if} *}
 
 {if ($product['product_quantity'] > $product['customized_product_quantity'])}
 <tr class="product-line-row">
