@@ -46,3 +46,5 @@ administration/import/*
 modules/ps_imageslider/images/*
 modules/webequip_display/img/*
 modules/webequip_partners/img/*
+config/*
+.idea/*
