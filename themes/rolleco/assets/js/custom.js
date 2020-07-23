@@ -259,6 +259,7 @@ function loadQtyTouchSpin() {
 		buttondown_class:"btn btn-touchspin js-touchspin js-increase-product-quantity",
 		buttonup_class:"btn btn-touchspin js-touchspin js-decrease-product-quantity",
 		min: $(this).prop('min'),
+		max: 1e6,
 	});
 }
 
