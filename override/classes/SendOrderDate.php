@@ -45,7 +45,5 @@ class SendOrderDate extends ObjectModel
 
 
 
-/*            Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
-                $tabArgs,  $order_detail->getOrder()->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
-                Configuration::get("PS_SHOP_NAME"));*/
+
 }

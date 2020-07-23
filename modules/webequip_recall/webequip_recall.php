@@ -511,6 +511,7 @@ class Webequip_recall extends Module {
             $emails [$send_order_date -> getOrderDetail() -> getOrder() -> id][$send_order_date -> getOrderDetail() -> id] = $send_order_date -> getOrderDetail();
         }
 
+        $tabArgs = array();
         /* Boucle pour l'envoi des emails pour chaque commande  */
         foreach ($emails as $id => $tab) {
             $order = new Order($id);
@@ -526,6 +527,10 @@ class Webequip_recall extends Module {
             $tabArgs["{history_url}"] = $link->getPageLink("history");
             $tabArgs["{my_account_url}"] = $link->getPageLink("account");
             $tabArgs["{shop_phone}"] = Configuration::get("PS_SHOP_PHONE");
+
+            Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
+                $tabArgs,  $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
+                Configuration::get("PS_SHOP_NAME"));
         }
 
         /* Suppression des donnees envoyes par email */
