@@ -136,7 +136,7 @@
 					</tr>
 					<tr class="bg-light">
 						<td class="text-right">{l s='Total TVA :' d='Shop.Pdf' pdf=true}</td>
-						<td class="text-right">{Tools::displayPrice($quotation->getTVA())}</td>
+						<td class="text-right">{Tools::displayPrice($quotation->getPrice(true) - $quotation->getPrice())}</td>
 					</tr>
 					<tr>
 						<th colspan="2" class="text-center bold" style="font-size:8px;">
@@ -145,7 +145,7 @@
 					</tr>
 					<tr class="bg-light">
 						<td colspan="2" class="text-center bold" style="font-size:12px; color:{$quotation->getShop()->color}">
-							{Tools::displayPrice($quotation->getPrice(true, true, true))}
+							{Tools::displayPrice($quotation->getPrice(true))}
 						</td>
 					</tr>
 			</table>

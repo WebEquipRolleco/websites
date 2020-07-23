@@ -250,7 +250,7 @@ class Quotation extends ObjectModel {
     **/
     public function getTVA() {
         
-        $taxes = $this->getPrice(true, true) - $this->getPrice(false, true);
+        $taxes = $this->getPrice(true) - $this->getPrice();
         $taxes -= $this->getEcoTax();
 
         return $taxes;
