@@ -517,7 +517,7 @@ class Webequip_recall extends Module {
             $order = new Order($id);
             $tabArgs["{firstname}"] = $order->getCustomer()->firstname;
             $tabArgs["{lastname}"] =  $order->getCustomer()->lastname;
-            $tabArgs["{order_name}"] =  $order->reference;
+            $tabArgs["{order_reference}"] =  $order->reference;
 
             $tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/send_order_lines.tpl');
             $tpl->assign('send_orders', $tab);
