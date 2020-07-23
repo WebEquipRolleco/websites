@@ -19,6 +19,7 @@ class Webequip_recall extends Module {
 	const ACTION_INVOICE = "invoice";
 	const ACTION_SAV = "sav";
 	const ACTION_QUOTATION = "quotation";
+	const ACTION_SENDORDER = "send_order";
 
 	const LIST_DELIMITER = ',';
 	const ACTIONS_DELIMITER = '|';
@@ -153,6 +154,9 @@ class Webequip_recall extends Module {
 
 		if(in_array(self::ACTION_QUOTATION, $actions))
 			$this->checkQuotations();
+
+		if (in_array(self::ACTION_SENDORDER, $actions))
+		    $this->checkSendOrder();
 	}
 
 	public function getCronActions() {
@@ -491,6 +495,41 @@ class Webequip_recall extends Module {
 			}
 		}
 	}
+
+    /**
+     * Envoi les mails de changement de date de livraison
+     */
+    public function checkSendOrder() {
+
+        $date_search = DateTime::createFromFormat("Y-m-d H:i:s",date("Y-m-d H:i:s"));
+        $date_search-> modify("-15min");
+
+        /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande, l'id de la ligne et la ligne */
+        foreach(SendOrderDate::needToRecall($date_search) as $row) {
+            $send_order_date = new SendOrderDate($row['id']);
+            $emails [$send_order_date -> getOrderDetail() -> getOrder() -> id][$send_order_date -> getOrderDetail() -> id] = $send_order_date -> getOrderDetail();
+        }
+
+        /* Boucle pour l'envoi des emails pour chaque commande  */
+        foreach ($emails as $id => $tab) {
+            $order = new Order($id);
+            $tabArgs["{firstname}"] = $order->getCustomer()->firstname;
+            $tabArgs["{lastname}"] =  $order->getCustomer()->lastname;
+            $tabArgs["{order_name}"] =  $order->reference;
+
+            $tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/send_order_lines.tpl');
+            $tpl->assign('send_orders', $tab);
+            $tabArgs['{lines}'] = $tpl->fetch();
+
+            $link = new Link();
+            $tabArgs["{history_url}"] = $link->getPageLink("history");
+            $tabArgs["{my_account_url}"] = $link->getPageLink("account");
+            $tabArgs["{shop_phone}"] = Configuration::get("PS_SHOP_PHONE");
+        }
+
+        /* Suppression des donnees envoyes par email */
+        SendOrderDate::deleteToDate($date_search);
+    }
 
 	/**
 	* Retourne une liste de clients problématiques ayant effectué leur paiement hier

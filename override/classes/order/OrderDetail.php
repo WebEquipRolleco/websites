@@ -479,4 +479,8 @@ class OrderDetail extends OrderDetailCore {
         return (float)Db::getInstance()->getValue($sql);
 
     }
+
+    public function getDate() {
+        return ($this->day ? " le : " . $this->day : " en semaine : " .$this->week);
+    }
 }

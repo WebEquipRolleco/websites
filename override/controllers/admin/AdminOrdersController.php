@@ -596,17 +596,10 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         $link = new Link();
         if ($sendEmail){
-            $tabArgs["{firstname}"] = $order_detail->getOrder()->getCustomer()->firstname;
-            $tabArgs["{lastname}"] =  $order_detail->getOrder()->getCustomer()->lastname;
-            $tabArgs["{order_name}"] =  $order_detail->getOrder()->reference;
-            $tabArgs["{send_date}"] = ($order_detail->day ? "le " .  $order_detail->day
-                : "en semaine " . $order_detail->week);
-            $tabArgs["{history_url}"] = $link->getPageLink("history");
-            $tabArgs["{my_account_url}"] = $link->getPageLink("account");
-
-            Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
-                $tabArgs,  $order_detail->getOrder()->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
-                Configuration::get("PS_SHOP_NAME"));
+            $sendOrderDate = new SendOrderDate();
+            $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
+            $sendOrderDate -> date = date("Y-m-d H:i:s");
+            $sendOrderDate -> save();
         }
 
         // Check fields validity
