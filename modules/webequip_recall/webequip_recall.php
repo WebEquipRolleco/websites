@@ -504,6 +504,7 @@ class Webequip_recall extends Module {
         $date_search = DateTime::createFromFormat("Y-m-d H:i:s",date("Y-m-d H:i:s"));
         $date_search-> modify("-15min");
 
+        $emails = array();
         /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande, l'id de la ligne et la ligne */
         foreach(SendOrderDate::needToRecall($date_search) as $row) {
             $send_order_date = new SendOrderDate($row['id']);
