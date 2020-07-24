@@ -604,4 +604,45 @@ class Order extends OrderCore {
 		return (float)Db::getInstance()->getValue($sql);
 	}
 
+    /**
+     * Methode pour recuperer le status de paiement
+     *
+     * @return bool un boolean true si la commande a ete paye,
+     * false sinon
+     */
+	public function isPaid(){
+        foreach($this -> getStatusHistory() as $status){
+            if ($status["paid"])
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Methode pour recuperer la date de paiement
+     *
+     * @return string la date si la commande est paye, vide sinon
+     */
+    public function getDatePaid(){
+        if (!$this -> isPaid())
+            return "";
+
+        foreach($this -> getStatusHistory() as $status)
+            if ($status["paid"])
+                return $status[date_add] ;
+
+        return "";
+    }
+
+
+    /**
+     * Methode pour recuperer tous les status d'une commande
+     *
+     * @return la liste des status de la commande
+     * @throws PrestaShopDatabaseException
+     */
+    public function getStatusHistory(){
+	    return DB::getInstance()->executeS("select * from ps_order_history as oh inner join ps_order_state as os where id_order =" . $this->id . " and oh.id_order_state = os.id_order_state" );
+    }
+
 }
