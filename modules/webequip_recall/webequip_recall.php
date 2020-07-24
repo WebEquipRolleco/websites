@@ -528,9 +528,14 @@ class Webequip_recall extends Module {
             $tabArgs["{my_account_url}"] = $link->getPageLink("account");
             $tabArgs["{shop_phone}"] = Configuration::get("PS_SHOP_PHONE");
 
-            Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
-                $tabArgs,  $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
-                Configuration::get("PS_SHOP_NAME"));
+            $emails[] = $order->getCustomer()->email;
+            $emails[] = Configuration::get("PS_SHOP_EMAIL");
+
+            foreach ($emails as $email) {
+                Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
+                    $tabArgs, $email , null, Configuration::get("PS_SHOP_EMAIL"),
+                    Configuration::get("PS_SHOP_NAME"));
+            }
         }
 
         /* Suppression des donnees envoyes par email */
