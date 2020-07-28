@@ -258,7 +258,12 @@ function updateAmounts(data)
 			$('#total_products td.amount').fadeIn('slow');
 		});
 	});
-	// alert('Total produit' + order.total_products_wt);
+	$('#total_taxes_excl td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_discounts_tax_excl), function(value) {
+			$('#total_taxes_excl td.amount').html(value);
+			$('#total_taxes_excl td.amount').fadeIn('slow');
+		});
+	});
 	// $('#total_discounts td.amount').fadeOut('slow', function() {
 	// 	formatCurrencyCldr(parseFloat(order.total_discounts_tax_incl), function(value) {
 	// 		$('#total_discounts td.amount').html(value);
@@ -266,12 +271,6 @@ function updateAmounts(data)
 	// 	});
 	// });
 	// alert('Total ttc' + order.total_discounts_tax_incl);
-	// $('#total_taxes_excl td.amount').fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_discounts_tax_excl), function(value) {
-	// 		$('#total_taxes_excl td.amount').html(value);
-	// 		$('#total_taxes_excl td.amount').fadeIn('slow');
-	// 	});
-	// });
 	// alert('Total ht' + order.total_discounts_tax_excl);
 	// $('#total_taxes td.amount').fadeOut('slow', function() {
 	// 	formatCurrencyCldr(parseFloat(order.total_discounts_tax_incl - order.total_discounts_tax_excl), function(value) {
