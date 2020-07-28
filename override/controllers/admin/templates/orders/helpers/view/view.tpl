@@ -1258,7 +1258,7 @@
                         </p>
                       </td>
                     </tr>
-                    <tr id="total_taxes">
+                    <tr id="total_taxes_excl">
                       <td class="text-right"><b>{l s='Total HT' d='Admin.Global'}</b></td>
                       <td class="amount text-right nowrap" ><b>{displayPrice price=($order->total_paid_tax_excl) currency=$currency->id}</b></td>
                       <td class="partial_refund_fields current-edit" style="display:none;"></td>
@@ -1278,7 +1278,7 @@
                       </td>
                       <td class="partial_refund_fields current-edit" style="display:none;"></td>
                     </tr>
-                    <tr id="margin">
+                    <tr id="total_margin">
                       <td class="text-right" style="background-color:seashell"><strong>{l s="Marge" d="Admin.global"}</strong></td>
                       <td class="amount text-right nowrap" style="background-color:seashell">
                         {assign var=margin value=$order->total_paid_tax_incl - Order::sumBuyingPrice([$order->id], true)}

@@ -2679,12 +2679,15 @@ class AdminOrdersControllerCore extends AdminController
 
         $this->sendChangedNotification($order);
 
+        $margin = $order->total_paid_tax_incl - Order::sumBuyingPrice([$order->id], true);
         die(json_encode(array(
             'result' => $res,
             'order' => $order,
             'invoices' => $invoice_array,
             'documents_html' => $this->createTemplate('_documents.tpl')->fetch(),
-            'shipping_html' => $this->createTemplate('_shipping.tpl')->fetch()
+            'shipping_html' => $this->createTemplate('_shipping.tpl')->fetch(),
+            'margin_html' => round($margin,2) . " € | <strong>".
+                Tools::getMarginRate($margin, $order->total_paid_tax_incl)." % </strong>"
         )));
     }
 

@@ -436,7 +436,7 @@
 							</a>
 						</span>
 					</div>
-					<table class="table">
+					<table class="table table-striped">
 						<thead>
 							<th colspan="3" class="text-center"><b>{l s="Produit" d="Admin.Labels"}</b></th>
 							<th class="text-center"><b>{l s="PA" d="Admin.Labels"}</b></th>

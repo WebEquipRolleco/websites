@@ -249,8 +249,9 @@ function refreshProductLineView(element, view)
 	});
 }
 
-function updateAmounts(order)
+function updateAmounts(data)
 {
+	var order = data.order;
 	$('#total_products td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_products_wt), function(value) {
 			$('#total_products td.amount').html(value);
@@ -262,6 +263,18 @@ function updateAmounts(order)
 		formatCurrencyCldr(parseFloat(order.total_discounts_tax_incl), function(value) {
 			$('#total_discounts td.amount').html(value);
 			$('#total_discounts td.amount').fadeIn('slow');
+		});
+	});
+	$('#total_taxes_excl td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_discounts_tax_excl), function(value) {
+			$('#total_taxes_excl td.amount').html(value);
+			$('#total_taxes_excl td.amount').fadeIn('slow');
+		});
+	});
+	$('#total_taxes td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_discounts_tax_incl - order.total_discounts_tax_excl), function(value) {
+			$('#total_taxes td.amount').html(value);
+			$('#total_taxes td.amount').fadeIn('slow');
 		});
 	});
 	if (order.total_discounts_tax_incl > 0)
@@ -291,6 +304,10 @@ function updateAmounts(order)
 			$('.total_paid').html(value);
 			$('.total_paid').fadeIn('slow');
 		});
+	});
+	$('#total_margin').fadeOut('slow', function() {
+			$('#total_margin td.amount').html(data.margin_html);
+			$('#total_margin td.amount').fadeIn('slow');
 	});
 	$('.alert').slideDown('slow');
 	$('#product_number').fadeOut('slow', function() {
@@ -542,7 +559,7 @@ function init()
 							}
 							go = false;
 							addViewOrderDetailRow(data.view);
-							updateAmounts(data.order);
+							updateAmounts(data);
 							updateInvoice(data.invoices);
 							updateDocuments(data.documents_html);
 							updateShipping(data.shipping_html);
@@ -737,7 +754,7 @@ function init()
 					if (data.result)
 					{
 						refreshProductLineView(element, data.view);
-						updateAmounts(data.order);
+						updateAmounts(data);
 						updateInvoice(data.invoices);
 						updateDocuments(data.documents_html);
 						updateDiscountForm(data.discount_form_html);
@@ -812,7 +829,7 @@ function init()
 					tr_product.fadeOut('slow', function() {
 						$(this).remove();
 					});
-					updateAmounts(data.order);
+					updateAmounts(data);
 					updateInvoice(data.invoices);
 					updateDocuments(data.documents_html);
 					updateDiscountForm(data.discount_form_html);
