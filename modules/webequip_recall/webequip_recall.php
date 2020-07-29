@@ -500,8 +500,6 @@ class Webequip_recall extends Module {
      * Envoi les mails de changement de date de livraison
      */
     public function checkSendOrder() {
-        echo("hello");
-        die();
 
         $date_search = DateTime::createFromFormat("Y-m-d H:i:s",date("Y-m-d H:i:s"));
         $date_search-> modify("-1 minutes");

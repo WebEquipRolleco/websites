@@ -273,10 +273,6 @@ function updateAmounts(data)
 		});
 	});
 
-	$('#total_order td.total_order_title').fadeOut('slow', function() {
-			$('#total_order td.total_order_title').html("l s='Total TTC' d='Admin.Global'");
-			$('#total_order td.total_order_title').fadeIn('slow');
-	});
 	$('#total_order td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl - order.total_paid_tax_excl), function(value) {
 			$('#total_order td.amount').html(value);
@@ -284,57 +280,50 @@ function updateAmounts(data)
 		});
 	});
 
-	// $('#total_order td.amount').fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
-	// 		$('#total_order td.amount').html(value);
-	// 		$('#total_order td.amount').fadeIn('slow');
-	// 	});
-	// });
-
-	// if (order.total_discounts_tax_incl > 0)
-	// 	$('#total_discounts').slideDown('slow');
-	// $('#total_wrapping td.amount').fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_wrapping_tax_incl), function(value) {
-	// 		$('#total_wrapping td.amount').html(value);
-	// 		$('#total_wrapping td.amount').fadeIn('slow');
-	// 	});
-	// });
-	// $('#total_discounts td.amount').fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_discounts_tax_incl), function(value) {
-	// 		$('#total_discounts td.amount').html(value);
-	// 		$('#total_discounts td.amount').fadeIn('slow');
-	// 	});
-	// });
+	if (order.total_discounts_tax_incl > 0)
+		$('#total_discounts').slideDown('slow');
+	$('#total_wrapping td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_wrapping_tax_incl), function(value) {
+			$('#total_wrapping td.amount').html(value);
+			$('#total_wrapping td.amount').fadeIn('slow');
+		});
+	});
+	$('#total_discounts td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_discounts_tax_incl), function(value) {
+			$('#total_discounts td.amount').html(value);
+			$('#total_discounts td.amount').fadeIn('slow');
+		});
+	});
 
 
-	// if (order.total_wrapping_tax_incl > 0)
-	// 	$('#total_wrapping').slideDown('slow');
-	// $('#total_shipping td.amount').fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_shipping_tax_incl), function(value) {
-	// 		$('#total_shipping td.amount').html(value);
-	// 		$('#total_shipping td.amount').fadeIn('slow');
-	// 	});
-	// });
+	if (order.total_wrapping_tax_incl > 0)
+		$('#total_wrapping').slideDown('slow');
+	$('#total_shipping td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_shipping_tax_incl), function(value) {
+			$('#total_shipping td.amount').html(value);
+			$('#total_shipping td.amount').fadeIn('slow');
+		});
+	});
 
 
-	// $('.alert').slideDown('slow');
-	// $('#product_number').fadeOut('slow', function() {
-	// 	var old_quantity = parseInt($(this).html());
-	// 	$(this).html(old_quantity + 1);
-	// 	$(this).fadeIn('slow');
-	// });
-	// $('#shipping_table .weight').fadeOut('slow', function() {
-	// 	$(this).html(order.weight);
-	// 	$(this).fadeIn('slow');
-	// });
+	$('.alert').slideDown('slow');
+	$('#product_number').fadeOut('slow', function() {
+		var old_quantity = parseInt($(this).html());
+		$(this).html(old_quantity + 1);
+		$(this).fadeIn('slow');
+	});
+	$('#shipping_table .weight').fadeOut('slow', function() {
+		$(this).html(order.weight);
+		$(this).fadeIn('slow');
+	});
 
-	// var shippingCarrierPrice = $('#shipping_table .price_carrier_' + order.id_carrier + ' span');
-	// $(shippingCarrierPrice).fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_shipping_tax_incl), function(value) {
-	// 		$(shippingCarrierPrice).html(value);
-	// 		$(shippingCarrierPrice).fadeIn('slow');
-	// 	});
-	// });
+	var shippingCarrierPrice = $('#shipping_table .price_carrier_' + order.id_carrier + ' span');
+	$(shippingCarrierPrice).fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_shipping_tax_incl), function(value) {
+			$(shippingCarrierPrice).html(value);
+			$(shippingCarrierPrice).fadeIn('slow');
+		});
+	});
 }
 
 function closeAddProduct()

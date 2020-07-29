@@ -1274,7 +1274,7 @@
                     {*/if*}
                     {assign var=order_total_price value=$order->total_paid_tax_incl}
                     <tr id="total_order">
-                      <td class="total_order_title text-right"><b>{l s='Total TTC' d='Admin.Global'}</b></td>
+                      <td class="text-right"><b>{l s='Total TTC' d='Admin.Global'}</b></td>
                       <td class="amount text-right nowrap">
                         <b>{displayPrice price=$order_total_price currency=$currency->id}</b>
                       </td>
