@@ -1093,7 +1093,8 @@
                   {/if}
                   <th>
                     <span class="title_box ">{l s='Total' d='Admin.Global'}</span>
-                    <small class="text-muted">{$smarty.capture.TaxMethod}</small>
+                     <small class="text-muted">{l s="HT"}</small>
+                    {* <small class="text-muted">{$smarty.capture.TaxMethod}</small> *}
                   </th>
                   <th style="display: none;" class="add_product_fields"></th>
                   <th style="display: none;" class="edit_product_fields"></th>
