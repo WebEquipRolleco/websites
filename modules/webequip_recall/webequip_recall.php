@@ -531,7 +531,8 @@ class Webequip_recall extends Module {
             Mail::send(1,"date_expedition",$this->l("Information sur le statut de commande ") . $order->reference,
                 $tabArgs, $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
                 Configuration::get("PS_SHOP_NAME"), null, null, null, null, null,
-                Configuration::get("PS_SHOP_EMAIL"));
+                "thierry.gozdzicki@provost.fr");
+//            Configuration::get("PS_SHOP_EMAIL")
         }
 
         /* Suppression des donnees envoyes par email */
