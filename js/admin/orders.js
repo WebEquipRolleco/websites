@@ -258,23 +258,31 @@ function updateAmounts(data)
 			$('#total_products td.amount').fadeIn('slow');
 		});
 	});
+
 	$('#total_taxes_excl td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_paid_tax_excl), function(value) {
 			$('#total_taxes_excl td.amount').html(value);
 			$('#total_taxes_excl td.amount').fadeIn('slow');
 		});
 	});
+
 	$('#total_taxes td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl - order.total_paid_tax_excl), function(value) {
 			$('#total_taxes td.amount').html(value);
 			$('#total_taxes td.amount').fadeIn('slow');
 		});
 	});
-	$('#total_order').fadeOut('slow', function() {
+
+	$('#total_order td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
 			$('#total_order').html(value);
 			$('#total_order').fadeIn('slow');
 		});
+	});
+
+	$('#total_margin').fadeOut('slow', function() {
+		$('#total_margin td.amount').html(data.margin_html);
+		$('#total_margin td.amount').fadeIn('slow');
 	});
 	// if (order.total_discounts_tax_incl > 0)
 	// 	$('#total_discounts').slideDown('slow');
@@ -307,10 +315,6 @@ function updateAmounts(data)
 	// 	});
 	// });
 
-	// $('#total_margin').fadeOut('slow', function() {
-	// 		$('#total_margin td.amount').html(data.margin_html);
-	// 		$('#total_margin td.amount').fadeIn('slow');
-	// });
 	// $('.alert').slideDown('slow');
 	// $('#product_number').fadeOut('slow', function() {
 	// 	var old_quantity = parseInt($(this).html());
