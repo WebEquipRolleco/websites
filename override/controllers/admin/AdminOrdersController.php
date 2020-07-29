@@ -598,7 +598,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         if ($sendEmail){
             $sendOrderDate = new SendOrderDate();
             $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
-            $sendOrderDate -> date = date("Y-m-d H:i:s");
+            $sendOrderDate -> date = date("d-m-Y H:i:s");
             $sendOrderDate -> save();
         }
 
