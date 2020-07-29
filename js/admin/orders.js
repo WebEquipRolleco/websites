@@ -275,12 +275,12 @@ function updateAmounts(data)
 
 	$('#total_order td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
-			$('#total_order').html(value);
-			$('#total_order').fadeIn('slow');
+			$('#total_order td.amount').html(value);
+			$('#total_order td.amount').fadeIn('slow');
 		});
 	});
 
-	$('#total_margin').fadeOut('slow', function() {
+	$('#total_margin td.amount').fadeOut('slow', function() {
 		$('#total_margin td.amount').html(data.margin_html);
 		$('#total_margin td.amount').fadeIn('slow');
 	});
