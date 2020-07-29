@@ -502,7 +502,7 @@ class Webequip_recall extends Module {
     public function checkSendOrder() {
 
         $date_search = DateTime::createFromFormat("d-m-Y H:i:s",date("d-m-Y H:i:s"));
-        $date_search-> modify("-15 minutes");
+        $date_search-> modify("-1 minutes");
 
         $emails = array();
         /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande, l'id de la ligne et la ligne */
