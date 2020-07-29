@@ -185,6 +185,7 @@ class Mail extends MailCore {
         $message = \Swift_Message::newInstance();
         if (is_array($to) && isset($to)) {
             foreach ($to as $key => $addr) {
+                echo($addr);
                 $addr = trim($addr);
                 if (!Validate::isEmail($addr)) {
                     self::dieOrLog($die, 'Error: invalid e-mail address');
