@@ -273,18 +273,18 @@ function updateAmounts(data)
 		});
 	});
 
-	$('#total_order td.amount').fadeOut('slow', function() {
-		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
-			$('#total_order td.amount').html(value);
-			$('#total_order td.amount').fadeIn('slow');
-		});
-	});
 	// $('#total_order td.amount').fadeOut('slow', function() {
 	// 	formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
 	// 		$('#total_order td.amount').html(value);
 	// 		$('#total_order td.amount').fadeIn('slow');
 	// 	});
 	// });
+	$('#total_order td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
+			$('#total_order td.amount').html(value);
+			$('#total_order td.amount').fadeIn('slow');
+		});
+	});
 
 	// if (order.total_discounts_tax_incl > 0)
 	// 	$('#total_discounts').slideDown('slow');
