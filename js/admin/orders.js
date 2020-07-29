@@ -272,6 +272,12 @@ function updateAmounts(data)
 			$('#total_taxes td.amount').fadeIn('slow');
 		});
 	});
+	$('#total_order td.amount').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl - order.total_paid_tax_excl), function(value) {
+			$('#total_order td.amount').html(value);
+			$('#total_order td.amount').fadeIn('slow');
+		});
+	});
 
 	// $('#total_order td.amount').fadeOut('slow', function() {
 	// 	formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
@@ -279,12 +285,6 @@ function updateAmounts(data)
 	// 		$('#total_order td.amount').fadeIn('slow');
 	// 	});
 	// });
-	$('#total_order td.amount').fadeOut('slow', function() {
-		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
-			$('#total_order td.amount').html(value);
-			$('#total_order td.amount').fadeIn('slow');
-		});
-	});
 
 	// if (order.total_discounts_tax_incl > 0)
 	// 	$('#total_discounts').slideDown('slow');
@@ -323,13 +323,13 @@ function updateAmounts(data)
 	// 	$(this).fadeIn('slow');
 	// });
 
-	var shippingCarrierPrice = $('#shipping_table .price_carrier_' + order.id_carrier + ' span');
-	$(shippingCarrierPrice).fadeOut('slow', function() {
-		formatCurrencyCldr(parseFloat(order.total_shipping_tax_incl), function(value) {
-			$(shippingCarrierPrice).html(value);
-			$(shippingCarrierPrice).fadeIn('slow');
-		});
-	});
+	// var shippingCarrierPrice = $('#shipping_table .price_carrier_' + order.id_carrier + ' span');
+	// $(shippingCarrierPrice).fadeOut('slow', function() {
+	// 	formatCurrencyCldr(parseFloat(order.total_shipping_tax_incl), function(value) {
+	// 		$(shippingCarrierPrice).html(value);
+	// 		$(shippingCarrierPrice).fadeIn('slow');
+	// 	});
+	// });
 }
 
 function closeAddProduct()
