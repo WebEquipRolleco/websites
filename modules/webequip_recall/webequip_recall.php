@@ -527,6 +527,8 @@ class Webequip_recall extends Module {
             $tabArgs["{history_url}"] = $link->getPageLink("history");
             $tabArgs["{my_account_url}"] = $link->getPageLink("account");
             $tabArgs["{shop_phone}"] = Configuration::get("PS_SHOP_PHONE");
+            echo("hello");
+            die();
 
             Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
                 $tabArgs, $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
