@@ -528,8 +528,7 @@ class Webequip_recall extends Module {
             $tabArgs["{my_account_url}"] = $link->getPageLink("account");
             $tabArgs["{shop_phone}"] = Configuration::get("PS_SHOP_PHONE");
 
-
-            Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
+            Mail::send(1,"date_expedition",$this->l("Information sur le statut de commande ") . $order->reference,
                 $tabArgs, $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
                 Configuration::get("PS_SHOP_NAME"), null, null, null, null, null,
                 "thierry.gozdzicki@provost.fr");
