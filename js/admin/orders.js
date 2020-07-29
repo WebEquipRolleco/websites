@@ -272,6 +272,11 @@ function updateAmounts(data)
 			$('#total_taxes td.amount').fadeIn('slow');
 		});
 	});
+
+	$('#total_order td.total_order_title').fadeOut('slow', function() {
+			$('#total_order td.total_order_title').html("l s='Total TTC' d='Admin.Global'");
+			$('#total_order td.total_order_title').fadeIn('slow');
+	});
 	$('#total_order td.amount').fadeOut('slow', function() {
 		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl - order.total_paid_tax_excl), function(value) {
 			$('#total_order td.amount').html(value);
