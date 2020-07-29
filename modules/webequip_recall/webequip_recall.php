@@ -501,7 +501,7 @@ class Webequip_recall extends Module {
      */
     public function checkSendOrder() {
 
-        $date_search = DateTime::createFromFormat("Y-m-d H:i:s",date("Y-m-d H:i:s"));
+        $date_search = DateTime::createFromFormat("d-m-Y H:i:s",date("d-m-Y H:i:s"));
         $date_search-> modify("-15 minutes");
 
         $emails = array();
