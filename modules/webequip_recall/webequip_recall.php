@@ -502,7 +502,7 @@ class Webequip_recall extends Module {
     public function checkSendOrder() {
 
         $date_search = DateTime::createFromFormat("Y-m-d H:i:s",date("Y-m-d H:i:s"));
-        $date_search-> modify("-15 minutes");
+        $date_search-> modify("-1 minutes");
 
         $emails = array();
         /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande, l'id de la ligne et la ligne */
@@ -531,7 +531,8 @@ class Webequip_recall extends Module {
             Mail::send(1,"date_expedition",$this->l("En cours de livraison"),
                 $tabArgs, $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
                 Configuration::get("PS_SHOP_NAME"), null, null, null, null, null,
-                Configuration::get("PS_SHOP_EMAIL"));
+                "thierry.gozdzicki@provost.fr");
+//            Configuration::get("PS_SHOP_EMAIL")
         }
 
         /* Suppression des donnees envoyes par email */
