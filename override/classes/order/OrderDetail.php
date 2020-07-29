@@ -481,6 +481,6 @@ class OrderDetail extends OrderDetailCore {
     }
 
     public function getDate() {
-        return ($this->day ? " le : " . $this->day : " en semaine : " .$this->week);
+        return ($this->day ? " le : " . DateTime::createFromFormat("d-m-Y H:i:s",$this->day) : " en semaine : " .$this->week);
     }
 }
