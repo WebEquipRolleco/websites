@@ -270,6 +270,12 @@ function updateAmounts(data)
 			$('#total_taxes td.amount').fadeIn('slow');
 		});
 	});
+	$('#total_order').fadeOut('slow', function() {
+		formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
+			$('#total_order').html(value);
+			$('#total_order').fadeIn('slow');
+		});
+	});
 	// if (order.total_discounts_tax_incl > 0)
 	// 	$('#total_discounts').slideDown('slow');
 	// $('#total_wrapping td.amount').fadeOut('slow', function() {
@@ -284,8 +290,6 @@ function updateAmounts(data)
 	// 		$('#total_discounts td.amount').fadeIn('slow');
 	// 	});
 	// });
-	// alert('Total ttc' + order.total_discounts_tax_incl);
-	// alert('Total ht' + order.total_discounts_tax_excl);
 
 
 	// if (order.total_wrapping_tax_incl > 0)
@@ -302,12 +306,7 @@ function updateAmounts(data)
 	// 		$('#total_order td.amount').fadeIn('slow');
 	// 	});
 	// });
-	// $('.total_paid').fadeOut('slow', function() {
-	// 	formatCurrencyCldr(parseFloat(order.total_paid_tax_incl), function(value) {
-	// 		$('.total_paid').html(value);
-	// 		$('.total_paid').fadeIn('slow');
-	// 	});
-	// });
+
 	// $('#total_margin').fadeOut('slow', function() {
 	// 		$('#total_margin td.amount').html(data.margin_html);
 	// 		$('#total_margin td.amount').fadeIn('slow');

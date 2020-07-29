@@ -2619,10 +2619,10 @@ class AdminOrdersControllerCore extends AdminController
         // Update OrderInvoice of this OrderDetail
         if ($order_detail->id_order_invoice != 0) {
             $order_invoice = new OrderInvoice($order_detail->id_order_invoice);
-            $order_invoice->total_paid_tax_excl -= $order_detail->total_price_tax_excl;
-            $order_invoice->total_paid_tax_incl -= $order_detail->total_price_tax_incl;
             $order_invoice->total_products -= $order_detail->total_price_tax_excl;
             $order_invoice->total_products_wt -= $order_detail->total_price_tax_incl;
+            $order_invoice->total_paid_tax_excl -= $order_detail->total_price_tax_excl;
+            $order_invoice->total_paid_tax_incl -= $order_detail->total_price_tax_incl;
             $res &= $order_invoice->update();
         }
 
