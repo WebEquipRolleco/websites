@@ -501,37 +501,50 @@ class Webequip_recall extends Module {
      */
     public function checkSendOrder() {
 
+        /* Recuperation de la date du jour avec 15 minutes de moins */
         $date_search = DateTime::createFromFormat("d-m-Y H:i:s",date("d-m-Y H:i:s"));
         $date_search-> modify("-15 minutes");
 
+        /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande,
+        l'id de la ligne et la ligne */
         $emails = array();
-        /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande, l'id de la ligne et la ligne */
         foreach(SendOrderDate::needToRecall($date_search) as $row) {
             $send_order_date = new SendOrderDate($row['id']);
             $emails [$send_order_date -> getOrderDetail() -> getOrder() -> id][$send_order_date -> getOrderDetail() -> id] = $send_order_date -> getOrderDetail();
         }
 
-        $tabArgs = array();
         /* Boucle pour l'envoi des emails pour chaque commande  */
+        $tabArgs = array();
         foreach ($emails as $id => $tab) {
+
+            var_dump($tab);
+            die();
+            /* Recuperation de la commande et des informations client */
             $order = new Order($id);
             $tabArgs["{firstname}"] = $order->getCustomer()->firstname;
             $tabArgs["{lastname}"] =  $order->getCustomer()->lastname;
             $tabArgs["{order_reference}"] =  $order->reference;
 
+            /* Envoie des lignes de produits pour l'email */
             $tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/send_order_lines.tpl');
             $tpl->assign('send_orders', $tab);
             $tabArgs['{lines}'] = $tpl->fetch();
 
+            /* Recuperation des informations du shop pour l'email */
             $link = new Link();
             $tabArgs["{history_url}"] = $link->getPageLink("history");
             $tabArgs["{my_account_url}"] = $link->getPageLink("account");
             $tabArgs["{shop_phone}"] = Configuration::get("PS_SHOP_PHONE");
 
+            /* Envoi de l'email */
             Mail::send(1,"date_expedition",$this->l("Information sur le statut de commande ") . $order->reference,
                 $tabArgs, $order->getCustomer()->email, null, Configuration::get("PS_SHOP_EMAIL"),
                 Configuration::get("PS_SHOP_NAME"), null, null, null, null, null,
                 Configuration::get("PS_SHOP_EMAIL"));
+
+            /* Recuperation de la ligne */
+
+
         }
 
         /* Suppression des donnees envoyes par email */
