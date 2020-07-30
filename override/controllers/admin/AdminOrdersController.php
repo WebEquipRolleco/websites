@@ -583,10 +583,11 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $order_invoice = new OrderInvoice((int)Tools::getValue('product_invoice'));
         }
 
-        // update new fileds
+        // Verification de la mise a jour ou de la semaine d'expedition
         if (Tools::getValue('day') != $order_detail->day or Tools::getValue('week') != $order_detail->week)
             $sendEmail = true;
 
+        /* Mise en place des valeurs d'expedition */
         $order_detail->day = Tools::getValue('day');
         $order_detail->week = Tools::getValue('week');
         $order_detail->comment = Tools::getValue('comment');
@@ -594,9 +595,17 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $order_detail->prevent_notification = Tools::getValue('prevent_notification');
         $order_detail->save();
 
-        $link = new Link();
-        if ($sendEmail){
-            $sendOrderDate = new SendOrderDate();
+        /* Ajout dans la table d'envoi si modification de la date et pas de blocage de notification */
+        if ($sendEmail && $order_detail -> prevent_notification != "1"){
+
+            /* Mise a jour en cas d'existance dans la base de donnees */
+            if (SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail))
+                $sendOrderDate = new SendOrderDate(SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail) -> id);
+
+            /* Sauvegarde en cas d'absence dans la base de donnes */
+            else
+                $sendOrderDate = new SendOrderDate();
+
             $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
             $sendOrderDate -> date = date("d-m-Y H:i:s");
             $sendOrderDate -> save();

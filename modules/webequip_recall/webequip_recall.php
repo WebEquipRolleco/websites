@@ -503,7 +503,7 @@ class Webequip_recall extends Module {
 
         /* Recuperation de la date du jour avec 15 minutes de moins */
         $date_search = DateTime::createFromFormat("d-m-Y H:i:s",date("d-m-Y H:i:s"));
-        $date_search-> modify("-15 minutes");
+//        $date_search-> modify("-15 minutes");
 
         /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande,
         l'id de la ligne et la ligne */
@@ -517,8 +517,6 @@ class Webequip_recall extends Module {
         $tabArgs = array();
         foreach ($emails as $id => $tab) {
 
-            var_dump($tab);
-            die();
             /* Recuperation de la commande et des informations client */
             $order = new Order($id);
             $tabArgs["{firstname}"] = $order->getCustomer()->firstname;
@@ -542,9 +540,11 @@ class Webequip_recall extends Module {
                 Configuration::get("PS_SHOP_NAME"), null, null, null, null, null,
                 Configuration::get("PS_SHOP_EMAIL"));
 
-            /* Recuperation de la ligne */
-
-
+            /* Mise a jour du statut d'envoi de l'email */
+            foreach ($tab as $order_detail) {
+                $order_detail -> notification_send = "1";
+                $order_detail -> save();
+            }
         }
 
         /* Suppression des donnees envoyes par email */

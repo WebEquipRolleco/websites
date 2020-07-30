@@ -30,6 +30,10 @@ class SendOrderDate extends ObjectModel
         Db::getInstance() -> execute("delete from ps_send_order_date where date <= '" . $date_search -> format("Y-m-d H:i:s") ."'") ;
     }
 
+    public static function findByOrderDetailId($id) {
+        Db::getInstance() -> execute("select from ps_send_order_date where id_order_detail = '" . $id . "'");
+    }
+
     /**
      * Retourne la commande
      **/
