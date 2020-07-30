@@ -578,12 +578,13 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         // Return value
         $res = true;
 
+        /* Recuperation de la ligne de produit */
         $order_detail = new OrderDetail((int)Tools::getValue('product_id_order_detail'));
         if (Tools::isSubmit('product_invoice')) {
             $order_invoice = new OrderInvoice((int)Tools::getValue('product_invoice'));
         }
 
-        // Verification de la mise a jour ou de la semaine d'expedition
+        /* Verification de la mise a jour ou de la semaine d'expedition */
         if (Tools::getValue('day') != $order_detail->day or Tools::getValue('week') != $order_detail->week)
             $sendEmail = true;
 
@@ -599,16 +600,20 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         if ($sendEmail && $order_detail -> prevent_notification != "1"){
 
             /* Mise a jour en cas d'existance dans la base de donnees */
-            if (SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail))
+            if (SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail)) {
                 $sendOrderDate = new SendOrderDate(SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail) -> id);
+                $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
+                $sendOrderDate -> date = date("d-m-Y H:i:s");
+                $sendOrderDate -> update();
+            }
 
             /* Sauvegarde en cas d'absence dans la base de donnes */
-            else
+            else{
                 $sendOrderDate = new SendOrderDate();
-
-            $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
-            $sendOrderDate -> date = date("d-m-Y H:i:s");
-            $sendOrderDate -> save();
+                $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
+                $sendOrderDate -> date = date("d-m-Y H:i:s");
+                $sendOrderDate -> save();
+            }
         }
 
         // Check fields validity

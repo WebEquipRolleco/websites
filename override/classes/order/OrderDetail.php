@@ -112,7 +112,7 @@ class OrderDetail extends OrderDetailCore {
     **/
     protected function setProductTax(Order $order, $product) {
 
-        $this->ecotax = Tools::convertPrice(floatval($product['custom_ecotax']), intval($order->id_currency));
+        $this->ecotax = Tools::convertPriceToCurrency(floatval($product['custom_ecotax']), intval($order->id_currency));
 
         // Exclude VAT
         if(!Tax::excludeTaxeOption()) {

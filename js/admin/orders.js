@@ -636,6 +636,7 @@ function init()
 		addProductRefreshTotal();
 	});
 
+	/** Mise a jour des champs lors de la modification d'une ligne d'article **/
 	$('.edit_product_change_link').unbind('click').click(function(e) {
 		$('.add_product_fields, .standard_refund_fields, .order_action').hide();
 		$('.edit_product_fields').show();
@@ -661,6 +662,7 @@ function init()
 				if (data.result)
 				{
 					current_product = data;
+					console.log(current_product)
 
 					var element_list = $('.customized-' + element.parents('.product-line-row').find('.edit_product_id_order_detail').val());
 					if (!element_list.length)
@@ -700,6 +702,7 @@ function init()
 		e.preventDefault();
 	});
 
+	/** Mise a jour lors du clic sur le bouton annuler lors de la modification d'une ligne d'article **/
 	$('.cancel_product_change_link').unbind('click').click(function(e)
 	{
 		current_product = null;
@@ -723,21 +726,24 @@ function init()
 		e.preventDefault();
 	});
 
+	/** Mise a jour lors du clic sur le bouton mise a jour lors de la modification d'une ligne d'article **/
 	$('button.submitProductChange').unbind('click').click(function(e) {
 		e.preventDefault();
 
-		if ($(this).closest('tr.product-line-row').find('td .edit_product_quantity').val() <= 0)
-		{
+		/* Condition en cas de produit sans quantite */
+		if ($(this).closest('tr.product-line-row').find('td .edit_product_quantity').val() <= 0) {
 			jAlert(txt_add_product_no_product_quantity);
 			return false;
 		}
-		if ($(this).closest('tr.product-line-row').find('td .edit_product_price').val() <= 0)
-		{
+
+		/* Condition en cas de produit sans prix */
+		if ($(this).closest('tr.product-line-row').find('td .edit_product_price').val() <= 0) {
 			jAlert(txt_add_product_no_product_price);
 			return false;
 		}
-		if (confirm(txt_confirm))
-		{
+
+		/* Condition en cas de confirmation utilisateur */
+		if (confirm(txt_confirm)) {
 			var element = $(this);
 			var element_list = $('.customized-' + $(this).parent().parent().find('.edit_product_id_order_detail').val());
 			query = 'ajax=1&token='+token+'&action=editProductOnOrder&id_order='+id_order+'&';
@@ -754,8 +760,7 @@ function init()
 				data : query,
 				success : function(data)
 				{
-					if (data.result)
-					{
+					if (data.result) {
 						refreshProductLineView(element, data.view);
 						updateAmounts(data);
 						updateInvoice(data.invoices);
