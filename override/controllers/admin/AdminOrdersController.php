@@ -599,21 +599,16 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         /* Ajout dans la table d'envoi si modification de la date et pas de blocage de notification */
         if ($sendEmail && $order_detail -> prevent_notification != "1"){
 
-            /* Mise a jour en cas d'existance dans la base de donnees */
+            /* Suppression de l'ancienne version si il y en a une */
             if (SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail)) {
-                $sendOrderDate = new SendOrderDate(SendOrderDate::findByOrderDetailId($order_detail -> id_order_detail) -> id);
-                $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
-                $sendOrderDate -> date = date("d-m-Y H:i:s");
-                $sendOrderDate -> update();
+                SendOrderDate::deleteToIdOrderDetail($order_detail -> id_order_detail);
             }
 
             /* Sauvegarde en cas d'absence dans la base de donnes */
-            else{
-                $sendOrderDate = new SendOrderDate();
-                $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
-                $sendOrderDate -> date = date("d-m-Y H:i:s");
-                $sendOrderDate -> save();
-            }
+            $sendOrderDate = new SendOrderDate();
+            $sendOrderDate -> id_order_detail = $order_detail -> id_order_detail;
+            $sendOrderDate -> date = date("Y-m-d H:i:s");
+            $sendOrderDate -> save();
         }
 
         // Check fields validity

@@ -662,7 +662,6 @@ function init()
 				if (data.result)
 				{
 					current_product = data;
-					console.log(current_product)
 
 					var element_list = $('.customized-' + element.parents('.product-line-row').find('.edit_product_id_order_detail').val());
 					if (!element_list.length)

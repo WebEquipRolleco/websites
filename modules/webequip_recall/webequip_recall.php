@@ -502,8 +502,8 @@ class Webequip_recall extends Module {
     public function checkSendOrder() {
 
         /* Recuperation de la date du jour avec 15 minutes de moins */
-        $date_search = DateTime::createFromFormat("d-m-Y H:i:s",date("d-m-Y H:i:s"));
-//        $date_search-> modify("-15 minutes");
+        $date_search = DateTime::createFromFormat("Y-m-d H:i:s",date("Y-m-d H:i:s"));
+        $date_search-> modify("-15 minutes");
 
         /* Boucle pour la creation d'un tableau a deux dimensions contenant l'id de la commande,
         l'id de la ligne et la ligne */
@@ -542,7 +542,7 @@ class Webequip_recall extends Module {
 
             /* Mise a jour du statut d'envoi de l'email */
             foreach ($tab as $order_detail) {
-                $order_detail -> notification_send = "1";
+                $order_detail -> notification_sent = "1";
                 $order_detail -> save();
             }
         }
