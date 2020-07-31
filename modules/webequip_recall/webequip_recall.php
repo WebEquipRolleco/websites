@@ -519,6 +519,8 @@ class Webequip_recall extends Module {
 
             /* Recuperation de la commande et des informations client */
             $order = new Order($id);
+            if (!$order -> id)
+                continue;
             $tabArgs["{firstname}"] = $order->getCustomer()->firstname;
             $tabArgs["{lastname}"] =  $order->getCustomer()->lastname;
             $tabArgs["{order_reference}"] =  $order->reference;
