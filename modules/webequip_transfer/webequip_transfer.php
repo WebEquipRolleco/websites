@@ -668,8 +668,8 @@ class webequip_transfer extends Module {
 		if($min_id) $id = $min_id;
 		else $id = $this->getMax('id_order_history', 'ps_order_history');
 
-		$sql = "SELECT * FROM ps_order_history";
-		if(isset($id) and $id) $sql .= " WHERE id_order_history > $id";
+		$sql = "SELECT * FROM ps_order_history order by id_order_history desc";
+		//if(isset($id) and $id) $sql .= " WHERE id_order_history > $id";
 
 		$result = $this->old_db->query($sql);
 		while($row = $result->fetch_assoc()) {
@@ -682,7 +682,7 @@ class webequip_transfer extends Module {
 		    $history->id_order_state = $row['id_order_state'];
 		    $history->id_employee = $row['id_employee'];
 		    $history->date_add = $row['date_add'];
-		    $history->date_upd = date('Y-m-d H:i:s');
+		    $history->date_upd = $row['date_add'];
 
 		    $history->record($update);
 		    $this->nb_rows++;
