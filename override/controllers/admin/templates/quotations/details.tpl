@@ -480,7 +480,7 @@
 			      			<div class="col-lg-12">
 			      				<div class="form-group">
 			      					<select class="form-control select2" name="product_infos">
-			      						<option value="49014">{l s="Produit libre"}</option>
+			      						<option value="49018">{l s="Produit libre"}</option>
 			      						{foreach $products as $product}
 			      							<option value="{$product.id_product}_{$product.id_product_attribute}">
 			      								{if $product.reference_attribute}
