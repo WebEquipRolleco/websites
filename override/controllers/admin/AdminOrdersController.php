@@ -580,6 +580,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         /* Recuperation de la ligne de produit */
         $order_detail = new OrderDetail((int)Tools::getValue('product_id_order_detail'));
+        $order = new Order($order_detail->id_order);
         if (Tools::isSubmit('product_invoice')) {
             $order_invoice = new OrderInvoice((int)Tools::getValue('product_invoice'));
         }
@@ -677,7 +678,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             }
 
             // Apply changes on Order
-            $order = new Order($order_detail->id_order);
+
             $order->total_products += $diff_price_tax_excl;
             $order->total_products_wt += $diff_price_tax_incl;
 

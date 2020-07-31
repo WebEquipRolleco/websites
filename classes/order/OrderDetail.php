@@ -420,12 +420,13 @@ class OrderDetailCore extends ObjectModel
 
     public function updateTaxAmount($order)
     {
-        $this->setContext((int)$this->id_shop);
-        $address = new Address((int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
-        $tax_manager = TaxManagerFactory::getManager($address, (int)Product::getIdTaxRulesGroupByIdProduct((int)$this->product_id, $this->context));
-        $this->tax_calculator = $tax_manager->getTaxCalculator();
-
-        return $this->saveTaxCalculator($order, true);
+        if ($order){
+            $this->setContext((int)$this->id_shop);
+            $address = new Address((int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
+            $tax_manager = TaxManagerFactory::getManager($address, (int)Product::getIdTaxRulesGroupByIdProduct((int)$this->product_id, $this->context));
+            $this->tax_calculator = $tax_manager->getTaxCalculator();
+            return $this->saveTaxCalculator($order, true);
+        }
     }
 
     /**
