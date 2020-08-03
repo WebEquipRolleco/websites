@@ -178,7 +178,7 @@ class QuotationLine extends ObjectModel {
 	**/
 	public function getSupplier() {
 
-		if(!$this->supplier and $thsi->id_supplier)
+		if(!$this->supplier and $this->id_supplier)
 			$this->supplier = new Supplier($this->id_supplier);
 
 		return $this->supplier;
