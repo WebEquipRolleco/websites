@@ -238,7 +238,8 @@ class OrderDetail extends OrderDetailCore {
     protected function setDetailProductPrice(Order $order, Cart $cart, $product) {
 
         $this->setContext((int)$product['id_shop']);
-        $this->specificPrice = SpecificPrice::getSpecificPrice($product['id_product'], 1, 1, 8, 0, $product['cart_quantity'], $product['id_product_attribute']);        if($this->specificPrice) {
+        $this->specificPrice = SpecificPrice::getSpecificPrice($product['id_product'], 1, 1, 8, 0, $product['cart_quantity'], $product['id_product_attribute']);
+        if($this->specificPrice) {
             $this->purchase_supplier_price = $this->specificPrice['buying_price'];
             $this->delivery_fees = $this->specificPrice['delivery_fees'];
         }
@@ -339,6 +340,9 @@ class OrderDetail extends OrderDetailCore {
         $details->total_price_tax_incl = $details->unit_price_tax_incl * $details->product_quantity;
         $details->total_price_tax_excl = $details->unit_price_tax_excl * $details->product_quantity;
         $details->original_product_price = $price_ttc;
+
+        $details->delivery_fees = $line->buying_fees;
+        $details->purchase_supplier_price = $line->buying_price;
 
         $details->save();
     }
