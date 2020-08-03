@@ -197,7 +197,6 @@ class OrderDetail extends OrderDetailCore {
         $this->product_weight = $product['id_product_attribute'] ? (float)$product['weight_attribute'] : (float)$product['weight'];
         $this->id_product_supplier = $product['id_supplier'] ?? null;
         $this->id_warehouse = $id_warehouse;
-
         $this->purchase_supplier_price = isset($product['specific_prices']) ? $product['specific_prices']['buying_price'] : 0;
         $this->delivery_fees = isset($product['specific_prices']) ? $product['specific_prices']['delivery_fees'] : 0;
         $this->ecotax = $product['ecotax'];
@@ -239,8 +238,10 @@ class OrderDetail extends OrderDetailCore {
     protected function setDetailProductPrice(Order $order, Cart $cart, $product) {
 
         $this->setContext((int)$product['id_shop']);
-        Product::getPriceStatic((int)$product['id_product'], true, (int)$product['id_product_attribute'], 6, null, false, true, $product['cart_quantity'], false, (int)$order->id_customer, (int)$order->id_cart, (int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $specific_price, true, true, $this->context);
-        $this->specificPrice = $specific_price;
+        $this->specificPrice = SpecificPrice::getSpecificPrice($product['id_product'], 1, 1, 8, 0, $product['cart_quantity'], $product['id_product_attribute']);        if($this->specificPrice) {
+            $this->purchase_supplier_price = $this->specificPrice['buying_price'];
+            $this->delivery_fees = $this->specificPrice['delivery_fees'];
+        }
         $this->original_product_price = Product::getPriceStatic($product['id_product'], false, (int)$product['id_product_attribute'], 6, null, false, false, 1, false, null, null, null, $null, true, true, $this->context);
         $this->product_price = $this->original_product_price;
         $this->unit_price_tax_incl = (float)$product['price_wt'];
