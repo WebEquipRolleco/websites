@@ -12,15 +12,17 @@ $(document).ready(function() {
 });
 
 function checkTypeRequirements() {
-
     var element = $('#id_account_type option:selected');
     $('.cw').remove();
 
+    if (! element.value)
+        var type_company = $('#account_type').val();
+
     ['company', 'siret', 'tva', 'chorus'].forEach(function(name) {
-        if(element.data(name)) {
+        if(element.data(name) || type_company) {
         	$('#'+name+'_area').show();
 
-            if(element.data(name) == 2) {
+            if(element.data(name) == 2 || type_company == 2) {
                 $('#'+name+'_area').find('label').append("<em class='cw text-danger'>*</em>");
                 $('#'+name).prop('required', true);
             }

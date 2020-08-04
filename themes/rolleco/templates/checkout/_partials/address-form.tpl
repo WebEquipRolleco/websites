@@ -22,6 +22,7 @@
 
 {block name='form_fields' append}
   <input type="hidden" name="saveAddress" value="{$type}">
+  <input type="hidden" id="account_type" value="{Context::getContext() -> customer-> getType() -> company}">
   {*if $type === "delivery"}
     <div class="form-group row">
       <div class="col-md-9 col-md-offset-3">
