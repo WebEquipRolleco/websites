@@ -796,15 +796,15 @@
                     {dateFormat date=$message['date_add']} -
                   </span>
                   <h4 class="message-item-heading">
-                    {if ($message['elastname']|escape:'html':'UTF-8')}{$message['efirstname']|escape:'html':'UTF-8'}
-                      {$message['elastname']|escape:'html':'UTF-8'}{else}{$message['cfirstname']|escape:'html':'UTF-8'} {$message['clastname']|escape:'html':'UTF-8'}
+                    {if ($message['elastname'])}{$message['efirstname']}
+                      {$message['elastname']}{else}{$message['cfirstname']} {$message['clastname']}
                     {/if}
                     {if ($message['private'] == 1)}
                       <span class="badge badge-info">{l s='Private' d='Admin.Orderscustomers.Feature'}</span>
                     {/if}
                   </h4>
                   <p class="message-item-text">
-                    {$message['message']|escape:'html':'UTF-8'|nl2br}
+                    {$message['message']}
                   </p>
                 </div>
                 {*if ($message['is_new_for_me'])}
