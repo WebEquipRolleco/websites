@@ -242,6 +242,14 @@
 			</tr>
 			<tr>
 				<td colspan="7" style="text-align:right;">
+					<span style="font-size:8pt; font-weight:bold;">{l s="Remise" pdf='true'}</span>
+				</td>
+				<td style="text-align:center;">
+					{Tools::displayPrice($order-> total_discounts_tax_excl)}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" style="text-align:right;">
 					<span style="font-size:8pt; font-weight:bold;">{l s="Sous total HT" pdf='true'}</span>
 				</td>
 				<td style="text-align:center;">
