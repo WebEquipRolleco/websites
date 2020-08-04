@@ -228,8 +228,13 @@
 						</div>
 						<div class="col-lg-2 text-right">
 							<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#customer_modal">
-								<b>{l s="Change" d='Admin.Actions'}</b>
+								<span class="icon-search"></span>
 							</button>
+							{if $quotation->getCustomer()}
+								<a href="?tab=AdminCustomers&amp;id_customer={$quotation->getCustomer()->id}&amp;updatecustomer&amp;token={getAdminToken tab='AdminCustomers'}" class="btn btn-xs btn-info" title="{l s='Edit' d='Admin.Actions'}" target="_blank">
+									<i class="icon-edit"></i>
+								</a>
+							{/if}
 						</div>
 					</div>
 				</div>

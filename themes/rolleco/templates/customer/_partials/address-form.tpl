@@ -45,7 +45,7 @@
                 {/foreach}
                 <h3 class="section-title margin-top-sm">{l s="Contact"}</h3>
                 {foreach from=$formFields item="field"}
-                  {if $field.name|in_array:array('phone')}
+                  {if $field.name|in_array:array('phone', 'phone_mobile')}
                     {block name='form_field'}
                       {form_field field=$field}
                     {/block}

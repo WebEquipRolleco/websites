@@ -1,7 +1,7 @@
 {extends file='customer/_partials/address-form.tpl'}
 
 {block name='form_field'}
-  {if $field.name|in_array:["alias", "vat_number", "id_country"]}
+  {if $field.name|in_array:["vat_number", "id_country"]}
     {* we don't ask for alias here *}
   {elseif $field.name == 'phone'}
     {$field.required = true}
