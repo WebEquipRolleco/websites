@@ -197,7 +197,7 @@ class QuotationLine extends ObjectModel {
 	* @return float
 	**/
 	public function getMargin() {
-		return $this->selling_price - $this->getBuyingPrice();
+		return ($this->selling_price - $this->getBuyingPrice()) * $this -> quantity;
 	}
 
 	/**
@@ -205,7 +205,7 @@ class QuotationLine extends ObjectModel {
 	* @return float
 	**/
 	public function getMarginRate() {
-		return Tools::getMarginRate($this->getMargin(), $this->selling_price);
+		return Tools::getMarginRate($this->getMargin(), $this->selling_price * $this -> quantity);
 	}
 
 	/**

@@ -1178,10 +1178,10 @@
                       <tr>
                         <td>{$discount['name']}</td>
                         <td>
-                        {if $discount['value'] != 0.00}
+                        {if $discount['value_tax_excl'] != 0.00}
                           -
                         {/if}
-                        {displayPrice price=$discount['value'] currency=$currency->id}
+                        {displayPrice price=$discount['value_tax_excl'] currency=$currency->id}
                         </td>
                         {if $can_edit}
                         <td>
