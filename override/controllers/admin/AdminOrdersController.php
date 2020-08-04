@@ -346,6 +346,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $this->getCurrentOrder()->no_recall = Tools::getValue('no_recall');
             $this->getCurrentOrder()->display_with_taxes = Tools::getValue('display_with_taxes');
             $this->getCurrentOrder()->invoice_comment = Tools::getValue('invoice_comment');
+            $this->getCurrentOrder()->order_slip_number = Tools::getValue('order_slip_number');
             $this->getCurrentOrder()->save();
         }
         // Enregistrement des infomations complémentaires

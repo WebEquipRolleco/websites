@@ -34,6 +34,8 @@ class Order extends OrderCore {
 	/** @var bool display with taxes **/
 	public $display_with_taxes = true;
 
+	public $order_slip_number;
+
 	/** variables temporaires **/
 	private $payment_deadline = false;
 	private $state;
@@ -103,6 +105,7 @@ class Order extends OrderCore {
 			'exported' => 						array('type' => self::TYPE_INT),
             'date_add' =>                    array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
             'date_upd' =>                    array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
+            'order_slip_number' =>             array('type' => self::TYPE_STRING),
         ),
     );
 

@@ -7,6 +7,12 @@
     <div class="row">
       <div class="col-lg-5">
         <div class="form-group">
+          <label class="control-label col-lg-3">{l s="Numéro d'avoir"}</label>
+          <div class="col-lg-9">
+            <input type="text" class="form-control" name="order_slip_number" {if $order->order_slip_number}value="{$order->order_slip_number}"{/if}>
+          </div>
+        </div>
+        <div class="form-group">
           <label class="control-label col-lg-3">{l s="Date de facturation"}</label>
           <div class="col-lg-9">
             <input type="date" class="form-control" name="invoice_date" value="{$order->invoice_date|date_format:'Y-m-d'}">
