@@ -425,6 +425,7 @@ class PaymentModule extends PaymentModuleCore {
 
                     $product_var_tpl_list = array();
                     foreach ($order->product_list as $product) {
+
                         $price = Product::getPriceStatic((int)$product['id_product'], false, ($product['id_product_attribute'] ? (int)$product['id_product_attribute'] : null), 6, null, false, true, $product['cart_quantity'], false, (int)$order->id_customer, (int)$order->id_cart, (int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $specific_price, true, true, null, true, $product['id_customization']);
                         $price_wt = Product::getPriceStatic((int)$product['id_product'], true, ($product['id_product_attribute'] ? (int)$product['id_product_attribute'] : null), 2, null, false, true, $product['cart_quantity'], false, (int)$order->id_customer, (int)$order->id_cart, (int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')}, $specific_price, true, true, null, true, $product['id_customization']);
 
@@ -435,11 +436,15 @@ class PaymentModule extends PaymentModuleCore {
                             'reference' => $product['reference'],
                             'name' => $product['name'].(isset($product['attributes']) ? ' - '.$product['attributes'] : ''),
                             'price' => Tools::displayPrice($product_price * $product['quantity'], $this->context->currency, false),
+                            'price_ht' => Tools::displayPrice($price * $product['quantity'], $this->context->currency, false),
+                            'price_ttc' => Tools::displayPrice($price_wt * $product['quantity'], $this->context->currency, false),
                             'quantity' => $product['quantity'],
                             'customization' => array()
                         );
 
                         if (isset($product['price']) && $product['price']) {
+                            $product_var_tpl['unit_price_ht'] = Tools::displayPrice($price, $this->context->currency, false);
+                            $product_var_tpl['unit_price_ttc'] = Tools::displayPrice($price_wt, $this->context->currency, false);
                             $product_var_tpl['unit_price'] = Tools::displayPrice($product_price, $this->context->currency, false);
                             $product_var_tpl['unit_price_full'] = Tools::displayPrice($product_price, $this->context->currency, false)
                                 .' '.$product['unity'];

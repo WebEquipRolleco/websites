@@ -90,13 +90,13 @@
                 {hook h='displayProductPriceBlock' product=$product type="unit_price"}
               </td>
               <td class="text-center">
-                {$product.price}
+                {$product.price_ht}
               </td>
               <td class="text-center">
                 {$product.quantity}
               </td>
               <td class="text-center bold">
-                {$product.total}
+                  {Tools::displayPrice($product.total_price_tax_excl)}
               </td>
             </tr>
           {/foreach}
@@ -105,25 +105,27 @@
 
       <div class="row">
         <div class="col-xs-12 col-lg-6 offset-lg-6">
-          <table class="table combinations-table">
-            {foreach $subtotals as $subtotal}
-              {if $subtotal.type !== 'tax'}
+            <table class="table combinations-table">
                 <tr>
-                  <td class="font-weight-bold">{$subtotal.label}</td>
-                  <td class="font-weight-bold">{$subtotal.value}</td>
+                    <td class="font-weight-bold">{l s="Total HT"}</td>
+                    <td class="font-weight-bold">{$totals.total_ht.value}</td>
                 </tr>
-              {/if}
-            {/foreach}
-            {if $subtotals.tax.label !== null}
-              <tr class="sub">
-                <td>{$subtotals.tax.label}</td>
-                <td>{$subtotals.tax.value}</td>
+                {foreach $subtotals as $subtotal}
+
+                    {if $subtotal.type == 'products'}
+                    {elseif $subtotal.type !== 'tax'}
+                      <tr>
+                          <td class="font-weight-bold">{$subtotal.label}</td>
+                          <td class="font-weight-bold">{$subtotal.value}</td>
+                        </tr>
+                    {/if}
+                {/foreach}
+              {if $subtotals.tax.label !== null}
+                <tr class="sub">
+                <td class="font-weight-bold">{$subtotals.tax.label}</td>
+                <td class="font-weight-bold">{$subtotals.tax.value}</td>
               </tr>
             {/if}
-            <tr>
-              <td class="font-weight-bold">{l s="Total HT"}</td>
-              <td class="font-weight-bold">{$totals.total.value}</td>
-            </tr>
             <tr class="cart-total font-weight-bold">
               <td class="bg-blue text-uppercase">{l s="Total TTC"}</td>
               <td class="bg-blue">{$totals.total_paid.value}</td>
@@ -131,9 +133,6 @@
           </table>
         </div>
       </div>
-
-      
     {/block}
-
   </div>
 </div>

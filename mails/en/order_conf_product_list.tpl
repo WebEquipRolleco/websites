@@ -64,7 +64,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						{$product['unit_price']}
+						{$product['unit_price_ht']}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -90,7 +90,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						{$product['price']}
+						{$product['price_ht']}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>

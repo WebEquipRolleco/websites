@@ -159,6 +159,7 @@ class OrderPresenter implements PresenterInterface
             $productPrice = $includeTaxes ? 'product_price_wt' : 'product_price';
             $totalPrice = $includeTaxes ? 'total_wt' : 'total_price';
             $orderProduct['price'] = $this->priceFormatter->format($orderProduct[$productPrice], Currency::getCurrencyInstance((int)$order->id_currency));
+            $orderProduct['price_ht'] = $this->priceFormatter->format($orderProduct['product_price'], Currency::getCurrencyInstance((int)$order->id_currency));
             $orderProduct['total'] = $this->priceFormatter->format($orderProduct[$totalPrice], Currency::getCurrencyInstance((int)$order->id_currency));
 
             if ($orderPaid && $orderProduct['is_virtual']) {
@@ -235,9 +236,9 @@ class OrderPresenter implements PresenterInterface
         $tax = $order->total_paid_tax_incl - $order->total_paid_tax_excl;
         $subtotals['tax'] = array(
             'type' => 'tax',
-            'label' => null,
-            'amount' => null,
-            'value' => '',
+            'label' => $this->translator->trans('Tva', array(), 'Shop.Theme.Checkout'),
+            'amount' => $tax,
+            'value' => $this->priceFormatter->format($tax, Currency::getCurrencyInstance((int)$order->id_currency)),
         );
         if ((float) $tax && Configuration::get('PS_TAX_DISPLAY')) {
             $subtotals['tax'] = array(
@@ -283,6 +284,12 @@ class OrderPresenter implements PresenterInterface
             'label' => $this->translator->trans('Total', array(), 'Shop.Theme.Checkout'),
             'amount' => $amount,
             'value' => $this->priceFormatter->format($amount, Currency::getCurrencyInstance((int)$order->id_currency)),
+        );
+        $amounts['totals']['total_ht'] = array(
+            'type' => 'total_ht',
+            'label' => $this->translator->trans('Total', array(), 'Shop.Theme.Checkout'),
+            'amount' => $order->total_paid_tax_excl,
+            'value' => $this->priceFormatter->format($order->total_paid_tax_excl, Currency::getCurrencyInstance((int)$order->id_currency)),
         );
 
         $amounts['totals']['total_paid'] = array(
