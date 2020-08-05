@@ -68,9 +68,9 @@ class ExportOrders extends Export {
                 $data[] = $detail->product_id ? $this->findFamily($detail->product_id) : '-';
                 $data[] = $detail->getSupplier() ? $detail->getSupplier()->reference." - ".$detail->getSupplier()->name : '-';
                 $data[] = $order->getShop()->name;
-                $data[] = $order->product_supplier_reference;
-                $data[] = $detail->product_name;
-                $data[] = $detail->product_quantity;
+                $data[] = $this->clean($order->product_supplier_reference);
+                $data[] = $this->clean($detail->product_name);
+                $data[] = $this->clean($detail->product_quantity);
                 $data[] = round($detail->total_price_tax_excl, 2);
                 $data[] = round($buying_price, 2);
                 $data[] = round($margin, 2);
@@ -99,6 +99,12 @@ class ExportOrders extends Export {
     **/
     private function findFamily($id_product) {
         return Db::getInstance()->getValue("SELECT cl.name FROM ps_product p, ps_category_lang cl WHERE p.id_category_default = cl.id_category AND p.id_product = $id_product");
+    }
+
+    function clean($string) {
+        $string=str_replace("\r\n","",$string); // Removes special chars.
+
+        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
     }
     
 }
