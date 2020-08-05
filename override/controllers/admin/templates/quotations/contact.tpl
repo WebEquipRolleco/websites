@@ -18,7 +18,7 @@
 		      					<em class="text-muted">{l s="Emails séparés par un virgule sans espaces" d='Admin.Labels'}</em>
 		      				</div>
 		      			</div>
-		      			<input type="email" id="email" class="form-control" name="emails" value="{$quotation->getEmails()|implode:','}">
+		      			<input type="text" id="email" class="form-control" name="emails" value="{$quotation->getEmails()|implode:','}">
 		      			<div class="text-right"><em>{l s="E-mail également envoyé vers : %s" sprintf=[Configuration::get('PS_SHOP_EMAIL', null, $quotation->id_shop)] d='Admin.Labels'}</em></div>
 		      		</div>
 		      		<div class="form-group">
