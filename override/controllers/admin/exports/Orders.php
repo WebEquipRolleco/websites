@@ -30,6 +30,7 @@ class ExportOrders extends Export {
         $header[] = "Type";
         $header[] = "Mode de paiement";
         $header[] = "Avec SAV";
+        $header[] = "Status de commande";
 
         return $header;
     }
@@ -84,6 +85,7 @@ class ExportOrders extends Export {
                 $data[] = $order->getCustomer()->getType() ? $order->getCustomer()->getType()->name : '-';
                 $data[] = $order->payment;
                 $data[] = AfterSale::hasAfterSales($order->id) ? "oui" : "non";
+                $data[] = $order->getState()->name;
 
                 $csv .= implode($this->separator, $data).parent::END_OF_LINE;
                 $new_order = false;

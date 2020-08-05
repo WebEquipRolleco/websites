@@ -466,6 +466,14 @@ class AdminQuotationsController extends AdminController {
 
                 $products = $quotation->getProducts();
                 $quotation->id = null;
+                $quotation->reference = null;
+                $quotation->status = null;
+                $quotation->date_begin = date("Y-m-d");
+                $quotation->date_add = date("Y-m-d");
+                $quotation->date_end = (new DateTime())->add(new DateInterval('P30D'))->format("Y-m-d");
+                $quotation->date_recall = null;
+                $quotation->status = Quotation::STATUS_WAITING;
+                $quotation->id_employee = $this->context->cookie->id_employee;
                 $quotation->generateReference(true);
                 $quotation->save();
 
