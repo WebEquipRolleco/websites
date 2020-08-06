@@ -750,8 +750,6 @@ class PaymentModule extends PaymentModuleCore {
                         '{total_wrapping}' => Tools::displayPrice($order->total_wrapping, $this->context->currency, false),
                         '{total_tax_paid}' => Tools::displayPrice(($order->total_paid_tax_incl - $order->total_paid_tax_excl), $this->context->currency, false));
 
-                        var_dump($order);
-                        die();
                         if (is_array($extra_vars)) {
                             $data = array_merge($data, $extra_vars);
                         }
