@@ -172,7 +172,7 @@ class PaymentModule extends PaymentModuleCore {
                     $amount_paid = !$dont_touch_amount ? Tools::ps_round((float)$amount_paid, 2) : $amount_paid;
                     $order->total_paid_real = 0;
 
-                    $order->total_products = 100.00;
+                    $order->total_products = (float)$this->context->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS, $order->product_list, $id_carrier);;
 //                        (float)$this->context->cart->getOrderTotal(false, Cart::ONLY_PRODUCTS, $order->product_list, $id_carrier);
                     $order->total_products_wt = (float)$this->context->cart->getOrderTotal(true, Cart::ONLY_PRODUCTS, $order->product_list, $id_carrier);
                     $order->total_discounts_tax_excl = (float)abs($this->context->cart->getOrderTotal(false, Cart::ONLY_DISCOUNTS, $order->product_list, $id_carrier));
@@ -743,13 +743,15 @@ class PaymentModule extends PaymentModuleCore {
                         '{products_txt}' => $product_list_txt,
                         '{discounts}' => $cart_rules_list_html,
                         '{discounts_txt}' => $cart_rules_list_txt,
-                        '{total_paid}' => Tools::displayPrice($order->total_paid, $this->context->currency, false),
-                        '{total_products}' => Tools::displayPrice($order->total_products_wt, $this->context->currency, false),
+                        '{total_paid}' => Tools::displayPrice($order->total_paid_tax_incl, $this->context->currency, false),
+                        '{total_products}' => Tools::displayPrice($order->total_products, $this->context->currency, false),
                         '{total_discounts}' => Tools::displayPrice($order->total_discounts, $this->context->currency, false),
                         '{total_shipping}' => Tools::displayPrice($order->total_shipping, $this->context->currency, false),
                         '{total_wrapping}' => Tools::displayPrice($order->total_wrapping, $this->context->currency, false),
-                        '{total_tax_paid}' => Tools::displayPrice(($order->total_products_wt - $order->total_products), $this->context->currency, false));
+                        '{total_tax_paid}' => Tools::displayPrice(($order->total_paid_tax_incl - $order->total_paid_tax_excl), $this->context->currency, false));
 
+                        var_dump($order);
+                        die();
                         if (is_array($extra_vars)) {
                             $data = array_merge($data, $extra_vars);
                         }
