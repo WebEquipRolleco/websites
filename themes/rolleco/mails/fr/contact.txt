@@ -1,0 +1,11 @@
+[{shop_url}] 
+
+Message de la part d'un client de {shop_name} 
+
+ADRESSE E-MAIL DU CLIENT : {email}
+
+MESSAGE DU CLIENT : {message}
+
+COMMANDE # : {order_name}
+
+PIÈCE JOINTE : {attached_file} 		 

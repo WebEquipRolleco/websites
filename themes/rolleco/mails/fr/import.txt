@@ -1,0 +1,5 @@
+[{shop_url}] 
+
+Bonjour {firstname} {lastname}, 
+
+Le fichier {filename} a bien été importé dans votre boutique. 

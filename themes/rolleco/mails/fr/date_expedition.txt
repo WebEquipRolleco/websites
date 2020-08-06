@@ -1,0 +1,12 @@
+
+[{shop_url}] 
+
+Bonjour {firstname} {lastname}, 
+
+Votre commande sur {shop_name} ayant pour référence {order_name}
+vous sera livré {send_date}.
+
+Vous pouvez accéder à tout moment au suivi de votre commande et
+télécharger votre facture dans "Historique des commandes"
+[{history_url}] de la rubrique "Mon compte"
+[{my_account_url}] sur notre site. 

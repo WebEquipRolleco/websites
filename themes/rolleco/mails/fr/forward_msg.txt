@@ -1,0 +1,9 @@
+[{shop_url}] 
+
+Bonjour {firstname} {lastname}, 
+
+{employee} souhaite vous transférer cette discussion. 
+
+HISTORIQUE DE LA DISCUSSION : {messages}
+
+{employee} a ajouté "{comment}" 		 
