@@ -744,11 +744,11 @@ class PaymentModule extends PaymentModuleCore {
                         '{discounts}' => $cart_rules_list_html,
                         '{discounts_txt}' => $cart_rules_list_txt,
                         '{total_paid}' => Tools::displayPrice($order->total_paid, $this->context->currency, false),
-                        '{total_products}' => Tools::displayPrice(Product::getTaxCalculationMethod() == PS_TAX_EXC ? $order->total_products : $order->total_products_wt, $this->context->currency, false),
+                        '{total_products}' => Tools::displayPrice($order->total_products_wt, $this->context->currency, false),
                         '{total_discounts}' => Tools::displayPrice($order->total_discounts, $this->context->currency, false),
                         '{total_shipping}' => Tools::displayPrice($order->total_shipping, $this->context->currency, false),
                         '{total_wrapping}' => Tools::displayPrice($order->total_wrapping, $this->context->currency, false),
-                        '{total_tax_paid}' => Tools::displayPrice(($order->total_products_wt - $order->total_products) + ($order->total_shipping_tax_incl - $order->total_shipping_tax_excl), $this->context->currency, false));
+                        '{total_tax_paid}' => Tools::displayPrice(($order->total_products_wt - $order->total_products), $this->context->currency, false));
 
                         if (is_array($extra_vars)) {
                             $data = array_merge($data, $extra_vars);
