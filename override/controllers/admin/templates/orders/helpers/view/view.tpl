@@ -1283,9 +1283,9 @@
                     <tr id="total_margin">
                       <td class="text-right" style="background-color:seashell"><strong>{l s="Marge" d="Admin.global"}</strong></td>
                       <td class="amount text-right nowrap" style="background-color:seashell">
-                        {assign var=margin value=$order->total_paid_tax_incl - Order::sumBuyingPrice([$order->id], true)}
+                        {assign var=margin value=$order->total_paid_tax_excl - Order::sumBuyingPrice([$order->id], true)}
                         {displayPrice price=$margin currency=$currency->id}
-                        | <strong>{Tools::getMarginRate($margin, $order->total_paid_tax_incl)} %</strong>
+                        | <strong>{Tools::getMarginRate($margin, $order->total_paid_tax_excl)} %</strong>
                       </td>
                     </tr>
                   </table>
