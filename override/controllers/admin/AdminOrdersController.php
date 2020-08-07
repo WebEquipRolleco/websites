@@ -538,24 +538,24 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                         Mail::send(1, $template, $object, $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $OA->getOrder()->id_shop), $attachments, null, _PS_MAIL_DIR_, false, $OA->getOrder()->getShop()->id);
                     }
 
-                    // Mise à jour de la commande
-                    if($id_change_state) {
-                        if($this->getCurrentOrder()->current_state != $id_change_state) {
-                            
-                            $history = new OrderHistory();
-                            $history->changeIdOrderState($id_change_state, $this->current_id);
-
-                            $history->id_order = $this->current_id;
-                            $history->id_order_state = $id_change_state;
-                            $history->id_employee = $this->context->employee->id;
-                            $history->date_add = date('Y-m-d H:i:s');
-                            $history->save();
-                        }
-                    }
-
                     $OA->save();
                     $this->confirmations[] = "Les documents ont été envoyés";
                 }
+            }
+        }
+
+        // Mise à jour de la commande
+        if($id_change_state) {
+            if($this->getCurrentOrder()->current_state != $id_change_state) {
+
+                $history = new OrderHistory();
+                $history->changeIdOrderState($id_change_state, $this->current_id);
+
+                $history->id_order = $this->current_id;
+                $history->id_order_state = $id_change_state;
+                $history->id_employee = $this->context->employee->id;
+                $history->date_add = date('Y-m-d H:i:s');
+                $history->save();
             }
         }
     }
