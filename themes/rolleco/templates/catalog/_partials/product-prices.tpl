@@ -22,7 +22,7 @@
             <div class="crossed-price text-muted">
               <span style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
               &nbsp;
-              <span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)}%</span>
+              <span class="text-danger bold">{number_format(Tools::getRate($specific_price.price, $specific_price.full_price), 2, ',', ' ')}%</span>
             </div>
           {/if}
           <span class="main-price {if $specific_price and $specific_price.full_price > $specific_price.price}text-danger{/if}">
