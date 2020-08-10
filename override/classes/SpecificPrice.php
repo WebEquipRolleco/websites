@@ -145,6 +145,20 @@ class SpecificPrice extends SpecificPriceCore {
     }
 
     /**
+     * Retourne le prix spécifique minimum d'un produit ou d'une déclinaison
+     * @param int $id_product
+     * @param int $id_combination
+     * @param bool $use_taxes
+     * @return float
+     **/
+    public static function getMinimumSpecificPrice($id_product) {
+
+        $sql = "SELECT *  FROM ps_specific_price WHERE id_product = $id_product 
+                and price = (SELECT MIN(price) from ps_specific_price where id_product = $id_product)";
+        return Db::getInstance()->getRow($sql);
+    }
+
+    /**
     * Retourne le prix spécifique maximum d'un produit ou d'une déclinaison
 	* @param int $id_product
 	* @param int $id_combination
@@ -199,5 +213,16 @@ class SpecificPrice extends SpecificPriceCore {
         // Retourne l'objet trouvé
         return new Self(Db::getInstance()->getValue($sql));
     }
-    
+
+    public static function getSpecificPriceLine($id_product, $quantity)
+    {
+        $sql = "SELECT *  FROM ps_specific_price WHERE id_product = $id_product ORDER BY from_quantity DESC ";
+        $data = Db::getInstance()->executeS($sql);
+        foreach ($data as $line){
+            if ($line['from_quantity'] >= $quantity){
+                return $line;
+            }
+        }
+        return null;
+    }
 }

@@ -1,5 +1,9 @@
-{assign var=quantity_wanted value=Tools::getValue('quantity_wanted', SpecificPrice::getProductMinQuantity($product.id_product))}
-{assign var=specific_price value=specificPrice::getSpecificPrice($product.id_product, 1, 1, 8, 0, $quantity_wanted)}
+{if empty(Combination::getCombinations($product.id_product))}
+    {assign var=quantity_wanted value=Tools::getValue('quantity_wanted', SpecificPrice::getProductMinQuantity($product.id_product))}
+    {assign var=specific_price value=specificPrice::getSpecificPriceLine($product.id_product, $quantity_wanted)}
+{else}
+    {assign var=specific_price value=specificPrice::getMinimumSpecificPrice($product.id_product)}
+{/if}
 {if $product.show_price}
   <div class="product-prices text-center">
     {*block name='product_discount'}
@@ -20,16 +24,15 @@
           <span class="pre-price">{l s="A partir de"}</span>
           {if $specific_price and $specific_price.full_price > $specific_price.price}
             <div class="crossed-price text-muted">
-              <span style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
-              &nbsp;
+              <span style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>&nbsp;
               <span class="text-danger bold">{number_format(Tools::getRate($specific_price.price, $specific_price.full_price), 2, ',', ' ')}%</span>
             </div>
           {/if}
           <span class="main-price {if $specific_price and $specific_price.full_price > $specific_price.price}text-danger{/if}">
-            {Tools::displayPrice(Product::getPriceStatic($product.id_product, false, null, 2, null, false, true, $quantity_wanted))}
+                    {Tools::displayPrice($specific_price.price)}
             <small>HT</small>
           </span>
-          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice(Product::getPriceStatic($product.id_product, true, null, 2, null, false, true, $quantity_wanted))} TTC</span>
+          <span class="full-price" itemprop="price" content="{$product.price_amount}">{Tools::displayPrice($specific_price.price * 1.2)} TTC</span>
 
           {if $product.has_discount}
             {if $product.discount_type === 'percentage'}
