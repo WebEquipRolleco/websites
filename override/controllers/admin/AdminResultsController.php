@@ -222,7 +222,7 @@ class AdminResultsController extends AdminController {
 				$options = array();
 				$options['date_begin'] = $period['dates']['begin']->format('Y-m-d 00:00:00');
 				$options['date_end'] = $period['dates']['end']->format('Y-m-d 23:59:59');
-				$options['payment_methods'] = array("'".$method['name']."'");
+				$options['payment_methods'] = array("'".pSQL($method['name'])."'");
 				$options['shops'] = $shop_ids;
 				$ids = Order::findIds($options);
 
