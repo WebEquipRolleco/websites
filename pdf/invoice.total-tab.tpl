@@ -20,15 +20,19 @@
 					<td>{l s="Total HT" pdf=true}</td>
 					<td style="text-align:center">{Tools::displayPrice($order->total_paid_tax_excl)}</td>
 				</tr>
-				<tr style="font-size:8px;">
-					<td>{l s="TVA" pdf=true}</td>
-					<td style="text-align:center">{Tools::displayPrice($order->total_paid_tax_incl - $order->total_paid_tax_excl)}</td>
-				</tr>
-				<tr style="font-size:8px;">
-					<td>{l s="Total TTC" pdf=true}</td>
-					<td style="text-align:center">{Tools::displayPrice($order->total_paid_tax_incl)}</td>
-				</tr>
+				{if $order->display_with_taxes}
+					<tr style="font-size:8px;">
+						<td>{l s="TVA" pdf=true}</td>
+						<td style="text-align:center">{Tools::displayPrice($order->total_paid_tax_incl - $order->total_paid_tax_excl)}</td>
+					</tr>
+					<tr style="font-size:8px;">
+						<td>{l s="Total TTC" pdf=true}</td>
+						<td style="text-align:center">{Tools::displayPrice($order->total_paid_tax_incl)}</td>
+					</tr>
+				{/if}
 			</table>
+
+
 		</td>
 	</tr>
 </table>
