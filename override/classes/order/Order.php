@@ -540,7 +540,7 @@ class Order extends OrderCore {
 
 		// Filter en fonction du type de produit concerné (nature ou devis)
 		if(isset($options['quotations']))
-			$sql .= " AND EXISTS (SELECT d.id_order_detail FROM ps_order_detail d WHERE d.id_order = o.id_order AND (d.id_quotation_line IS NOT NULL OR d.id_quotation_line != 0))";
+			$sql .= " AND EXISTS (SELECT d.id_order_detail FROM ps_order_detail d WHERE d.id_order = o.id_order AND (d.id_quotation_line IS NOT NULL AND d.id_quotation_line != 0))";
 
 		// Borner la recherche à une date minimum
 		if(isset($options['date_begin'])) {
