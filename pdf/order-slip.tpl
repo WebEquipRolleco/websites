@@ -30,7 +30,7 @@
 	<!-- Invoicing -->
 	<tr>
 		<td colspan="12">
-
+			Test
 			{$addresses_tab}
 
 		</td>
