@@ -24,6 +24,7 @@
  *}
 <table id="summary-tab" width="100%">
 	<tr>
+		Test
 		<th class="header small" valign="middle">{l s='Order Reference' d='Shop.Pdf' pdf='true'}</th>
 		<th class="header small" valign="middle">{l s='Order Date' d='Shop.Pdf' pdf='true'}</th>
 		{if $addresses.invoice->vat_number}
