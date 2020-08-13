@@ -31,7 +31,7 @@
 {assign var=font_size_text value="9pt"}
 {assign var=font_size_header value="9pt"}
 {assign var=font_size_product value="9pt"}
-{assign var=height_header value="80px"}
+{assign var=height_header value="20px"}
 {assign var=table_padding value="4px"}
 
 <style>
