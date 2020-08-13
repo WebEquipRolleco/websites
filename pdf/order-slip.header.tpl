@@ -1,24 +1,13 @@
 <table style="width: 100%">
     <tr>
-        <td style="width:40%;">
-            &nbsp; {Configuration::get('PS_SHOP_TITLE')}<br />
-            &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
-            &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}<br />
-            &nbsp; {Configuration::get('PS_SHOP_TYPE')}<br />
-            &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
-            <b>{Configuration::get('PS_SHOP_PHONE')}</b><br />
-            &nbsp; {Configuration::get('PS_SHOP_EMAIL')}
-        </td>
-        <td style="width:32%; text-align:center;">
-            {if $logo_path}
-                <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" />
-            {/if}
-        </td>
-    </tr>
-    <tr>
         <td style="width: 50%">
             {if $logo_path}
-                <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" />
+                <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" /><br />
+                &nbsp; {Configuration::get('PS_SHOP_TITLE')}<br />
+                &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
+                &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}<br />
+                &nbsp; {Configuration::get('PS_SHOP_TYPE')}<br />
+                &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
             {/if}
         </td>
         <td style="width: 50%; text-align: right;">
@@ -31,6 +20,10 @@
                 </tr>
                 <tr>
                     <td style="font-size: 14pt; color: #9E9F9E">{$title|escape:'html':'UTF-8'}</td>
+                </tr>
+                <tr>
+                    &nbsp; <b>{Configuration::get('PS_SHOP_PHONE')}</b><br />
+                    &nbsp; {Configuration::get('PS_SHOP_EMAIL')}
                 </tr>
             </table>
         </td>
