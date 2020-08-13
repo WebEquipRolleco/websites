@@ -28,4 +28,12 @@
          $this->shop = new Shop((int)$this->order->id_shop);
      }
 
+     public function getHeader()
+     {
+         $this->assignCommonHeaderData();
+         $this->smarty->assign(array('header' => Context::getContext()->getTranslator()->trans('Credit slip', array(), 'Shop.Pdf')));
+
+         return $this->smarty->fetch($this->getTemplate('order-slip.header'));
+     }
+
  }
