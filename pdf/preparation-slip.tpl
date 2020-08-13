@@ -249,13 +249,20 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="7" style="text-align:right;">
-					<span style="font-size:8pt; font-weight:bold;">{l s="Sous total HT" pdf='true'}</span>
-				</td>
+				{if $order->display_with_taxes}
+					<td colspan="7" style="text-align:right;">
+						<span style="font-size:8pt; font-weight:bold;">{l s="Sous total HT" pdf='true'}</span>
+					</td>
+				{else}
+					<td colspan="7" style="text-align:right;">
+						<span style="font-size:8pt; font-weight:bold;">{l s="Total HT" pdf='true'}</span>
+					</td>
+				{/if}
 				<td style="text-align:center;">
 					{Tools::displayPrice($order->total_paid_tax_excl)}
 				</td>
 			</tr>
+			{if $order->display_with_taxes}
 			<tr>
 				<td colspan="7" style="text-align:right;">
 					<span style="font-size:8pt; font-weight:bold;">{l s="TVA" pdf='true'}</span>
@@ -272,6 +279,7 @@
 					<b>{Tools::displayPrice($order->total_paid_tax_incl)}</b>
 				</td>
 			</tr>
+			{/if}
 		</tbody>
 	</table>
 
