@@ -446,7 +446,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             foreach($this->getCurrentOrder()->getOrderPayments() as $payment) {
                 $date = new DateTime($payment->date_add); 
-                $data['{date_payment}'] = $date->format('d/m/Y');  
+                $data['{date_payment}'] = $date->format('d/m/Y');
+                var_dump($date);
+                die();
             }
             
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
