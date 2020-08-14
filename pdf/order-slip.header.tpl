@@ -7,8 +7,8 @@
         </td>
         <td style="width: 35%; text-align: left;">
             &nbsp;{Configuration::get('PS_SHOP_TITLE')} <br />
-            &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
-            &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
+            &nbsp;&nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
+            &nbsp;&nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
         </td>
         <td style="width: 25%; text-align: right;">
             &nbsp;{Configuration::get('PS_SHOP_TYPE')}<br />
