@@ -434,7 +434,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Proforma
         if($this->getCurrentOrder()->isProforma()) {
-
+            var_dump("hello");
+            die();
             $object = $this->trans("%shop% :  Proforma de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
@@ -442,13 +443,12 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
         // Acquittée
         elseif($this->getCurrentOrder()->isAcquitted()) {
-
+            var_dump("$this->getCurrentOrder()->getOrderPayments()");
+            die();
             $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             foreach($this->getCurrentOrder()->getOrderPayments() as $payment) {
                 $date = new DateTime($payment->date_add); 
                 $data['{date_payment}'] = $date->format('d/m/Y');
-                var_dump($date);
-                die();
             }
             
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
@@ -456,7 +456,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
         // Classique
         else {
-
+            var_dump("hello");
+            die();
             $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             $data['{deadline}'] = $this->getCurrentOrder()->getPaymentDeadline()->format('d/m/Y');
             
