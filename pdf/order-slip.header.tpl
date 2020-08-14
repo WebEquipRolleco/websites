@@ -2,16 +2,16 @@
     <tr>
         <td style="width: 25%">
             {if $logo_path}
-                <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" /><br />
+                <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" />
             {/if}
         </td>
         <td style="width: 25%">
-                {Configuration::get('PS_SHOP_TITLE')}<br />
-                &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
-                &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
+            {Configuration::get('PS_SHOP_TITLE')}<br />
+            &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
+            &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
         </td>
         <td style="width: 25%">
-            &nbsp; {Configuration::get('PS_SHOP_TYPE')}<br />
+            {Configuration::get('PS_SHOP_TYPE')}<br />
             &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
             &nbsp; <b>{Configuration::get('PS_SHOP_PHONE')}</b><br />
             &nbsp; {Configuration::get('PS_SHOP_EMAIL')}
