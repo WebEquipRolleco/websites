@@ -6,9 +6,9 @@
             {/if}
         </td>
         <td style="width: 35%; text-align: left;">
-            &nbsp;{Configuration::get('PS_SHOP_TITLE')} <br />
-            &nbsp;&nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
-            &nbsp;&nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
+            {Configuration::get('PS_SHOP_TITLE')} <br />
+            <dd>{Configuration::get('PS_SHOP_ADDRESS1')}<br />
+            <dd>{Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
         </td>
         <td style="width: 25%; text-align: right;">
             &nbsp;{Configuration::get('PS_SHOP_TYPE')}<br />
