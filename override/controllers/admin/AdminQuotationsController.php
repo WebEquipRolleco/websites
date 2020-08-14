@@ -38,7 +38,7 @@ class AdminQuotationsController extends AdminController {
         $this->_join .= ' LEFT JOIN '._DB_PREFIX_.'employee e ON (a.id_employee = e.id_employee)';
         //$this->_where = " AND a.id_shop = ".$this->context->shop->id;
 
-        $this->_orderBy = 'reference';
+        $this->_orderBy = 'date_add';
         $this->_orderWay = 'desc';
         $this->_use_found_rows = true;
 
