@@ -9,10 +9,10 @@
                 &nbsp; {Configuration::get('PS_SHOP_TITLE')}<br />
                 &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
                 &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}<br />
-                &nbsp; {Configuration::get('PS_SHOP_TYPE')}<br />
-                &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
         </td>
         <td style="width: 25%">
+            &nbsp; {Configuration::get('PS_SHOP_TYPE')}<br />
+            &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
             &nbsp; <b>{Configuration::get('PS_SHOP_PHONE')}</b><br />
             &nbsp; {Configuration::get('PS_SHOP_EMAIL')}
         </td>
