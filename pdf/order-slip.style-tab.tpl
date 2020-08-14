@@ -189,4 +189,7 @@
 	.small, table.small th, table.small td {
 		font-size:small;
 	}
+	#marge {
+		margin-left: 5em;
+	}
 </style>
