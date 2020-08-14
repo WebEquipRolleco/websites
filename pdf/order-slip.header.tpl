@@ -3,6 +3,8 @@
         <td style="width: 25%">
             {if $logo_path}
                 <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" />
+                <div></div>
+                <div></div>
             {/if}
         </td>
         <td style="width: 35%; text-align: left;">
