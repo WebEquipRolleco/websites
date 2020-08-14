@@ -6,12 +6,12 @@
             {/if}
         </td>
         <td style="width: 25%">
-            {Configuration::get('PS_SHOP_TITLE')}<br />
+            &nbsp;{Configuration::get('PS_SHOP_TITLE')}<br />
             &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
             &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
         </td>
         <td style="width: 25%">
-            {Configuration::get('PS_SHOP_TYPE')}<br />
+            &nbsp;{Configuration::get('PS_SHOP_TYPE')}<br />
             &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
             &nbsp; <b>{Configuration::get('PS_SHOP_PHONE')}</b><br />
             &nbsp; {Configuration::get('PS_SHOP_EMAIL')}
