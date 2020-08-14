@@ -437,7 +437,7 @@
 								<i class="process-icon-new"></i>
 							</a>
 							<a href="" id="save_products" class="list-toolbar-btn" title="{l s='Save' d='Admin.Actions'}">
-								<i class="process-icon-save"></i>
+								<i class="process-icon-save" style="color: #72c279"></i>
 							</a>
 						</span>
 					</div>
