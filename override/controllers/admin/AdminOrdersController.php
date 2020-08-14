@@ -441,19 +441,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
                 Mail::send(1, 'invoice_proforma', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
         }
-        // Acquittée
-        elseif($this->getCurrentOrder()->isAcquitted()) {
-            var_dump("$this->getCurrentOrder()->getOrderPayments()");
-            die();
-            $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
-            foreach($this->getCurrentOrder()->getOrderPayments() as $payment) {
-                $date = new DateTime($payment->date_add); 
-                $data['{date_payment}'] = $date->format('d/m/Y');
-            }
-            
-            foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
-                Mail::send(1, 'invoice_acquitted', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
-        }
+
         // Classique
         else {
             var_dump("hello");
