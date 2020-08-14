@@ -5,12 +5,12 @@
                 <img src="{$logo_path}" style="width:{$width_logo}px; height:{$height_logo}px;" />
             {/if}
         </td>
-        <td style="width: 25%">
+        <td style="width: 25%; text-align: left;">
             &nbsp;{Configuration::get('PS_SHOP_TITLE')}<br />
             &nbsp; {Configuration::get('PS_SHOP_ADDRESS1')}<br />
             &nbsp; {Configuration::get('PS_SHOP_CODE')} {Configuration::get('PS_SHOP_CITY')}
         </td>
-        <td style="width: 25%">
+        <td style="width: 25%; text-align: right;">
             &nbsp;{Configuration::get('PS_SHOP_TYPE')}<br />
             &nbsp; Siret {Configuration::get('PS_SHOP_SIRET')}<br />
             &nbsp; <b>{Configuration::get('PS_SHOP_PHONE')}</b><br />
