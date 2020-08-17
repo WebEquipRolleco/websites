@@ -27,7 +27,9 @@
 
 {block name="override_tpl"}
 <div id="container-customer">
-
+<div class="row">
+	{hook h="displayAdminCustomers" id_customer=$customer->id|intval}
+</div>
 	{assign var='state' value=$customer->getState()}
 	{if $state}
 	    <div class="row">
