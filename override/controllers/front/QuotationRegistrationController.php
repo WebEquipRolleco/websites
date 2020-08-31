@@ -22,8 +22,13 @@ class QuotationRegistrationControllerCore extends FrontController {
             $tpl_vars['{shop_name}'] = $this->context->shop->name;
 
 
-            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, "thierry.gozdzicki@provost.fr", "Web-equip", "thierry.gozdzicki@provost.fr", "hello"
-                , null, null, null, null, null, null);
+//            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, "thierry.gozdzicki@provost.fr", "Web-equip", "thierry.gozdzicki@provost.fr", "hello"
+//                , null, null, null, null, null, null);
+            /* Envoi de l'email */
+            Mail::send(1,"quotation_request","Demande de devis",
+                $tpl_vars, "thierry.gozdzicki@provost.fr", null, Configuration::get("PS_SHOP_EMAIL"),
+                Configuration::get("PS_SHOP_NAME"), null, null, null, null, null,
+                Configuration::get("PS_SHOP_EMAIL"));
 
             var_dump($tpl_vars);
             die();
