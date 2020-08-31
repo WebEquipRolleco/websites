@@ -10,9 +10,9 @@
     {block name='content'}{/block}
 
     {if $page.page_name == 'index'}
-    	{block name='newsletter'}
+{*    	{block name='newsletter'}
     		{include file='_partials/block_newsletter.tpl'}
-    	{/block}
+    	{/block}*}
 
     	{block name="quotation"}
     		{include file='_partials/block_quotation.tpl'}

@@ -1,4 +1,5 @@
-<div class="col-lg-6">
+<div class="col-lg-12">
+
 	<div id="quotation_box">
 		<h3 class="section-title">
 			<i class="fa fa-calculator"></i> {l s="Devis gratuit"}
