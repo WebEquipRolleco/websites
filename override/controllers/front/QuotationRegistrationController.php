@@ -23,8 +23,8 @@ class QuotationRegistrationControllerCore extends FrontController {
 
 
 
-            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, "contact@rolleco.fr", "Web-equip", $form['email'], trim($form['firstname']." ".$form['lastname'])
-                , null, null, null, null, null, null);
+            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, Configuration::get('PS_SHOP_EMAIL'), "Web-equip", Configuration::get('PS_SHOP_EMAIL'),
+                trim($form['firstname']." ".$form['lastname']), null, null, null, null, null, null);
 
             $this->context->smarty->assign('validation', true);
             var_dump(Configuration::get('PS_SHOP_EMAIL'));
