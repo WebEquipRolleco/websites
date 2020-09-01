@@ -434,8 +434,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Proforma
         if($this->getCurrentOrder()->isProforma()) {
-            var_dump("hello");
-            die();
             $object = $this->trans("%shop% :  Proforma de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
@@ -444,8 +442,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
         // Classique
         else {
-            var_dump("hello");
-            die();
             $object = $this->trans("%shop% :  Facture de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             $data['{deadline}'] = $this->getCurrentOrder()->getPaymentDeadline()->format('d/m/Y');
             
