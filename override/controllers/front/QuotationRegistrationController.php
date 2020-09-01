@@ -17,13 +17,13 @@ class QuotationRegistrationControllerCore extends FrontController {
         if($form) {
 
             foreach($form as $name => $value)
-                $tpl_vars["{$name}"] = $value;
+                $tpl_vars['{'.$name.'}'] = $value;
 
             $tpl_vars['{shop_name}'] = $this->context->shop->name;
 
 
 
-            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, "thierrydu593@gmail.com", "Web-equip", "thierrydu593@gmail.com", "hello"
+            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, Configuration::get("PS_SHOP_EMAIL"), null, Configuration::get("PS_SHOP_EMAIL"), "hello"
                 , null, null, null, null, null, null);
 
             $this->context->smarty->assign('validation', true);
