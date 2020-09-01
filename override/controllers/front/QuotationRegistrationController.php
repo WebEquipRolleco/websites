@@ -23,7 +23,7 @@ class QuotationRegistrationControllerCore extends FrontController {
 
 
 
-            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, "thierry.gozdzicki@provost.fr", "Web-equip", "thierrydu593@gmail.com", "hello"
+            Mail::send(1, "quotation_request", "Demande de devis", $tpl_vars, "thierry.gozdzicki@provost.fr", "Web-equip", "thierry.gozdzicki@provost.fr", "hello"
                 , null, null, null, null, null, null);
 
             $this->context->smarty->assign('validation', true);
