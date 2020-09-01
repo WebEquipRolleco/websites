@@ -27,8 +27,6 @@ class QuotationRegistrationControllerCore extends FrontController {
                 trim($form['firstname']." ".$form['lastname']), null, null, null, null, null, null);
 
             $this->context->smarty->assign('validation', true);
-            var_dump(Configuration::get('PS_SHOP_EMAIL'));
-            die();
         }
 
         $this->context->smarty->assign('breadcrumb', $data);
