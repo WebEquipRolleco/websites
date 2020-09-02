@@ -263,6 +263,12 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         return parent::renderList().$tpl->fetch();
     }
 
+    /**
+     * Methode pour l'import de masse des status de commande
+     *
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
+     */
     public function initContent() {
 
         // Import commande
@@ -296,6 +302,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                                 $history->id_employee = $this->context->employee->id;
                                 $history->date_add = date('Y-m-d H:i:s');
                                 $history->save();
+
+                                OrderHistory::sendEmail($order);
                             }
                         }
                         else
@@ -413,6 +421,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
     }
 
     private function sendInvoice() {
+
         
         // PDF
         foreach($this->getCurrentOrder()->getInvoicesCollection() as $invoice) {
@@ -523,6 +532,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                         $data['{shop_city}'] = Configuration::getForOrder('PS_SHOP_CITY', $OA->getOrder());
 
                         Mail::send(1, $template, $object, $data, $email, null, null, Configuration::get('PS_SHOP_NAME', null, $OA->getOrder()->id_shop), $attachments, null, _PS_MAIL_DIR_, false, $OA->getOrder()->getShop()->id);
+
                     }
 
                     $OA->save();
