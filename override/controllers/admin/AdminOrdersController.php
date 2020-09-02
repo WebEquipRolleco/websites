@@ -302,8 +302,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                                 $history->id_employee = $this->context->employee->id;
                                 $history->date_add = date('Y-m-d H:i:s');
                                 $history->save();
-
-                                OrderHistory::sendEmail($order);
+                                $history->sendEmail($order);
+                                
                             }
                         }
                         else
