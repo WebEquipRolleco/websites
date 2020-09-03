@@ -648,4 +648,27 @@ class Order extends OrderCore {
 	    return DB::getInstance()->executeS("select * from ps_order_history as oh inner join ps_order_state as os where id_order =" . $this->id . " and oh.id_order_state = os.id_order_state" );
     }
 
+    /**
+     * Methode pour recuperer le nom
+     */
+    public function renderString($name){
+        return str_replace('{order_reference}', $this ->reference, $name);
+    }
+
+    /**
+     * Methode pour recuperer la date
+     */
+    public function getDateOrder(){
+        return DateTime::createFromFormat('d/m/Y', $this -> date_add);
+    }
+
+    /**
+     * Methode pour recuperer la date
+     */
+    public function getDeadline(){
+        $date = DateTime::createFromFormat("Y-m-d H:i:s", $this -> invoice_date);
+        $date -> modify("+45 day");
+        return $date;
+    }
+
 }
