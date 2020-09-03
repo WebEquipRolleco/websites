@@ -584,7 +584,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
 
         /* Verification de la mise a jour ou de la semaine d'expedition */
-        if (Tools::getValue('day') != $order_detail->day or Tools::getValue('week') != $order_detail->week)
+        if (Tools::getValue('day') != $order_detail->day or Tools::getValue('week') != $order_detail->week or
+            Tools::getValue('comment') != $order_detail->comment)
             $sendEmail = true;
 
         /* Mise en place des valeurs d'expedition */

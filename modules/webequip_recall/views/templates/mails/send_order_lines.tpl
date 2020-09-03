@@ -4,5 +4,6 @@
 		<td style="padding:5px; text-align:center">{$send_order->product_name}</td>
 		<td style="padding:5px; text-align:center">{$send_order->product_quantity}</td>
 		<td style="padding:5px; text-align:center">Expédition prévue {$send_order->getDate()}</td>
+		<td style="padding:5px; text-align:center">{$send_order->comment} </td>
 	</tr>
 {/foreach}
