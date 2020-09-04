@@ -54,17 +54,20 @@ class AdminObjectivesControllerCore extends AdminController {
     **/
     public function initContent() {
 
+        /* Recuperation des donnees sur les dates selectionnees */
+        $this->context->smarty->assign('date_current', $this->date_current->format('Y-m-d'));
+        $this->context->smarty->assign('date_begin', $this->date_begin->format('Y-m-d'));
+        $this->context->smarty->assign('date_end', $this->date_end->format('Y-m-d'));
+
+        /* Recuperation des commandes pour une journee selectionne */
         $options = array();
-        $options['date_begin'] = date('Y-m-d 00:00:00');
-        $options['date_end'] = date('Y-m-d 23:59:59');
+        $options['date_begin'] = $this->date_current->format('Y-m-d 00:00:00');
+        $options['date_end'] = $this->date_current->format('Y-m-d 23:59:59');
         $options['shops'] = Shop::getContextListShopID();;
         $ids = Order::findIds($options);
 
-    	$this->context->smarty->assign('date_current', $this->date_current->format('Y-m-d'));
-    	$this->context->smarty->assign('date_begin', $this->date_begin->format('Y-m-d'));
-    	$this->context->smarty->assign('date_end', $this->date_end->format('Y-m-d'));
-
         $objective = DailyObjective::findOneByDate($this->date_current);
+//        $turnover = Order::sumTurnover(false,$this -> date_current, $this -> date_current);
         $turnover = Order::sumProducts($ids);
         $nb_orders = Order::count($this->date_current, $this->date_current);
         $avg = ($turnover and $nb_orders) ? $turnover / $nb_orders : 0;
