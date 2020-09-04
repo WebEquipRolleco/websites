@@ -189,9 +189,6 @@ class Webequip_recall extends Module {
 	**/
 	public function sendRecalls() {
 
-	    var_dump($this->mail_dir);
-	    die();
-
 		$nb_orders = 0;
 
 		/* Boucle pour l'envoi des emails pour le rappel de paiement a 10 jours avant l'echeance (45 - 10 = 35) */
