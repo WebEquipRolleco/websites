@@ -35,8 +35,6 @@ class ExportComments extends Export {
             $data[] = $row['comment_1'];
             $data[] = $row['comment_2'];
 
-            var_dump($data);
-
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  
         }
 
