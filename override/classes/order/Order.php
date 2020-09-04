@@ -378,7 +378,7 @@ class Order extends OrderCore {
 				$value += $detail->getTotalBuyingPrice();
 		}
 
-		return $value * ($use_taxes ? 1.2 : 1);
+		return $value;
 	}
 
 	/**

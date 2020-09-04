@@ -411,7 +411,7 @@ class OrderDetail extends OrderDetailCore {
 	* Retourne le prix d'achat total (achat + frais de ports)
 	**/
 	public function getTotalBuyingPrice() {
-		return $this->purchase_supplier_price * $this->product_quantity + $this->total_shipping_price_tax_excl;
+		return ($this -> purchase_supplier_price + $this -> delivery_fees + $this -> ecotax) * $this -> product_quantity ;
 	}
 
     /**
