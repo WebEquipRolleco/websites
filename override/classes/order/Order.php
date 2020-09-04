@@ -188,12 +188,15 @@ class Order extends OrderCore {
     **/
     public function getPaymentDeadline() {
 
+
+
     	if(!$this->payment_deadline and $this->invoice_date and $this->invoice_date != '0000-00-00') {
+
 
     		$this->payment_deadline = DateTime::createFromFormat('Y-m-d H:i:s', $this->invoice_date);
 
     		$delay = Configuration::get('PAYMENT_TIME_LIMIT');
-    		if($delay) $this->payment_deadline->modify("+$delay days");
+    		if($delay) $this->payment_deadline->modify("+$delay day");
     	}
 
     	return $this->payment_deadline;
@@ -663,12 +666,12 @@ class Order extends OrderCore {
     }
 
     /**
-     * Methode pour recuperer la date
+     * Methode pour recuperer la date d'echeance
      */
     public function getDeadline(){
         $date = DateTime::createFromFormat("Y-m-d H:i:s", $this -> invoice_date);
         $date -> modify("+45 day");
         return $date;
-    }
 
+    }
 }
