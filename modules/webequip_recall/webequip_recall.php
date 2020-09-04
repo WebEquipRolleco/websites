@@ -306,8 +306,6 @@ class Webequip_recall extends Module {
 
             /* Recuperation du client et du nom de l'email */
 			$customer = $order->getCustomer();
-            var_dump($customer);
-            die();
 			$object = $order->renderString(Configuration::get(self::CONFIG_RECALL_OBJECT_4));
 
             /* Recuperation de la date du jour et soustraction de 8 jours */
@@ -335,7 +333,10 @@ class Webequip_recall extends Module {
 
             /* Envoi de l'email */
 			$emails = array_merge($customer->getInvoiceEmails(), array($this->cc));
+            var_dump($emails);
+            die();
 //			foreach($emails as $email)
+
 //				if($email) Mail::send(1, $this->l("recall_customer_4"), $object, $data, $email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, $files_attachements, null, $this->mail_dir, null, null, Configuration::getForOrder('PS_SHOP_EMAIL', $order));
 
 //			$content = file_get_contents($this->mail_dir."recall_customer_4.html");
