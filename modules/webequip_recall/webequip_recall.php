@@ -375,7 +375,7 @@ class Webequip_recall extends Module {
 			foreach($ids as $id) {
 
 				$employee = new Employee(trim($id));
-				Mail::send(1, "recall_team_1", $this->l("Recommandés à envoyer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+				Mail::send(1, "recall_team_1", $this->l("Recommandés à envoyer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
 			}
 
 		}
@@ -394,7 +394,7 @@ class Webequip_recall extends Module {
 			foreach($ids as $id) {
 
 				$employee = new Employee(trim($id));
-				Mail::send(1, "recall_team_2", $this->l("Clients à déclarer en contentieux"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+				Mail::send(1, "recall_team_2", $this->l("Clients à déclarer en contentieux"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
 			}
 		}
 
@@ -444,7 +444,7 @@ class Webequip_recall extends Module {
 			$data['{$nb}'] = $nb_days;
 			$data['{$state}'] = $state->name;
 
-			Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name);
+			Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
 		}
 
 	}
@@ -472,7 +472,7 @@ class Webequip_recall extends Module {
 			$data['{$lines}'] = $tpl->fetch();
 
 			foreach($employees as $employee)
-				Mail::send(1, "recall_sav_1", $this->l("SAV non traités"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+				Mail::send(1, "recall_sav_1", $this->l("SAV non traités"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
 		}
 
 		// SAV "abandonnés"
@@ -485,7 +485,7 @@ class Webequip_recall extends Module {
 			$data['{$lines}'] = $tpl->fetch();
 
 			foreach($employees as $employee)
-				Mail::send(1, "recall_sav_2", $this->l("SAV à relancer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+				Mail::send(1, "recall_sav_2", $this->l("SAV à relancer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
 		}
 	}
 
@@ -514,7 +514,7 @@ class Webequip_recall extends Module {
 
 				$data['{$lines}'] = $tpl->fetch();
 
-				Mail::send(1, "recall_quotation", $this->l("Devis à relancer"), $data, $row['employee']->email, $row['employee']->firstname." ".$row['employee']->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+				Mail::send(1, "recall_quotation", $this->l("Devis à relancer"), $data, $row['employee']->email, $row['employee']->firstname." ".$row['employee']->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
 			}
 		}
 	}
