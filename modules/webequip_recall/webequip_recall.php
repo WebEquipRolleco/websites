@@ -306,7 +306,7 @@ class Webequip_recall extends Module {
 
             /* Recuperation du client et du nom de l'email */
 			$customer = $order->getCustomer();
-            var_dump($order);
+            var_dump($customer);
             die();
 			$object = $order->renderString(Configuration::get(self::CONFIG_RECALL_OBJECT_4));
 
