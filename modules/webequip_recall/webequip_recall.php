@@ -229,6 +229,9 @@ class Webequip_recall extends Module {
         /* Boucle pour l'envoi des emails pour le rappel de paiement 7 jours apres la date d'echeance (45 + 7 = 52) */
 		foreach($this->getOrders(52) as $order) {
 
+		    var_dump($order);
+		    die();
+
             /* Recuperation du client et du nom de l'email */
 			$customer = $order->getCustomer();
 			$object = $order->renderString(Configuration::get(self::CONFIG_RECALL_OBJECT_2));
