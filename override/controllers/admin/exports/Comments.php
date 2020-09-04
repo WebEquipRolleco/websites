@@ -32,8 +32,10 @@ class ExportComments extends Export {
             $data[] = "";
             $data[] = $row['reference'];
             $data[] = $row['id_shop'];
-            $data[] = utf8_decode($row['comment_1']);
-            $data[] = utf8_decode($row['comment_2']);
+            $data[] = $row['comment_1'];
+            $data[] = $row['comment_2'];
+
+            var_dump($data);
 
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  
         }
@@ -44,8 +46,8 @@ class ExportComments extends Export {
             $data[] = $row['id_product_attribute'];
             $data[] = $row['reference'];
             $data[] = $row['id_shop'];
-            $data[] = utf8_decode($row['comment_1']);
-            $data[] = utf8_decode($row['comment_2']);
+            $data[] = $row['comment_1'];
+            $data[] = $row['comment_2'];
 
             $csv .= implode($this->separator, $data).parent::END_OF_LINE;  
         }

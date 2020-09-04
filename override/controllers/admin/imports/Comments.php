@@ -31,9 +31,9 @@ class ImportComments extends Import {
 
         		if($row['id_product']) {
                     if(!empty($row['id_combination']))
-                        Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET comment_1 = '".pSql(utf8_encode($row['comment_1']))."', comment_2 = '".pSql(utf8_encode($row['comment_2']))."' WHERE id_product = ".$row['id_product']." AND id_product_attribute = ".$row['id_combination']." AND id_shop = ".$row['id_shop']);
+                        Db::getInstance()->execute("UPDATE ps_product_attribute_shop SET comment_1 = '".pSql($row['comment_1'])."', comment_2 = '".pSql($row['comment_2'])."' WHERE id_product = ".$row['id_product']." AND id_product_attribute = ".$row['id_combination']." AND id_shop = ".$row['id_shop']);
                     else
-                        Db::getInstance()->execute("UPDATE ps_product_shop SET comment_1 = '".pSql(utf8_encode($row['comment_1']))."', comment_2 = '".pSql(utf8_encode($row['comment_2']))."' WHERE id_product = '".$row['id_product']."' AND id_shop = ".$row['id_shop']);
+                        Db::getInstance()->execute("UPDATE ps_product_shop SET comment_1 = '".pSql($row['comment_1'])."', comment_2 = '".pSql($row['comment_2'])."' WHERE id_product = '".$row['id_product']."' AND id_shop = ".$row['id_shop']);
                 }
 
 	        	$this->nb_lines++;
