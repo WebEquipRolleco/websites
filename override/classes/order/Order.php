@@ -674,4 +674,14 @@ class Order extends OrderCore {
         return $date;
 
     }
+
+    public function getQuotation(){
+        if($this->id_cart) {
+            $id = Db::getInstance()->getValue("SELECT q.id_quotation FROM "._DB_PREFIX_."quotation q, "._DB_PREFIX_.QuotationAssociation::TABLE_NAME." qa WHERE qa.id_quotation = q.id_quotation AND qa.id_cart = ".$this->id_cart);
+            if($id)
+                return new Quotation($id);
+        }
+        
+        return false;
+    }
 }

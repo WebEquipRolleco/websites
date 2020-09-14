@@ -1044,6 +1044,7 @@
           <div class="panel-heading">
             <i class="icon-shopping-cart"></i>
             {l s='Products' d='Admin.Global'} <span class="badge">{$products|@count}</span>
+            {if ($order->getQuotation())}{l s='Devis :' d='Admin.Global'} <span class="badge">{$order->getQuotation()->reference}</span>{/if}
             <span class="panel-heading-action">
               <a href="#modifications" class="list-toolbar-btn toggle-products-edit" title="{l s='Modifications'}">
                 <i class="process-icon-edit"></i>
@@ -1056,7 +1057,6 @@
             <a href="#" class="partial_refund"><img src="../img/admin/add.gif" alt="{l s='Process a partial refund'}" /> {l s='Process a partial refund'}</a>
           -->
           </div>
-
           {capture "TaxMethod"}
             {if ($order->getTaxCalculationMethod() == $smarty.const.PS_TAX_EXC)}
               {l s='Tax excluded' d='Admin.Global'}
