@@ -748,7 +748,7 @@ class PaymentModule extends PaymentModuleCore {
                         '{total_discounts}' => Tools::displayPrice($order->total_discounts, $this->context->currency, false),
                         '{total_shipping}' => Tools::displayPrice($order->total_shipping, $this->context->currency, false),
                         '{total_wrapping}' => Tools::displayPrice($order->total_wrapping, $this->context->currency, false),
-                        '{devis}' => $order->getQuotation() ? '<span style="color:#333"><strong>Devis :</strong></span>'.$this->$order->getQuotation().'</span>'  : "",
+                        '{devis}' => $order->getQuotation() ? '<span style="color:#333"><strong>Devis :</strong></span>'.$order->getQuotation()->reference.'</span>'  : "",
                         '{total_tax_paid}' => Tools::displayPrice(($order->total_paid_tax_incl - $order->total_paid_tax_excl), $this->context->currency, false));
 
                         if (is_array($extra_vars)) {
