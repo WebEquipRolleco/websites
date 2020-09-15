@@ -2,6 +2,12 @@
 
 	{$summary_tab}
 	{$addresses_tab}
+	{if ($order->getQuotation())}
+	<span style="text-align:center;">
+		Commande via devis {$order->getQuotation()->reference}
+	</span>
+	<br/>
+	{/if}
 	{$product_tab}
 	{$total_tab}
 
