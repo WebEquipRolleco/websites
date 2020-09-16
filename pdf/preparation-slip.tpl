@@ -23,6 +23,7 @@
 							{l s="INFORMATION COMMANDE" d='Shop.Pdf' pdf=true}
 						</td>
 					</tr>
+					
 					<tr>
 						<td style="text-align:center; border-bottom:1px solid black;">
 							<b>{l s="Date de la commande :" d='Shop.Pdf' pdf=true}</b>
@@ -37,6 +38,17 @@
 							{/foreach}
 						</td>
 					</tr>
+					{if $order->getQuotation()}
+					<tr>
+						<td style="text-align:center; border-bottom:1px solid black;">
+							<b>{l s="Devis :" d='Shop.Pdf' pdf=true}</b>
+							<br />
+							{$order->getQuotation()->reference}
+						</td>
+						<td style="text-align:center; border-bottom:1px solid black;">
+						</td>
+					</tr>
+					{/if}
 					<tr>
 						<td style="text-align:center">
 							{l s="Numéro de client :" d='Shop.Pdf' pdf=true}
