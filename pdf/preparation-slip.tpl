@@ -38,17 +38,7 @@
 							{/foreach}
 						</td>
 					</tr>
-					{if $order->getQuotation()}
-					<tr>
-						<td style="text-align:center; border-bottom:1px solid black;">
-							<b>{l s="Devis :" d='Shop.Pdf' pdf=true}</b>
-							<br />
-							{$order->getQuotation()->reference}
-						</td>
-						<td style="text-align:center; border-bottom:1px solid black;">
-						</td>
-					</tr>
-					{/if}
+										
 					<tr>
 						<td style="text-align:center">
 							{l s="Numéro de client :" d='Shop.Pdf' pdf=true}
@@ -159,6 +149,12 @@
 	<table cellpadding="3px">
 		<tr><td>&nbsp;</td></tr>
 	</table>
+
+{if $order->getQuotation()}
+	<table cellpadding="3px">
+		<tr><td><span style="background-color:#ffff66;font-size: 9pt">Via le devis : {$order->getQuotation()->reference}</span></td></tr>	
+	</table>
+{/if}
 
 	{* PRODUITS *}
 	<table width="100%" border="1" cellpadding="4px">
