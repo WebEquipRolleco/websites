@@ -21,7 +21,7 @@
                   <ul class="product-images js-modal-product-images">
                     {foreach from=$images item=image}
                       <li class="thumb-container">
-                        <img data-image-large-src="{$image->getFileUrl('large')|replace:'http:':'https:'}" class="thumb js-modal-thumb" src="{$image->getFileUrl('medium')|replace:'http:':'https:'}" alt="{$image->legend}" title="{$image-$
+                        <img data-image-large-src="{$image->getFileUrl('large')|replace:'http:':'https:'}" class="thumb js-modal-thumb" src="{$image->getFileUrl('medium')|replace:'http:':'https:'}" alt="{$image->legend}" title="{$image->legend}" width="600" itemprop="image">
                       </li>
                     {/foreach}
                   </ul>

@@ -3,7 +3,7 @@
 <div class="images-container">
   {block name='product_cover'}
     <div class="product-cover">
-      {if $product.cover}
+      {if $product.cover} 
         <a data-toggle="modal" data-target="#product-modal" style="cursor:pointer">
           <img class="js-qv-product-cover col-lg-12" src="{$product.cover.bySize.large_default.url}" alt="{$product.cover.legend}" title="{$product.cover.legend}" itemprop="image">
         </a>
