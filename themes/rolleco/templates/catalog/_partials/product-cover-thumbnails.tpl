@@ -21,9 +21,9 @@
             <img
               id="product_image_{$image->id}"
               class="thumb js-thumb {if $image->cover} selected {/if}"
-              data-image-medium-src="{$image->getFileUrl('medium')|replace:'http:':'https:'}"
-              data-image-large-src="{$image->getFileUrl('large')|replace:'http:':'https:'}"
-              src="{$image->getFileUrl('home')|replace:'http:':'https:'}"
+              data-image-medium-src="{$image->getFileUrl('medium')}"
+              data-image-large-src="{$image->getFileUrl('large')}"
+              src="{$image->getFileUrl('home')}"
               alt="{$image->legend}"
               title="{$image->legend}"
               width="100"
