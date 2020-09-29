@@ -126,9 +126,9 @@ class OrderHistory extends OrderHistoryCore {
                         $file_attachement['term_of_use']['mime'] = 'application/pdf';
                     }
 
-                } else
+                } else {
                     $file_attachement = null;
-
+                }
                 /*  */
                 $emails[] = $result['email'];
                 $emails[] = Configuration::get('PS_SHOP_EMAIL');
@@ -141,6 +141,9 @@ class OrderHistory extends OrderHistoryCore {
                         null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop)) {
                            return false;
                     }
+
+                var_dump($file_attachement);
+                die();
             }
 
             ShopUrl::resetMainDomainCache();
