@@ -102,7 +102,7 @@ class OrderHistory extends OrderHistoryCore {
                     $context = Context::getContext();
                     $invoice = $order->getInvoicesCollection();
                     $file_attachement = array();
-                    var_dump("test");
+                    var_dump($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE') && $order->invoice_number);
                     die();
                     /* Condition pour la generation de la facture */
                     if ($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE') && $order->invoice_number) {
