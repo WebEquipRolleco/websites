@@ -134,11 +134,16 @@ class OrderHistory extends OrderHistoryCore {
                 $emails[] = $result['email'];
                 $emails[] = Configuration::get('PS_SHOP_EMAIL');
 
+
+
                 /* Boucle pour l'envoi des emails pour chaque mail renseigne */
                 foreach($emails as $email)
                     if(!Mail::Send((int)$order->id_lang, $result['template'], $topic, $data, $email, $result['firstname'].' '.$result['lastname'],
-                        null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop))
-                        return false;
+                        null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop)) {
+                            var_dump($email);
+                            die();
+                           return false;
+                    }
             }
 
             ShopUrl::resetMainDomainCache();
