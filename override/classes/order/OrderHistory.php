@@ -110,6 +110,8 @@ class OrderHistory extends OrderHistoryCore {
                         $file_attachement['invoice']['content'] = $pdf->render(false);
                         $file_attachement['invoice']['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop).sprintf('%06d', $order->invoice_number).'.pdf';
                         $file_attachement['invoice']['mime'] = 'application/pdf';
+                        var_dump($file_attachement);
+                        die();
                     }
 
                     /* Condition pour la generation du bordereau de livraison */
