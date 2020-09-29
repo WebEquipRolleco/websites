@@ -1,7 +1,5 @@
 <div style="font-size: 9pt; color: #444">
 
-	{$product_tab}
-	{$total_tab}
 
 </div>
 
