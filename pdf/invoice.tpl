@@ -1,11 +1,5 @@
 <div style="font-size: 9pt; color: #444">
 
-	{if ($order->getQuotation())}
-	<span style="text-align:center;">
-		Commande via devis {$order->getQuotation()->reference}
-	</span>
-	<br/>
-	{/if}
 	{$product_tab}
 	{$total_tab}
 
