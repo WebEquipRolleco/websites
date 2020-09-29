@@ -140,8 +140,6 @@ class OrderHistory extends OrderHistoryCore {
                 foreach($emails as $email)
                     if(!Mail::Send((int)$order->id_lang, $result['template'], $topic, $data, $email, $result['firstname'].' '.$result['lastname'],
                         null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop)) {
-                            var_dump($email);
-                            die();
                            return false;
                     }
             }

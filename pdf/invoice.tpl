@@ -1,6 +1,5 @@
 <div style="font-size: 9pt; color: #444">
 
-	{$summary_tab}
 	{$addresses_tab}
 	{if ($order->getQuotation())}
 	<span style="text-align:center;">
