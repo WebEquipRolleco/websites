@@ -131,14 +131,12 @@ class PDFCore
 
             unset($template);
         }
-
+        $render = true;
         if ($render) {
             // clean the output buffer
             if (ob_get_level() && ob_get_length() > 0) {
                 ob_clean();
             }
-            var_dump($this->pdf_renderer);
-            die();
             return $this->pdf_renderer->render($this->filename, $display);
         }
     }
