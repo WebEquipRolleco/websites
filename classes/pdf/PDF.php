@@ -109,6 +109,8 @@ class PDFCore
         foreach ($this->objects as $object) {
             $this->pdf_renderer->startPageGroup();
             $template = $this->getTemplateObject($object);
+            var_dump("test");
+            die();
             if (!$template) {
                 continue;
             }
@@ -131,7 +133,7 @@ class PDFCore
 
             unset($template);
         }
-        $render = true;
+
         if ($render) {
             // clean the output buffer
             if (ob_get_level() && ob_get_length() > 0) {
