@@ -111,13 +111,12 @@ class PDFCore
         //foreach ($this->objects as $object) {
 
             $this->pdf_renderer->startPageGroup();
-            var_dump("test12");
             $template = $this->getTemplateObject($object);
 
             if (!$template) {
                 var_dump("test");
                 die();
-                continue;
+                //continue;
             }
 
             if (empty($this->filename)) {
