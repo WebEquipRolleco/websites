@@ -13556,10 +13556,11 @@ class TCPDF {
 	 */
 	public function startPageGroup($page='') {
 		if (empty($page)) {
+            var_dump("test");
+            die();
 			$page = $this->page + 1;
 		}
-	    var_dump("test");
-		die();
+
 		$this->newpagegroup[$page] = sizeof($this->newpagegroup) + 1;
 	}
 
