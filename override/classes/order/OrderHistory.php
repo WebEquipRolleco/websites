@@ -108,7 +108,7 @@ class OrderHistory extends OrderHistoryCore {
                         /* Condition pour la generation de la facture */
 
                         if ($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE')) {
-                            Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
+                           // Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
                             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
                             $file_attachement['invoice']['content'] = $pdf->render(false);
                             $file_attachement['invoice']['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop) . sprintf('%06d', $order->invoice_number) . '.pdf';
