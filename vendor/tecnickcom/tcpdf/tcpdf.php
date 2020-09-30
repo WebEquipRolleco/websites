@@ -13562,7 +13562,9 @@ class TCPDF {
 
         $page = 1;
 
-		$this->newpagegroup[$page] = sizeof($this->newpagegroup) + 1;
+		//$this->newpagegroup[$page] = sizeof($this->newpagegroup) + 1;
+
+        $this->newpagegroup[$page] = 1;
 	}
 
 	/**
