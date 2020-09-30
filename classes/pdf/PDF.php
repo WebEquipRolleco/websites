@@ -110,6 +110,7 @@ class PDFCore
 
         foreach ($this->objects as $object) {
             var_dump("test1");
+            die();
             $this->pdf_renderer->startPageGroup();
             var_dump("test12");
             $template = $this->getTemplateObject($object);
