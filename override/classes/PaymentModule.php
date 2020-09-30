@@ -435,7 +435,10 @@ class PaymentModule extends PaymentModuleCore {
                         $product_var_tpl = array(
                             'id_product' => $product['id_product'],
                             'reference' => $product['reference'],
-                            'name' => $product['name'].(isset($product['attributes']) ? ' - '.$product['attributes'] : ''),
+                            'name' => $product['name'],
+                            'comment_1' => (isset($product['comment_1']) ? ' - '.$product['comment_1'] : ''),
+                            'comment_2' => (isset($product['comment_2']) ? ' - '.$product['comment_2'] : ''),
+                            'attributes' => (isset($product['attributes']) ? ' - '.$product['attributes'] : ''),
                             'price' => Tools::displayPrice($product_price * $product['quantity'], $this->context->currency, false),
                             'price_ht' => Tools::displayPrice($price * $product['quantity'], $this->context->currency, false),
                             'price_ttc' => Tools::displayPrice($price_wt * $product['quantity'], $this->context->currency, false),
