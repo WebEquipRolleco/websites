@@ -44,11 +44,11 @@
 				<td>
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
 						<strong>{$product['name']}</strong>
-						{if $product['comment_1'].length > 0}
+						{if $product['comment_1']}
 							<br>
 							<p>{$product['comment_1']}</p>
 						{/if}
-						{if $product['comment_2'].length > 0}
+						{if $product['comment_2']}
 							<br>
 							<p>{$product['comment_2']}</p>
 						{/if}
