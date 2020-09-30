@@ -107,9 +107,6 @@ class OrderHistory extends OrderHistoryCore {
 
                     $invoice = $order_invoices;
 
-                    var_dump($invoice);
-                    die();
-
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
                     $this->processGenerateInvoicePdf();
