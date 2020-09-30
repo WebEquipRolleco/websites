@@ -107,11 +107,13 @@ class OrderHistory extends OrderHistoryCore {
 
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
-                    $this->processGenerateInvoicePdf();
+
                     if ($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE')) {
                         //Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
-                        $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
-                        $file_attachement['invoice']['content'] = $pdf->render();
+                       // $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
+
+                        $pdf = $this->processGenerateInvoicePdf();
+                        $file_attachement['invoice']['content'] = $pdf->render(false);
                         $file_attachement['invoice']['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop) . sprintf('%06d', $order->invoice_number) . '.pdf';
                         $file_attachement['invoice']['mime'] = 'application/pdf';
                     }
@@ -157,9 +159,9 @@ class OrderHistory extends OrderHistoryCore {
     public function processGenerateInvoicePdf()
     {
         if (Tools::isSubmit('id_order_invoice')) {
-            $this->generateInvoicePDFByIdOrderInvoice(Tools::getValue('id_order_invoice'));
+            return $this->generateInvoicePDFByIdOrderInvoice(Tools::getValue('id_order_invoice'));
         } elseif (Tools::isSubmit('id_order')) {
-            $this->generateInvoicePDFByIdOrder(Tools::getValue('id_order'));
+            return $this->generateInvoicePDFByIdOrder(Tools::getValue('id_order'));
         }
         else {
             die($this->trans('The order ID -- or the invoice order ID -- is missing.', array(), 'Admin.Orderscustomers.Notification'));
@@ -171,7 +173,7 @@ class OrderHistory extends OrderHistoryCore {
     {
         $order_invoice = new OrderInvoice((int)$id_order_invoice);
         Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => array($order_invoice)));
-        $this->generatePDF($order_invoice, PDF::TEMPLATE_INVOICE);
+        return  $this->generatePDF($order_invoice, PDF::TEMPLATE_INVOICE);
     }
 
 
@@ -180,7 +182,7 @@ class OrderHistory extends OrderHistoryCore {
         $order = new Order((int)$id_order);
         $order_invoice_list = $order->getInvoicesCollection();
         Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $order_invoice_list));
-        $this->generatePDF($order_invoice_list, PDF::TEMPLATE_INVOICE);
+        return $this->generatePDF($order_invoice_list, PDF::TEMPLATE_INVOICE);
     }
 
 
@@ -188,6 +190,6 @@ class OrderHistory extends OrderHistoryCore {
     public function generatePDF($object, $template)
     {
         $pdf = new PDF($object, $template, Context::getContext()->smarty);
-        $pdf->render();
+        return $pdf->render(false);
     }
 }
