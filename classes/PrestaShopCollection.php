@@ -43,7 +43,7 @@ class PrestaShopCollectionCore implements Iterator, ArrayAccess, Countable
     /**
      * @var int
      */
-    public $id_lang;
+    private $id_lang;
 
     /**
      * @var array Object definition

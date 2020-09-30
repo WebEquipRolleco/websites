@@ -101,7 +101,10 @@ class OrderHistory extends OrderHistoryCore {
                 if (($result['pdf_invoice'] || $result['pdf_delivery'])) {
                     $context = Context::getContext();
                     $invoice = $order->getInvoicesCollection();
-                    $invoice->id_lang = "fr";
+
+                    $order_detail = new OrderDetail($order->getOrderDetailList()[0]);
+                    $invoice = new OrderInvoice($order_detail->id_order_invoice);
+
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
                     $this->processGenerateInvoicePdf();
