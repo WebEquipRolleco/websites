@@ -64,7 +64,9 @@
 						{l s="[1]IBAN[/1] vendeur :" tags=["<b>"] pdf=true} <br />
 						{Configuration::getForOrder('PS_SHOP_IBAN', $order)|default:'-'} <br />
 						{l s="[1]SWIFT/BIC[/1] vendeur :" tags=["<b>"] pdf=true} <br />
-						{Configuration::getForOrder('PS_SHOP_BIC', $order)|default:'-'}
+						{Configuration::getForOrder('PS_SHOP_BIC', $order)|default:'-'} <br />
+						{l s="[1]CIC[/1] vendeur :" tags=["<b>"] pdf=true} <br />
+						{Configuration::getForOrder('PS_SHOP_CIC', $order)|default:'-'}
 					</td>
 				</tr>
 			</table>
