@@ -422,7 +422,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
     private function sendInvoice() {
 
-        
+        //TODO
         // PDF
         foreach($this->getCurrentOrder()->getInvoicesCollection() as $invoice) {
             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
