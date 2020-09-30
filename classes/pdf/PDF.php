@@ -154,7 +154,7 @@ class PDFCore
      *
      * @throws PrestaShopException
      */
-    protected getTemplateObject($object)
+    protected function getTemplateObject($object)
     {
         $class = false;
         $class_name = 'HTMLTemplate'.$this->template;
