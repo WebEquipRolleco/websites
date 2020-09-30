@@ -152,11 +152,12 @@ class OrderHistory extends OrderHistoryCore {
 
     public function processGenerateInvoicePdf()
     {
-        if (Tools::isSubmit('id_order')) {
-            $this->generateInvoicePDFByIdOrder(Tools::getValue('id_order'));
-        } elseif (Tools::isSubmit('id_order_invoice')) {
+        if (Tools::isSubmit('id_order_invoice')) {
             $this->generateInvoicePDFByIdOrderInvoice(Tools::getValue('id_order_invoice'));
-        } else {
+        } elseif (Tools::isSubmit('id_order')) {
+            $this->generateInvoicePDFByIdOrder(Tools::getValue('id_order'));
+        }
+        else {
             die($this->trans('The order ID -- or the invoice order ID -- is missing.', array(), 'Admin.Orderscustomers.Notification'));
         }
     }
