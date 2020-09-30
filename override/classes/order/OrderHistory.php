@@ -100,15 +100,8 @@ class OrderHistory extends OrderHistoryCore {
                 /* Condition en cas de fichier a ajouter en tant que piece jointe */
                 if (($result['pdf_invoice'] || $result['pdf_delivery'])) {
                     $context = Context::getContext();
-                    var_dump($order->id);
-                    die();
                     $invoice = $order->getInvoicesCollection();
-
-                    $order_invoices = new PrestaShopCollection('OrderInvoice');
-                    $order_invoices->where('id_order', '=', $order->id);
-
-                    $invoice = $order_invoices;
-
+                    $invoice->id_lang = "fr";
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
                     $this->processGenerateInvoicePdf();
