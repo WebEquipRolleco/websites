@@ -146,7 +146,8 @@ class PDFGeneratorCore extends TCPDF
         } else {
             $this->font = self::DEFAULT_FONT;
         }
-
+        var_dump($this->font);
+        die();
         $this->setHeaderFont(array($this->font, '', PDF_FONT_SIZE_MAIN, '', false));
         $this->setFooterFont(array($this->font, '', PDF_FONT_SIZE_MAIN, '', false));
 
