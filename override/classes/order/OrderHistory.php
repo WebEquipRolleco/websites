@@ -102,7 +102,7 @@ class OrderHistory extends OrderHistoryCore {
                     $context = Context::getContext();
                     $invoice = $order->getInvoicesCollection();
 
-                    $order_detail = new OrderDetail($order->getOrderDetailList()[$order->getOrderDetailList()->lenght()]);
+                    $order_detail = new OrderDetail($order->getOrderDetailList()[sizeof($order->getOrderDetailList()) - 1]);
                     $invoice = new OrderInvoice($order_detail->id_order_invoice);
 
                     $file_attachement = array();
