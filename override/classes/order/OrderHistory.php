@@ -103,7 +103,7 @@ class OrderHistory extends OrderHistoryCore {
                     $invoice = $order->getInvoicesCollection();
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
-                    $this->processGenerateInvoicesPDF();
+                    $this->processGenerateInvoicePdf();
                     if ($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE')) {
                         //Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
                         $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
@@ -149,16 +149,44 @@ class OrderHistory extends OrderHistoryCore {
         return true;
     }
 
-    public function processGenerateInvoicesPDF()
-    {
-        $order_invoice_collection = OrderInvoice::getByDateInterval(Tools::getValue('date_from'), Tools::getValue('date_to'));
 
-        if (!count($order_invoice_collection)) {
-            die($this->trans('No invoice was found.', array(), 'Admin.Orderscustomers.Notification'));
+    public function processGenerateInvoicePdf()
+    {
+        if (Tools::isSubmit('id_order')) {
+            $this->generateInvoicePDFByIdOrder(Tools::getValue('id_order'));
+        } elseif (Tools::isSubmit('id_order_invoice')) {
+            $this->generateInvoicePDFByIdOrderInvoice(Tools::getValue('id_order_invoice'));
+        } else {
+            die($this->trans('The order ID -- or the invoice order ID -- is missing.', array(), 'Admin.Orderscustomers.Notification'));
+        }
+    }
+
+
+    public function generateInvoicePDFByIdOrderInvoice($id_order_invoice)
+    {
+        $order_invoice = new OrderInvoice((int)$id_order_invoice);
+        if (!Validate::isLoadedObject($order_invoice)) {
+            die($this->trans('The order invoice cannot be found within your database.', array(), 'Admin.Orderscustomers.Notification'));
         }
 
-        $this->generatePDF($order_invoice_collection, PDF::TEMPLATE_INVOICE);
+        Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => array($order_invoice)));
+        $this->generatePDF($order_invoice, PDF::TEMPLATE_INVOICE);
     }
+
+
+    public function generateInvoicePDFByIdOrder($id_order)
+    {
+        $order = new Order((int)$id_order);
+        if (!Validate::isLoadedObject($order)) {
+            die($this->trans('The order cannot be found within your database.', array(), 'Admin.Orderscustomers.Notification'));
+        }
+
+        $order_invoice_list = $order->getInvoicesCollection();
+        Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $order_invoice_list));
+        $this->generatePDF($order_invoice_list, PDF::TEMPLATE_INVOICE);
+    }
+
+
 
     public function generatePDF($object, $template)
     {
