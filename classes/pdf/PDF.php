@@ -107,10 +107,10 @@ class PDFCore
 
         $render = false;
         $this->pdf_renderer->setFontForLang(Context::getContext()->language->iso_code);
-
+        var_dump("test1");
+        die();
         foreach ($this->objects as $object) {
-            var_dump("test1");
-            die();
+            
             $this->pdf_renderer->startPageGroup();
             var_dump("test12");
             $template = $this->getTemplateObject($object);
