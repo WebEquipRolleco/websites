@@ -103,9 +103,9 @@ class OrderHistory extends OrderHistoryCore {
                     $invoice = $order->getInvoicesCollection();
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
-
+                    $this->processGenerateInvoicesPDF();
                     if ($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE')) {
-                       // Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
+                        //Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
                         $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
                         $file_attachement['invoice']['content'] = $pdf->render(false);
                         $file_attachement['invoice']['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop) . sprintf('%06d', $order->invoice_number) . '.pdf';
@@ -147,5 +147,16 @@ class OrderHistory extends OrderHistoryCore {
         }
 
         return true;
+    }
+
+    public function processGenerateInvoicesPDF()
+    {
+        $order_invoice_collection = OrderInvoice::getByDateInterval(Tools::getValue('date_from'), Tools::getValue('date_to'));
+
+        if (!count($order_invoice_collection)) {
+            die($this->trans('No invoice was found.', array(), 'Admin.Orderscustomers.Notification'));
+        }
+
+        $this->generatePDF($order_invoice_collection, PDF::TEMPLATE_INVOICE);
     }
 }
