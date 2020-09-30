@@ -134,7 +134,7 @@ class PDFCore
             $render = true;
 
             unset($template);
-        //}
+        }
 
         if ($render) {
             // clean the output buffer
@@ -154,7 +154,7 @@ class PDFCore
      *
      * @throws PrestaShopException
      */
-    protected function getTemplateObject($object)
+    public function getTemplateObject($object)
     {
         $class = false;
         $class_name = 'HTMLTemplate'.$this->template;
