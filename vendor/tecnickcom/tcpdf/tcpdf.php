@@ -13555,7 +13555,7 @@ class TCPDF {
 	 * @since 3.0.000 (2008-03-27)
 	 */
 	public function startPageGroup($page='') {
-        var_dump(empty($page));
+        var_dump($page);
         die();
 
 	    if (empty($page)) {
