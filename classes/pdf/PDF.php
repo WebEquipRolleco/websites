@@ -106,6 +106,8 @@ class PDFCore
     {
 
         $render = false;
+        var_dump($this->pdf_renderer);
+        die();
         $this->pdf_renderer->setFontForLang(Context::getContext()->language->iso_code);
 
         foreach ($this->objects as $object) {
@@ -125,11 +127,6 @@ class PDFCore
             }
 
             $template->assignHookData($object);
-
-            echo $template->getHeader();
-            echo $template->getContent();
-            echo $template->getFooter();
-            exit;
 
             $this->pdf_renderer->createHeader($template->getHeader());
             $this->pdf_renderer->createFooter($template->getFooter());
