@@ -100,8 +100,8 @@ class OrderHistory extends OrderHistoryCore {
                 /* Condition en cas de fichier a ajouter en tant que piece jointe */
                 if (($result['pdf_invoice'] || $result['pdf_delivery'])) {
                     $context = Context::getContext();
+                    $order->setInvoice(true);
                     $invoice = $order->getInvoicesCollection();
-                    $invoice = OrderInvoice::getByDeliveryDateInterval(Tools::getValue('date_from'), Tools::getValue('date_to'));
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
 
