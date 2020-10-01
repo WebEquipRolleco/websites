@@ -311,7 +311,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                                 $history->id_order = (int)$order->id;
 
                                 $history->changeIdOrderState((int)$row[1], $order);
-
+                                $order->setInvoice();
 
                             }
                         }
