@@ -102,10 +102,9 @@ class OrderHistory extends OrderHistoryCore {
                     $context = Context::getContext();
                     $invoice = $order->getInvoicesCollection();
 
-                    $order_detail = new OrderDetail($order->getOrderDetailList()[sizeof($order->getOrderDetailList()) - 1]);
-                    //$invoice = new OrderInvoice($order_detail->id_order_invoice);
-                    var_dump($order_detail);
-                    die();
+                    $order_detail = $order->getOrderDetailList()[sizeof($order->getOrderDetailList()) - 1];
+                    $invoice = new OrderInvoice($order_detail->id_order_invoice);
+
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
 
