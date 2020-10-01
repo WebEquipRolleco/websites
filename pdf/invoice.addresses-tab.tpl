@@ -53,8 +53,7 @@
 						<br /> {l s="Date de réglement :" pdf=true}
 					</td>
 					<td width="45%" style="text-align:center">
-						
-						<br /> {if $order->isPaid()} {$order -> getDatePaid()|date_format:'d/m/Y'}{else}{/if}
+
 					</td>
 				</tr>
 				<tr style="font-size:8px">
