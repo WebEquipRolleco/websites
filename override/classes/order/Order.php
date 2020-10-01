@@ -684,4 +684,101 @@ class Order extends OrderCore {
         
         return false;
     }
+
+
+    /**
+     * This method allows to generate first invoice of the current order
+     */
+    public function setInvoice($use_existing_payment = false)
+    {
+        if (!$this->hasInvoice()) {
+            if ($id = (int)$this->getOrderInvoiceIdIfHasDelivery()) {
+                $order_invoice = new OrderInvoice($id);
+            } else {
+                $order_invoice = new OrderInvoice();
+            }
+            $order_invoice->id_order = $this->id;
+            if (!$id) {
+                $order_invoice->number = 0;
+            }
+
+            // Save Order invoice
+
+            $this->setInvoiceDetails($order_invoice);
+
+            if (Configuration::get('PS_INVOICE')) {
+                $this->setLastInvoiceNumber($order_invoice->id, $this->id_shop);
+            }
+
+
+
+            // Update order_carrier
+            $id_order_carrier = Db::getInstance()->getValue('
+                SELECT `id_order_carrier`
+                FROM `'._DB_PREFIX_.'order_carrier`
+                WHERE `id_order` = '.(int)$order_invoice->id_order.'
+                AND (`id_order_invoice` IS NULL OR `id_order_invoice` = 0)');
+
+            if ($id_order_carrier) {
+                $order_carrier = new OrderCarrier($id_order_carrier);
+                $order_carrier->id_order_invoice = (int)$order_invoice->id;
+                $order_carrier->update();
+            }
+
+            // Update order detail
+            Db::getInstance()->execute('
+                UPDATE `'._DB_PREFIX_.'order_detail`
+                SET `id_order_invoice` = '.(int)$order_invoice->id.'
+                WHERE `id_order` = '.(int)$order_invoice->id_order);
+
+            // Update order payment
+            if ($use_existing_payment) {
+                $id_order_payments = Db::getInstance()->executeS('
+                    SELECT DISTINCT op.id_order_payment
+                    FROM `'._DB_PREFIX_.'order_payment` op
+                    INNER JOIN `'._DB_PREFIX_.'orders` o ON (o.reference = op.order_reference)
+                    LEFT JOIN `'._DB_PREFIX_.'order_invoice_payment` oip ON (oip.id_order_payment = op.id_order_payment)
+                    WHERE (oip.id_order != '.(int)$order_invoice->id_order.' OR oip.id_order IS NULL) AND o.id_order = '.(int)$order_invoice->id_order);
+
+                if (count($id_order_payments)) {
+                    foreach ($id_order_payments as $order_payment) {
+                        Db::getInstance()->execute('
+                            INSERT INTO `'._DB_PREFIX_.'order_invoice_payment`
+                            SET
+                                `id_order_invoice` = '.(int)$order_invoice->id.',
+                                `id_order_payment` = '.(int)$order_payment['id_order_payment'].',
+                                `id_order` = '.(int)$order_invoice->id_order);
+                    }
+                    // Clear cache
+                    Cache::clean('order_invoice_paid_*');
+                }
+            }
+
+            // Update order cart rule
+            Db::getInstance()->execute('
+                UPDATE `'._DB_PREFIX_.'order_cart_rule`
+                SET `id_order_invoice` = '.(int)$order_invoice->id.'
+                WHERE `id_order` = '.(int)$order_invoice->id_order);
+
+            if (!$this->invoice_date)
+                $this->invoice_date = $order_invoice->date_add;
+
+            if (!$this->invoice_number && Configuration::get('PS_INVOICE')) {
+                $this->invoice_number = $this->getInvoiceNumber($order_invoice->id);
+                $invoice_number = Hook::exec('actionSetInvoice', array(
+                    get_class($this) => $this,
+                    get_class($order_invoice) => $order_invoice,
+                    'use_existing_payment' => (bool)$use_existing_payment
+                ));
+
+                if (is_numeric($invoice_number)) {
+                    $this->invoice_number = (int)$invoice_number;
+                } else {
+                    $this->invoice_number = $this->getInvoiceNumber($order_invoice->id);
+                }
+            }
+
+            $this->update();
+        }
+    }
 }
