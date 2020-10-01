@@ -38,7 +38,7 @@
 					<td width="50%" style="text-align:center">
 						{$order->date_add|date_format:'d/m/Y'}
 						<br /> {$order->invoice_date|date_format:'d/m/Y'}
-						<br /> {$order->getPaymentDeadline()->format('d/m/Y')}
+						
 						<br /> {$order->payment|default:'-'}
 						<br /> {$order->getCustomer()->tva|default:'-'}
 					</td>
