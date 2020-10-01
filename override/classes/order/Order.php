@@ -553,7 +553,7 @@ class Order extends OrderCore {
 
 		// Borner la recherche à un date maximum
 		if(isset($options['date_end'])) {
-            strtotime($options['date_end'])->add(new DateInterval('P1D'));
+            date('Y-m-d', strtotime($options['date_end']))->add(new DateInterval('P1D'));
 
 			if(!is_string($options['date_end'])) $options['date_end'] = $options['date_end']->format('Y-m-d 00:00:00');
 			$sql .= " AND o.date_add <= '".$options['date_end']."'";
