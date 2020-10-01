@@ -635,7 +635,7 @@ class Order extends OrderCore {
 
         foreach($this -> getStatusHistory() as $status)
             if ($status["paid"])
-                return $status[date_add] ;
+                return $status["date_add"] ;
 
         return "";
     }
