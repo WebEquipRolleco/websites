@@ -104,7 +104,6 @@ class OrderHistory extends OrderHistoryCore {
                     $invoice = $order->getInvoicesCollection();
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
-
                     if ($result['pdf_invoice'] && (int)Configuration::get('PS_INVOICE')) {
                         //Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
                         $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
@@ -150,41 +149,4 @@ class OrderHistory extends OrderHistoryCore {
         return true;
     }
 
-
-    public function processGenerateInvoicePdf()
-    {
-        if (Tools::isSubmit('id_order_invoice')) {
-            return $this->generateInvoicePDFByIdOrderInvoice(Tools::getValue('id_order_invoice'));
-        } elseif (Tools::isSubmit('id_order')) {
-            return $this->generateInvoicePDFByIdOrder(Tools::getValue('id_order'));
-        }
-        else {
-            die($this->trans('The order ID -- or the invoice order ID -- is missing.', array(), 'Admin.Orderscustomers.Notification'));
-        }
-    }
-
-
-    public function generateInvoicePDFByIdOrderInvoice($id_order_invoice)
-    {
-        $order_invoice = new OrderInvoice((int)$id_order_invoice);
-        Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => array($order_invoice)));
-        return  $this->generatePDF($order_invoice, PDF::TEMPLATE_INVOICE);
-    }
-
-
-    public function generateInvoicePDFByIdOrder($id_order)
-    {
-        $order = new Order((int)$id_order);
-        $order_invoice_list = $order->getInvoicesCollection();
-        Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $order_invoice_list));
-        return $this->generatePDF($order_invoice_list, PDF::TEMPLATE_INVOICE);
-    }
-
-
-
-    public function generatePDF($object, $template)
-    {
-        $pdf = new PDF($object, $template, Context::getContext()->smarty);
-        return $pdf->render(false);
-    }
 }
