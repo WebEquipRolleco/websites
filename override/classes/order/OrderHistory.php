@@ -101,7 +101,7 @@ class OrderHistory extends OrderHistoryCore {
                 if (($result['pdf_invoice'] || $result['pdf_delivery'])) {
                     $context = Context::getContext();
                     $invoice = $order->getInvoicesCollection();
-
+                    $invoice = OrderInvoice::getByDeliveryDateInterval(Tools::getValue('date_from'), Tools::getValue('date_to'));
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
 
