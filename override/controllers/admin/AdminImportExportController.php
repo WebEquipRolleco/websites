@@ -5,7 +5,7 @@ require_once("imports/Import.php");
 
 class AdminImportExportControllerCore extends AdminController {
 
-    const SEPARATOR = "@";
+    const SEPARATOR = ";";
     const DELIMITER = "|";
 
     private $separator;
