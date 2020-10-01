@@ -102,9 +102,6 @@ class OrderHistory extends OrderHistoryCore {
                     $context = Context::getContext();
                     $invoice = $order->getInvoicesCollection();
 
-                   // $order_detail = $order->getOrderDetailList()[sizeof($order->getOrderDetailList()) - 1];
-                    //$invoice = new OrderInvoice($order_detail->id_order_invoice);
-
                     $file_attachement = array();
                     /* Condition pour la generation de la facture */
 
@@ -112,9 +109,11 @@ class OrderHistory extends OrderHistoryCore {
                         //Hook::exec('actionPDFInvoiceRender', array('order_invoice_list' => $invoice));
                         $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $context->smarty);
 
-                        $pdf = $this->processGenerateInvoicePdf();
-                        $file_attachement['invoice']['content'] = $this->processGenerateInvoicePdf();
-                        //$file_attachement['invoice']['content'] = $this->processGenerateInvoicePdf();
+                        foreach($order->getInvoicesCollection() as $invoice) {
+                            $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
+                        }
+
+                        $file_attachement['invoice']['content'] = $pdf->render(false);
                         $file_attachement['invoice']['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop) . sprintf('%06d', $order->invoice_number) . '.pdf';
                         $file_attachement['invoice']['mime'] = 'application/pdf';
                     }

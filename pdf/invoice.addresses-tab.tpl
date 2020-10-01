@@ -38,7 +38,7 @@
 					<td width="50%" style="text-align:center">
 						{$order->date_add|date_format:'d/m/Y'}
 						<br /> {$order->invoice_date|date_format:'d/m/Y'}
-
+						<br /> {$order->getPaymentDeadline()->format('d/m/Y')}
 						<br /> {$order->payment|default:'-'}
 						<br /> {$order->getCustomer()->tva|default:'-'}
 					</td>
@@ -53,7 +53,8 @@
 						<br /> {l s="Date de réglement :" pdf=true}
 					</td>
 					<td width="45%" style="text-align:center">
-
+						{if $order->isPaid()}Oui{else}Non{/if}
+						<br /> {if $order->isPaid()} {$order -> getDatePaid()|date_format:'d/m/Y'}{else}{/if}
 					</td>
 				</tr>
 				<tr style="font-size:8px">

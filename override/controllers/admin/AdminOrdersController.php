@@ -428,7 +428,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
         }
         
-        $attachments['invoice']['content'] = $pdf->render();
+        $attachments['invoice']['content'] = $pdf->render(false);
         $attachments['invoice']['name'] = "facture.pdf";
         $attachments['invoice']['mime'] = 'application/pdf';
 
