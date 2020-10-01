@@ -299,6 +299,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
                                 $history->id_order = $order->id;
                                 $history->id_order_state = $row[1];
+                                $order->setCurrentState($history->id_order_state);
+
                                 $history->id_employee = $this->context->employee->id;
                                 $history->date_add = date('Y-m-d H:i:s');
                                 $history->save();
@@ -422,7 +424,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
     private function sendInvoice() {
 
-        //TODO
         // PDF
         foreach($this->getCurrentOrder()->getInvoicesCollection() as $invoice) {
             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
