@@ -294,7 +294,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
 
                             if($row[1]) {
 
-                                $history = new OrderHistory();
+                                /*$history = new OrderHistory();
                                 $history->changeIdOrderState($row[1], $order->id);
 
                                 $history->id_order = $order->id;
@@ -304,8 +304,15 @@ class AdminOrdersController extends AdminOrdersControllerCore {
                                 $history->id_employee = $this->context->employee->id;
                                 $history->date_add = date('Y-m-d H:i:s');
                                 $history->save();
-                                //$history->sendEmail($order);
-                                
+                                $history->sendEmail($order);*/
+
+
+                                $history = new OrderHistory();
+                                $history->id_order = (int)$order->id;
+
+                                $history->changeIdOrderState((int)$row[1], $order);
+
+
                             }
                         }
                         else
