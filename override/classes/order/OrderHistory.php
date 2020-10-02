@@ -70,6 +70,10 @@ class OrderHistory extends OrderHistoryCore {
 
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $order->date_add);
 
+            if(empty($order->invoice_date)){
+                $order->invoice_date = date("d/m/Y");
+            }
+
             $topic = $result['osname'];
             $data = array(
                 '{lastname}' => $result['lastname'],
@@ -80,7 +84,7 @@ class OrderHistory extends OrderHistoryCore {
                 '{deadline}' => $order->getPaymentDeadline() ? $order->getPaymentDeadline()->format('d/m/Y') : '',
                 '{shop_phone}' => Configuration::get('PS_SHOP_PHONE'),
                 '{order_date}' => $date ? $date->format('d/m/Y') : '',
-                '{date_payment}' => date_format($order->invoice_date, 'Y/m/d')
+                '{date_payment}' => date_format($order->invoice_date, 'd/m/Y')
             );
 
             if ($result['module_name']) {

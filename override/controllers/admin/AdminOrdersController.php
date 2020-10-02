@@ -436,7 +436,12 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         foreach($this->getCurrentOrder()->getInvoicesCollection() as $invoice) {
             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
         }
-        
+
+        if(empty($this->getCurrentOrder()->invoice_date)){
+            $this->getCurrentOrder()->invoice_date = date("d/m/Y");
+        }
+
+
         $attachments['invoice']['content'] = $pdf->render(false);
         $attachments['invoice']['name'] = "facture.pdf";
         $attachments['invoice']['mime'] = 'application/pdf';
@@ -449,7 +454,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $data['{firstname}'] = $this->getCurrentOrder()->getCustomer()->firstname;
         $data['{lastname}'] = $this->getCurrentOrder()->getCustomer()->lastname;
         $data['{shop_phone'] = Configuration::getForOrder('PS_SHOP_PHONE', $this->getCurrentOrder());
-        $data['{date_payment}'] = date_format($this->getCurrentOrder()->invoice_date, 'Y/m/d');
+        $data['{date_payment}'] = date_format($this->getCurrentOrder()->invoice_date, 'd/m/Y');
 
         // Proforma
         if($this->getCurrentOrder()->isProforma()) {
