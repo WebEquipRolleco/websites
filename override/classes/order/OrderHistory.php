@@ -80,7 +80,7 @@ class OrderHistory extends OrderHistoryCore {
             }
 
             if(!$order->invoice_date || empty($order->invoice_date) || $order->invoice_date == "0000-00-00 00:00:00"){
-                $order->invoice_date = new DateTime();
+                $order->invoice_date = new Date();
                 $order->save();
             }
 
