@@ -78,7 +78,7 @@ class OrderHistory extends OrderHistoryCore {
             if(!$order->payment_date || empty($order->payment_date) || $order->payment_date == "0000-00-00 00:00:00"){
                 $order->payment_date = new DateTime();
                 if($order->getDatePaid())
-                    $order->payment_date = $order->getDatePaid();
+                    $order->payment_date = new DateTime($order->getDatePaid());
                 $order->save();
             }
 
