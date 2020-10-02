@@ -780,25 +780,19 @@ class PaymentModule extends PaymentModuleCore {
 
                         $emails = array();
                         if(Validate::isEmail($this->context->customer->email)) $emails[] = $this->context->customer->email;
-                        if(Validate::isEmail(Configuration::get('PS_SHOP_EMAIL'))) $emails[] = Configuration::get('PS_SHOP_EMAIL');
+                        if(Validate::isEmail(Configuration::get('PS_SHOP_EMAIL'))) $emails[] = ;
 
                         foreach($emails as $email) {
-                            Mail::Send(
-                                (int)$order->id_lang,
+                            Mail::Send((int)$order->id_lang,
                                 'order_conf',
                                 Context::getContext()->getTranslator()->trans(
                                     'Order confirmation',
                                     array(),
                                     'Emails.Subject',
-                                    $orderLanguage->locale
-                                ),
-                                $data,
-                                $email,
-                                $this->context->customer->firstname.' '.$this->context->customer->lastname,
-                                null,
-                                null,
-                                $file_attachement,
-                                null, _PS_MAIL_DIR_, false, (int)$order->id_shop
+                                    $orderLanguage->locale),
+                                $data, $email, $this->context->customer->firstname.' '.$this->context->customer->lastname,
+                                null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop,
+                                null,Configuration::get('PS_SHOP_EMAIL')
                             );
                         }
                     }
