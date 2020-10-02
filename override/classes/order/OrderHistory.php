@@ -74,7 +74,9 @@ class OrderHistory extends OrderHistoryCore {
                 $order->invoice_date = new DateTime();
                 $order->save();
             }
-            $order->invoice_date = new DateTime($order->invoice_date);
+            if(!($order->invoice_date instanceof DateTime)) {
+                $order->invoice_date = new DateTime($order->invoice_date);
+            }
             $topic = $result['osname'];
             $data = array(
                 '{lastname}' => $result['lastname'],
