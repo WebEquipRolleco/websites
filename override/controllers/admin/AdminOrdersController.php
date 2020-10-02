@@ -443,6 +443,9 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
 
         if(!$this->getCurrentOrder()->payment_date || empty($this->getCurrentOrder()->payment_date) || $this->getCurrentOrder()->payment_date == "0000-00-00 00:00:00"){
+            //TODO
+            $this->getCurrentOrder()->getDatePaid();
+
             $this->getCurrentOrder()->payment_date = new DateTime();
             $this->getCurrentOrder()->save();
         }
@@ -1606,8 +1609,6 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         } elseif (Tools::isSubmit('messageReaded')) {
             Message::markAsReaded(Tools::getValue('messageReaded'), $this->context->employee->id);
         } elseif (Tools::isSubmit('submitAddPayment') && isset($order)) {
-            var_dump("coucou");
-            die();
             if ($this->access('edit')) {
                 $amount = str_replace(',', '.', Tools::getValue('payment_amount'));
                 $currency = new Currency(Tools::getValue('payment_currency'));

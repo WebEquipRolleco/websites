@@ -108,5 +108,11 @@ class ExportOrders extends Export {
 
         return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
     }
-    
+
+    function getDatePaid(){
+        $history = $this->getHistory(1);
+        var_dump($history);
+        die();
+    }
+
 }
