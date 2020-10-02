@@ -73,7 +73,8 @@ class OrderHistory extends OrderHistoryCore {
             if(!$order->invoice_date || empty($order->invoice_date)){
                 $order->invoice_date = date("d/m/Y");
             }
-
+            var_dump($order->invoice_date);
+            die();
             $topic = $result['osname'];
             $data = array(
                 '{lastname}' => $result['lastname'],
