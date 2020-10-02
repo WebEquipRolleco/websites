@@ -44,6 +44,8 @@ class Order extends OrderCore {
 	private $address_delivery;
 	private $cart;
 
+	public $payment_date;
+
 	/**
 	* OVERRIDE : ajout de champs
     * @see ObjectModel::$definition

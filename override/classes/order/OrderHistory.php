@@ -74,9 +74,16 @@ class OrderHistory extends OrderHistoryCore {
                 $order->invoice_date = new DateTime();
                 $order->save();
             }
+
+            if(!$order->payment_date || empty($order->payment_date) || $order->payment_date == "0000-00-00 00:00:00"){
+                $order->payment_date = new DateTime();
+                $order->save();
+            }
+
             if(!($order->invoice_date instanceof DateTime)) {
                 $order->invoice_date = new DateTime($order->invoice_date);
             }
+
             $topic = $result['osname'];
             $data = array(
                 '{lastname}' => $result['lastname'],
@@ -87,7 +94,7 @@ class OrderHistory extends OrderHistoryCore {
 
                 '{shop_phone}' => Configuration::get('PS_SHOP_PHONE'),
                 '{order_date}' => $date ? $date->format('d/m/Y') : '',
-                '{date_payment}' => $order->invoice_date->format('d/m/Y'),
+                '{date_payment}' => $order->payment_date->format('d/m/Y'),
                 '{deadline}' => $order->getPaymentDeadline() ? $order->getPaymentDeadline()->format('d/m/Y') : ''
         );
 
