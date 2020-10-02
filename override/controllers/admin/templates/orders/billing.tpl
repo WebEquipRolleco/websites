@@ -18,7 +18,7 @@
             {if $invoice_date instanceof DateTime}
               <input type="date" class="form-control" name="invoice_date" value="{$order->invoice_date->format('d/m/Y')}">
             {else}
-              <input type="date" class="form-control" name="invoice_date" value="{$order->invoice_date|date_format('d/m/Y')}">
+              <input type="date" class="form-control" name="invoice_date" value="{$order->invoice_date|date_format:'d/m/Y'}">
             {/if}
             {if $order->getPaymentDeadline()}
               <b>{l s='Date limite de paiment :'} <span class="text-danger">{$order->getPaymentDeadline()->format('d/m/Y')}</span></b>
