@@ -437,7 +437,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
         }
 
-        if(!$this->getCurrentOrder()->invoice_date || empty($this->getCurrentOrder()->invoice_date)){
+        if(!$this->getCurrentOrder()->invoice_date || empty($this->getCurrentOrder()->invoice_date) || $this->getCurrentOrder()->invoice_date == "0000-00-00 00:00:00"){
             $this->getCurrentOrder()->invoice_date = date("d/m/Y");
         }
 
