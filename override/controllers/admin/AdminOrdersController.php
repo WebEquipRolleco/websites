@@ -437,10 +437,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $pdf = new PDF($invoice, PDF::TEMPLATE_INVOICE, $this->context->smarty);
         }
 
-        if(!$this->getCurrentOrder()->invoice_date || empty($this->getCurrentOrder()->invoice_date) || $this->getCurrentOrder()->invoice_date == "0000-00-00 00:00:00"){
-            $this->getCurrentOrder()->invoice_date = date("Y-m-d H:i:s");
-            $this->getCurrentOrder()->save();
-        }
+
 
         $attachments['invoice']['content'] = $pdf->render(false);
         $attachments['invoice']['name'] = "facture.pdf";
@@ -455,6 +452,12 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $data['{lastname}'] = $this->getCurrentOrder()->getCustomer()->lastname;
         $data['{shop_phone'] = Configuration::getForOrder('PS_SHOP_PHONE', $this->getCurrentOrder());
         $data['{date_payment}'] = date_format($this->getCurrentOrder()->invoice_date, 'd/m/Y');
+        if(!$this->getCurrentOrder()->invoice_date || empty($this->getCurrentOrder()->invoice_date) || $this->getCurrentOrder()->invoice_date == "0000-00-00 00:00:00"){
+            $this->getCurrentOrder()->invoice_date = date("Y-m-d H:i:s");
+            $this->getCurrentOrder()->save();
+            $data['{date_payment}'] = date('d/m/Y');
+        }
+
 
         // Proforma
         if($this->getCurrentOrder()->isProforma()) {
