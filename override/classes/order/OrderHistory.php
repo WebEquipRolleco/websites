@@ -70,18 +70,20 @@ class OrderHistory extends OrderHistoryCore {
 
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $order->date_add);
 
-            if(!$order->invoice_date || empty($order->invoice_date) || $order->invoice_date == "0000-00-00 00:00:00"){
-                $order->invoice_date = new DateTime();
-                $order->save();
-            }
+
 
             if(!$order->payment_date || empty($order->payment_date) || $order->payment_date == "0000-00-00 00:00:00"){
                 $order->payment_date = new DateTime();
                 if($order->getDatePaid())
                     $order->payment_date = new DateTime($order->getDatePaid());
-                $order->save();
+
             }
 
+            if(!$order->invoice_date || empty($order->invoice_date) || $order->invoice_date == "0000-00-00 00:00:00"){
+                $order->invoice_date = new DateTime();
+                //$order->save();
+            }
+            $order->save();
             if(!($order->invoice_date instanceof DateTime)) {
                 $order->invoice_date = new DateTime($order->invoice_date);
             }
