@@ -83,8 +83,6 @@ class OrderHistory extends OrderHistoryCore {
                 $order->invoice_date = new DateTime();
                 $order->save();
             }
-            var_dump($order->invoice_date);
-            die();
 
             $order->save();
             if(!($order->invoice_date instanceof DateTime)) {
