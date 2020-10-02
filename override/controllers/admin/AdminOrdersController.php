@@ -441,10 +441,10 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $this->getCurrentOrder()->invoice_date = new DateTime();
             $this->getCurrentOrder()->save();
         }
-
+        $this->getCurrentOrder()->getDatePaid();
         if(!$this->getCurrentOrder()->payment_date || empty($this->getCurrentOrder()->payment_date) || $this->getCurrentOrder()->payment_date == "0000-00-00 00:00:00"){
             //TODO
-            $this->getCurrentOrder()->getDatePaid();
+
 
             $this->getCurrentOrder()->payment_date = new DateTime();
             $this->getCurrentOrder()->save();
