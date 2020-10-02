@@ -78,16 +78,14 @@ class OrderHistory extends OrderHistoryCore {
                     $order->payment_date = new DateTime($order->getDatePaid());
 
             }
-
+            var_dump($order->invoice_date);
+            die();
             if(!$order->invoice_date || empty($order->invoice_date) || $order->invoice_date == "0000-00-00 00:00:00"){
-                $order->invoice_date = new DateTime();
+                $order->invoice_date = new Date();
                 $order->save();
             }
 
             $order->save();
-            if(!($order->invoice_date instanceof DateTime)) {
-                $order->invoice_date = new DateTime($order->invoice_date);
-            }
 
             $topic = $result['osname'];
             $data = array(
