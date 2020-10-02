@@ -791,7 +791,7 @@ class PaymentModule extends PaymentModuleCore {
                                     $orderLanguage->locale),
                                 $data, $email, $this->context->customer->firstname.' '.$this->context->customer->lastname,
                                 null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop,
-                                null,Configuration::get('PS_SHOP_EMAIL')
+                                null, Configuration::getForShop('PS_SHOP_EMAIL', null)
                             );
                         }
                     }
