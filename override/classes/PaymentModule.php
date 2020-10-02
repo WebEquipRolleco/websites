@@ -780,7 +780,6 @@ class PaymentModule extends PaymentModuleCore {
 
                         $emails = array();
                         if(Validate::isEmail($this->context->customer->email)) $emails[] = $this->context->customer->email;
-                        if(Validate::isEmail(Configuration::get('PS_SHOP_EMAIL'))) $emails[] = ;
 
                         foreach($emails as $email) {
                             Mail::Send((int)$order->id_lang,
