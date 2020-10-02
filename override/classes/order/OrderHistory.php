@@ -70,7 +70,7 @@ class OrderHistory extends OrderHistoryCore {
 
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $order->date_add);
 
-            if(empty($order->invoice_date)){
+            if(!$order->invoice_date || empty($order->invoice_date)){
                 $order->invoice_date = date("d/m/Y");
             }
 
