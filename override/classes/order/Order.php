@@ -193,8 +193,10 @@ class Order extends OrderCore {
     	if(!$this->payment_deadline and $this->invoice_date and $this->invoice_date != '0000-00-00') {
 
 
-    		$this->payment_deadline = DateTime::createFromFormat('Y-m-d H:i:s', $this->invoice_date);
-
+            $this->payment_deadline = DateTime::createFromFormat('Y-m-d H:i:s', $this->invoice_date);
+            if($this->invoice_date instanceof DateTime){
+                $this->payment_deadline = $this->invoice_date;
+            }
     		$delay = Configuration::get('PAYMENT_TIME_LIMIT');
     		if($delay) $this->payment_deadline->modify("+$delay day");
     	}
