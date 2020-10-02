@@ -441,7 +441,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $this->getCurrentOrder()->invoice_date = new DateTime();
             $this->getCurrentOrder()->save();
         }
-
+        $this->getCurrentOrder()->invoice_date = new DateTime($this->getCurrentOrder()->invoice_date);
         $attachments['invoice']['content'] = $pdf->render(false);
         $attachments['invoice']['name'] = "facture.pdf";
         $attachments['invoice']['mime'] = 'application/pdf';
