@@ -43,7 +43,10 @@
 				<td width="10">&nbsp;</td>
 				<td>
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-
+						<strong>{$product->name}</strong>
+						{if $product->comment}
+							<p>{$product->comment}</p>
+						{/if}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -56,7 +59,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-
+						{$product->selling_price}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -69,7 +72,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-
+						{$product->quantity}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -82,7 +85,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-
+						{$product->selling_price * $product->quantity}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
