@@ -621,6 +621,22 @@ class CartCore extends ObjectModel
     }
 
     /**
+     * Methode pour la recuperation des produits venant d'un devis
+     */
+    public function getProductsQuotation() {
+
+        /* Recuperation de l'association */
+        if ($association = QuotationAssociation::find($this->id)) {
+
+            if ($quotation = new Quotation($association[0]->id)) {
+                return $quotation->getProducts();
+
+            }
+        }
+        return array();
+    }
+
+    /**
      * Return cart products
      *
      * @param bool $refresh
@@ -632,12 +648,17 @@ class CartCore extends ObjectModel
      */
     public function getProducts($refresh = false, $id_product = false, $id_country = null, $fullInfos = true)
     {
+
+        /* Condition en cas d'id null ou vide */
         if (!$this->id) {
             return array();
         }
+
         // Product cache must be strictly compared to NULL, or else an empty cart will add dozens of queries
+        /* Condition pour verifier que la liste de produit n'est pas vide */
         if ($this->_products !== null && !$refresh) {
             // Return product row with specified ID if it exists
+            /* Condition pour recuperer la ligne de l'article si celui-ci est dans les arguments de la methode */
             if (is_int($id_product)) {
                 foreach ($this->_products as $product) {
                     if ($product['id_product'] == $id_product) {

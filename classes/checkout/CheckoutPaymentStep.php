@@ -86,6 +86,7 @@ class CheckoutPaymentStepCore extends AbstractCheckoutStep
         $conditionsToApprove = $this->conditionsToApproveFinder->getConditionsToApproveForTemplate();
         $deliveryOptions = $this->getCheckoutSession()->getDeliveryOptions();
         $deliveryOptionKey = $this->getCheckoutSession()->getSelectedDeliveryOption();
+        $productQuotation = $this->getCheckoutSession()->getCart()->getProductsQuotation();
 
         if (isset($deliveryOptions[$deliveryOptionKey])) {
             $selectedDeliveryOption = $deliveryOptions[$deliveryOptionKey];
@@ -101,6 +102,7 @@ class CheckoutPaymentStepCore extends AbstractCheckoutStep
             'selected_payment_option' => $this->selected_payment_option,
             'selected_delivery_option' => $selectedDeliveryOption,
             'show_final_summary' => Configuration::get('PS_FINAL_SUMMARY_ENABLED'),
+            'product_quotation' => $productQuotation,
         );
 
         return $this->renderTemplate($this->getTemplate(), $extraParams, $assignedVars);

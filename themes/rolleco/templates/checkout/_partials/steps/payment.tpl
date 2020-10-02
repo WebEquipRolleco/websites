@@ -84,6 +84,23 @@
             </td>
           </tr>
         {/foreach}
+        {foreach from=$product_quotation item=productQuotation}
+          <tr class="text-muted">
+            <td class="text-center" style="vertical-align:middle;">
+              <div class="bold">{$productQuotation->name}</div>
+              {l s="Référence : %s" sprintf=[$productQuotation->reference]}
+            </td>
+            <td class="text-center" style="vertical-align:middle;">
+              {$productQuotation->quantity}
+            </td>
+            <td class="text-center" style="vertical-align:middle;">
+              {Tools::displayPrice($productQuotation->selling_price)}
+            </td>
+            <td class="text-center" style="vertical-align:middle;">
+              {Tools::displayPrice($productQuotation->quantity * $productQuotation->selling_price)}
+            </td>
+          </tr>
+        {/foreach}
         {foreach from=OrderOptionCart::findByCart($context->cart->id) item=option}
           <tr class="text-muted">
             <td class="text-center" style="vertical-align:middle;">

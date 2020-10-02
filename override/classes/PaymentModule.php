@@ -32,6 +32,7 @@ class PaymentModule extends PaymentModuleCore {
         $secure_key = false,
         Shop $shop = null
     ) {
+
         if (self::DEBUG_MODE) {
             PrestaShopLogger::addLog('PaymentModule::validateOrder - Function called', 1, null, 'Cart', (int)$id_cart, true);
         }
@@ -743,6 +744,7 @@ class PaymentModule extends PaymentModuleCore {
                             '{payment}' => Tools::substr($order->payment, 0, 255),
                             '{products}' => $product_list_html,
                             '{products_txt}' => $product_list_txt,
+                            '{products_quotation}' => $this->getEmailTemplateContent('order_conf_product_list.tpl', Mail::TYPE_HTML, $this->context->cart->getProductsQuotation()),
                             '{discounts}' => $cart_rules_list_html,
                             '{discounts_txt}' => $cart_rules_list_txt,
                             '{total_paid}' => Tools::displayPrice($order->total_paid_tax_incl, $this->context->currency, false),
