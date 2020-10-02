@@ -80,7 +80,7 @@ class OrderHistory extends OrderHistoryCore {
                 '{deadline}' => $order->getPaymentDeadline() ? $order->getPaymentDeadline()->format('d/m/Y') : '',
                 '{shop_phone}' => Configuration::get('PS_SHOP_PHONE'),
                 '{order_date}' => $date ? $date->format('d/m/Y') : '',
-                '{date_payment}' => $order->delivery_date->format('d/m/y')
+                '{date_payment}' => $order->invoice_date->format('d/m/y')
             );
 
             if ($result['module_name']) {

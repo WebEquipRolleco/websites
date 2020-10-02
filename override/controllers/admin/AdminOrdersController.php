@@ -448,8 +448,8 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         $data['{order_date}'] = $date->format('d/m/Y');
         $data['{firstname}'] = $this->getCurrentOrder()->getCustomer()->firstname;
         $data['{lastname}'] = $this->getCurrentOrder()->getCustomer()->lastname;
-        $data['{shop_phone'] = Configuration::getForOrder('PS_SHOP_PHONE', $this->getCurrentOrder());
-        $data['{date_payment}'] = $this->getCurrentOrder()->delivery_date->format('d/m/y');
+        $data['{shop_phone'] = Configuration::getForOrder('PS_SHOP_PHONE', $this->getCurrentOrder()),
+        $data['{date_payment}'] = $this->getCurrentOrder()->invoice_date->format('d/m/y')
 
         // Proforma
         if($this->getCurrentOrder()->isProforma()) {
