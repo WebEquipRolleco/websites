@@ -438,7 +438,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
         }
 
         if(!$this->getCurrentOrder()->invoice_date || empty($this->getCurrentOrder()->invoice_date) || $this->getCurrentOrder()->invoice_date == "0000-00-00 00:00:00"){
-            $this->getCurrentOrder()->invoice_date = date("d/m/Y");
+            $this->getCurrentOrder()->invoice_date = date("Y-m-d H:i:s");
         }
 
         $attachments['invoice']['content'] = $pdf->render(false);
