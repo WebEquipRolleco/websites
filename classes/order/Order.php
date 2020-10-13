@@ -604,6 +604,7 @@ class OrderCore extends ObjectModel
      */
     public function getProducts($products = false, $selected_products = false, $selected_qty = false, $fullInfos = true)
     {
+
         if (!$products) {
             $products = $this->getProductsDetail();
         }
@@ -614,6 +615,10 @@ class OrderCore extends ObjectModel
 
         $result_array = array();
         foreach ($products as $row) {
+
+            $row['supplier_name'] = (new Supplier($row['id_supplier']))->name;
+
+
             // Change qty if selected
             if ($selected_qty) {
                 $row['product_quantity'] = 0;

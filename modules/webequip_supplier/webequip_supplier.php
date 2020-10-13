@@ -135,16 +135,16 @@ class webequip_supplier extends Module {
 				foreach($order->getProducts() as $detail) {
 
 					// Exclure le Roll+
-					if($detail['id_product'] == $id_rollplus)
-						continue;
+					//if($detail['id_product'] == $id_rollplus)
+					//	continue;
 
 					// Exclure les produits sans sous-traitant
 					if(!$detail['id_supplier'])
 						continue; 
 
 					// Vérifier si les infos ont été renseignées pour ce produit
-					if($detail['order_extends_detail']['day'] || $detail['order_extends_detail']['week'])
-						continue;
+					//if($detail['order_extends_detail']['day'] || $detail['order_extends_detail']['week'])
+					//	continue;
 
 					// Ajouter les infos de la commande dans le produit
 					$detail['order'] = $order;
