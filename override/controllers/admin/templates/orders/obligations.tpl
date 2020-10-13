@@ -76,6 +76,24 @@
         $('#save_new_oa').trigger('click');
     });
 
+
+    $(document).on('keypress','input', function (e) {
+
+      var id = $(this).attr('id');
+      var id_oa = id.replace("code_", "")
+      if (e.which == 13) {
+        $.ajax({
+          url: "{$link->getAdminLink('AdminOrders')}",
+          data: { ajax:true, action:"save_oa", id_order:{$order->id}, id_oa:id_oa, id_supplier:$('#id_supplier_'+id_oa).val(), code:$('#code_'+id_oa).val() },
+          dataType: "json",
+          success : function(response) {
+            $('#ajax_OA').html(response.view);
+          }
+        });
+      }
+    });
+
+
     /**
     * Enregistrer nouvel OA
     **/
