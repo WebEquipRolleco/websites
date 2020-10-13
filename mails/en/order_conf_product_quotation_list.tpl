@@ -30,7 +30,7 @@
 				<td width="10">&nbsp;</td>
 				<td>
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						{$product->reference}
+						{$product['product_reference']}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -43,9 +43,12 @@
 				<td width="10">&nbsp;</td>
 				<td>
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						<strong>{$product->name}</strong>
-						{if $product->comment}
-							<p>{$product->comment}</p>
+						<strong>{$product['product_name']}</strong>
+						{if $product['comment_1']}
+							<p>{$product['comment_1']}</p>
+						{/if}
+						{if $product['comment_2']}
+							<p>{$product['comment_2']}</p>
 						{/if}
 					</font>
 				</td>
@@ -59,7 +62,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						{Tools::displayPrice($product->selling_price)}
+						{Tools::displayPrice($product['unit_price_tax_excl'])}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -72,7 +75,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						{$product->quantity}
+						{$product['product_quantity']}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>
@@ -85,7 +88,7 @@
 				<td width="10">&nbsp;</td>
 				<td align="right">
 					<font size="2" face="Open-sans, sans-serif" color="#555454">
-						{Tools::displayPrice($product->selling_price * $product->quantity)}
+						{Tools::displayPrice($product['unit_price_tax_excl'] * $product['product_quantity'])}
 					</font>
 				</td>
 				<td width="10">&nbsp;</td>

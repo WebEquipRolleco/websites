@@ -694,6 +694,11 @@ class PaymentModule extends PaymentModuleCore {
                     // Order is reloaded because the status just changed
                     $order = new Order((int)$order->id);
 
+                    /* Condition en cas de devis */
+                    $product_list_quotation = '';
+                    if (count($this->context->cart->getProductsQuotation()) > 0 )
+                        $product_list_quotation = $this->getEmailTemplateContent('order_conf_product_quotation_list.tpl', Mail::TYPE_HTML, $order->getProducts());
+
                     // Send an e-mail to customer (one order = one email)
                     if ($id_order_state != Configuration::get('PS_OS_ERROR') && $id_order_state != Configuration::get('PS_OS_CANCELED') && $this->context->customer->id) {
                         $invoice = new Address((int)$order->id_address_invoice);
@@ -744,7 +749,7 @@ class PaymentModule extends PaymentModuleCore {
                             '{payment}' => Tools::substr($order->payment, 0, 255),
                             '{products}' => $product_list_html,
                             '{products_txt}' => $product_list_txt,
-                            '{products_quotation}' => $this->getEmailTemplateContent('order_conf_product_quotation_list.tpl', Mail::TYPE_HTML, $this->context->cart->getProductsQuotation()),
+                            '{products_quotation}' => $product_list_quotation,
                             '{discounts}' => $cart_rules_list_html,
                             '{discounts_txt}' => $cart_rules_list_txt,
                             '{total_paid}' => Tools::displayPrice($order->total_paid_tax_incl, $this->context->currency, false),
