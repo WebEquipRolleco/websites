@@ -301,22 +301,27 @@ class AdminQuotationsController extends AdminController {
 
                 if(!$quotation->id)
                     $quotation->generateReference(true);
-
+                //TODO
                 if(Tools::getValue('creation')) {
-                    $form = Tools::getValue('new_account'); 
+                    $form = Tools::getValue('new_account');
 
                     $customer = new Customer();
-                    $customer->email = $form['email'];
-                    $customer->firstname = $form['firstname'];
-                    $customer->lastname = $form['lastname'];
-                    $customer->id_account_type = $form['id_account_type'];
-                    $customer->company = $form['company'];
+                    if (Validate::isEmail($form['email'])) {
+                        $customer->getByEmail($form['email']);
+                    }
+                    if (!$customer->id){
+                        $customer->email = $form['email'];
+                        $customer->firstname = $form['firstname'];
+                        $customer->lastname = $form['lastname'];
+                        $customer->id_account_type = $form['id_account_type'];
+                        $customer->company = $form['company'];
 
-                    $customer->id_shop = $quotation->id_shop;
-                    $customer->quotation = Customer::QUOTATION_NEW;
-                    $customer->passwd = $this->crypto->hash($quotation->reference);
+                        $customer->id_shop = $quotation->id_shop;
+                        $customer->quotation = Customer::QUOTATION_NEW;
+                        $customer->passwd = $this->crypto->hash($quotation->reference);
 
-                    $customer->save();
+                        $customer->save();
+                    }
                     $quotation->id_customer = $customer->id;
                 }
 
