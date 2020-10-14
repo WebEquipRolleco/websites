@@ -136,7 +136,7 @@ class OrderInvoiceCore extends ObjectModel
         ON p.id_product = od.product_id
         LEFT JOIN `'._DB_PREFIX_.'product_shop` ps ON (ps.id_product = p.id_product AND ps.id_shop = od.id_shop)
         WHERE od.`id_order` = '.(int)$this->id_order.'
-        '.($this->id && $this->number ? ' AND od.`id_order_invoice` = '.(int)$this->id : '').' ORDER BY od.`product_name`');
+        '.($this->id && $this->number ? ' AND od.`id_order_invoice` = '.(int)$this->id : ''));
     }
 
     public static function getInvoiceByNumber($id_invoice)
@@ -168,6 +168,7 @@ class OrderInvoiceCore extends ObjectModel
      */
     public function getProducts($products = false, $selected_products = false, $selected_qty = false)
     {
+
         if (!$products) {
             $products = $this->getProductsDetail();
         }
@@ -907,5 +908,11 @@ class OrderInvoiceCore extends ObjectModel
             $db->execute('UPDATE `'._DB_PREFIX_.'order_invoice` INNER JOIN `'._DB_PREFIX_.'orders` USING (`id_order`)
                 SET `shop_address` = \''.$escaped_address.'\' WHERE `shop_address` IS NULL AND `id_shop` = '.$id_shop);
         }
+    }
+
+    public function trieDateAjout($a,$b){
+        if ($a[''] == b[''])
+            return 0;
+        return $a[''] > b[''] ? -1 : 1;
     }
 }
