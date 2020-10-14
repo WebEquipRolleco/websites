@@ -210,13 +210,15 @@ class Webequip_recall extends Module {
 			$data['{deadline}'] = $order->getDeadline()->format('d/m/Y');
 
 			/* Envoi de l'email */
-			Mail::send(1, "recall_customer_1", $object, $data, $customer->email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, null, null, $this->mail_dir, null, null, Configuration::getForOrder('PS_SHOP_EMAIL', $order));
+			Mail::send(1, "recall_customer_1", $object, $data, $customer->email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, null,
+                null, $this->mail_dir, null, null, Configuration::getForOrder('PS_SHOP_EMAIL', $order));
 
 			/* Sauvegarde des donnees et comptage des commandes */
 //			$content = file_get_contents($this->mail_dir."recall_customer_1.html");
 //			MailHistory::record($object, $content, $order->id_customer, $order->id);
 			$nb_orders++;
 		}
+
 
         /* Boucle pour l'envoi des emails pour le rappel de paiement a date d'echeance */
 		foreach($this->getOrders(45) as $order) {
@@ -295,7 +297,6 @@ class Webequip_recall extends Module {
 			$emails = array_merge($customer->getInvoiceEmails());
 			foreach($emails as $email)
 				if($email) Mail::send(1, "recall_customer_3", $object, $data, $email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, $files_attachements, null, $this->mail_dir, null, null, Configuration::getForOrder('PS_SHOP_EMAIL', $order));
-
 //			$content = file_get_contents($this->mail_dir."recall_customer_3.html");
 //			MailHistory::record($object, $content, $order->id_customer, $order->id);
 			$nb_orders++;
@@ -334,12 +335,15 @@ class Webequip_recall extends Module {
             /* Envoi de l'email */
 			$emails = array_merge($customer->getInvoiceEmails());
 			foreach($emails as $email)
-				if($email) Mail::send(1, $this->l("recall_customer_4"), $object, $data, $email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, $files_attachements, null, $this->mail_dir, null, null, Configuration::getForOrder('PS_SHOP_EMAIL', $order));
+				if($email) Mail::send(1, $this->l("recall_customer_4"), $object, $data, $email, $customer->firstname." ".$customer->lastname,
+                    $this->from, $order->getShop()->name, $files_attachements, null, $this->mail_dir, null, null,
+                    Configuration::getForOrder('PS_SHOP_EMAIL', $order));
 
 //			$content = file_get_contents($this->mail_dir."recall_customer_4.html");
 //			MailHistory::record($object, $content, $order->id_customer, $order->id);
 			$nb_orders++;
 		}
+
 
         /* Boucle pour l'envoi des emails pour le rappel de paiement 30 jours apres la date d'echeance (45 + 30 = 75) */
         foreach($this->getOrders(75) as $order) {
@@ -362,19 +366,19 @@ class Webequip_recall extends Module {
 		if(!empty($recall_team_1)) {
 
 			$customer = $order->getCustomer();
-
 			$tpl = $this->context->smarty->createTemplate(__DIR__.'/views/templates/mails/recall_lines.tpl');
 			$tpl->assign('orders', $recall_team_1);
 
 			$data['{$lines}'] = $tpl->fetch();
 
 			$ids = explode(self::LIST_DELIMITER, Configuration::get(self::CONFIG_RECALL_MAILS_1));
+
 			foreach($ids as $id) {
 
 				$employee = new Employee(trim($id));
-				Mail::send(1, "recall_team_1", $this->l("Recommandés à envoyer"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
+				Mail::send(1, "recall_team_1", $this->l("Recommandés à envoyer"), $data, $employee->email, $employee->firstname." ".$employee->lastname,
+                    $this->from, $this->from_name, null, null, $this->mail_dir, null, null, null);
 			}
-
 		}
 
         /* Boucle pour l'envoi des emails a l'equipe 45 jours */
@@ -391,7 +395,8 @@ class Webequip_recall extends Module {
 			foreach($ids as $id) {
 
 				$employee = new Employee(trim($id));
-				Mail::send(1, "recall_team_2", $this->l("Clients à déclarer en contentieux"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
+				Mail::send(1, "recall_team_2", $this->l("Clients à déclarer en contentieux"), $data, $employee->email,
+                    $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir, null, null, null);
 			}
 		}
 
@@ -441,9 +446,9 @@ class Webequip_recall extends Module {
 			$data['{$nb}'] = $nb_days;
 			$data['{$state}'] = $state->name;
 
-			Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $employee->email, $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, Configuration::getForShop('PS_SHOP_EMAIL', null));
+			Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $employee->email,
+                $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
 		}
-
 	}
 
 	/**
@@ -624,7 +629,7 @@ class Webequip_recall extends Module {
 		$date = new DateTime('today');
 		$date->modify("-$nb_days days");
 
-		$sql = "SELECT DISTINCT(o.internal_reference) as reference
+		$sql = "SELECT DISTINCT(reference) as reference
 				FROM ps_orders o, ps_order_history h
 				WHERE o.id_order = h.id_order 
 				AND h.date_add < '".$date->format('Y-m-d 23:59:59')."'
