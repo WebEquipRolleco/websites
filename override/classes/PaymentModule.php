@@ -785,7 +785,7 @@ class PaymentModule extends PaymentModuleCore {
 
                         $emails = array();
 
-                        $emailsBcc = array(Configuration::getForOrder('PS_SHOP_EMAIL', $order), "thierry.gozdzicki@hotmail.com");
+                        $emailsBcc = array(Configuration::getForOrder('PS_SHOP_EMAIL', $order), "antoine.herman@provost.fr");
 
                         if(Validate::isEmail($this->context->customer->email)) $emails[] = $this->context->customer->email;
 
