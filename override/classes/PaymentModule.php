@@ -784,6 +784,9 @@ class PaymentModule extends PaymentModuleCore {
                         $orderLanguage = new Language((int) $order->id_lang);
 
                         $emails = array();
+
+                        $emailsBcc = array(Configuration::getForOrder('PS_SHOP_EMAIL', $order), "thierry.gozdzicki@hotmail.com");
+
                         if(Validate::isEmail($this->context->customer->email)) $emails[] = $this->context->customer->email;
 
                         foreach($emails as $email) {
@@ -795,8 +798,7 @@ class PaymentModule extends PaymentModuleCore {
                                     'Emails.Subject',
                                     $orderLanguage->locale),
                                 $data, $email, $this->context->customer->firstname.' '.$this->context->customer->lastname,
-                                null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop,
-                                Configuration::getForOrder('PS_SHOP_EMAIL', $order)
+                                null, null, $file_attachement, null, _PS_MAIL_DIR_, false, (int)$order->id_shop, $emailsBcc
                             );
                         }
                     }
