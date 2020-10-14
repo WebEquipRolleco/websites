@@ -27,16 +27,16 @@
     {block name='breadcrumb'}
       {foreach from=$breadcrumb.links item=path name=breadcrumb}
         {block name='breadcrumb_item'}
-          <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <a itemprop="item" {if $smarty.foreach.breadcrumb.last}class="active"{else}href="{$path.url}"{/if}>
-              {if $smarty.foreach.breadcrumb.first}
-                <i class="fa fa-home"></i>
-              {else}
-                <span itemprop="name">{$path.title}</span>
-              {/if}
-            </a>
-            <meta itemprop="position" content="{$smarty.foreach.breadcrumb.iteration}">
-          </li>
+          {if not $smarty.foreach.breadcrumb.last}
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              <a itemprop="item" href="{$path.url}"><span itemprop="name">{$path.title}</span></a>
+              <meta itemprop="position" content="{$smarty.foreach.breadcrumb.iteration}">
+            </li>
+          {elseif isset($path.title)}
+            <li>
+              <span>{$path.title}</span>
+            </li>
+          {/if}
         {/block}
       {/foreach}
     {/block}
