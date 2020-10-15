@@ -215,6 +215,8 @@ class Psaddonsconnect extends Module
         $api = new WeekAdvice();
         $api_json = $api->getWeekData();
 
+        $advice ='';
+        $link_advice = '';
         if (!empty($api_json)) {
             $advice = $api_json->advice;
             $link_advice = $api_json->link;
