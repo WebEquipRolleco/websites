@@ -43,7 +43,8 @@ class ExportOrders extends Export {
         $csv = implode($this->separator, $this->getHeader()).parent::END_OF_LINE;
 
         $options['date_begin'] = Tools::getValue('date_begin');
-        $options['date_end'] = Tools::getValue('date_end');
+        
+        $options['date_end'] = date('Y-m-d H:i:s', strtotime(Tools::getValue('date_end') . ' +1 day'));
         
         /*$options['shops'] = array();
         foreach(Tools::getValue('shops') as $id => $value)
