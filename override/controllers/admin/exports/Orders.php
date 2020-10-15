@@ -56,12 +56,18 @@ class ExportOrders extends Export {
             $total = 0;
 
             foreach($order->getDetails() as $detail) {
-                
+
+                if ($detail->product_price < 0) {
+                    $detail->total_price_tax_excl = $detail->product_price;
+                }
                 $total += $detail->total_price_tax_excl;
                 $buying_price = $detail->getTotalBuyingPrice();
+
                 if ($detail->total_price_tax_excl == 0){
                     $margin = 0;
-                }else {
+                } else if ($detail->total_price_tax_excl < 0){
+                    $margin = $detail->total_price_tax_excl;
+                } else {
                     $margin = $order->total_products - $buying_price;
                 }
                 $margin_rate = ($order->total_products > 0) ? Tools::getMarginRate($margin, $order->total_products) : 0;
