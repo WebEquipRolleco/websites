@@ -13,7 +13,7 @@
 
 <div class="alert alert-info">
 	<b>Url de configuration de la cron :</b> 
-	<a href="https://{$cron_url}" target="_blank">{$cron_url}</a>
+	<a href="{$cron_url}" target="_blank">{$cron_url}</a>
 </div>
 
 <form method="post">

@@ -199,6 +199,11 @@ class webequip_supplier extends Module {
 		$url = Db::getInstance()->getValue("SELECT $select FROM ps_shop_url WHERE id_shop = 1");
 		$url .= "/modules/".$this->name."/cron.php?secure_key=".Configuration::get(self::SECURE_KEY)."&rnd=".uniqid();
 
+        $url = "http://".$url;
+		if ($ssl){
+		    $url = "https://".$url;
+        }
+
 		return $url;
 	}
 
