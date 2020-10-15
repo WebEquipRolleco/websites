@@ -58,17 +58,13 @@ class webequip_supplier extends Module {
 			$order = new Order($row['id_order']);
 			foreach($order->getProducts() as $detail) {
 
-				// Exclure le Roll+
-				if($detail['id_product'] == $id_rollplus)
-					continue;
-
 				// Exclure les produits sans sous-traitant
 				if(!$detail['id_supplier'])
 					continue; 
 
 				// Vérifier si les infos ont été renseignées pour ce produit
-				if($detail['order_extends_detail']['day'] || $detail['order_extends_detail']['week'])
-					continue;
+                if($detail['day'] != "0000-00-00" || $detail['week'] != "0" || $detail['comment'] != '')
+                    continue;
 
 				$detail['employees'] = $this->findEmployees($detail['id_supplier']);
 				$detail['order'] = $order;
@@ -143,8 +139,8 @@ class webequip_supplier extends Module {
 						continue; 
 
 					// Vérifier si les infos ont été renseignées pour ce produit
-					//if($detail['order_extends_detail']['day'] || $detail['order_extends_detail']['week'])
-					//	continue;
+					if($detail['day'] != "0000-00-00" || $detail['week'] != "0" || $detail['comment'] != '')
+						continue;
 
 					// Ajouter les infos de la commande dans le produit
 					$detail['order'] = $order;
