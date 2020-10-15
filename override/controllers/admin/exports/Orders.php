@@ -54,7 +54,6 @@ class ExportOrders extends Export {
 
             $new_order = true;
             $total = 0;
-
             foreach($order->getDetails() as $detail) {
 
                 if ($detail->product_price < 0) {
@@ -99,6 +98,45 @@ class ExportOrders extends Export {
 
                 $csv .= implode($this->separator, $data).parent::END_OF_LINE;
                 $new_order = false;
+            }
+
+            //ajout des remise dans le csv
+            if ($order->total_discounts > 0){
+
+                if ($order->total_discounts_tax_excl == 0){
+                    $margin = 0;
+                } else{
+                    $margin = $order->total_discounts_tax_excl * (-1);
+                }
+                $margin_rate = ($order->total_products > 0) ? Tools::getMarginRate($margin, $order->total_products) : 0;
+
+                $data = array();
+                $data[] = $order->getDate('date_add')->format('d/m/Y');
+                $data[] = $order->reference;
+                $data[] = '';
+                $data[] = '-';
+                $data[] = '-';
+                $data[] = $order->getShop()->name;
+                $data[] = $this->clean($order->product_supplier_reference);
+                $data[] = $this->clean('Remise');
+                $data[] = $this->clean('0');
+                $data[] = round($order-> total_discounts_tax_excl * -1, 2);
+                $data[] =  round($order-> total_discounts_tax_excl * -1, 2);
+                $data[] = round($margin, 2);
+                $data[] = round($margin_rate, 2);
+                $data[] = round($total, 2);
+                $data[] = (int)$new_order;
+                $data[] = $order->getCustomer()->id;
+                $data[] = $order->getDate('delivery_date')->format('d/m/Y');
+                $data[] = $order->getCustomer()->reference;
+                $data[] = $order->getCustomer()->firstname." ".$order->getCustomer()->lastname;
+                $data[] = $order->getCustomer()->getType() ? $order->getCustomer()->getType()->name : '-';
+                $data[] = $order->payment;
+                $data[] = AfterSale::hasAfterSales($order->id) ? "oui" : "non";
+                $data[] = $order->getState()->name;
+
+                $csv .= implode($this->separator, $data).parent::END_OF_LINE;
+
             }
         }
 
