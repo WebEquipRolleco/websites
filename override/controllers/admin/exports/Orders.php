@@ -58,7 +58,7 @@ class ExportOrders extends Export {
             foreach($order->getDetails() as $detail) {
 
                 if ($detail->product_price < 0) {
-                    $detail->total_price_tax_excl = $detail->product_price / 0.8;
+                    $detail->total_price_tax_excl = $detail->product_price / 1.2;
                 }
                 $total += $detail->total_price_tax_excl;
                 $buying_price = $detail->getTotalBuyingPrice();
