@@ -97,7 +97,7 @@ class ExportPrices extends Export {
             $data[] = str_replace('.', ',', $price->price);
             $data[] = str_replace('.', ',', $price->buying_price);
             $data[] = str_replace('.', ',', $price->delivery_fees);
-            $data[] = Tools::getMarginRate($price->buying_price + $price->delivery_fees, $price->price)."%";
+            $data[] = Tools::getMarginRate($price->price - $price->buying_price - $price->delivery_fees, $price->buying_price)."%";
             $data[] = $price->getTarget() ? str_replace('.', ',', $price->getTarget()->rollcash) : 0;
             $data[] = $price->comment_1;
             $data[] = $price->comment_2;
