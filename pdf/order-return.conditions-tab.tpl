@@ -24,7 +24,7 @@
  *}
 <table class="product" width="100%" cellpadding="4" cellspacing="0">
 	<tr>
-		<th class="header small left" valign="middle">{l s='If the following conditions are not met, we reserve the right to refuse your package and/or refund:' d='Shop.Pdf' pdf='true'}</th>
+		<th class="header small left" valign="middle">{l s='If the following conditions are not met, we reserve the right to  your package and/or refund:' d='Shop.Pdf' pdf='true'}</th>
 	</tr>
 	<tr>
 		<td class="center small white">

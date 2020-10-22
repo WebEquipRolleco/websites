@@ -114,6 +114,10 @@ class AdminImportExportControllerCore extends AdminController {
                     $export = new ExportCombinationsWithoutPrices();
                 break;
 
+                case 'devis':
+                    $export = new ExportDevis();
+                break;
+
             }
 
             if(isset($export)) {
