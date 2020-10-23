@@ -100,8 +100,8 @@
 										{assign var='loop_full_price' value=$specific_price.full_price}
 										{if $loop_full_price > 0 and $loop_full_price > $loop_price}
 											<tr>
-												<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)|string_format:"%.2f"}%</td>
 												<td class="text-right" style="text-decoration:line-through;">{Tools::displayPrice($loop_full_price)}</td>
+												<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)|string_format:"%.2f"}%</td>
 											</tr>
 										{/if}
 										<tr >
@@ -212,9 +212,8 @@
 							{foreach from=$prices item=specific_price}
 								{if $specific_price.full_price > 0 and $specific_price.full_price > $specific_price.price}
 									<div class="text-center">
-										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)|string_format:"%.2f"}%</span>
-										&nbsp;
 										<span class="text-info" style="text-decoration:line-through;">{Tools::displayPrice($specific_price.full_price)}</span>
+										<span class="text-danger bold">{Tools::getRate($specific_price.price, $specific_price.full_price)|string_format:"%.2f"}%</span>
 									</div>
 								{/if}
 								<div class="specific_prices_{$product.id_product} text-center text-info" data-price="{$specific_price.price}">
