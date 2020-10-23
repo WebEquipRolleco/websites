@@ -17,7 +17,7 @@ class Export_fast extends Export {
         $header[] = "Marge";
         $header[] = "Taux de marge";
         $header[] = "Num client Web";
-        $header[] = "Date d'expédition";
+        $header[] = "Limite de paiement";
         $header[] = "Num client M3";
         $header[] = "Client";
         $header[] = "Type";
@@ -42,8 +42,9 @@ class Export_fast extends Export {
 
             $new_order = true;
             $total = 0;
-            foreach($order->getOrder() as $detail) {
-
+                if ($order->total_discounts > 0) {
+                    continue;
+                }
                 $data = array();
                 $data[] = $order->getDate('date_add')->format('d/m/Y');
                 $data[] = $order->reference;
@@ -53,49 +54,14 @@ class Export_fast extends Export {
                 $data[] = round($order->getTotalPrice() - $order->getBuyingPrice(), 2);
                 $data[] = round((($order->getTotalPrice() - $order->getBuyingPrice()) / $order->getTotalPrice()) * 100, 2);
                 $data[] = $order->getCustomer()->id;
-                $data[] = $order->getDate('delivery_date')->format('d/m/Y');
+                $data[] = $order->getPaymentDeadline()->format('d/m/Y') == '14/01/0000' ? "" : $order->getPaymentDeadline()->format('d/m/Y');
                 $data[] = $order->getCustomer()->reference;
                 $data[] = $order->getCustomer()->firstname." ".$order->getCustomer()->lastname;
                 $data[] = $order->getCustomer()->getType() ? $order->getCustomer()->getType()->name : '-';
                 $data[] = $order->payment;
                 $data[] = $order->getState()->name;
                 $csv .= implode($this->separator, $data).parent::END_OF_LINE;
-                $new_order = false;
             }
-            //ajout des remise dans le csv
-            if ($order->total_discounts > 0){
-
-                if ($order->total_discounts_tax_excl == 0){
-                    $margin = 0;
-                } else{
-                    $margin = $order->total_discounts_tax_excl * (-1);
-                }
-                $margin_rate = ($order->total_products > 0) ? Tools::getMarginRate($margin, $order->total_products) : 0;
-
-                $data = array();
-                $data[] = $order->getDate('date_add')->format('d/m/Y');
-                $data[] = $order->reference;
-                $data[] = $order->getShop()->name;
-                $data[] = $this->clean($order->product_supplier_reference);
-                $data[] = $this->clean('Remise');
-                $data[] = $this->clean('0');
-                $data[] = round($order-> total_discounts_tax_excl * -1, 2);
-                $data[] =  round($order-> total_discounts_tax_excl * -1, 2);
-                $data[] = round($margin, 2);
-                $data[] = round($margin_rate, 2);
-                $data[] = (int)$new_order;
-                $data[] = $order->getCustomer()->id;
-                $data[] = $order->getDate('delivery_date')->format('d/m/Y');
-                $data[] = $order->getCustomer()->reference;
-                $data[] = $order->getCustomer()->firstname." ".$order->getCustomer()->lastname;
-                $data[] = $order->getCustomer()->getType() ? $order->getCustomer()->getType()->name : '-';
-                $data[] = $order->payment;
-                $data[] = $order->getState()->name;
-
-                $csv .= implode($this->separator, $data).parent::END_OF_LINE;
-
-            }
-        }
         $this->RenderCSV("commandes_".date('d-m_H-i').".csv", $csv);
     }
 
