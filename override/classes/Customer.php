@@ -261,4 +261,10 @@ class Customer extends CustomerCore {
         return DateTime::createFromFormat('d/m/Y', $this->date_add);
     }
 
+    public function getCustomerType() {
+	    $sql = "SELECT name FROM ps_account_type WHERE id_account_type =".$this->id_account_type;
+	    $customerType = db::getInstance()->getValue($sql);
+	    return $customerType;
+    }
+
 }

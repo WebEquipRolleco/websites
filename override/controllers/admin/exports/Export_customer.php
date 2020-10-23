@@ -23,7 +23,7 @@ class Export_customer extends Export
         $header[] = "Numero derniere commande";
         $header[] = "Montant derniere commande";
         $header[] = "Difference de jours";
-        $header[] = "Difference derniere et avant derniere commande";
+        $header[] = "Différence de jours depuis dernière commande";
         $header[] = "Nombre de commande";
         $header[] = "Moyenne de commande";
         $header[] = "Montant total";
@@ -52,17 +52,19 @@ class Export_customer extends Export
             foreach($customer->getOrders() as $order) {
                 $total_price_order += $order->getTotalPrice();
             }
+            $date = $order->date_add;
+            $date = date_create($date);
             $order = $customer->getLastOrder();
             $date_order = date_create($order->date_add);
                 $data = array();
                 $data[] = $customer->id;
-                $data[] = new AccountType($customer->id_account_type);
+                $data[] = $customer->getCustomerType();
                 $data[] = $customer->company;
                 $data[] = $customer->firstname;
                 $data[] = $customer->lastname;
                 $data[] = $customer->email;
                 $data[] = $customer->getPhone();
-                $data[] = $order->date_add;
+                $data[] = $date->format('d/m/y');
                 $data[] = $order->getUniqReference();
                 $data[] = round($order->getTotalPrice(), 2);
                 $data[] = (date_diff($date_order, $date_now))->format('%R%a');
