@@ -158,6 +158,9 @@
 					</div>
 				</div>
 				<div class="panel-footer text-right">
+					<button type="submit" class="btn" name="action" value="export_fast" style="width:69px">
+						<i class="process-icon-download"></i> <b>Simple</b>
+					</button>
 					<button type="submit" class="btn" name="action" value="export_devis" style="width:69px">
 						<i class="process-icon-download"></i> <b>Devis</b>
 					</button>

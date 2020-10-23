@@ -118,6 +118,10 @@ class AdminImportExportControllerCore extends AdminController {
                     $export = new ExportDevis();
                 break;
 
+                case 'fast':
+                    $export = new Export_fast();
+
+
             }
 
             if(isset($export)) {

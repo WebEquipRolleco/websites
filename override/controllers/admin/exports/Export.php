@@ -16,6 +16,7 @@ require_once("URL.php");
 require_once("CombinationsWithoutPrices.php");
 require_once("ProductsWithoutPrices.php");
 require_once("ExportDevis.php");
+require_once("Export_fast.php");
 
 class Export {
 
