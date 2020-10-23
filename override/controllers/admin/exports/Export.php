@@ -10,6 +10,7 @@ require_once("FeatureValues.php");
 require_once("Iconography.php");
 require_once("Orders.php");
 require_once("Prices.php");
+require_once("Export_customer.php");
 require_once("Products.php");
 require_once("URL.php");
 

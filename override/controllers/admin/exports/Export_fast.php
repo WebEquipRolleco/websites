@@ -11,7 +11,6 @@ class Export_fast extends Export {
 
         $header[] = "Date";
         $header[] = "Commande";
-        $header[] = "Site Web";
         $header[] = "Montant net";
         $header[] = "Prix d'achat";
         $header[] = "Marge";
@@ -48,7 +47,6 @@ class Export_fast extends Export {
                 $data = array();
                 $data[] = $order->getDate('date_add')->format('d/m/Y');
                 $data[] = $order->reference;
-                $data[] = $order->getShop()->name;
                 $data[] = round($order->getTotalPrice(), 2);
                 $data[] = round($order->getBuyingPrice(), 2);
                 $data[] = round($order->getTotalPrice() - $order->getBuyingPrice(), 2);

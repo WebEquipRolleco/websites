@@ -232,4 +232,33 @@ class Customer extends CustomerCore {
 		
 		return Db::getInstance()->executeS($sql);	
 	}
+
+	public function getPhone() {
+	    $sql = "SELECT phone FROM ps_address WHERE phone is not null AND id_customer=".$this->id;
+        $phone = db::getInstance()->getValue($sql);
+        if ($phone)
+            return $phone;
+        return false;
+    }
+
+    public function getLastOrder() {
+        $sql = "SELECT MAX(invoice_date), id_order FROM ps_orders WHERE id_customer=".$this->id;
+        $date = db::getInstance()->executeS($sql);
+        return new Order($date[0]['id_order']);
+    }
+    public function getPreLastOrder()
+    {
+        $sql = "SELECT invoice_date, id_order FROM ps_orders WHERE id_customer=" . $this->id . " ORDER BY invoice_date DESC";
+        $orders = db::getInstance()->executeS($sql);
+
+        if (sizeof($orders) >= 2) {
+            return new Order($orders[1]['invoice_date']);
+        }
+	    return false;
+    }
+
+    public function getDateCustomer(){
+        return DateTime::createFromFormat('d/m/Y', $this->date_add);
+    }
+
 }

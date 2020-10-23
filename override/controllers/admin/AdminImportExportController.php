@@ -120,8 +120,9 @@ class AdminImportExportControllerCore extends AdminController {
 
                 case 'fast':
                     $export = new Export_fast();
-
-
+                    break;
+                case 'client':
+                    $export = new Export_customer();
             }
 
             if(isset($export)) {

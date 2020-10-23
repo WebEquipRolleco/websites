@@ -61,6 +61,9 @@
 				</div>
 				<div class="panel-footer text-right">
 
+					<button type="submit" class="btn btn-success" name="action" value="export_client" style="width:69px">
+						<i class="process-icon-download"></i> <b>Clients</b>
+					</button>
 					<button type="submit" class="btn btn-success" name="action" value="export_products" style="width:69px">
 						<i class="process-icon-download"></i> <b>Produits</b>
 					</button>

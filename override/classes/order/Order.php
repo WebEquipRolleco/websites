@@ -292,6 +292,9 @@ class Order extends OrderCore {
 
     public function getTotalPrice()
     {
+        if (!$this->id) {
+            return 0;
+        }
         $sql = "SELECT SUM(total_price_tax_excl), id_order FROM ps_order_detail WHERE id_order = ".$this->id;
         $price = Db::getInstance()->getValue($sql);
         return $price;
