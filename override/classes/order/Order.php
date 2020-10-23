@@ -268,6 +268,35 @@ class Order extends OrderCore {
 		return $data;
 	}
 
+
+    public function getOrder($id_supplier = null) {
+
+        $data = array();
+        if($this->id) {
+            $sql = "SELECT id_order FROM ps_orders WHERE id_order = ".$this->id;
+            if($id_supplier) $sql .= " AND id_product_supplier = $id_supplier";
+
+            foreach(Db::getInstance()->executeS($sql) as $row)
+                $data[] = new OrderDetail($row['id_order']);
+        }
+        return $data;
+    }
+
+
+    public function getBuyingPrice()
+    {
+        $sql = "SELECT SUM(purchase_supplier_price), id_order FROM ps_order_detail WHERE id_order = ".$this->id;
+        $price = Db::getInstance()->getValue($sql);
+        return $price;
+    }
+
+    public function getTotalPrice()
+    {
+        $sql = "SELECT SUM(total_price_tax_excl), id_order FROM ps_order_detail WHERE id_order = ".$this->id;
+        $price = Db::getInstance()->getValue($sql);
+        return $price;
+    }
+
 	/**
 	* Override : forcer les frais de ports de la commande
 	* @return array
