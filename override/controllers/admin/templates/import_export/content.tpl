@@ -60,6 +60,7 @@
 					</div>
 				</div>
 				<div class="panel-footer text-right">
+
 					<button type="submit" class="btn btn-success" name="action" value="export_products" style="width:69px">
 						<i class="process-icon-download"></i> <b>Produits</b>
 					</button>
@@ -112,6 +113,7 @@
 					</div>
 				</div>
 				<div class="panel-footer text-right">
+
 					<button type="submit" class="btn btn-success" name="action" value="import_products" style="width:69px">
 						<i class="process-icon-upload"></i> <b>Produits</b>
 					</button>
@@ -156,6 +158,10 @@
 					</div>
 				</div>
 				<div class="panel-footer text-right">
+					<button type="submit" class="btn" name="action" value="export_devis" style="width:69px">
+						<i class="process-icon-download"></i> <b>Devis</b>
+					</button>
+
 					<button type="submit" class="btn btn-success" name="action" value="export_orders" style="width:69px">
 						<i class="process-icon-download"></i> <b>Exporter</b>
 					</button>
