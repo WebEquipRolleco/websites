@@ -26,7 +26,7 @@
 				{/capture}
 				{capture "delivery"}
 					{foreach from=Combination::loadColumn($id_combination, 2) item=row}
-						{$row.value} 
+						{$row.value}
 					{/foreach}
 				{/capture}
 				{if $combination.reference}
@@ -57,10 +57,10 @@
 						</td>
 						<td class="text-center" style="padding:5px">
 							{assign var=prices value=SpecificPrice::getByProductId($product.id_product, $id_combination)}
-							{if $prices|count > 1}
-								{assign var='loop_from_quantity' value=0}
-								{assign var='loop_price' value=0}
-								<table id="prices_{$id_combination}" class="prices-table">
+							<table id="prices_{$id_combination}" class="prices-table">
+								{if $prices|count > 1}
+									{assign var='loop_from_quantity' value=0}
+									{assign var='loop_price' value=0}
 									{foreach from=$prices item=specific_price name=loop_prices}
 										{if !$smarty.foreach.loop_prices.first}
 											<tr class="specific_prices_{$id_combination} {if $smarty.foreach.loop_prices.iteration == 2}active{/if}" data-min="{$loop_from_quantity}" data-max="{$specific_price.from_quantity-1}" data-price="{$loop_price}">
@@ -86,21 +86,33 @@
 											</td>
 											<td class="hidden-sm-down text-right">{Tools::displayPrice($loop_price)}</td>
 											<td class="hidden-md-up text-center">
-													{$loop_from_quantity} {l s='et +'}
-													<br />
-													{Tools::displayPrice($loop_price)}
-												</td>
+												{$loop_from_quantity} {l s='et +'}
+												<br />
+												{Tools::displayPrice($loop_price)}
+											</td>
 										</tr>
 									{/if}
-								</table>
-							{else}
-								{foreach from=$prices item=specific_price}
-									<span class="specific_prices_{$id_combination} text-info" data-price="{$specific_price.price}">
-									{if $specific_price.from_quantity > 1}{$specific_price.from_quantity} {l s='et +'} &nbsp;&nbsp;&nbsp;&nbsp;{/if}
-									{Tools::displayPrice($specific_price.price)}
-								</span>
-								{/foreach}
-							{/if}
+
+								{else}
+									{foreach from=$prices item=specific_price name=loop_prices}
+										{assign var='loop_from_quantity' value=$specific_price.from_quantity}
+										{assign var='loop_price' value=$specific_price.price}
+										{assign var='loop_full_price' value=$specific_price.full_price}
+										{if $loop_full_price > 0 and $loop_full_price > $loop_price}
+											<tr>
+												<td class="text-danger text-left bold">{Tools::getRate($loop_price, $loop_full_price)|string_format:"%.2f"}%</td>
+												<td class="text-right" style="text-decoration:line-through;">{Tools::displayPrice($loop_full_price)}</td>
+											</tr>
+										{/if}
+										<tr >
+											<td colspan="2" class="specific_prices_{$id_combination} text-center text-info" data-price="{$specific_price.price}">
+												{if $specific_price.from_quantity > 1}{$specific_price.from_quantity} {l s='et +'} &nbsp;&nbsp;&nbsp;&nbsp;{/if}
+												{Tools::displayPrice($specific_price.price)}
+											</td>
+										</tr>
+									{/foreach}
+								{/if}
+							</table>
 						</td>
 						<td class="text-center">
 							<div class="qty">
@@ -123,7 +135,7 @@
 			{/capture}
 			{capture "delivery"}
 				{foreach from=Product::loadColumn($product.id_product, 2) item=row}
-					{$row.value} 
+					{$row.value}
 				{/foreach}
 			{/capture}
 			<tr>
@@ -144,7 +156,7 @@
 				</td>
 				<td class="text-center hidden-sm-down">
 					{$smarty.capture.dimensions nofilter}
-				</td>	
+				</td>
 				<td class="hidden-sm-down">
 					{$smarty.capture.comments nofilter}
 				</td>
@@ -261,11 +273,11 @@
 					{capture "delivery"}
 						{if $accessory->getCombination()}
 							{foreach from=Combination::loadColumn($accessory->id_combination_accessory, 2) item=row}
-								{$row.value} 
+								{$row.value}
 							{/foreach}
 						{else}
 							{foreach from=Product::loadColumn($accessory->id_product_accessory, 2) item=row}
-								{$row.value} 
+								{$row.value}
 							{/foreach}
 						{/if}
 					{/capture}
