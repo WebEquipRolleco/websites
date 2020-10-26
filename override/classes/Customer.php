@@ -262,6 +262,8 @@ class Customer extends CustomerCore {
     }
 
     public function getCustomerType() {
+	    if (!$this->id_account_type)
+	        return '';
 	    $sql = "SELECT name FROM ps_account_type WHERE id_account_type =".$this->id_account_type;
 	    $customerType = db::getInstance()->getValue($sql);
 	    return $customerType;
