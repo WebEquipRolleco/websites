@@ -34,7 +34,8 @@
                         </li>
                     {elseif isset($path.title)}
                         <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <span>{$path.title}</span>
+                            <span itemprop="name">{$path.title}</span>
+                            <meta itemprop="position" content="{$smarty.foreach.breadcrumb.iteration}">
                         </li>
                     {/if}
                 {/block}
