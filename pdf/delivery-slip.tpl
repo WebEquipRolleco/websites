@@ -141,7 +141,7 @@
 					<strong>{$details->product_reference}</strong>
 				</td>
 				<td width="60%" style="text-align:center">
-					{$details->product_name}
+					{$details->getNameSansDelais()}
 				</td>
 				<td width="20%" style="text-align:center">
 					{$details->product_quantity}

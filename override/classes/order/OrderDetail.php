@@ -488,4 +488,36 @@ class OrderDetail extends OrderDetailCore {
     public function getDate() {
         return ($this->day != "0000-00-00" ? " le : " . DateTime::createFromFormat("Y-m-d", $this->day) -> format("d/m/Y") : ($this->week != 0 ? " en semaine : " .$this->week : ""));
     }
+
+    public function getProductAttributeByAttributeGroupe($attribute_group_name){
+        $sql = "SELECT ps_attribute_lang.name 
+                FROM ps_attribute_lang, 
+                    ps_attribute,
+                    ps_attribute_group_lang,
+                    ps_product_attribute,
+                    ps_product_attribute_combination
+                WHERE
+                    ps_attribute_lang.id_attribute = ps_attribute.id_attribute
+                    and ps_attribute.id_attribute_group = ps_attribute_group_lang.id_attribute_group
+                    AND ps_product_attribute.id_product_attribute = ps_product_attribute_combination.id_product_attribute
+                    AND ps_product_attribute_combination.id_attribute = ps_attribute.id_attribute
+                    and ps_attribute_group_lang.id_lang = 1 
+                    and ps_attribute_group_lang.`public_name` = '".$attribute_group_name."'
+                    AND ps_attribute_lang.id_lang = 1
+                    and ps_product_attribute.id_product = ".$this->product_id."
+                GROUP BY ps_product_attribute.id_product";
+        $attribute = Db::getInstance()->getValue($sql);
+        return  $attribute;
+    }
+
+    public function getDelai(){
+        $delai = $this->getProductAttributeByAttributeGroupe("Délai");
+        return $delai;
+    }
+
+    public function  getNameSansDelais(){
+        $delai = "- Délai : ".$this->getDelai();
+        return str_replace ($delai, "",$this->product_name);
+    }
+
 }

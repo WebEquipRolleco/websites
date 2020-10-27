@@ -182,7 +182,7 @@
 					<b>{$details->product_reference|default:'-'}</b>
 				</td>
 				<td style="text-align:center">
-					{$details->product_name|replace:'||':'<br />'} 
+					{$details->getNameSansDelais()|replace:'||':'<br />'}
 				</td>
 				<td style="text-align:center">
 					{$details->product_quantity}
