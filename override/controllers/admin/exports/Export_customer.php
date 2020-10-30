@@ -74,11 +74,22 @@ class Export_customer extends Export
             } else {
                 $data[] = "";
             }
-            $data[] = sizeof($customer->getOrders());
-            $data[] = sizeof($customer->getOrders()) / (date_diff(date_create($customer->date_add), $date_now))->format('%R%y');
+            $sizeOfOrder = sizeof($customer->getOrders());
+            $data[] = $sizeOfOrder;
+            $data[] = $sizeOfOrder / (date_diff(date_create($customer->date_add), $date_now))->format('%R%y');
             $data[] = $total_price_order;
-            $data[] = round($total_price_order / sizeof($customer->getOrders()), 2);
-            $data[] = $customer->note;
+            $data[] = round($total_price_order / $sizeOfOrder, 2);
+
+            $note = $customer->note;
+            if ($note) {
+                if (strpos($note, ";") ) {
+                    $note = str_replace(";", " ", $note);
+                }
+                if (strpos($note, "\r\n")) {
+                    $note = str_replace("\r\n", " ", $note);
+                }
+            }
+            $data[] = $note;
             $csv .= implode($this->separator, $data) . parent::END_OF_LINE;
         }
         $this->RenderCSV("historique_client_" . date('d-m_H-i') . ".csv", $csv);
