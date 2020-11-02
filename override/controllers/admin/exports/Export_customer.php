@@ -44,7 +44,7 @@ class Export_customer extends Export
         $csv = implode($this->separator, $this->getHeader_export()) . parent::END_OF_LINE;
         $options['date_begin'] = Tools::getValue('date_begin');
         $options['date_end'] = date('Y-m-d H:i:s', strtotime(Tools::getValue('date_end') . ' +1 day'));
-        $sql = "SELECT id_customer FROM ps_customer LIMIT 100";
+        $sql = "SELECT id_customer FROM ps_customer";
         $date_now = date_create("now");
 
         foreach (Db::getInstance()->executeS($sql) as $customer_id) {
