@@ -44,7 +44,7 @@ class Export_customer extends Export
         $csv = implode($this->separator, $this->getHeader_export()) . parent::END_OF_LINE;
         $options['date_begin'] = Tools::getValue('date_begin');
         $options['date_end'] = date('Y-m-d H:i:s', strtotime(Tools::getValue('date_end') . ' +1 day'));
-        $sql = "SELECT id_customer FROM ps_customer";
+        $sql = "SELECT id_customer FROM ps_customer LIMIT 100";
         $date_now = date_create("now");
 
         foreach (Db::getInstance()->executeS($sql) as $customer_id) {
@@ -79,17 +79,7 @@ class Export_customer extends Export
             $data[] = $sizeOfOrder / (date_diff(date_create($customer->date_add), $date_now))->format('%R%y');
             $data[] = $total_price_order;
             $data[] = round($total_price_order / $sizeOfOrder, 2);
-
-            $note = $customer->note;
-            if ($note) {
-                if (strpos($note, ";") ) {
-                    $note = str_replace(";", " ", $note);
-                }
-                if (strpos($note, "\r\n")) {
-                    $note = str_replace("\r\n", " ", $note);
-                }
-            }
-            $data[] = $note;
+            $data[] = preg_replace('/\s+/', ' ', $customer->note);
             $csv .= implode($this->separator, $data) . parent::END_OF_LINE;
         }
         $this->RenderCSV("historique_client_" . date('d-m_H-i') . ".csv", $csv);
