@@ -142,6 +142,14 @@ class QuotationLine extends ObjectModel {
 		return $this->combination;
 	}
 
+    public function getDeliveryFees() {
+        $sql = "SELECT id_product_attribute, delivery_fees FROM `ps_specific_price` WHERE id_product_attribute =".$this->id_combination;
+        $delivery_fees = db::getInstance()->executeS($sql);
+
+        if ($delivery_fees)
+            return $delivery_fees['delivery_fees'];
+        return false;
+    }
 	/**
 	* Retourne les prix spécifiques
 	* @return array|null

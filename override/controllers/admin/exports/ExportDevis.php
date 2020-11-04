@@ -33,16 +33,14 @@ class ExportDevis extends Export
             $quotation = new Quotation($row["id_quotation"]);
             $employee = new Employee($quotation->id_employee);
             $order = $quotation->getOrder();
-            $margin_total = 0;
             $selling_price = 0;
             $buying_price = 0;
             foreach ($quotation->getProducts() as $detail) {
-                //var_dump($detail);
+                $delivery_fees = $detail->getDeliveryFees();
                 $selling_price += $detail->selling_price * $detail->quantity;
-                $buying_price += $detail->buying_price * $detail->quantity;
+                $buying_price += ($detail->buying_price + $delivery_fees) * $detail->quantity;
             }
             $margin_total = $selling_price - $buying_price;
-            //die();
             $margin_rate = $margin_total  / $quotation->getPrice() * 100;
             $data = array();
             $data[] = $quotation->reference;
