@@ -44,7 +44,7 @@ class Export_fast extends Export {
             $buying_price = 0;
             $selling_price = 0;
             foreach ($order->getDetails() as $detail) {
-                $buying_price += $detail->purchase_supplier_price * $detail->product_quantity;
+                $buying_price += ($detail->purchase_supplier_price + $detail->delivery_fees) * $detail->product_quantity;
                 $selling_price += $detail->unit_price_tax_excl * $detail->product_quantity;
             }
             if ($order->total_discounts > 0) {
