@@ -242,7 +242,7 @@ class Customer extends CustomerCore {
     }
 
     public function getLastOrder() {
-        $sql = "SELECT MAX(invoice_date), id_order FROM ps_orders WHERE id_customer=".$this->id;
+        $sql = "SELECT invoice_date, id_order FROM ps_orders WHERE id_customer=".$this->id." ORDER BY invoice_date DESC";
         $date = db::getInstance()->executeS($sql);
         return new Order($date[0]['id_order']);
     }
