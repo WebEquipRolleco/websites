@@ -53,6 +53,7 @@ class Export_customer extends Export
             foreach($customer->getOrders() as $order) {
                 $total_price_order += $order->getTotalPrice();
             }
+            $data = array();
             $order = $customer->getLastOrder();
             $date = $order->invoice_date;
             $date_order = date_create($order->invoice_date);
