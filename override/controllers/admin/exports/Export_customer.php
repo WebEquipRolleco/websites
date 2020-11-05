@@ -56,7 +56,7 @@ class Export_customer extends Export
             $data = array();
             $order = $customer->getLastOrder();
             $date = $order->invoice_date;
-            $date_order = date_create($order->invoice_date);
+            $date_order = date_create($order->date_add);
             $data[] = $customer->id;
             $data[] = $customer->getCustomerType();
             $data[] = $customer->company;
