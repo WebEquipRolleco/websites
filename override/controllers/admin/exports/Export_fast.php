@@ -45,7 +45,7 @@ class Export_fast extends Export {
             $selling_price = 0;
             foreach ($order->getDetails() as $detail) {
                 $buying_price += ($detail->purchase_supplier_price + $detail->delivery_fees) * $detail->product_quantity;
-                $selling_price += ($detail->unit_price_tax_excl - $detail->reduction_amount_tax_excl) * $detail->product_quantity;
+                $selling_price = $order->total_products;
             }
             if ($order->total_discounts > 0) {
                 continue;
@@ -58,8 +58,8 @@ class Export_fast extends Export {
             $data[] = $order->reference;
             $data[] = round($selling_price, 2);
             $data[] = round($buying_price, 2);
-            $data[] = round($order->getTotalPrice() - $buying_price, 2);
-            $data[] = round((($order->getTotalPrice() - $buying_price)  / $order->getTotalPrice()) * 100, 2);
+            $data[] = round($selling_price - $buying_price, 2);
+            $data[] = round((($selling_price - $buying_price)  / $selling_price) * 100, 2);
             $data[] = $order->getCustomer()->id;
             $data[] = $order->getPaymentDeadline()->format('d/m/Y') == '14/01/0000' ? "" : $order->getPaymentDeadline()->format('d/m/Y');
             $data[] = $order->invoice_number;
