@@ -35,11 +35,6 @@ class ExportDevis extends Export
             $order = $quotation->getOrder();
             $selling_price = 0;
             $buying_price = 0;
-            foreach ($quotation->getProducts() as $detail) {
-                $delivery_fees = $detail->getDeliveryFees();
-                $selling_price += $detail->selling_price * $detail->quantity;
-                $buying_price += ($detail->buying_price + $delivery_fees) * $detail->quantity;
-            }
             $margin_total = $selling_price - $buying_price;
             $margin_rate = $margin_total  / $quotation->getPrice() * 100;
             $data = array();
@@ -50,7 +45,7 @@ class ExportDevis extends Export
             $data[] = $order ? $order->getUniqReference() : "";
             $data[] = $order ? $order->date_add : "";
             $data[] = $quotation->getPrice();
-            $data[] = $margin_total;
+            $data[] = $quotation->getMargin();
             $data[] = $margin_rate ?  round((($selling_price - $buying_price)  / $selling_price) * 100, 2) : 0;
             $data[] = $quotation->getCustomer() ? $quotation->getCustomer()->getCustomerType() :  '';
             $data[] = $quotation->getOriginLabel();
