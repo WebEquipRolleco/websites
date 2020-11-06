@@ -160,6 +160,10 @@ class QuotationLine extends ObjectModel {
                 WHERE id_product = (SELECT MAX(id_product) FROM `ps_product_lang` WHERE name LIKE '%".$name."%')
                 AND from_quantity <= (SELECT quantity FROM `ps_quotation_line` WHERE id = ".$this->id." )) sp
                 ON tt.id_specific_price = sp.id_specific_price";
+        var_dump($name);
+        var_dump($this->id);
+        var_dump($delivery_fees);
+        die();
         try {
             $delivery_fees = db::getInstance()->executeS($sql);
             if ($delivery_fees['delivery_fees'] > 0)
