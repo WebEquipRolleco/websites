@@ -141,7 +141,7 @@ class QuotationLine extends ObjectModel {
 
 		return $this->combination;
 	}
-	
+
 	/**
 	* Retourne les prix spécifiques
 	* @return array|null

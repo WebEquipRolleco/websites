@@ -33,10 +33,6 @@ class ExportDevis extends Export
             $quotation = new Quotation($row["id_quotation"]);
             $employee = new Employee($quotation->id_employee);
             $order = $quotation->getOrder();
-            $selling_price = 0;
-            $buying_price = 0;
-            $margin_total = $selling_price - $buying_price;
-            $margin_rate = $margin_total  / $quotation->getPrice() * 100;
             $data = array();
             $data[] = $quotation->reference;
             $data[] = $employee->firstname." ".($employee)->lastname;
@@ -46,7 +42,7 @@ class ExportDevis extends Export
             $data[] = $order ? $order->date_add : "";
             $data[] = $quotation->getPrice();
             $data[] = $quotation->getMargin();
-            $data[] = $margin_rate ?  round((($selling_price - $buying_price)  / $selling_price) * 100, 2) : 0;
+            $data[] = round((($quotation->getPrice() - ($quotation->getPrice() - $quotation->getMargin()))  / $quotation->getPrice()) * 100, 2);
             $data[] = $quotation->getCustomer() ? $quotation->getCustomer()->getCustomerType() :  '';
             $data[] = $quotation->getOriginLabel();
             $data[] = $quotation->getSourceLabel();
