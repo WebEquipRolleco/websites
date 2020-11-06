@@ -146,8 +146,26 @@ class QuotationLine extends ObjectModel {
         $sql = "SELECT id_product_attribute, delivery_fees FROM `ps_specific_price` WHERE id_product_attribute =".$this->id_combination;
         $delivery_fees = db::getInstance()->executeS($sql);
 
-        if ($delivery_fees)
+        if ($delivery_fees['delivery_fees'] > 0)
             return $delivery_fees['delivery_fees'];
+        $name =  explode("|", $this->name);
+        $name = rtrim($name[0], " ");
+        if (!$name || $this->buying_price <= 0)
+            return false;
+        $sql = "SELECT delivery_fees
+                FROM ps_specific_price tt
+                INNER JOIN
+                (SELECT id_specific_price, MAX(from_quantity)
+                FROM ps_specific_price
+                WHERE id_product = (SELECT MAX(id_product) FROM `ps_product_lang` WHERE name LIKE '%".$name."%')
+                AND from_quantity <= (SELECT quantity FROM `ps_quotation_line` WHERE id = ".$this->id." )) sp
+                ON tt.id_specific_price = sp.id_specific_price";
+        try {
+            $delivery_fees = db::getInstance()->executeS($sql);
+            if ($delivery_fees['delivery_fees'] > 0)
+                return $delivery_fees['delivery_fees'];
+        } catch(Exception $e) {
+        }
         return false;
     }
 	/**
