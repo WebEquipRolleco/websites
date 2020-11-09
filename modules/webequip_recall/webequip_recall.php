@@ -279,7 +279,7 @@ class Webequip_recall extends Module {
 			$data['{order_reference}'] = $order->reference;
 			$data['{firstname}'] = $order->getCustomer()->firstname;
 			$data['{lastname}'] = $order->getCustomer()->lastname;
-			$data['{order_date}'] = $order->getDate()->format('d/m/Y');
+			$data['{order_date}'] = $order->getDateOrder()->format('d/m/Y');
 			$data['{shop_name}'] = $order->getShop()->name;
 			$data['{shop_phone}'] = Configuration::getForOrder('PS_SHOP_PHONE', $order);
 			$data['{shop_mail}'] = Configuration::getForOrder('PS_SHOP_EMAIL', $order);
@@ -346,19 +346,19 @@ class Webequip_recall extends Module {
 
 
         /* Boucle pour l'envoi des emails pour le rappel de paiement 30 jours apres la date d'echeance (45 + 30 = 75) */
-        foreach($this->getOrders(75) as $order) {
+       /* foreach($this->getOrders(75) as $order) {
 			$recall_team_1[] = $order;
 		}
 
         /* Boucle pour l'envoi des emails pour le rappel de paiement 45 jours apres la date d'echeance (45 + 45 = 90) */
-		foreach($this->getOrders(90) as $order) {
+		/*foreach($this->getOrders(90) as $order) {
 
 			$recall_team_2[] = $order;
 
 			$customer = new Customer($order->id_customer);
 			$customer->status_information = Customer::STATUS_PROBLEM;
 			$customer->save();
-		}
+		}*/
 
 		// Envoi des mails de rappel à l'équipe (30 jours)
 
