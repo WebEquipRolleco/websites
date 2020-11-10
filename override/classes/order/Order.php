@@ -819,6 +819,6 @@ class Order extends OrderCore {
     }
 
     public function getDisplayPrice(){
-        return Tools::displayPrice($this->total_paid_tax_incl);
+        return Tools::displayPrice($this->total_paid_tax_incl, 1);
     }
 }
