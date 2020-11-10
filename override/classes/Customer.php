@@ -46,6 +46,10 @@ class Customer extends CustomerCore {
 	private $state = null;
 	private $shop = null;
 
+    const STATUS_LATE = "3";
+    const STATUS_PROBLEM = "4";
+    const STATUS_OK = "2";
+
 	/**
      * @see ObjectModel::$definition
      */
