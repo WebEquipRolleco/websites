@@ -817,4 +817,8 @@ class Order extends OrderCore {
             $this->update();
         }
     }
+
+    public function getDisplayPrice(){
+        return Tools::displayPrice($this->total_paid_tax_incl);
+    }
 }
