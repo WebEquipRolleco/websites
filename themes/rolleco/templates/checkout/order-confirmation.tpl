@@ -7,6 +7,7 @@
           <div class="col-md-12">
 
             {block name='order_confirmation_header'}
+            {literal}
               <!-- Global site tag (gtag.js) - Google Analytics -->
               <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10111570-1"></script>
               <script>
@@ -16,6 +17,7 @@
 
                 gtag('config', 'UA-10111570-1');
               </script>
+            {/literal}
               <ul class="ps-alert-success" style="padding:0px">
                 <li class="item">
                   <i>
