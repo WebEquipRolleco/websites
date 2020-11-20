@@ -72,9 +72,7 @@ class OrderConfirmationControllerCore extends FrontController
         $this->order_presenter = new OrderPresenter();
 
         $cart = new Cart((int)$this->id_cart);
-        $this->context->smarty->assign(array(
-            "toto" => "test"
-        ));
+        $this->context->smarty->assign("test" , "toto");
     }
 
     /**
