@@ -73,7 +73,9 @@ class OrderConfirmationControllerCore extends FrontController
 
         $cart = new Cart((int)$this->id_cart);
         $this->context->smarty->assign(array(
-            "panier" => $cart
+            "panier" => array(
+                "test" => "test"
+            )
         ));
     }
 
