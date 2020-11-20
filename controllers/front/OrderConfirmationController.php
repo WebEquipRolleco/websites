@@ -72,6 +72,8 @@ class OrderConfirmationControllerCore extends FrontController
         $this->order_presenter = new OrderPresenter();
 
         $cart = new Cart((int)$this->id_cart);
+        var_dump($cart);
+        die();
         $this->context->smarty->assign(array(
             'panier' => array(
                 'cart' => $cart
