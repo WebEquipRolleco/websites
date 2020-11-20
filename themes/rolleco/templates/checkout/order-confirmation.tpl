@@ -11,7 +11,7 @@
               <!-- Global site tag (gtag.js) - Google Analytics -->
               <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10111570-1"></script>
               <script>
-                console.log(panier);
+                console.log('hello: ' + panier);
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
 
