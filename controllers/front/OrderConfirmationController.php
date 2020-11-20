@@ -72,15 +72,7 @@ class OrderConfirmationControllerCore extends FrontController
         $this->order_presenter = new OrderPresenter();
 
         $cart = new Cart((int)$this->id_cart);
-        Media::addJsDef('panier', array(
-            'cart' => $cart
-        ));
-        Media::addJsDef('prestashop', array(
-            'cart' => $cart
-        ));
-        Media::addJsDef('toto', "test");
-        Media::addJsDef(array('var_name' => 'test2'));
-        $this->context->controller->addJS('test.js');
+
     }
 
     /**
