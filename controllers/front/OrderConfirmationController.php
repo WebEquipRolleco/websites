@@ -80,6 +80,7 @@ class OrderConfirmationControllerCore extends FrontController
         ));
         Media::addJsDef('toto', "test");
         Media::addJsDef(array('var_name' => 'test2'));
+        $this->context->controller->addJS($this->_path.'core.js');
     }
 
     /**
