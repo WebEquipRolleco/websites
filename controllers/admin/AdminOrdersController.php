@@ -249,7 +249,6 @@ class AdminOrdersControllerCore extends AdminController
             'recyclable_pack' => (int)Configuration::get('PS_RECYCLABLE_PACK'),
             'gift_wrapping' => (int)Configuration::get('PS_GIFT_WRAPPING'),
             'cart' => $cart,
-            'panier' => $cart,
             'currencies' => Currency::getCurrenciesByIdShop(Context::getContext()->shop->id),
             'langs' => Language::getLanguages(true, Context::getContext()->shop->id),
             'payment_modules' => $payment_modules,
