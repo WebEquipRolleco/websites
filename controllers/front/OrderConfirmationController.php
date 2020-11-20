@@ -75,7 +75,11 @@ class OrderConfirmationControllerCore extends FrontController
         Media::addJsDef('panier', array(
             'cart' => $cart
         ));
+        Media::addJsDef('prestashop', array(
+            'cart' => $cart
+        ));
         Media::addJsDef('toto', "test");
+        Media::addJsDef(array('var_name' => 'test2'));
     }
 
     /**
