@@ -72,12 +72,10 @@ class OrderConfirmationControllerCore extends FrontController
         $this->order_presenter = new OrderPresenter();
 
         $cart = new Cart((int)$this->id_cart);
-        $this->context->smarty->assign(array(
-            'panier' => array(
-                'cart' => $cart
-            ),
-            'test' => 'hello world'
+        Media::addJsDef('panier', array(
+            'cart' => $cart
         ));
+        Media::addJsDef('toto', "test");
     }
 
     /**
