@@ -12,7 +12,7 @@
               <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10111570-1"></script>
               <script>
                 window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);console.log(this);console.log(arguments);}
+                function gtag(){dataLayer.push(arguments);console.log(panier);console.log(arguments);}
 
                 gtag('js', new Date());
 
