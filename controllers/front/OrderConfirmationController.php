@@ -70,6 +70,12 @@ class OrderConfirmationControllerCore extends FrontController
             Tools::redirect($redirectLink);
         }
         $this->order_presenter = new OrderPresenter();
+
+        $cart = new Cart((int)$this->id_cart);
+        $this->context->smarty->assign(array(
+            'cart' => $cart,
+            'panier' => $cart,
+        ));
     }
 
     /**
