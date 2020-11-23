@@ -72,7 +72,10 @@ class OrderConfirmationControllerCore extends FrontController
         $this->order_presenter = new OrderPresenter();
 
         $cart = new Cart((int)$this->id_cart);
-        //$this->context->smarty->assign("panier", $cart);
+        $this->context->smarty->assign("cart_id", $cart->id);
+        $this->context->smarty->assign("cart_total", $cart->getOrderTotal());
+        $this->context->smarty->assign("cart_total_ht", $cart->getTotalShippingCost());
+        $this->context->smarty->assign("cart_total_ttc", $cart->getOrderTotal());
     }
 
     /**
