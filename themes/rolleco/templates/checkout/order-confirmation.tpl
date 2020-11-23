@@ -11,7 +11,7 @@
           let totals = {
               let total = {/literal} {$cart_total} {literal}
           },
-          let total_ttc-panier = {
+          let total_ttc = {
               let cart = {
                   let total_ht = {/literal} {$cart_total_ht} {literal}
               }
