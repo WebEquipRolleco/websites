@@ -5,7 +5,22 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10111570-1"></script>
   <script>
+    let prestashop = {
+      let cart = {
+          let id = {/literal} {$cart_id} {literal},
+          let totals = {
+              let total = {/literal} {$cart_total} {literal}
+          },
+          let total_ttc-panier = {
+              let cart = {
+                  let total_ht = {/literal} {$cart_total_ht} {literal}
+              }
+          },
+          let total_shipping_ttc = {/literal} {$cart_total_ttc} {literal}
+      }
+    }
 
+    {/literal} {$panier} {literal}
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
 
