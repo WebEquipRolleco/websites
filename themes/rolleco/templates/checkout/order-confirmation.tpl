@@ -11,7 +11,7 @@
           let totals = {
               let total = {/literal} {$cart_total} {literal}
           },
-          let total_ttc = {
+          let total_ttc-panier = {
               let cart = {
                   let total_ht = {/literal} {$cart_total_ht} {literal}
               }
@@ -19,8 +19,6 @@
           let total_shipping_ttc = {/literal} {$cart_total_ttc} {literal}
       }
     }
-
-    {/literal} {$panier} {literal}
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
 
