@@ -18,7 +18,10 @@
   </head>
 
   <body id="{$page.page_name}" class="{$page.body_classes|classnames}">
-
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>{literal}<iframe src="https://www.googletagmanager.com/ns.html?id={/literal}{$google_key}{literal}"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe>{/literal}</noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
 
     {block name='hook_after_body_opening_tag'}
