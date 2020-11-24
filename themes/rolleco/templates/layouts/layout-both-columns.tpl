@@ -5,20 +5,21 @@
     {block name='head'}
       {include file='_partials/head.tpl'}
     {/block}
+      <!-- Google Tag Manager -->
+      {assign var=google_key value=Configuration::get('KEY_GOOGLE_TAG_MANAGER')}
+      {if $google_key}
+          <script>{literal}(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);{/literal}
+              })(window,document,'script','dataLayer','{$google_key}');</script>
+      {/if}
+      <!-- End Google Tag Manager -->
   </head>
 
   <body id="{$page.page_name}" class="{$page.body_classes|classnames}">
 
-    <!-- Google Tag Manager -->
-    {assign var=google_key value=Configuration::get('KEY_GOOGLE_TAG_MANAGER')}
-    {if $google_key}
-      <script>{literal}(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);{/literal}
-      })(window,document,'script','dataLayer','{$google_key}');</script>
-    {/if}
-    <!-- End Google Tag Manager -->
+
 
     {block name='hook_after_body_opening_tag'}
       {hook h='displayAfterBodyOpeningTag'}

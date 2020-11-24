@@ -1,32 +1,6 @@
 {extends file='page.tpl'}
 
 {block name='page_content_container' prepend}
-{literal}
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10111570-1"></script>
-  <script>
-    let prestashop = {
-      let cart = {
-          let id = {/literal} {$cart_id} {literal},
-          let totals = {
-              let total = {/literal} {$cart_total} {literal}
-          },
-          let total_ttc-panier = {
-              let cart = {
-                  let total_ht = {/literal} {$cart_total_ht} {literal}
-              }
-          },
-          let total_shipping_ttc = {/literal} {$cart_total_ttc} {literal}
-      }
-    }
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-
-    gtag('js', new Date());
-
-    gtag('config', 'UA-10111570-1');
-  </script>
-{/literal}
     <section id="content-hook_order_confirmation">
       <div class="card-block">
         <div class="row">
