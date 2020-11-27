@@ -240,7 +240,7 @@ class Webequip_recall extends Module {
 			$data['{firstname}'] = $order-> getCustomer() ->firstname;
 			$data['{lastname}'] = $order-> getCustomer() ->lastname;
 			$data['{order_date}'] = $order -> getDateOrder();
-			$data['{invoice_date}'] = $order -> getCustomInvoiceDate() -> format('d/m/Y');
+			$data['{invoice_date}'] = $order->getInvoiceDate() -> format('d/m/Y');
 			$data['{shop_name}'] = $order -> getShop() -> name;
 			$data['{shop_phone}'] = Configuration::getForOrder('PS_SHOP_PHONE', $order);
 			$data['{shop_mail}'] = Configuration::getForOrder('PS_SHOP_EMAIL', $order);
