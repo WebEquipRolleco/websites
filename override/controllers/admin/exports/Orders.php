@@ -79,7 +79,7 @@ class ExportOrders extends Export {
                 $data[] = $detail->product_id ? $this->findFamily($detail->product_id) : '-';
                 $data[] = $detail->getSupplier() ? $detail->getSupplier()->reference." - ".$detail->getSupplier()->name : '-';
                 $data[] = $order->getShop()->name;
-                $data[] = $this->clean($order->product_supplier_reference);
+                $data[] = $this->clean($detail->product_supplier_reference);
                 $data[] = $this->clean($detail->product_name);
                 $data[] = $this->clean($detail->product_quantity);
                 $data[] = round($detail->total_price_tax_excl, 2);
