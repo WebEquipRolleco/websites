@@ -22,8 +22,8 @@ class Export_customer extends Export
         $header[] = "Date derniere commande";
         $header[] = "Numero derniere commande";
         $header[] = "Montant derniere commande";
-        $header[] = "Difference de jours";
-        $header[] = "Différence de jours depuis dernière commande";
+        $header[] = "Différence entre date de dernière commande et date du jour";
+        $header[] = "Différence en nbre de jours entre date dernière commande et date avant dernière commande";
         $header[] = "Nombre de commande";
         $header[] = "Moyenne de commande depuis création compte";
         $header[] = "Montant total";
@@ -53,11 +53,10 @@ class Export_customer extends Export
             foreach($customer->getOrders() as $order) {
                 $total_price_order += $order->getTotalPrice();
             }
-            $date = $order->date_add;
-            $date = date_create($date);
-            $order = $customer->getLastOrder();
-            $date_order = date_create($order->date_add);
             $data = array();
+            $order = $customer->getLastOrder();
+            $date = $order->invoice_date;
+            $date_order = date_create($order->date_add);
             $data[] = $customer->id;
             $data[] = $customer->getCustomerType();
             $data[] = $customer->company;
@@ -65,7 +64,7 @@ class Export_customer extends Export
             $data[] = $customer->lastname;
             $data[] = $customer->email;
             $data[] = $customer->getPhone();
-            $data[] = $date->format('d/m/y');
+            $data[] = $date_order->format('d/m/y');
             $data[] = $order->getUniqReference();
             $data[] = round($order->getTotalPrice(), 2);
             $data[] = (date_diff($date_order, $date_now))->format('%R%a');
@@ -79,17 +78,7 @@ class Export_customer extends Export
             $data[] = $sizeOfOrder / (date_diff(date_create($customer->date_add), $date_now))->format('%R%y');
             $data[] = $total_price_order;
             $data[] = round($total_price_order / $sizeOfOrder, 2);
-
-            $note = $customer->note;
-            if ($note) {
-                if (strpos($note, ";") ) {
-                    $note = str_replace(";", " ", $note);
-                }
-                if (strpos($note, "\r\n")) {
-                    $note = str_replace("\r\n", " ", $note);
-                }
-            }
-            $data[] = $note;
+            $data[] = preg_replace('/\s+/', ' ', $customer->note);
             $csv .= implode($this->separator, $data) . parent::END_OF_LINE;
         }
         $this->RenderCSV("historique_client_" . date('d-m_H-i') . ".csv", $csv);

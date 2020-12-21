@@ -17,7 +17,10 @@ class Export_fast extends Export {
         $header[] = "Taux de marge";
         $header[] = "Num client Web";
         $header[] = "Limite de paiement";
+        $header[] = "Num de facture";
         $header[] = "Num client M3";
+        $header[] = "Siret";
+        $header[] = "Nom de société";
         $header[] = "Client";
         $header[] = "Type";
         $header[] = "Mode de paiement";
@@ -38,28 +41,37 @@ class Export_fast extends Export {
 
         foreach(Order::findIds($options) as $id) {
             $order = new Order($id);
-
-            $new_order = true;
-            $total = 0;
-                if ($order->total_discounts > 0) {
-                    continue;
-                }
-                $data = array();
-                $data[] = $order->getDate('date_add')->format('d/m/Y');
-                $data[] = $order->reference;
-                $data[] = round($order->getTotalPrice(), 2);
-                $data[] = round($order->getBuyingPrice(), 2);
-                $data[] = round($order->getTotalPrice() - $order->getBuyingPrice(), 2);
-                $data[] = round((($order->getTotalPrice() - $order->getBuyingPrice()) / $order->getTotalPrice()) * 100, 2);
-                $data[] = $order->getCustomer()->id;
-                $data[] = $order->getPaymentDeadline()->format('d/m/Y') == '14/01/0000' ? "" : $order->getPaymentDeadline()->format('d/m/Y');
-                $data[] = $order->getCustomer()->reference;
-                $data[] = $order->getCustomer()->firstname." ".$order->getCustomer()->lastname;
-                $data[] = $order->getCustomer()->getType() ? $order->getCustomer()->getType()->name : '-';
-                $data[] = $order->payment;
-                $data[] = $order->getState()->name;
-                $csv .= implode($this->separator, $data).parent::END_OF_LINE;
+            $buying_price = 0;
+            $selling_price = 0;
+            foreach ($order->getDetails() as $detail) {
+                $buying_price += ($detail->purchase_supplier_price + $detail->delivery_fees) * $detail->product_quantity;
+                $selling_price = $order->total_products;
             }
+            if ($order->total_discounts > 0) {
+                continue;
+            }
+            if ($order->invoice_number == 0) {
+                $order->invoice_number = "";
+            }
+            $data = array();
+            $data[] = $order->getDate('date_add')->format('d/m/Y');
+            $data[] = $order->reference;
+            $data[] = round($selling_price, 2);
+            $data[] = round($buying_price, 2);
+            $data[] = round($selling_price - $buying_price, 2);
+            $data[] = round((($selling_price - $buying_price)  / $selling_price) * 100, 2);
+            $data[] = $order->getCustomer()->id;
+            $data[] = $order->getPaymentDeadline()->format('d/m/Y') == '14/01/0000' ? "" : $order->getPaymentDeadline()->format('d/m/Y');
+            $data[] = $order->invoice_number;
+            $data[] = $order->getCustomer()->reference;
+            $data[] = $order->getCustomer()->siret;
+            $data[] = $order->getCustomer()->company;
+            $data[] = $order->getCustomer()->firstname." ".$order->getCustomer()->lastname;
+            $data[] = $order->getCustomer()->getType() ? $order->getCustomer()->getType()->name : '-';
+            $data[] = $order->payment;
+            $data[] = $order->getState()->name;
+            $csv .= implode($this->separator, $data).parent::END_OF_LINE;
+        }
         $this->RenderCSV("commandes_".date('d-m_H-i').".csv", $csv);
     }
 

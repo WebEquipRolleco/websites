@@ -111,6 +111,7 @@ class OrderConfirmationControllerCore extends FrontController
      */
     public function displayPaymentReturn($order)
     {
+
         if (!Validate::isUnsignedId($this->id_module)) {
             return false;
         }
@@ -123,7 +124,7 @@ class OrderConfirmationControllerCore extends FrontController
      */
     public function displayOrderConfirmation($order)
     {
-        return Hook::exec('displayOrderConfirmation', array('order' => $order));
+       return Hook::exec('displayOrderConfirmation', array('order' => $order));
     }
 
     /**
@@ -131,6 +132,7 @@ class OrderConfirmationControllerCore extends FrontController
      */
     private function checkFreeOrder()
     {
+
         $cart = $this->context->cart;
         if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0) {
             Tools::redirect($this->context->link->getPageLink('order'));

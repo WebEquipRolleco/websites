@@ -33,34 +33,16 @@ class ExportDevis extends Export
             $quotation = new Quotation($row["id_quotation"]);
             $employee = new Employee($quotation->id_employee);
             $order = $quotation->getOrder();
-            $margin_total = 0;
-
-                foreach ($quotation->getProducts() as $detail) {
-                    //var_dump($detail);
-                    $selling_price = $detail->selling_price * $detail->quantity;
-                    if ($selling_price == 0) {
-                        $margin = 0;
-                    } else if ($selling_price < 0) {
-                        $margin = $selling_price;
-                    } else {
-                        $margin = $selling_price - ($detail->buying_price * $detail->quantity);
-                    }
-                    $margin_total += $margin;
-                }
-                //die();
-
-                $margin_rate = $margin_total  / $quotation->getPrice() * 100;
-
             $data = array();
             $data[] = $quotation->reference;
             $data[] = $employee->firstname." ".($employee)->lastname;
             $data[] = $quotation->date_add;
             $data[] = $quotation->getStatusLabel();
             $data[] = $order ? $order->getUniqReference() : "";
-            $data[] = $order ? $order->getDatePaid() : "";
+            $data[] = $order ? $order->date_add : "";
             $data[] = $quotation->getPrice();
-            $data[] = $margin_total;
-            $data[] = $margin_rate ? $margin_rate : 0;
+            $data[] = $quotation->getMargin();
+            $data[] = round((($quotation->getPrice() - ($quotation->getPrice() - $quotation->getMargin()))  / $quotation->getPrice()) * 100, 2);
             $data[] = $quotation->getCustomer() ? $quotation->getCustomer()->getCustomerType() :  '';
             $data[] = $quotation->getOriginLabel();
             $data[] = $quotation->getSourceLabel();

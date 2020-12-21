@@ -7,6 +7,7 @@
           <div class="col-md-12">
 
             {block name='order_confirmation_header'}
+
               <ul class="ps-alert-success" style="padding:0px">
                 <li class="item">
                   <i>
