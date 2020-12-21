@@ -261,7 +261,6 @@ class Webequip_recall extends Module {
 //			$content = file_get_contents($this->mail_dir."recall_customer_2.html");
 //			MailHistory::record($object, $content, $order->id_customer, $order->id);
 			$nb_orders++;
-
 		}
 
         /* Boucle pour l'envoi des emails pour le rappel de paiement 17 jours apres la date d'echeance (45 + 17 = 62) */

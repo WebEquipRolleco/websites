@@ -371,9 +371,6 @@ class AdminQuotationsController extends AdminController {
             $data['{shop_fax}'] = Configuration::get('PS_SHOP_FAX');
             $data['{shop_url}'] = ShopUrl::getMainShopDomain($quotation->id_shop);
 
-            // Gestion des destinataires
-            $emails = explode(',', Tools::getValue('emails'));
-            $emails[] = Configuration::get('PS_SHOP_EMAIL');
             
             // Gestion pièces jointes : PDF
             if(Tools::getValue('pdf')) {
@@ -392,8 +389,7 @@ class AdminQuotationsController extends AdminController {
                 }
                 
             // Envoi des e-mails
-            foreach($emails as $email)
-                Mail::send(1, 'quotation', Tools::getValue('object'), $data, $email, null, null, Configuration::get('PS_SHOP_NAME'), $attachments);
+            Mail::send(1, 'quotation', Tools::getValue('object'), $data, explode(',', Tools::getValue('emails')), null, null, Configuration::get('PS_SHOP_NAME'), $attachments, null, null, null, null, Configuration::get('PS_SHOP_EMAIL'));
 
             $quotation->mail_sent = true;
             $quotation->save();

@@ -227,6 +227,10 @@ class Quotation extends ObjectModel {
 
         return $price;
     }
+
+    public function getSum($use_tax = true, $fees = true, $eco_tax = true) {
+        $sql = "SELECT SUM() FROM ps_order_detail WHERE id_order IN (".implode(',', $ids).")";
+    }
     
     /**
     * Retourne le montant total des frais du devis

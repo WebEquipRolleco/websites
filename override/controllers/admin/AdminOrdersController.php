@@ -469,7 +469,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $object = $this->trans("%shop% :  Proforma de votre commande n° %reference%", array('%shop%'=>$shop_name, '%reference%'=>$this->getCurrentOrder()->reference));
             
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
-                Mail::send(1, 'invoice_proforma', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
+                Mail::send(1, 'invoice_proforma', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id, Configuration::get("PS_SHOP_EMAIL"));
         }
 
         // Classique
@@ -478,7 +478,7 @@ class AdminOrdersController extends AdminOrdersControllerCore {
             $data['{deadline}'] = $this->getCurrentOrder()->getPaymentDeadline()->format('d/m/Y');
             
             foreach($this->getCurrentOrder()->getCustomer()->getInvoiceEmails() as $email)
-                Mail::send(1, 'invoice', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id);
+                Mail::send(1, 'invoice', $object, $data, $email, null, null, $shop_name, $attachments, null, _PS_MAIL_DIR_, false, $this->getCurrentOrder()->getShop()->id, Configuration::get("PS_SHOP_EMAIL"));
         }
     }
     /**

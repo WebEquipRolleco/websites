@@ -391,9 +391,9 @@ class Order extends OrderCore {
 		if($use_taxes) $tax = "incl";
 		else $tax = "excl";
 
-		$sql = "SELECT SUM(total_price_tax_$tax) FROM ps_order_detail WHERE id_order IN (".implode(',', $ids).")";
-		if($quotation == self::ONLY_QUOTATIONS) $sql .= " AND id_quotation_line IS NOT NULL";
-		if($quotation == self::ONLY_PRODUCTS) $sql .= " AND id_quotation_line IS NULL";
+
+        $sql = "SELECT SUM(ps_orders.total_paid_tax_$tax) FROM ps_orders  
+                WHERE ps_orders.id_order IN (".implode(',', $ids).")";
 
 		return Db::getInstance()->getValue($sql);
 	}
@@ -406,19 +406,18 @@ class Order extends OrderCore {
 	* @param bool $quotation
 	* @return float
 	**/
-	public static function sumBuyingPrice($ids, $use_taxes = false, $quotation = self::ALL_PRODUCTS) {
-
+	public static function sumBuyingPrice($ids, $use_taxes = false, $quotation = self::ALL_PRODUCTS)
+    {
 		$value = 0;
 		foreach($ids as $id) {
 
 			$order = new Order($id);
 			foreach($order->getDetails() as $detail)
-				if($quotation == self::ALL_PRODUCTS OR ($quotation == self::ONLY_QUOTATIONS and $detail->id_quotation_line) OR ($quotation == self::ONLY_PRODUCTS and !$detail->id_quotation_line))
-				$value += $detail->getTotalBuyingPrice();
+                $value += $detail->getTotalBuyingPrice();
 		}
-
 		return $value;
 	}
+
 
 	/**
 	* Retourne la liste des types de paiement utilisés
@@ -561,7 +560,7 @@ class Order extends OrderCore {
 	**/ 
 	public static function findIds($options) {
 
-		$sql = "SELECT DISTINCT(o.id_order) FROM "._DB_PREFIX_."orders o";
+		$sql = "SELECT DISTINCT (o.id_order) FROM "._DB_PREFIX_."orders o";
 
 		// Filtrer en fonction des méthodes de paiement
 		if(isset($options['payment_methods']))
@@ -629,22 +628,29 @@ class Order extends OrderCore {
 	* @param int $id_shop
 	* @return float
 	**/
-	public static function  sumTurnover($use_taxes = false, $date_begin = false, $date_end = false, $id_shop = null) {
+        public static function sumTurnover($ids, $use_taxes = false, $quotation = self::ALL_PRODUCTS) {
 
-		//$options['paid'] = 1;
-		if($date_begin) $options['date_begin'] = $date_begin;
-        if($date_end) $options['date_end'] = $date_end;
-        if($id_shop) $options['shops'][] = $id_shop;
 
-        $ids = Order::findIds($options);
-        if(!$ids) return 0;
+            if(!is_array($ids) || empty($ids))
+                return 0;
 
-		if($use_taxes) $column = 'total_paid_tax_incl';
-		else $column = 'total_paid_tax_excl';
+            if($use_taxes) $tax = "incl";
+            else $tax = "excl";
 
-		$sql = "SELECT SUM($column) FROM ps_orders o WHERE o.id_order IN (".implode(',', $ids).")";
-		return (float)Db::getInstance()->getValue($sql);
+
+           $sql = "SELECT SUM(total_paid_tax_$tax)  FROM ps_orders 
+                WHERE ps_orders.id_order IN (".implode(',', $ids).") AND ps_orders.current_state != 6";
+
+            return Db::getInstance()->getValue($sql);
+
 	}
+
+	public static function sumQuotation($ids) {
+            if(!is_array($ids) || empty($ids))
+                return 0;
+
+            $sql = "SELECT";
+}
 
     /**
      * Methode pour recuperer le status de paiement

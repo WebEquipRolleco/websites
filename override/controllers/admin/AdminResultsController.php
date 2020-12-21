@@ -29,16 +29,19 @@ class AdminResultsController extends AdminController {
 
 		$this->date_limit = Configuration::get(self::CONFIG_RESULTS_PERIOD_LIMIT);
 
-		/**** CHIFFRES DU JOUR ****/
-		$options = array();
-		$options['date_begin'] = date('Y-m-d 00:00:00');
-		$options['date_end'] = date('Y-m-d 23:59:59');
-		$options['shops'] = $shop_ids;
-		$ids = Order::findIds($options);
+		/**********************************************************************************************
+         * CHIFFRES DU JOUR ***
+         ***********************************************************************************************/
+        $options_today = array();
+		$options_today['date_begin'] = date('Y-m-d 00:00:00');
+		$options_today['date_end'] = date('Y-m-d 23:59:59');
+		$options_today['shops'] = $shop_ids;
+		$ids_today = Order::findIds($options_today);
 
-		$today['nb_orders'] = count($ids);
-		$today['turnover'] = Order::sumProducts($ids);
-		$today['objective'] = DailyObjective::sumPeriod($options['date_begin'], $options['date_end']);
+		$today['nb_orders'] = count($ids_today);
+		$today['turnover'] = Order::sumProducts($ids_today);
+		$today['objective'] = DailyObjective::sumPeriod($options_today['date_begin'],
+            $options_today['date_end']);
 
 		/**** Déclaration des périodes ****/
 		$periods[0]['title'] = "Objectifs mensuel";
@@ -51,117 +54,125 @@ class AdminResultsController extends AdminController {
 
 		foreach($periods as $index => $period) {
 
-			/**** RESULTATS GLOBAUX PERIODE COURANTE ****/
-			$options = array();
-			$options['date_begin'] = $period['dates']['begin']->format('Y-m-d 00:00:00');
-			$options['date_end'] = $period['dates']['end']->format('Y-m-d 23:59:59');
-			$options['shops'] = $shop_ids;
-			$ids = Order::findIds($options);
+            /**********************************************************************************************
+             * RESULTATS PERIODE COURANTE ***
+             ***********************************************************************************************/
 
-			$periods[$index]['current']['nb_orders'] = count($ids);
-			$periods[$index]['current']['turnover'] = Order::sumProducts($ids);
+            // Initialisation des filtres de recherche
+			$options_current = array();
+			$options_current['date_begin'] = $period['dates']['begin']->format('Y-m-d 00:00:00');
+			$options_current['date_end'] = $period['dates']['end']->format('Y-m-d 23:59:59');
+			$options_current['shops'] = $shop_ids;
+			$ids_current = Order::findIds($options_current);
+
+			// Récupération ligne de commande objectif
+			$periods[$index]['current']['nb_orders'] = count($ids_current);
+			$periods[$index]['current']['turnover'] = Order::sumTurnover($ids_current);
 			$periods[$index]['current']['objective'] = DailyObjective::sumPeriod($period['dates']['begin'], $period['dates']['end']);
 			$periods[$index]['current']['difference'] = $periods[$index]['current']['turnover'] - $periods[$index]['current']['objective'];
 
+			// Panier moyen condition
 			if($periods[$index]['current']['nb_orders'] && $periods[$index]['current']['turnover'])
 				$periods[$index]['current']['avg'] = $periods[$index]['current']['turnover'] / $periods[$index]['current']['nb_orders'];
 			else
 				$periods[$index]['current']['avg'] = 0;
 
-			$buying_price_full = Order::sumBuyingPrice($ids);
+			// Récupération prix d'achat et marge totales
+			$buying_price_full = Order::sumBuyingPrice($ids_current);
 			$margin_full = $periods[$index]['current']['turnover'] - $buying_price_full;
 
-			$turnover_products = Order::sumProducts($ids, false, Order::ONLY_PRODUCTS);
-			$buying_price_products = Order::sumBuyingPrice($ids, false, Order::ONLY_PRODUCTS);
-			$margin_products = $turnover_products - $buying_price_products;
-
-			$turnover_quotations = Order::sumProducts($ids, false, Order::ONLY_QUOTATIONS);
-			$buying_price_quotations = Order::sumBuyingPrice($ids, false, Order::ONLY_QUOTATIONS);
-			$margin_quotations = $turnover_quotations - $buying_price_quotations;
-
+			// Mis en place des valeurs de marge totale
 			$periods[$index]['current']['margin']['full'] = Tools::getMarginRate($margin_full, $periods[$index]['current']['turnover']);
-			$periods[$index]['current']['margin']['products'] = Tools::getMarginRate($margin_products, $turnover_products);
-			$periods[$index]['current']['margin']['quotations'] = Tools::getMarginRate($margin_quotations, $turnover_quotations);
-
 			$periods[$index]['current']['margin_value']['full'] = $margin_full;
-			$periods[$index]['current']['margin_value']['products'] = $margin_products;
-			$periods[$index]['current']['margin_value']['quotations'] = $margin_quotations;
 
-			/**** RESULTATS GLOBAUX PERIODE PRECEDENTE ****/
+            // Mis à jour des champs de recherche pour les devis
+            $options_current['quotations'] = true;
+            $ids = Order::findIds($options_current);
+
+            // Mise en place du nombre de devis
+            $periods[$index]['current']['quotations']['nb_orders'] = count($ids);
+            $periods[$index]['current']['quotations']['turnover'] = Order::sumProducts($ids, false, Order::ONLY_QUOTATIONS);
+
+            // Condition panier moyen
+            if($periods[$index]['current']['quotations']['nb_orders'] && $periods[$index]['current']['quotations']['turnover'])
+                $periods[$index]['current']['quotations']['avg'] = $periods[$index]['current']['quotations']['turnover'] / $periods[$index]['current']['quotations']['nb_orders'];
+            else
+                $periods[$index]['current']['quotations']['avg'] = 0;
+
+            // Récupération des prix d'achats, prix de ventes, marge
+            $turnover_quotations = Order::sumTurnover($ids, false, Order::ONLY_QUOTATIONS);
+            $buying_price_quotations = Order::sumBuyingPrice($ids, false, Order::ONLY_QUOTATIONS);
+            $margin_quotations = $turnover_quotations - $buying_price_quotations;
+
+            // Mise  en place des valeurs de marge des devis et naturelle
+            $margin_products = $margin_full - $margin_quotations ;
+            $periods[$index]['current']['margin_value']['quotations'] = $margin_quotations;
+            $periods[$index]['current']['margin']['quotations'] = Tools::getMarginRate($margin_quotations, $turnover_quotations);
+            $periods[$index]['current']['margin']['products'] = Tools::getMarginRate($margin_products, $periods[$index]['current']['turnover'] - $turnover_quotations);
+            $periods[$index]['current']['margin_value']['products'] =  $periods[$index]['current']['margin_value']['full'] -
+                $margin_quotations;
+
+            /**********************************************************************************************
+             * RESULTATS PERIODE PRECEDENTE ***
+             ***********************************************************************************************/
+
+            // Récupération de la période antérieur
 			$date_begin = clone($period['dates']['begin']);
 			$date_end = clone($period['dates']['end']);
-
 			$date_begin->modify('-1 year');
 			$date_end->modify('-1 year');
 
-			$options = array();
-			$options['date_begin'] = $date_begin->format('Y-m-d 00:00:00');
-			$options['date_end'] = $date_end->format('Y-m-d 23:59:59');
-			$options['shops'] = $shop_ids;
-			$ids = Order::findIds($options);
+			// Initialisation des champs de recherche
+			$options_last = array();
+			$options_last['date_begin'] = $date_begin->format('Y-m-d 00:00:00');
+			$options_last['date_end'] = $date_end->format('Y-m-d 23:59:59');
+			$options_last['shops'] = $shop_ids;
+			$ids = Order::findIds($options_last);
 
+            // Récupération ligne de commande objectif
 			$periods[$index]['last']['nb_orders'] = count($ids);
 			$periods[$index]['last']['turnover'] = Order::sumProducts($ids);
 			$periods[$index]['last']['objective'] = DailyObjective::sumPeriod($date_begin, $date_end);
 			$periods[$index]['last']['difference'] = $periods[$index]['last']['turnover'] - $periods[$index]['last']['objective'];
 
+			// Condition Panier moyen
 			if($periods[$index]['last']['nb_orders'] && $periods[$index]['last']['turnover'])
 				$periods[$index]['last']['avg'] = $periods[$index]['last']['turnover'] / $periods[$index]['last']['nb_orders'];
 			else
 				$periods[$index]['last']['avg'] = 0;
 
+			// Récupération du prix d'achat et de la marge total
 			$buying_price_full = Order::sumBuyingPrice($ids);
 			$margin_full = $periods[$index]['last']['turnover'] - $buying_price_full;
 
-			$turnover_products = Order::sumProducts($ids, false, Order::ONLY_PRODUCTS);
-			$buying_price_products = Order::sumBuyingPrice($ids, false, Order::ONLY_PRODUCTS);
-			$margin_products = $turnover_products - $buying_price_products;
+            $periods[$index]['last']['margin']['full'] = Tools::getMarginRate($margin_full, $periods[$index]['last']['turnover']);
+            $periods[$index]['last']['margin_value']['full'] = $margin_full;
 
-			$periods[$index]['last']['margin']['full'] = Tools::getMarginRate($margin_full, $periods[$index]['last']['turnover']);
-			$periods[$index]['last']['margin']['products'] = Tools::getMarginRate($margin_products, $turnover_products);
+            $options_last['quotations'] = true;
+            $ids = Order::findIds($options_last);
 
-			$periods[$index]['last']['margin_value']['full'] = $margin_full;
+            // Mise en place du nombre de devis
+            $periods[$index]['last']['quotations']['nb_orders'] = count($ids);
+            $periods[$index]['last']['quotations']['turnover'] = Order::sumProducts($ids, false, Order::ONLY_QUOTATIONS);
+
+            // Condition panier moyen
+            if($periods[$index]['last']['quotations']['nb_orders'] && $periods[$index]['last']['quotations']['turnover'])
+                $periods[$index]['last']['quotations']['avg'] = $periods[$index]['last']['quotations']['turnover'] / $periods[$index]['last']['quotations']['nb_orders'];
+            else
+                $periods[$index]['last']['quotations']['avg'] = 0;
+
+            // Récupération des prix d'achats, prix de ventes, marge
+            $turnover_quotations = Order::sumTurnover($ids, false, Order::ONLY_QUOTATIONS);
+            $buying_price_quotations = Order::sumBuyingPrice($ids, false, Order::ONLY_QUOTATIONS);
+            $margin_quotations = $turnover_quotations - $buying_price_quotations;
+			$margin_products = $margin_full - $margin_quotations;
+
+            // Mise  en place des valeurs de marge des devis et naturelle
+            $periods[$index]['last']['margin']['quotations'] = Tools::getMarginRate($margin_quotations, $periods[$index]['last']['quotations']['turnover']);
+            $periods[$index]['last']['margin_value']['quotations'] = $margin_quotations;
+			$periods[$index]['last']['margin']['products'] = Tools::getMarginRate($margin_products, $periods[$index]['last']['turnover'] - $turnover_quotations);
 			$periods[$index]['last']['margin_value']['products'] = $margin_products;
-			$periods[$index]['last']['margin_value']['quotations'] = $margin_quotations;
-			
-			/**** RESULTATS DEVIS PERIODE COURANTE *****/
-			$options = array();
-			$options['date_begin'] = $period['dates']['begin']->format('Y-m-d 00:00:00');
-			$options['date_end'] = $period['dates']['end']->format('Y-m-d 23:59:59');
-			$options['shops'] = $shop_ids;
-			$options['quotations'] = true;
-			$ids = Order::findIds($options);
 
-			$periods[$index]['current']['quotations']['nb_orders'] = count($ids);
-			$periods[$index]['current']['quotations']['turnover'] = Order::sumProducts($ids, false, Order::ONLY_QUOTATIONS);
-
-			if($periods[$index]['current']['quotations']['nb_orders'] && $periods[$index]['current']['quotations']['turnover'])
-				$periods[$index]['current']['quotations']['avg'] = $periods[$index]['current']['quotations']['turnover'] / $periods[$index]['current']['quotations']['nb_orders'];
-			else
-				$periods[$index]['current']['quotations']['avg'] = 0;
-
-			$buying_price_quotations = Order::sumBuyingPrice($ids, false, Order::ONLY_QUOTATIONS);
-			$periods[$index]['current']['quotations']['margin'] = $periods[$index]['current']['quotations']['turnover'] - $buying_price_quotations;
-
-			$periods[$index]['last']['margin']['quotations'] = Tools::getMarginRate($periods[$index]['current']['quotations']['margin'], $periods[$index]['current']['quotations']['turnover']);
-
-			/**** RESULTATS DEVIS PERIODE PRECEDENTE *****/
-			$options['date_begin'] = $date_begin->format('Y-m-d 00:00:00');
-			$options['date_end'] = $date_end->format('Y-m-d 23:59:59');
-			$ids = Order::findIds($options);
-
-			$periods[$index]['last']['quotations']['nb_orders'] = count($ids);
-			$periods[$index]['last']['quotations']['turnover'] = Order::sumProducts($ids, false, Order::ONLY_QUOTATIONS);
-
-			if($periods[$index]['last']['quotations']['nb_orders'] && $periods[$index]['last']['quotations']['turnover'])
-				$periods[$index]['last']['quotations']['avg'] = $periods[$index]['last']['quotations']['turnover'] / $periods[$index]['last']['quotations']['nb_orders'];
-			else
-				$periods[$index]['last']['quotations']['avg'] = 0;
-
-			$buying_price_quotations = Order::sumBuyingPrice($ids, false, Order::ONLY_QUOTATIONS);
-			$periods[$index]['last']['quotations']['margin'] = $periods[$index]['last']['quotations']['turnover'] - $buying_price_quotations;
-
-			$periods[$index]['last']['margin']['quotations'] = Tools::getMarginRate($periods[$index]['last']['quotations']['margin'], $periods[$index]['last']['quotations']['turnover']);
 
 			/**** COMPARAISONS ****/
 			$periods[$index]['best']['nb_orders'] = $periods[$index]['current']['nb_orders'] >= $periods[$index]['last']['nb_orders'];
@@ -284,6 +295,6 @@ class AdminResultsController extends AdminController {
 	}
 
 	private function getPaymentMethods() {
-		return Db::getInstance()->executeS("SELECT DISTINCT(payment_method) AS name FROM ps_order_payment");
+		return Db::getInstance()->executeS("SELECT DISTINCT(payment) AS name FROM ps_orders");
 	}
 }
