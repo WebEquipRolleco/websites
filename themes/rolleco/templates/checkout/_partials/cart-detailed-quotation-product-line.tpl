@@ -9,9 +9,13 @@
 		{foreach from=$line->getProductProperties() item=property}
 			<div>{$property}</div>
 		{/foreach}
+		{if $line->properties}
+			<div>{$line->properties}</div>
+		{/if}
 		{if $line->information}
 			<div><em class="text-muted">{$line->information|replace:"|":'<br />' nofilter}</em></div>
 		{/if}
+
 		{if $line->getDocumentLink()}
 			<br />
 			<a href="{$line->getDocumentLink()}">

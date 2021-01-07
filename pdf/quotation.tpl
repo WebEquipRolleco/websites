@@ -29,6 +29,9 @@
 				{foreach from=$product->getProductProperties() item=property}
 					<br /> {$property}
 				{/foreach}
+				{if $line->properties}
+					<div>{$line->properties}</div>
+				{/if}
 				{if $product->information} 
 					<br /> <div style="font-size:8px">{$product->information|replace:"|":"<br />"}</div>
 				{/if}
