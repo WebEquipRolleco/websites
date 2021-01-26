@@ -345,7 +345,7 @@ class Webequip_recall extends Module {
 
 
         /* Boucle pour l'envoi des emails pour le rappel de paiement 30 jours apres la date d'echeance (45 + 30 = 75) */
-       /* foreach($this->getOrders(75) as $order) {
+        foreach($this->getOrders(75) as $order) {
 			$recall_team_1[] = $order;
 		}
 
