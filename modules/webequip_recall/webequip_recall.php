@@ -210,7 +210,9 @@ class Webequip_recall extends Module {
 			$data['{deadline}'] = $order->getDeadline()->format('d/m/Y');
 
 			/* Envoi de l'email */
-			Mail::send(1, "recall_customer_1", $object, $data, $customer->email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, null,
+            $emails = array_merge($customer->getInvoiceEmails());
+            foreach($emails as $email)
+                if($email) Mail::send(1, "recall_customer_1", $object, $data, $customer->email, $customer->firstname." ".$customer->lastname, $this->from, $order->getShop()->name, null,
                 null, $this->mail_dir, null, null, Configuration::getForOrder('PS_SHOP_EMAIL', $order));
 
 			/* Sauvegarde des donnees et comptage des commandes */
