@@ -319,6 +319,7 @@ class OrderDetail extends OrderDetailCore {
     **/
     private function createQuotationLine($order, $cart, $line, $id_order_invoice = 0, $id_warehouse = 0) {
 
+
         $price_ht = $line->selling_price;
         $price_ttc = $price_ht * 1.2;
 
@@ -327,6 +328,7 @@ class OrderDetail extends OrderDetailCore {
         $details->id_order_invoice = $id_order_invoice;
         $details->id_warehouse = $id_warehouse;
         $details->id_shop = $order->id_shop;
+        $details->product_id = $line->id_product;
         $details->product_reference = $line->reference;
         $details->product_name = $line->name;
         $details->product_quantity = $line->quantity;
