@@ -435,6 +435,7 @@ class Webequip_recall extends Module {
 			return false;
 
 		$ids = $this->getNoFacturationIds();
+
 		if(!empty($ids)) {
 
 			$employee = new Employee($id_employee);
@@ -447,8 +448,10 @@ class Webequip_recall extends Module {
 			$data['{$nb}'] = $nb_days;
 			$data['{$state}'] = $state->name;
 
-			Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $employee->email,
-                $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
+            $emails = array("thierry.gozdzicki@hotmail.com", "thierry.gozdzicki@provost.fr");
+            foreach ($emails as $email)
+			    Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $email,
+                  $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
 		}
 	}
 
@@ -633,10 +636,12 @@ class Webequip_recall extends Module {
 		$sql = "SELECT DISTINCT(reference) as reference
 				FROM ps_orders o, ps_order_history h
 				WHERE o.id_order = h.id_order 
-				AND h.date_add < '".$date->format('Y-m-d 23:59:59')."'
-				AND h.id_order_state = $id_state_check
-				AND (o.invoice_number IS NULL OR o.invoice_number = '')
-				AND (o.invoice_date IS NULL OR o.invoice_date = '000-00-00')";
+				  AND o.date_add > '2020-01-01 23:59:59'
+				  AND h.date_add < '".$date->format('Y-m-d 23:59:59')."'
+				  AND h.id_order_state = $id_state_check
+				  AND (o.invoice_number IS NULL OR o.invoice_number = '')
+				  AND (o.invoice_date IS NULL OR o.invoice_date = '000-00-00')
+                    ORDER BY h.date_add DESC";
 
 		return Db::getInstance()->executeS($sql);
 	}
