@@ -637,8 +637,8 @@ class Webequip_recall extends Module {
 				FROM ps_orders o, ps_order_history h
 				WHERE o.id_order = h.id_order 
 				  AND o.date_add > '2020-01-01 23:59:59'
-				  AND o.current_state = $id_state_check
 				  AND h.date_add < '".$date->format('Y-m-d 23:59:59')."'
+				  AND h.id_order_state = $id_state_check
 				  AND (o.invoice_number IS NULL OR o.invoice_number = '')
 				  AND (o.invoice_date IS NULL OR o.invoice_date = '000-00-00')
                     ORDER BY h.date_add DESC";
