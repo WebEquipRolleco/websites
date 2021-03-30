@@ -448,7 +448,7 @@ class Webequip_recall extends Module {
 			$data['{$nb}'] = $nb_days;
 			$data['{$state}'] = $state->name;
 
-            $emails = array("thierry.gozdzicki@hotmail.com", "thierry.gozdzicki@provost.fr");
+            $emails = array($employee -> email, "thierry.gozdzicki@provost.fr");
             foreach ($emails as $email)
 			    Mail::send(1, "recall_invoice", $this->l("Rappel des commandes sans facturation"), $data, $email,
                   $employee->firstname." ".$employee->lastname, $this->from, $this->from_name, null, null, $this->mail_dir);
