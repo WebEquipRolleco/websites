@@ -180,9 +180,9 @@ class Quotation extends ObjectModel {
     **/
     public static function getStates() {
 
+        $data[self::STATUS_REFUSED] = "Refusé";
         $data[self::STATUS_WAITING] = "En attente";
         $data[self::STATUS_VALIDATED] = "Accepté";
-        $data[self::STATUS_REFUSED] = "Refusé";
         $data[self::STATUS_OVER] = "Terminé";
 
         return $data;
