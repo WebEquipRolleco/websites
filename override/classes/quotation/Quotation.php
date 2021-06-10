@@ -231,7 +231,7 @@ class Quotation extends ObjectModel {
     public function getSum($use_tax = true, $fees = true, $eco_tax = true) {
         $sql = "SELECT SUM() FROM ps_order_detail WHERE id_order IN (".implode(',', $ids).")";
     }
-    
+
     /**
     * Retourne le montant total des frais du devis
     * @return float
@@ -253,7 +253,7 @@ class Quotation extends ObjectModel {
     * @return float
     **/
     public function getTVA() {
-        
+
         $taxes = $this->getPrice(true) - $this->getPrice();
         $taxes -= $this->getEcoTax();
 
@@ -266,7 +266,7 @@ class Quotation extends ObjectModel {
     public function getStatusLabel() {
 
         $labels = self::getStates();
-        return isset($labels[$this->status]) ?? null;
+        return isset($labels[$this->status]) ? $labels[$this->status] : null;
     }
 
     /**
