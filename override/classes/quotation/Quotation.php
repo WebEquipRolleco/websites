@@ -267,6 +267,7 @@ class Quotation extends ObjectModel {
 
         $labels = self::getStates();
         return isset($labels[$this->status]) ? $labels[$this->status] : null;
+
     }
 
     /**
